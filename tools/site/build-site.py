@@ -22,7 +22,8 @@ FEATURES = ['thunder', 'crops', 'sail', 'gong']
 
 TEXT = {
     'zh-Hant': {
-        'title': '墨畫蒼生 InkWild｜SteJoy',
+        'studio': '長風',   # 工作室的中文名（使用者定）；中文兩頁都寫它，英文頁照舊 SteJoy
+        'title': '墨畫蒼生 InkWild｜長風',
         'desc': '一張紙落在海上，紙上的字活了。你是其中一個「人」字：取木、砌磚、點燈，撐過第十三夜起穿磚而來的魄；照節氣種五穀、垂釣、觀星。膽氣夠了就造船渡海，去找撞歪天地的共工。',
         'nav': ['預告', '故事', '試玩場景', '特色', '聯絡'],
         'kicker': '字裡行間 · 一紙之島',
@@ -53,13 +54,14 @@ TEXT = {
         },
         'facts': ['單人、離線', '鍵盤與滑鼠', '介面：繁體中文、簡體中文', '三種難度：入門、資深、大師'],
         'contact_h': '聯絡',
-        'contact': '《墨畫蒼生》是 SteJoy「寫意」系列的第一部。想說什麼，寫信給我們：',
+        'contact': '《墨畫蒼生》是長風「寫意」系列的第一部。想說什麼，寫信給我們：',
         'banner': {'zh-Hans': '有简体中文页面', 'en': 'This page is also in English'},
         'video_off': '你的瀏覽器放不了這段影片。',
-        'copy': '© 2026 SteJoy。字型：霞鶩文楷、思源宋體（SIL Open Font License 1.1）。',
+        'copy': '© 2026 長風。字型：霞鶩文楷、思源宋體（SIL Open Font License 1.1）。',
     },
     'zh-Hans': {
-        'title': '墨画苍生 InkWild｜SteJoy',
+        'studio': '长风',
+        'title': '墨画苍生 InkWild｜长风',
         'desc': '一张纸落在海上，纸上的字活了。你是其中一个“人”字：取木、砌砖、点灯，撑过第十三夜起穿砖而来的魄；照节气种五谷、垂钓、观星。胆气够了就造船渡海，去找撞歪天地的共工。',
         'nav': ['预告', '故事', '试玩场景', '特色', '联系'],
         'kicker': '字里行间 · 一纸之岛',
@@ -90,12 +92,13 @@ TEXT = {
         },
         'facts': ['单人、离线', '键盘与鼠标', '界面：繁体中文、简体中文', '三种难度：入门、资深、大师'],
         'contact_h': '联系',
-        'contact': '《墨画苍生》是 SteJoy“写意”系列的第一部。想说什么，写信给我们：',
+        'contact': '《墨画苍生》是长风“写意”系列的第一部。想说什么，写信给我们：',
         'banner': {'zh-Hant': '這一頁也有繁體中文', 'en': 'This page is also in English'},
         'video_off': '你的浏览器播放不了这段视频。',
-        'copy': '© 2026 SteJoy。字体：霞鹜文楷、思源宋体（SIL Open Font License 1.1）。',
+        'copy': '© 2026 长风。字体：霞鹜文楷、思源宋体（SIL Open Font License 1.1）。',
     },
     'en': {
+        'studio': 'SteJoy',
         'title': 'InkWild (墨畫蒼生) | SteJoy',
         'desc': 'A sheet of paper falls on the sea, and the characters on it come alive. You are one of them: 人, "person". Gather wood, lay bricks and light lamps against the spirits that pass through walls from the 13th night. Farm by the solar terms, fish, read the stars, then set sail.',
         'nav': ['Trailer', 'Story', 'Demo', 'Features', 'Contact'],
@@ -171,7 +174,7 @@ def page(code):
 <link rel="canonical" href="{SITE}{L['dir']}">
 {alts}
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="SteJoy">
+<meta property="og:site_name" content="{esc(T['studio'])}">
 <meta property="og:title" content="{esc(T['title'])}">
 <meta property="og:description" content="{esc(T['desc'])}">
 <meta property="og:image" content="{SITE}assets/img/og.jpg">
@@ -187,7 +190,7 @@ def page(code):
 </head>
 <body class="lang-{code}" data-banner='{esc(banner)}'>
 <header class="top">
-  <a class="studio" href="{up}{L['dir']}"><img src="{a}img/icon.svg" alt="" width="34" height="34"><span>SteJoy</span></a>
+  <a class="studio" href="{up}{L['dir']}"><img src="{a}img/icon.svg" alt="" width="34" height="34"><span>{esc(T['studio'])}</span></a>
   <nav class="sections" aria-label="sections">{nav}</nav>
   <nav class="langs" aria-label="language">{langnav}</nav>
 </header>
