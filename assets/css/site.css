@@ -114,7 +114,8 @@ footer .author-name { color: var(--ink); font-size: 17px; letter-spacing: .04em;
 footer .author-name span { color: var(--dim); font-family: var(--zh); font-size: 14px; letter-spacing: .12em; margin-right: .4em; }
 body.lang-zh-Hans footer .author-name span { font-family: var(--sc); }
 body.lang-en footer .author-name span { font-family: var(--en); letter-spacing: .02em; }
-footer .author-meta { color: var(--ink-2); font-size: 14px; margin-top: 2px !important; }
+footer .author-bio { color: var(--ink-2); font-size: 14px; line-height: 1.7; max-width: 760px; margin: 4px 0 2px !important; }
+footer .author-meta { color: var(--ink-2); font-size: 14px; margin-top: 4px !important; }
 footer .copy { margin: 0; }
 
 /* 語言建議（照瀏覽器的語言，不自動跳） */
