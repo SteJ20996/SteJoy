@@ -60,7 +60,7 @@ TEXT = {
         'banner': {'zh-Hans': '有简体中文页面', 'en': 'This page is also in English'},
         'video_off': '你的瀏覽器放不了這段影片。',
         'author': ('作者', '長風工作室', '聯絡', '個人主頁'),
-        'bio': '教數學、做研究，也寫遊戲。《墨畫蒼生》把《山海經》的山海與二十四節氣，寫成一座用漢字搭起來的島。',
+        'bio': ('教數學、做研究，也用互動遊戲探索文字與文學。', '《墨畫蒼生》把《山海經》的山海與二十四節氣，寫成一座用漢字搭起來的島。'),
         'copy': '© 2026 長風。字型：霞鶩文楷、思源宋體（SIL Open Font License 1.1）。',
     },
     'zh-Hans': {
@@ -100,7 +100,7 @@ TEXT = {
         'banner': {'zh-Hant': '這一頁也有繁體中文', 'en': 'This page is also in English'},
         'video_off': '你的浏览器播放不了这段视频。',
         'author': ('作者', '长风工作室', '联系', '个人主页'),
-        'bio': '教数学、做研究，也写游戏。《墨画苍生》把《山海经》的山海与二十四节气，写成一座用汉字搭起来的岛。',
+        'bio': ('教数学、做研究，也用互动游戏探索文字与文学。', '《墨画苍生》把《山海经》的山海与二十四节气，写成一座用汉字搭起来的岛。'),
         'copy': '© 2026 长风。字体：霞鹜文楷、思源宋体（SIL Open Font License 1.1）。',
     },
     'en': {
@@ -141,7 +141,7 @@ TEXT = {
         'banner': {'zh-Hant': '這一頁也有繁體中文', 'zh-Hans': '有简体中文页面'},
         'video_off': 'Your browser cannot play this video.',
         'author': ('Created by', 'SteJoy', 'Contact', 'Homepage'),
-        'bio': 'Math teacher and researcher who also makes games. InkWild turns the mountains and seas of the Shanhaijing and the 24 solar terms into an island built from Chinese characters.',
+        'bio': ('Math teacher and researcher who explores writing and literature through interactive games.', 'InkWild turns the mountains and seas of the Shanhaijing and the 24 solar terms into an island built from Chinese characters.'),
         'copy': '© 2026 SteJoy. Fonts: LXGW WenKai, Noto Serif (SIL Open Font License 1.1).',
     },
 }
@@ -255,7 +255,7 @@ def page(code):
 <footer>
   <div class="author">
     <p class="author-name"><span>{esc(T['author'][0])}</span> {AUTHOR}</p>
-    <p class="author-bio">{esc(T['bio'])}</p>
+    <p class="author-bio">{' '.join(f'<span>{esc(x)}</span>' for x in T['bio'])}</p>
     <p class="author-meta">{esc(T['author'][3])} <a href="{AUTHOR_URL}" rel="me">stephenjia.com</a> · {esc(T['author'][1])} · {esc(T['author'][2])} <a href="mailto:{MAIL}">{MAIL}</a></p>
   </div>
   <p class="copy">{esc(T['copy'])}</p>
