@@ -34,10 +34,16 @@ stejoy.com 的網站：《墨畫蒼生》（InkWild）的介紹頁，繁體中�
 
 ## 上線
 
-靜態檔，GitHub Pages 或 Cloudflare Pages 都放得了。
+靜態檔，Cloudflare Pages 或 GitHub Pages 都放得了。`stejoy.com` 的 DNS 已經在 Cloudflare，**建議用 Cloudflare Pages**，DNS 與 HTTPS 都由它自動設好：
 
-- `stejoy.com` 的 DNS 已經在 Cloudflare，用 **Cloudflare Pages** 接這個庫最省事：Build command 留空、Output directory 填 `/`，再到 Custom domains 加上 `stejoy.com`。
-- 用 GitHub Pages 的話，私有庫要付費方案才開得了 Pages。
+1. Cloudflare 後台 → **Workers & Pages** → **Create application** → **Pages** → **Import an existing Git repository**，授權 GitHub 後選 `SteJ20996/SteJoy`。
+2. Production branch：`main`；Framework preset：**None**；Build command：`exit 0`（官方建議；留空也行）；Build output directory：`/`。按 **Save and Deploy**，先會拿到一個 `*.pages.dev` 網址。
+3. 那個 Pages 專案 → **Custom domains** → **Set up a custom domain** → `stejoy.com`（再加一個 `www.stejoy.com`）。DNS 在同一個 Cloudflare 帳號裡，紀錄會自動加上；根網域用的是 CNAME flattening，**收信用的 MX、SPF、DKIM、DMARC 照舊不動**，`hello@stejoy.com` 不受影響。
+4. 之後每次推到 `main` 就自動重新部署。
+
+Cloudflare Pages 一個檔最多 25 MiB，這裡最大的是 `trailer.mp4`（約 17 MB）。
+
+改用 GitHub Pages 的話（這個庫是公開的，免費）：Settings → Pages → Deploy from a branch → `main`、`/ (root)`，Custom domain 填 `stejoy.com`；Cloudflare 的 DNS 另外手動加根網域指向 `stej20996.github.io` 的 CNAME，第一次要設成 DNS only（灰雲）讓 GitHub 簽憑證。
 
 ## 還沒定的
 
