@@ -10,6 +10,7 @@ SITE = 'https://stejoy.com/'
 STEAM_URL = None   # 有了商店頁就填網址，頁上的「即將登上 Steam」會換成「加入願望清單」
 MAIL = 'hello@stejoy.com'
 AUTHOR = 'Stephen Jia'   # 作者（使用者定：名字用 Stephen Jia；三種語言都寫這個名字，寫在頁尾）
+AUTHOR_URL = 'https://stephenjia.com/'   # 作者的個人主頁（使用者給的）
 LOGO = (ROOT / 'tools/site/logo.html').read_text(encoding='utf-8')
 
 LANGS = {
@@ -58,7 +59,8 @@ TEXT = {
         'contact': '《墨畫蒼生》是長風「寫意」系列的第一部。想說什麼，寫信給我們：',
         'banner': {'zh-Hans': '有简体中文页面', 'en': 'This page is also in English'},
         'video_off': '你的瀏覽器放不了這段影片。',
-        'author': ('作者', '長風工作室', '聯絡'),
+        'author': ('作者', '長風工作室', '聯絡', '個人主頁'),
+        'bio': '教數學、做研究，也寫遊戲。《墨畫蒼生》把《山海經》的山海與二十四節氣，寫成一座用漢字搭起來的島。',
         'copy': '© 2026 長風。字型：霞鶩文楷、思源宋體（SIL Open Font License 1.1）。',
     },
     'zh-Hans': {
@@ -97,7 +99,8 @@ TEXT = {
         'contact': '《墨画苍生》是长风“写意”系列的第一部。想说什么，写信给我们：',
         'banner': {'zh-Hant': '這一頁也有繁體中文', 'en': 'This page is also in English'},
         'video_off': '你的浏览器播放不了这段视频。',
-        'author': ('作者', '长风工作室', '联系'),
+        'author': ('作者', '长风工作室', '联系', '个人主页'),
+        'bio': '教数学、做研究，也写游戏。《墨画苍生》把《山海经》的山海与二十四节气，写成一座用汉字搭起来的岛。',
         'copy': '© 2026 长风。字体：霞鹜文楷、思源宋体（SIL Open Font License 1.1）。',
     },
     'en': {
@@ -137,7 +140,8 @@ TEXT = {
         'contact': 'InkWild is the first game in SteJoy\'s 寫意 (Xieyi) series. Write to us:',
         'banner': {'zh-Hant': '這一頁也有繁體中文', 'zh-Hans': '有简体中文页面'},
         'video_off': 'Your browser cannot play this video.',
-        'author': ('Created by', 'SteJoy', 'Contact'),
+        'author': ('Created by', 'SteJoy', 'Contact', 'Homepage'),
+        'bio': 'Math teacher and researcher who also makes games. InkWild turns the mountains and seas of the Shanhaijing and the 24 solar terms into an island built from Chinese characters.',
         'copy': '© 2026 SteJoy. Fonts: LXGW WenKai, Noto Serif (SIL Open Font License 1.1).',
     },
 }
@@ -251,7 +255,8 @@ def page(code):
 <footer>
   <div class="author">
     <p class="author-name"><span>{esc(T['author'][0])}</span> {AUTHOR}</p>
-    <p class="author-meta">{esc(T['author'][1])} · {esc(T['author'][2])} <a href="mailto:{MAIL}">{MAIL}</a></p>
+    <p class="author-bio">{esc(T['bio'])}</p>
+    <p class="author-meta">{esc(T['author'][3])} <a href="{AUTHOR_URL}" rel="me">stephenjia.com</a> · {esc(T['author'][1])} · {esc(T['author'][2])} <a href="mailto:{MAIL}">{MAIL}</a></p>
   </div>
   <p class="copy">{esc(T['copy'])}</p>
 </footer>
