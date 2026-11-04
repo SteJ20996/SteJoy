@@ -30,7 +30,7 @@ body.lang-en h2 { letter-spacing: .02em; }
 .lead, .note { color: var(--ink-2); margin: -8px 0 26px; }
 .note { font-size: 14px; margin: 12px 0 0; color: var(--dim); }
 
-/* 開頭：字標一筆一筆寫出水（跟遊戲起始頁同一段動畫） */
+/* 開頭：字標一筆一筆寫出水（跟遊戲起始頁同一段動畫；v0.9.50 照使用者手畫的七步筆順，scripts/make-shui-mask.py 產生遮罩） */
 .hero { text-align: center; padding-top: 64px !important; }
 .kicker { margin: 0 0 18px; color: var(--ink-2); letter-spacing: .3em; font-size: 16px; }
 body.lang-en .kicker { letter-spacing: .12em; }
@@ -46,25 +46,34 @@ body.lang-en .tagline { letter-spacing: .04em; font-style: italic; }
 .badge { color: var(--ink-2); border: 1px dashed rgba(28, 26, 23, .45); cursor: default; }   /* 還沒有商店頁：是一句話，不是按鈕 */
 .lang-note { margin: 22px auto 0; max-width: 560px; font-size: 15px; color: var(--ink-2); border: 1px dashed var(--line); border-radius: 6px; padding: 8px 14px; }
 
-#title-logo .shui-w { stroke-dasharray: 1 1.1; stroke-dashoffset: 1.05; animation: shui-write var(--d) cubic-bezier(.5, .05, .4, 1) var(--t) forwards, shui-wet .5s ease-out 3.05s forwards; }
-#title-logo .shui-s1 { --t: .25s; --d: .5s; }
-#title-logo .shui-s2 { --t: .85s; --d: .8s; }
-#title-logo .shui-s3 { --t: 2.45s; --d: .55s; }
-#title-logo .shui-boat { opacity: 0; animation: shui-fill .4s ease-out 1.75s forwards; }
-#title-logo .shui-bleed { opacity: 0; animation: shui-fill .45s ease-in 3.3s forwards; }
-#title-logo .shui-sail { opacity: 0; animation: shui-sail .7s ease-out 1.8s forwards; }
-#title-logo .shui.inked { mask: none; }
-#title-logo .shui.inked .shui-sail { animation: none; opacity: 1; }
+#title-logo .shui-w { stroke-dasharray: 1 1.1; stroke-dashoffset: 1.05; animation: shui-write var(--d) cubic-bezier(.5, .05, .4, 1) var(--t) forwards; }
+#title-logo .shui-band { --t: .1s; --d: .5s; }     /* ① 蜃身：從尾往右上，捲過頭頂那一道弧 */
+#title-logo .shui-crest { --t: .76s; --d: .4s; }    /* ② 浪頂：橫撇 */
+#title-logo .shui-body { --t: 1.32s; --d: .6s; }   /* ③ 浪身：豎折 */
+#title-logo .shui-curl { --t: 1.62s; --d: .32s; }  /*     內捲跟著帶一筆 */
+#title-logo .shui-hull { --t: 2.12s; --d: .2s; }   /* ④ 船底，由左往右 */
+#title-logo .shui-mast { --t: 2.36s; --d: .18s; }   /* ⑤ 桅杆，從船底往上立 */
+#title-logo .shui-head { --t: 3.22s; --d: .6s; }   /* ⑦ 蜃頭：從弧底下繞一圈，收筆 */
+#title-logo .shui-f { opacity: 0; animation: shui-fill .12s ease-out var(--t) forwards; }   /* 每一塊寫完就收齊 */
+#title-logo .shui-fband { --t: .6s; }
+#title-logo .shui-fcrest { --t: 1.16s; }
+#title-logo .shui-fbody { --t: 1.94s; }
+#title-logo .shui-fboat { --t: 2.54s; }
+#title-logo .shui-fhead { --t: 3.82s; }
+#title-logo .shui-sailm { opacity: 0; animation: shui-fill .05s linear 2.68s forwards; }   /* ⑥ 帆那一塊亮起來 */
+#title-logo .shui-sail { opacity: 0; transform-box: fill-box; transform-origin: 50% 100%; animation: shui-hoist .45s cubic-bezier(.3, .7, .4, 1) 2.68s forwards; }   /* 帆沿桅杆升上去 */
+#title-logo .shui-bleed { opacity: 0; animation: shui-fill .1s linear 4s forwards; }   /* 每一塊都齊了，整塊鋪滿看不出變化；它的 animationend 就是 site.js 拿掉遮罩的時候 */
+#title-logo .shui.inked { mask: none; }   /* 拿掉遮罩、帆不掛動畫，最後那一格跟原圖逐點相同 */
+#title-logo .shui.inked .shui-sail { animation: none; opacity: 1; transform: none; }
 @keyframes shui-write { to { stroke-dashoffset: 0; } }
-@keyframes shui-wet { to { stroke-width: 100px; } }
 @keyframes shui-fill { to { opacity: 1; } }
-@keyframes shui-sail { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: none; } }
+@keyframes shui-hoist { from { opacity: 0; transform: scaleY(.08); } 30% { opacity: 1; } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  #title-logo .shui-w, #title-logo .shui-bleed, #title-logo .shui-sail, #title-logo .shui-boat { animation: none; }
+  #title-logo .shui-w, #title-logo .shui-f, #title-logo .shui-bleed, #title-logo .shui-sail, #title-logo .shui-sailm { animation: none; }
   #title-logo .shui { mask: none; }
   #title-logo .shui-w { stroke-dashoffset: 0; }
-  #title-logo .shui-bleed, #title-logo .shui-sail, #title-logo .shui-boat { opacity: 1; }
+  #title-logo .shui-f, #title-logo .shui-bleed, #title-logo .shui-sail, #title-logo .shui-sailm { opacity: 1; }
 }
 
 /* 預告 */

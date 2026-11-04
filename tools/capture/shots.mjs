@@ -180,7 +180,9 @@ export const SHOTS = [
   },
 ];
 
-// 開頭：起始頁的字標一筆一筆寫出水（先水、再船、最後蜃頭）；結尾：字標停住，下面寫網址
-const SEEK = ({ f, fps }) => { for (const a of document.getAnimations()) a.currentTime = f * 1000 / fps; };
-SHOTS.unshift({ name: 'title', sec: 4.6, page: 'title.html', setup() { for (const a of document.getAnimations()) a.pause(); }, frame: SEEK });
+// 開頭：起始頁的字標一筆一筆寫出水（v0.9.50 照使用者手畫的七步：蜃身、浪頂、浪身、船底、桅杆、掛帆、蜃頭）；結尾：字標停住，下面寫網址
+// 動畫約 4.1 息、這一段 4.6 息又要淡入下一段，預告裡放快 1.15 倍（3.4 息寫完），寫好的字標停得住
+const TITLE_SPEED = 1.15;
+const SEEK = ({ f, fps, arg }) => { for (const a of document.getAnimations()) a.currentTime = f * 1000 / fps * (arg || 1); };
+SHOTS.unshift({ name: 'title', sec: 4.6, page: 'title.html', arg: TITLE_SPEED, setup() { for (const a of document.getAnimations()) a.pause(); }, frame: SEEK });
 SHOTS.push({ name: 'end', sec: 4, page: 'title.html', setup() { document.body.classList.add('end'); for (const a of document.getAnimations()) { a.pause(); a.currentTime = 9000; } } });
