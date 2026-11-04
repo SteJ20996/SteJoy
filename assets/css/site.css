@@ -115,6 +115,7 @@ footer .author-name span { color: var(--dim); font-family: var(--zh); font-size:
 body.lang-zh-Hans footer .author-name span { font-family: var(--sc); }
 body.lang-en footer .author-name span { font-family: var(--en); letter-spacing: .02em; }
 footer .author-bio { color: var(--ink-2); font-size: 14px; line-height: 1.7; max-width: 760px; margin: 4px 0 2px !important; }
+footer .author-bio span { display: block; }   /* 簡介一句一行 */
 footer .author-meta { color: var(--ink-2); font-size: 14px; margin-top: 4px !important; }
 footer .copy { margin: 0; }
 
