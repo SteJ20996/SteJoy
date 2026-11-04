@@ -177,7 +177,7 @@ def page(code):
 <meta property="og:image" content="{SITE}assets/img/og.jpg">
 <meta property="og:url" content="{SITE}{L['dir']}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#efe5cf">
+<meta name="theme-color" content="#f4eee2">
 <link rel="icon" href="{up}favicon.ico" sizes="any">
 <link rel="icon" href="{a}img/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="{a}img/icon-180.png">

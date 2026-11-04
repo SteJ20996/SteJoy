@@ -1,10 +1,10 @@
-/* stejoy.com：紙與墨。顏色照遊戲的起始頁（--paper、--ink、--red） */
-:root { --paper: #efe5cf; --paper-2: #e6d9bd; --ink: #1c1a17; --ink-2: #4a4238; --dim: #7d725f; --red: #b4392a; --line: rgba(28, 26, 23, .16);
+/* stejoy.com：紙與墨。墨與朱照遊戲的起始頁；紙比遊戲白一點、少一點黃（使用者定） */
+:root { --paper: #f4eee2; --paper-2: #ebe4d4; --ink: #1c1a17; --ink-2: #4a4238; --dim: #7d725f; --red: #b4392a; --line: rgba(28, 26, 23, .16);
   --zh: "LXGW WenKai TC", "Noto Serif TC", "Songti TC", serif; --sc: "Noto Serif SC", "Songti SC", serif; --en: Georgia, "Times New Roman", "LXGW WenKai TC", serif; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; color: var(--ink); background: var(--paper); font: 18px/1.85 var(--zh); -webkit-font-smoothing: antialiased; }
-body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse at 50% 0%, #f5eddb 0%, var(--paper) 45%, #e9ddc2 100%); }   /* 紙的明暗：用固定的底層，手機上 background-attachment: fixed 不管用 */
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse at 50% 0%, #f9f6ee 0%, var(--paper) 45%, #ede6d6 100%); }   /* 紙的明暗：用固定的底層，手機上 background-attachment: fixed 不管用 */
 body.lang-zh-Hans { font-family: var(--sc); }
 body.lang-en { font-family: var(--en); font-size: 18px; line-height: 1.7; }
 a { color: var(--red); text-underline-offset: 3px; }
@@ -12,7 +12,7 @@ a { color: var(--red); text-underline-offset: 3px; }
 
 /* 頂欄 */
 .top { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 24px; padding: 10px max(16px, calc(50vw - 560px));
-  background: rgba(239, 229, 207, .86); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  background: rgba(244, 238, 226, .86); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
 .studio { display: flex; align-items: center; gap: 8px; color: var(--ink); text-decoration: none; font: 600 19px/1 var(--en); letter-spacing: .06em; }
 .sections { display: flex; gap: 20px; margin-left: auto; }
 .sections a, .langs a { color: var(--ink-2); text-decoration: none; font-size: 15px; }
