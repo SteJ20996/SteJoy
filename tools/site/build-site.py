@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[2]
 SITE = 'https://stejoy.com/'
 STEAM_URL = None   # 有了商店頁就填網址，頁上的「即將登上 Steam」會換成「加入願望清單」
 MAIL = 'hello@stejoy.com'
+AUTHOR = 'Stephen Jia'   # 作者（使用者定：名字用 Stephen Jia；三種語言都寫這個名字，寫在頁尾）
 LOGO = (ROOT / 'tools/site/logo.html').read_text(encoding='utf-8')
 
 LANGS = {
@@ -57,6 +58,7 @@ TEXT = {
         'contact': '《墨畫蒼生》是長風「寫意」系列的第一部。想說什麼，寫信給我們：',
         'banner': {'zh-Hans': '有简体中文页面', 'en': 'This page is also in English'},
         'video_off': '你的瀏覽器放不了這段影片。',
+        'author': ('作者', '長風工作室', '聯絡'),
         'copy': '© 2026 長風。字型：霞鶩文楷、思源宋體（SIL Open Font License 1.1）。',
     },
     'zh-Hans': {
@@ -95,6 +97,7 @@ TEXT = {
         'contact': '《墨画苍生》是长风“写意”系列的第一部。想说什么，写信给我们：',
         'banner': {'zh-Hant': '這一頁也有繁體中文', 'en': 'This page is also in English'},
         'video_off': '你的浏览器播放不了这段视频。',
+        'author': ('作者', '长风工作室', '联系'),
         'copy': '© 2026 长风。字体：霞鹜文楷、思源宋体（SIL Open Font License 1.1）。',
     },
     'en': {
@@ -134,6 +137,7 @@ TEXT = {
         'contact': 'InkWild is the first game in SteJoy\'s 寫意 (Xieyi) series. Write to us:',
         'banner': {'zh-Hant': '這一頁也有繁體中文', 'zh-Hans': '有简体中文页面'},
         'video_off': 'Your browser cannot play this video.',
+        'author': ('Created by', 'SteJoy', 'Contact'),
         'copy': '© 2026 SteJoy. Fonts: LXGW WenKai, Noto Serif (SIL Open Font License 1.1).',
     },
 }
@@ -171,6 +175,7 @@ def page(code):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(T['title'])}</title>
 <meta name="description" content="{esc(T['desc'])}">
+<meta name="author" content="{AUTHOR}">
 <link rel="canonical" href="{SITE}{L['dir']}">
 {alts}
 <meta property="og:type" content="website">
@@ -243,7 +248,13 @@ def page(code):
 </section>
 </main>
 
-<footer><p>{esc(T['copy'])}</p></footer>
+<footer>
+  <div class="author">
+    <p class="author-name"><span>{esc(T['author'][0])}</span> {AUTHOR}</p>
+    <p class="author-meta">{esc(T['author'][1])} · {esc(T['author'][2])} <a href="mailto:{MAIL}">{MAIL}</a></p>
+  </div>
+  <p class="copy">{esc(T['copy'])}</p>
+</footer>
 </body>
 </html>
 '''

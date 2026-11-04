@@ -107,6 +107,15 @@ body.lang-en .feat h3 { letter-spacing: 0; }
 
 .contact p { margin: 0; }
 footer { max-width: 1080px; margin: 64px auto 0; padding: 24px 16px 40px; border-top: 1px solid var(--line); color: var(--dim); font-size: 13px; }
+/* 頁尾的作者（使用者定：名字用 Stephen Jia） */
+footer .author { margin: 0 0 14px; }
+footer .author p { margin: 0; }
+footer .author-name { color: var(--ink); font-size: 17px; letter-spacing: .04em; font-family: var(--en); }
+footer .author-name span { color: var(--dim); font-family: var(--zh); font-size: 14px; letter-spacing: .12em; margin-right: .4em; }
+body.lang-zh-Hans footer .author-name span { font-family: var(--sc); }
+body.lang-en footer .author-name span { font-family: var(--en); letter-spacing: .02em; }
+footer .author-meta { color: var(--ink-2); font-size: 14px; margin-top: 2px !important; }
+footer .copy { margin: 0; }
 
 /* 語言建議（照瀏覽器的語言，不自動跳） */
 #lang-banner { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 20; display: flex; align-items: center; gap: 12px;
