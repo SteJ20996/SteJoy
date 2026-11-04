@@ -1,0 +1,256 @@
+"""stejoy.com 的三語靜態頁：一份範本、三份文字，產出 index.html（繁中）、zh-hans/index.html、en/index.html。
+用法（在庫的根目錄）：python3 tools/site/build-site.py
+字標與寫字動畫從遊戲正式庫抄來（tools/site/logo.html，見 README）；文字改這個檔案的 TEXT。
+"""
+import json, os, html
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+SITE = 'https://stejoy.com/'
+STEAM_URL = None   # 有了商店頁就填網址，頁上的「即將登上 Steam」會換成「加入願望清單」
+MAIL = 'hello@stejoy.com'
+LOGO = (ROOT / 'tools/site/logo.html').read_text(encoding='utf-8')
+
+LANGS = {
+    'zh-Hant': {'dir': '', 'up': '', 'name': '繁體中文', 'short': '繁'},
+    'zh-Hans': {'dir': 'zh-hans/', 'up': '../', 'name': '简体中文', 'short': '简'},
+    'en': {'dir': 'en/', 'up': '../', 'name': 'English', 'short': 'EN'},
+}
+
+SCENES = ['gather', 'build', 'snow', 'night', 'gaze']
+FEATURES = ['thunder', 'crops', 'sail', 'gong']
+
+TEXT = {
+    'zh-Hant': {
+        'title': '墨畫蒼生 InkWild｜SteJoy',
+        'desc': '一張紙落在海上，紙上的字活了。你是其中一個「人」字：取木、砌磚、點燈，撐過第十三夜起穿磚而來的魄；照節氣種五穀、垂釣、觀星。膽氣夠了就造船渡海，去找撞歪天地的共工。',
+        'nav': ['預告', '故事', '試玩場景', '特色', '聯絡'],
+        'kicker': '字裡行間 · 一紙之島',
+        'tagline': '寫木為舟 · 寫水成淵',
+        'soon': '即將登上 Steam', 'wish': '加入 Steam 願望清單', 'watch': '觀看預告',
+        'trailer_h': '預告', 'trailer_note': '遊戲實機畫面。配樂是暫用的合成樂。',
+        'story_h': '故事',
+        'story': [
+            '鳥棲於山，是為島。一張紙落在海上，紙上的字活了。你是其中的一個「人」，赤手空拳。紙上每一格都是一個字：木是樹，山是山，水是水，虎就是虎。取下來的字是材料，寫下去的字是你的家。',
+            '這張紙在歪。共工「怒而觸不周之山」，天柱折，地維絕；紙角翹起來，跑出了修蛇、封豨、大風。青龍、白虎、朱雀、玄武，是壓住四角的鎮紙。撐過一夜，再撐過一夜；膽氣夠了，就造一艘船離開。',
+        ],
+        'scenes_h': '試玩裡的場景',
+        'scenes_intro': '試玩版是本島上的頭十三夜，下面這幾段都在試玩裡。',
+        'scenes': {
+            'gather': ('取木', '林子裡的每一格都是字，取下來就是材料。'),
+            'build': ('砌屋', '一塊磚一塊磚砌起來，再擺床、灶、櫃、燈。'),
+            'snow': ('雪', '開春頭幾天常下雪；燈點在屋外也點在屋裡。'),
+            'night': ('第十三夜', '天一黑，怕光的魄從暗處飄來；地上的燈燒得滅它們。'),
+            'gaze': ('觀星', '晴夜抬頭，認星官，也認星座。'),
+        },
+        'feat_h': '完整版',
+        'feat_intro': '試玩之後，紙還很大。',
+        'features': {
+            'thunder': ('照著節氣過日子', '一年三百六十日，照二十四節氣、七十二候走。雨、雪、雷雨、狂風、冰雹；大漠與火山只打乾雷。'),
+            'crops': ('五穀一筆一筆長', '種稻、黍、稷、麥、菽，防雀、防鼠、防蝗；用釜甑做五穀的菜，配著吃有增益。'),
+            'sail': ('造船渡海', '膽氣夠了就造孤帆、方舟出海。紙上有大陸、群島、大漠、火山、雪原，海上有蜃。'),
+            'gong': ('上不周山', '先斃修蛇、封豨、大風，向北方玄武取經，再上不周山，去找撞歪天地的共工。'),
+        },
+        'facts': ['單人、離線', '鍵盤與滑鼠', '介面：繁體中文、簡體中文', '三種難度：入門、資深、大師'],
+        'contact_h': '聯絡',
+        'contact': '《墨畫蒼生》是 SteJoy「寫意」系列的第一部。想說什麼，寫信給我們：',
+        'banner': {'zh-Hans': '有简体中文页面', 'en': 'This page is also in English'},
+        'video_off': '你的瀏覽器放不了這段影片。',
+        'copy': '© 2026 SteJoy。字型：霞鶩文楷、思源宋體（SIL Open Font License 1.1）。',
+    },
+    'zh-Hans': {
+        'title': '墨画苍生 InkWild｜SteJoy',
+        'desc': '一张纸落在海上，纸上的字活了。你是其中一个“人”字：取木、砌砖、点灯，撑过第十三夜起穿砖而来的魄；照节气种五谷、垂钓、观星。胆气够了就造船渡海，去找撞歪天地的共工。',
+        'nav': ['预告', '故事', '试玩场景', '特色', '联系'],
+        'kicker': '字里行间 · 一纸之岛',
+        'tagline': '写木为舟 · 写水成渊',
+        'soon': '即将登陆 Steam', 'wish': '加入 Steam 愿望单', 'watch': '观看预告',
+        'trailer_h': '预告', 'trailer_note': '游戏实机画面。配乐是暂用的合成乐。',
+        'story_h': '故事',
+        'story': [
+            '鸟栖于山，是为岛。一张纸落在海上，纸上的字活了。你是其中的一个“人”，赤手空拳。纸上每一格都是一个字：木是树，山是山，水是水，虎就是虎。取下来的字是材料，写下去的字是你的家。',
+            '这张纸在歪。共工“怒而触不周之山”，天柱折，地维绝；纸角翘起来，跑出了修蛇、封豨、大风。青龙、白虎、朱雀、玄武，是压住四角的镇纸。撑过一夜，再撑过一夜；胆气够了，就造一艘船离开。',
+        ],
+        'scenes_h': '试玩里的场景',
+        'scenes_intro': '试玩版是本岛上的头十三夜，下面这几段都在试玩里。',
+        'scenes': {
+            'gather': ('取木', '林子里的每一格都是字，取下来就是材料。'),
+            'build': ('砌屋', '一块砖一块砖砌起来，再摆床、灶、柜、灯。'),
+            'snow': ('雪', '开春头几天常下雪；灯点在屋外也点在屋里。'),
+            'night': ('第十三夜', '天一黑，怕光的魄从暗处飘来；地上的灯烧得灭它们。'),
+            'gaze': ('观星', '晴夜抬头，认星官，也认星座。'),
+        },
+        'feat_h': '完整版',
+        'feat_intro': '试玩之后，纸还很大。',
+        'features': {
+            'thunder': ('照着节气过日子', '一年三百六十日，照二十四节气、七十二候走。雨、雪、雷雨、狂风、冰雹；大漠与火山只打干雷。'),
+            'crops': ('五谷一笔一笔长', '种稻、黍、稷、麦、菽，防雀、防鼠、防蝗；用釜甑做五谷的菜，搭配着吃有增益。'),
+            'sail': ('造船渡海', '胆气够了就造孤帆、方舟出海。纸上有大陆、群岛、大漠、火山、雪原，海上有蜃。'),
+            'gong': ('上不周山', '先毙修蛇、封豨、大风，向北方玄武取经，再上不周山，去找撞歪天地的共工。'),
+        },
+        'facts': ['单人、离线', '键盘与鼠标', '界面：繁体中文、简体中文', '三种难度：入门、资深、大师'],
+        'contact_h': '联系',
+        'contact': '《墨画苍生》是 SteJoy“写意”系列的第一部。想说什么，写信给我们：',
+        'banner': {'zh-Hant': '這一頁也有繁體中文', 'en': 'This page is also in English'},
+        'video_off': '你的浏览器播放不了这段视频。',
+        'copy': '© 2026 SteJoy。字体：霞鹜文楷、思源宋体（SIL Open Font License 1.1）。',
+    },
+    'en': {
+        'title': 'InkWild (墨畫蒼生) | SteJoy',
+        'desc': 'A sheet of paper falls on the sea, and the characters on it come alive. You are one of them: 人, "person". Gather wood, lay bricks and light lamps against the spirits that pass through walls from the 13th night. Farm by the solar terms, fish, read the stars, then set sail.',
+        'nav': ['Trailer', 'Story', 'Demo', 'Features', 'Contact'],
+        'kicker': 'Between the lines · an island on paper',
+        'tagline': 'Write wood into a boat · write water into the deep',
+        'soon': 'Coming to Steam', 'wish': 'Wishlist on Steam', 'watch': 'Watch the trailer',
+        'trailer_h': 'Trailer', 'trailer_note': 'In-game footage. The music is a placeholder synthesized track.',
+        'lang_note': 'InkWild is in Traditional and Simplified Chinese only. There is no English version.',
+        'story_h': 'Story',
+        'story': [
+            'In Chinese, 島 (island) is written as a bird, 鳥, perched on a mountain, 山. A sheet of paper falls on the sea, and the characters written on it come alive. You are one of them: 人, a person, empty-handed. Every tile on the paper is a character. 木 is a tree, 山 is a mountain, 水 is water, 虎 is a tiger. The characters you take become materials; the characters you set down become your home.',
+            'The paper is tilting. Gonggong, in his fury, rammed Mount Buzhou, as the Huainanzi tells it, and the pillar of heaven broke. The corners curled up and let loose the giant serpent Xiushe, the great boar Fengxi and the Great Wind. The Azure Dragon, White Tiger, Vermilion Bird and Black Tortoise are the paperweights holding the four corners. Survive one night, then the next; when your courage is enough, build a boat and leave.',
+        ],
+        'scenes_h': 'Scenes from the demo',
+        'scenes_intro': 'The demo covers the first 13 nights on the home island. Every clip below is in it.',
+        'scenes': {
+            'gather': ('Gathering', 'Every tile in the woods is a character. Take it, and it becomes material.'),
+            'build': ('Building', 'Lay the bricks one by one, then a bed, a stove, a chest and a lamp.'),
+            'snow': ('Snow', 'Snow often falls in the first days of spring. Lamps burn outside and in.'),
+            'night': ('The 13th night', 'When dark falls, spirits that fear light drift in. Lamps on the ground burn them away.'),
+            'gaze': ('Stargazing', 'On a clear night, look up and learn the Chinese asterisms or the Western constellations.'),
+        },
+        'feat_h': 'The full game',
+        'feat_intro': 'After the demo, the paper is still large.',
+        'features': {
+            'thunder': ('Live by the solar terms', 'A 360-day year follows the 24 solar terms and 72 pentads. Rain, snow, thunderstorms, gales and hail; deserts and volcanoes get only dry thunder.'),
+            'crops': ('Five grains, stroke by stroke', 'Grow rice, broomcorn millet, foxtail millet, wheat and soybeans. Guard them from sparrows, mice and locusts, and cook them for meal bonuses.'),
+            'sail': ('Cross the sea', 'With enough courage, build a sailboat or an ark. The paper holds continents, archipelagos, deserts, volcanoes and snowfields, and the 蜃 haunts the sea.'),
+            'gong': ('Climb Mount Buzhou', 'Defeat Xiushe, Fengxi and the Great Wind, take scrolls from the Black Tortoise, then climb Mount Buzhou to find Gonggong.'),
+        },
+        'facts': ['Single-player, offline', 'Keyboard and mouse', 'Text: Traditional and Simplified Chinese', 'Three difficulties'],
+        'contact_h': 'Contact',
+        'contact': 'InkWild is the first game in SteJoy\'s 寫意 (Xieyi) series. Write to us:',
+        'banner': {'zh-Hant': '這一頁也有繁體中文', 'zh-Hans': '有简体中文页面'},
+        'video_off': 'Your browser cannot play this video.',
+        'copy': '© 2026 SteJoy. Fonts: LXGW WenKai, Noto Serif (SIL Open Font License 1.1).',
+    },
+}
+
+def esc(s):
+    return html.escape(s, quote=True)
+
+def page(code):
+    L, T, up = LANGS[code], TEXT[code], LANGS[code]['up']
+    a = up + 'assets/'
+    alts = '\n'.join(f'<link rel="alternate" hreflang="{c}" href="{SITE}{LANGS[c]["dir"]}">' for c in LANGS) + f'\n<link rel="alternate" hreflang="x-default" href="{SITE}">'
+    langnav = ''.join(f'<a href="{up}{LANGS[c]["dir"]}" lang="{c}"{" aria-current=\"page\"" if c == code else ""}>{LANGS[c]["short"]}</a>' for c in LANGS)
+    nav = ''.join(f'<a href="#{h}">{esc(n)}</a>' for h, n in zip(['trailer', 'story', 'demo', 'features', 'contact'], T['nav']))
+    cta = f'<a class="btn primary" href="{STEAM_URL}">{esc(T["wish"])}</a>' if STEAM_URL else f'<span class="badge">{esc(T["soon"])}</span>'
+    tracks = ''.join(f'<track kind="subtitles" srclang="{c}" label="{LANGS[c]["name"]}" src="{a}media/trailer.{c}.vtt"{" default" if c == code else ""}>' for c in LANGS)
+    scenes = ''.join(f'''
+      <figure class="clip">
+        <video muted loop playsinline preload="none" poster="{a}media/scenes/{s}.jpg" data-src="{a}media/scenes/{s}.mp4" data-webm="{a}media/scenes/{s}.webm" aria-label="{esc(T['scenes'][s][0])}"></video>
+        <figcaption><b>{esc(T['scenes'][s][0])}</b>{esc(T['scenes'][s][1])}</figcaption>
+      </figure>''' for s in SCENES)
+    feats = ''.join(f'''
+      <article class="feat">
+        <img src="{a}media/stills/{s}.jpg" alt="" loading="lazy" width="960" height="540">
+        <h3>{esc(T['features'][s][0])}</h3>
+        <p>{esc(T['features'][s][1])}</p>
+      </article>''' for s in FEATURES)
+    facts = ''.join(f'<li>{esc(x)}</li>' for x in T['facts'])
+    story = ''.join(f'<p>{esc(p)}</p>' for p in T['story'])
+    lang_note = f'<p class="lang-note">{esc(T["lang_note"])}</p>' if T.get('lang_note') else ''
+    banner = json.dumps({c: [t, up + LANGS[c]['dir']] for c, t in T['banner'].items()}, ensure_ascii=False)
+    return f'''<!doctype html>
+<html lang="{code}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{esc(T['title'])}</title>
+<meta name="description" content="{esc(T['desc'])}">
+<link rel="canonical" href="{SITE}{L['dir']}">
+{alts}
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SteJoy">
+<meta property="og:title" content="{esc(T['title'])}">
+<meta property="og:description" content="{esc(T['desc'])}">
+<meta property="og:image" content="{SITE}assets/img/og.jpg">
+<meta property="og:url" content="{SITE}{L['dir']}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#efe5cf">
+<link rel="icon" href="{up}favicon.ico" sizes="any">
+<link rel="icon" href="{a}img/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="{a}img/icon-180.png">
+<link rel="stylesheet" href="{a}fonts/fonts.css">
+<link rel="stylesheet" href="{a}css/site.css">
+<script defer src="{a}js/site.js"></script>
+</head>
+<body class="lang-{code}" data-banner='{esc(banner)}'>
+<header class="top">
+  <a class="studio" href="{up}{L['dir']}"><img src="{a}img/icon.svg" alt="" width="34" height="34"><span>SteJoy</span></a>
+  <nav class="sections" aria-label="sections">{nav}</nav>
+  <nav class="langs" aria-label="language">{langnav}</nav>
+</header>
+<div id="lang-banner" hidden></div>
+
+<main>
+<section class="hero">
+  <p class="kicker">{esc(T['kicker'])}</p>
+  <h1><span class="sr-only">{esc('墨畫蒼生 InkWild')}</span>{LOGO}</h1>
+  <p class="tagline">{esc(T['tagline'])}</p>
+  <div class="cta">{cta}<a class="btn" href="#trailer">{esc(T['watch'])}</a></div>
+  {lang_note}
+</section>
+
+<section id="trailer" class="trailer">
+  <h2>{esc(T['trailer_h'])}</h2>
+  <div class="frame">
+    <video controls preload="metadata" playsinline poster="{a}media/trailer.jpg">
+      <source src="{a}media/trailer.mp4" type="video/mp4">
+      <source src="{a}media/trailer.webm" type="video/webm">{tracks}
+      {esc(T['video_off'])}
+    </video>
+  </div>
+  <p class="note">{esc(T['trailer_note'])}</p>
+</section>
+
+<section id="story" class="story">
+  <h2>{esc(T['story_h'])}</h2>
+  {story}
+</section>
+
+<section id="demo" class="scenes">
+  <h2>{esc(T['scenes_h'])}</h2>
+  <p class="lead">{esc(T['scenes_intro'])}</p>
+  <div class="grid">{scenes}
+  </div>
+</section>
+
+<section id="features" class="features">
+  <h2>{esc(T['feat_h'])}</h2>
+  <p class="lead">{esc(T['feat_intro'])}</p>
+  <div class="feats">{feats}
+  </div>
+  <ul class="facts">{facts}</ul>
+</section>
+
+<section id="contact" class="contact">
+  <h2>{esc(T['contact_h'])}</h2>
+  <p>{esc(T['contact'])} <a href="mailto:{MAIL}">{MAIL}</a></p>
+</section>
+</main>
+
+<footer><p>{esc(T['copy'])}</p></footer>
+</body>
+</html>
+'''
+
+for code, L in LANGS.items():
+    out = ROOT / L['dir'] / 'index.html'
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(page(code), encoding='utf-8')
+    print(out.relative_to(ROOT), out.stat().st_size)
+
+(ROOT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + ''.join(
+    f'  <url><loc>{SITE}{L["dir"]}</loc>' + ''.join(f'<xhtml:link rel="alternate" hreflang="{c}" href="{SITE}{LANGS[c]["dir"]}"/>' for c in LANGS) + '</url>\n' for L in LANGS.values()) + '</urlset>\n', encoding='utf-8')
+(ROOT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {SITE}sitemap.xml\n', encoding='utf-8')

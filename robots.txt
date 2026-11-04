@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://stejoy.com/sitemap.xml
