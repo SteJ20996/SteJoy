@@ -14,6 +14,10 @@ GAMES = [   # 首頁上的順序；kind 是「種類」那一排的鍵
 ]
 KINDS = ['all', 'survival', 'battle']
 
+# 標題「落筆成局」底下放什麼：'stroke' 一筆「一」、'deck' 一句話說「寫意」。使用者暫定什麼都不放（李白那兩句跟「關於長風」重複，刪了）；
+# 沒放 'deck' 時，「寫意」是什麼寫在「關於長風」第二段（about2）。
+SUB = set()
+
 # 標題「落筆成局」底下落的那一筆：楷書的長橫（一），起筆斜切、中段略細、往右微微上揚；後半段乾筆飛白（#hm-dry 把筆身切成橫絲，
 # 前半段再疊一層實墨，遮罩是漸層加橫絲雜訊取門檻）。外形是手畫的 Bézier（viewBox 0 0 1000 120），進場時從左到右寫出來（home.css 的 hm-fall）。
 HENG_D = ('M 26 50 C 34 44, 52 42, 70 46 C 300 44, 640 34, 896 30 C 918 27, 944 28, 960 38 C 976 48, 974 64, 958 70 '
@@ -54,6 +58,7 @@ TEXT = {
         },
         'about_h': '關於長風',
         'about': ['長風是做「寫意」系列的小工作室，名字取自李白〈行路難〉。'],
+        'about2': '「寫意」的每一部都拿漢字當材料：在《墨畫蒼生》裡，字是一塊塊可以拆、可以砌的地；在《力透紙背》裡，筆畫是招式，字寫對了就是一擊。',
         'contact_h': '聯絡', 'contact': '想說什麼，寫信給我們：',
     },
     'zh-Hans': {
@@ -74,6 +79,7 @@ TEXT = {
         },
         'about_h': '关于长风',
         'about': ['长风是做“写意”系列的小工作室，名字取自李白〈行路难〉。'],
+        'about2': '“写意”的每一部都拿汉字当材料：在《墨画苍生》里，字是一块块可以拆、可以砌的地；在《力透纸背》里，笔画是招式，字写对了就是一击。',
         'contact_h': '联系', 'contact': '想说什么，写信给我们：',
     },
     'en': {
@@ -94,6 +100,7 @@ TEXT = {
         },
         'about_h': 'About SteJoy',
         'about': ['SteJoy (長風, “the long wind”) is a small studio making the 寫意 (Xieyi) series. The Chinese name comes from Li Bai’s poem The Hard Road.'],
+        'about2': 'Each Xieyi game takes Chinese characters as its material. In InkWild, characters are ground you can take apart and build with; in Through the Page, strokes are moves, and a character written right is a blow.',
         'contact_h': 'Contact', 'contact': 'Write to us:',
     },
 }
@@ -129,8 +136,9 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME, LOGO):
         <p class="hm-meta"><span class="hm-status">{esc(G['status'])}</span><span class="hm-go">{esc(G['go'])} <b aria-hidden="true">→</b></span></p>
       </div>
     </a>''')
-    about = ''.join(f'<p>{esc(p)}</p>' for p in T['about'])
+    about = ''.join(f'<p>{esc(p)}</p>' for p in T['about'] + ([] if 'deck' in SUB else [T['about2']]))
     deck = ''.join(f'<span>{esc(x)}</span>' for x in re.findall(r'[^：，]+[：，]?', T['deck']))   # 一段一段換行
+    sub = (f'  {HENG}\n' if 'stroke' in SUB else '') + (f'  <p class="hm-deck">{deck}</p>\n' if 'deck' in SUB else '')
     banner = json.dumps({c: [t, up + LANGS[c]['dir']] for c, t in HOME['banner'].items()}, ensure_ascii=False)
     mark = json.dumps({'w': 760, 'h': 514, 'turns': [0.2285, 0.5021], 'ink': [239, 229, 207], 'ribbon': a + 'litou/mark-ribbon.png', 'ren': a + 'litou/mark-ren.png', 'time': a + 'litou/mark-time.png'})
     return f'''<!doctype html>
@@ -175,9 +183,7 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME, LOGO):
 <section class="hm-hero">
   <p class="hm-kicker">{esc(T['kicker'])}</p>
   <h1 class="hm-title">{esc(T['headline'])}</h1>
-  {HENG}
-  <p class="hm-deck">{deck}</p>
-</section>
+{sub}</section>
 
 <section id="games" class="hm-games" aria-label="{esc(T['choose'])}">
   <div class="hm-bar">
