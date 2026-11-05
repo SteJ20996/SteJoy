@@ -27,8 +27,12 @@ for s, (a, d, p) in ({} if ONLY_TRAILER else SCENES).items():
     ff('-ss', str(p), '-i', str(src), '-frames:v', '1', '-vf', 'scale=1280:720:flags=lanczos', '-q:v', '4', str(M / 'scenes' / f'{s}.jpg'))
 
 # 完整版：一張圖
-STILLS = {'thunder': 0.5,   # 第一道雷劈到地上那一格（thunder.events.json 的 14 幀之後）
-           'crops': 5.6, 'sail': 4.0, 'gong': 5.5}
+STILLS = {'thunder': 0.5, 'crops': 5.6, 'sail': 4.0, 'gong': 5.5}
+_ev = SHOTS / 'thunder.events.json'   # 雷雨那張取第一道雷劈到地上的下一格（落下那一格是整片白光）；錄鏡頭時記下的幀
+if _ev.exists():
+    import json
+    _st = json.loads(_ev.read_text(encoding='utf-8')).get('strikes') or []
+    if _st: STILLS['thunder'] = round((_st[0] + 1) / 30 + 0.01, 3)
 for s, t in ({} if ONLY_TRAILER else STILLS).items():
     ff('-ss', str(t), '-i', str(SHOTS / f'{s}.mp4'), '-frames:v', '1', '-vf', 'scale=960:540:flags=lanczos', '-q:v', '4', str(M / 'stills' / f'{s}.jpg'))
 
