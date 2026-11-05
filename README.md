@@ -21,7 +21,7 @@ stejoy.com 的網站：《墨畫蒼生》（InkWild）的介紹頁，繁體中�
 - `assets/fonts/`：霞鶩文楷 TC 與思源宋體 SC 的 woff2 分片（瀏覽器只下載用得到的字），SIL OFL 1.1，授權全文在同一資料夾。網站不連 Google Fonts。
 - 字幕燒進畫面的預告（三種語言，各約 45 MB）不放進這個庫：Cloudflare Pages 一個檔最多 25 MiB，庫也會變肥。要的時候照下面第 3 步加 `--burn` 重新出。
 - `tools/`：錄影、剪預告、轉檔、產生頁面的腳本，見下。
-- `functions/assets/media/[[path]].js`：Cloudflare Pages Function，只管 `/assets/media/*`。Pages 的靜態檔不理 `Range`（問一段也整個檔回 200），影片就拖不了進度；這支照常拿到檔，有 `Range` 就切出那一段回 206、沒有就加 `Accept-Ranges: bytes`，出差錯就退回原本的回應。
+- `wrangler.jsonc`、`worker/index.js`、`.assetsignore`：網站放在 Cloudflare **Workers**（靜態檔，Workers Builds 接這個庫）。Workers 的靜態檔不理 `Range`（問一段也整個檔回 200；workers-sdk #8967），影片就拖不了進度；`run_worker_first` 只讓 `/assets/media/*` 先經過 `worker/index.js`：有 `Range` 就切出那一段回 206（檔案不帶長度時整個讀進來量）、沒有就加 `Accept-Ranges: bytes`，出差錯退回原本的回應。其他網址照舊直接給靜態檔。`.assetsignore` 讓 `.git`、`worker/`、`wrangler.jsonc` 不被當成網頁放出去。**不要放 `functions/` 資料夾**：Wrangler 看到它會當成 Pages 專案、整個部署失敗。
 
 ## 重新產生
 
@@ -39,7 +39,7 @@ stejoy.com 的網站：《墨畫蒼生》（InkWild）的介紹頁，繁體中�
 
 ## 上線
 
-靜態檔，Cloudflare Pages 或 GitHub Pages 都放得了。`stejoy.com` 的 DNS 已經在 Cloudflare，**建議用 Cloudflare Pages**，DNS 與 HTTPS 都由它自動設好：
+靜態檔加一支只管影片的 Worker（見上面「檔案」）。現在放在 Cloudflare Workers（Workers Builds 接這個庫，推到 `main` 就部署）；下面是當初的 Pages 做法，留著參考。原本就是：`stejoy.com` 的 DNS 已經在 Cloudflare，**建議用 Cloudflare Pages**，DNS 與 HTTPS 都由它自動設好：
 
 1. Cloudflare 後台 → **Workers & Pages** → **Create application** → **Pages** → **Import an existing Git repository**，授權 GitHub 後選 `SteJ20996/SteJoy`。
 2. Production branch：`main`；Framework preset：**None**；Build command：`exit 0`（官方建議；留空也行）；Build output directory：`/`。按 **Save and Deploy**，先會拿到一個 `*.pages.dev` 網址。

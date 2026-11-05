@@ -1,0 +1,14 @@
+// stejoy.com：Cloudflare Workers 的靜態檔，整個庫的根目錄就是網站（跟原本 Workers Builds 自動產生的設定一樣）。
+// 只有 /assets/media/*（預告與場景影片）先經過 worker/index.js，讓影片拖得了進度（切 Range 回 206）；其他照舊直接給靜態檔。
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "stejoy",
+  "compatibility_date": "2026-11-01",
+  "main": "worker/index.js",
+  "observability": { "enabled": true },
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS",
+    "run_worker_first": ["/assets/media/*"]
+  }
+}
