@@ -12,6 +12,14 @@ stejoy.com 的網站：《墨畫蒼生》（InkWild）的介紹頁，繁體中�
 
 純靜態頁，沒有建置步驟也能直接放上任何靜態主機。三頁由同一份範本產生，**改文字請改 `tools/site/build-site.py` 再重新產生**，不要直接改 HTML。
 
+另有「寫意」系列第三部《力透紙背》（Through the Page）的介紹頁，還在做，頁上寫「敬請期待」（見下面〈《力透紙背》〉）。
+
+| 網址 | 檔案 |
+|---|---|
+| `/litouzhibei/` | `litouzhibei/index.html`（繁體中文） |
+| `/zh-hans/litouzhibei/` | `zh-hans/litouzhibei/index.html` |
+| `/en/litouzhibei/` | `en/litouzhibei/index.html` |
+
 ## 檔案
 
 - `assets/css/site.css`、`assets/js/site.js`：樣式；試玩場景捲到才載入；照瀏覽器語言提示另外兩種語言（不自動跳轉）。
@@ -36,6 +44,19 @@ stejoy.com 的網站：《墨畫蒼生》（InkWild）的介紹頁，繁體中�
 5. **產生頁面**：`python3 tools/site/build-site.py`。
 
 開頭的字標與寫字動畫跟遊戲起始頁同一份：`tools/site/logo.html` 是遊戲 `index.html` 裡的 `#title-logo`，寫字的遮罩用遊戲庫的 `scripts/make-shui-mask.py` 產生（`python3 <遊戲庫>/scripts/make-shui-mask.py tools/site/logo.html`），時間在 `assets/css/site.css`（照抄遊戲 `style.css` 那一段）；預告的片頭 `tools/capture/title.html` 也是同一份字標，錄的時候放快 1.15 倍（`shots.mjs` 的 `TITLE_SPEED`）。v0.9.50 起照使用者手畫的七步筆順：蜃身、浪頂、浪身、船底、桅杆、掛帆、蜃頭；v0.9.51 起第一筆蜃身從右上寫到左下。
+
+## 《力透紙背》
+
+風格刻意跟首頁不同：紙色照遊戲（黃一點）、墨重、斜、快；紅印「敬請期待」；按鈕與預告框是硬邊的紅影；一卷五章放在墨黑的底上，左邊一個會跟著捲動展開的超正方體（一個點 → 線 → 正方形 → 正方體 → 四維，頂點上是會換的字）；「試寫」可以直接按 1–0（或點鍵）照筆順寫字，用的是遊戲同一套筆順與米字格字形。首頁「聯絡」底下多一行連過來。
+
+- 文字：`tools/site/litou.py` 的 `TEXT`（三語）；`python3 tools/site/build-site.py` 會連首頁一起產生、一起寫進 sitemap。
+- 樣式與互動：`assets/css/litou.css`、`assets/js/litou.js`（標題的墨、標誌、超正方體、試寫）。標題五個字的粗體是 `assets/fonts/lxgw-wenkai-tc-700-litou.woff2`（霞鶩文楷 TC 700，只取力透紙纸背；SIL OFL 1.1，同資料夾的授權全文）。
+- 遊戲的資料：`assets/litou/data.js`（十筆的圖示與性質、五十七個字的筆順、讀音字義與米字格字形、標題身後那一筆）由 `node tools/litou/data.mjs <遊戲庫>` 產生；簡體用遊戲的繁轉簡表。標誌 `assets/litou/mark.js` 與 `mark-ribbon.png`、`mark-ren.png`、`mark-time.png` 抄自遊戲庫的 `src/mark.js` 與 `src/mark-data.js`（照「力」的筆順寫出來：橫折鉤、撇）。
+- 預告與一卷五章的片段：`assets/media/litou/`（預告 1920×1080、59 秒，H.264 約 7.7 MB、VP9 約 3.9 MB；字幕 `trailer.<語言>.vtt`；五段場景 1280×720）。重新做（遊戲庫 `SteJ20996/Qidofun_Xieyi_LiTouZhiBei` 在它的根目錄 `python3 -m http.server 8123`）：
+  1. `node tools/litou/capture.mjs <鏡頭資料夾>`：假時鐘逐幀錄十四個鏡頭（片頭片尾是 `tools/litou/title.html`），鏡頭寫在 `tools/litou/shots.mjs`；轉場在錄的時候放慢（`slow`），遊戲裡轉場前段就做完了。每個鏡頭記下落筆、成字、正字的那一幀（`<鏡頭>.events.json`）。
+  2. `python3 tools/litou/music.py tools/litou/edit.json music.wav <鏡頭資料夾>`：numpy 合成的暫用配樂——每一刀一記鼓、遊戲裡每一筆一聲筆刷、撥弦每進一維高一層、升維的轉場底下一道永遠升不完的 Shepard 音。
+  3. `EDIT=tools/litou/edit.json CAPTIONS=tools/litou/captions.json node tools/trailer/build.mjs <鏡頭資料夾> music.wav <預告資料夾>`。
+  4. `python3 tools/litou/media.py <鏡頭資料夾> <預告資料夾>`。
 
 ## 上線
 

@@ -9,8 +9,9 @@ const require = createRequire(import.meta.url);
 const here = path.dirname(new URL(import.meta.url).pathname);
 const [SHOTS, MUSIC, OUT] = process.argv.slice(2);
 const burn = process.argv.includes('--burn');
-const edit = JSON.parse(fs.readFileSync(path.join(here, 'edit.json'), 'utf8'));
-const caps = JSON.parse(fs.readFileSync(path.join(here, 'captions.json'), 'utf8'));
+// EDIT、CAPTIONS 環境變數可以換成別的剪接表與字幕（《力透紙背》的在 tools/litou/）
+const edit = JSON.parse(fs.readFileSync(process.env.EDIT || path.join(here, 'edit.json'), 'utf8'));
+const caps = JSON.parse(fs.readFileSync(process.env.CAPTIONS || path.join(here, 'captions.json'), 'utf8'));
 const LANGS = ['zh-Hant', 'zh-Hans', 'en'];
 fs.mkdirSync(OUT, { recursive: true });
 

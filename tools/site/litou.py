@@ -1,0 +1,506 @@
+"""《力透紙背》（Through the Page）的介紹頁：「寫意」系列第三部，還在做（頁上寫「敬請期待」）。
+三語三頁：litouzhibei/（繁中）、zh-hans/litouzhibei/、en/litouzhibei/。由 tools/site/build-site.py 一起產生，文字改這個檔案的 TEXT。
+風格刻意跟首頁《墨畫蒼生》不同：墨重、斜、快；紅印「敬請期待」；一卷五章用一個會展開的超正方體（點→線→面→體→四維）；
+可以直接按 1–0 寫字（跟遊戲同一套筆順與字形）。遊戲的資料（筆形、字形、標誌）由 tools/litou/data.mjs 從遊戲庫抄出來，
+預告與場景由 tools/litou/ 錄、剪（見 README）。
+"""
+import json, html
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+SLUG = 'litouzhibei/'
+DATA = json.loads((ROOT / 'assets/litou/data.js').read_text(encoding='utf-8').split('window.LITOU = ', 1)[1].rstrip().rstrip(';'))
+DIM_CLIPS = ['point', 'line', 'mobius', 'tess', 'hyper']   # 一卷五章，各配一段實機畫面（assets/media/litou/scenes/）
+H2_STROKES = {'trailer': 'H', 'story': 'S', 'dims': 'P', 'write': 'D', 'features': 'N', 'contact': 'T'}   # 每一節的標題前是一筆
+# 遊戲起始頁的四個濾鏡，另加 #f-seal：大一點的紅印用的（空洞少、塊大，不然整片都是白點）
+FXDEFS = '<svg class="fxdefs" width="0" height="0" aria-hidden="true" focusable="false">\n  <filter id="f-ink" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">\n    <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="n"/>\n    <feDisplacementMap in="SourceGraphic" in2="n" scale="2" xChannelSelector="R" yChannelSelector="G"/>\n  </filter>\n  <filter id="f-bleed" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">\n    <feMorphology in="SourceGraphic" operator="dilate" radius="1" result="d"/>\n    <feGaussianBlur in="d" stdDeviation="0.9" result="b"/>\n    <feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="3" seed="7" result="n"/>\n    <feDisplacementMap in="b" in2="n" scale="4.5" xChannelSelector="R" yChannelSelector="G" result="w"/>\n    <feComponentTransfer in="w"><feFuncA type="table" tableValues="0 0.5 0.85 1"/></feComponentTransfer>\n  </filter>\n  <filter id="f-dry" x="-2%" y="-30%" width="104%" height="160%" color-interpolation-filters="sRGB">\n    <feTurbulence type="fractalNoise" baseFrequency="0.003 0.2" numOctaves="2" seed="9" result="s"/>\n    <feColorMatrix in="s" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -10 0 0 0 5.7" result="m"/>\n    <feComposite in="SourceGraphic" in2="m" operator="in" result="c"/>\n    <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="4" result="n"/>\n    <feDisplacementMap in="c" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>\n  </filter>\n  <filter id="f-stamp" x="-6%" y="-6%" width="112%" height="112%" color-interpolation-filters="sRGB">\n    <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="11" result="n"/>\n    <feDisplacementMap in="SourceGraphic" in2="n" scale="1.4" xChannelSelector="R" yChannelSelector="G" result="r"/>\n    <feTurbulence type="fractalNoise" baseFrequency="0.16" numOctaves="3" seed="5" result="m"/>\n    <feColorMatrix in="m" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -20 0 0 0 13.6" result="mask"/>\n    <feComposite in="r" in2="mask" operator="in"/>\n  </filter>\n  <filter id="f-seal" x="-6%" y="-10%" width="112%" height="120%" color-interpolation-filters="sRGB">\n    <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="11" result="n"/>\n    <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G" result="r"/>\n    <feTurbulence type="fractalNoise" baseFrequency="0.07" numOctaves="3" seed="5" result="m"/>\n    <feColorMatrix in="m" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -30 0 0 0 22.6" result="mask"/>\n    <feComposite in="r" in2="mask" operator="in"/>\n  </filter>\n</svg>'
+
+TEXT = {
+    'zh-Hant': {
+        "title": "力透紙背 Through the Page｜長風",
+        "desc": "以筆順為招式的漢字戰鬥遊戲。你是紙上剩下的一個「人」：鍵盤 1 到 0 是十種筆畫，照筆順寫對，錯字就正了。由點及線、由線及面、由面及體，一路寫進超正方體的裡面。",
+        "nav": [
+                "預告",
+                "故事",
+                "一卷",
+                "試寫",
+                "特色",
+                "聯絡"
+        ],
+        "kicker": "「寫意」系列 · 第三部",
+        "tagline": "紙為陣 · 筆為兵 · 墨為甲",
+        "motto": "由點及線 · 由線及面 · 由面及體",
+        "soon": "敬請期待",
+        "watch": "觀看預告",
+        "trywrite": "試寫一個字",
+        "trailer_h": "預告",
+        "trailer_note": "遊戲實機畫面。還在做，畫面與內容都會再變；配樂是暫用的合成樂。",
+        "story_h": "故事",
+        "quote": "夫紙者陣也，筆者刀槊也，墨者鍪甲也。",
+        "cite": "王羲之〈題衛夫人筆陣圖後〉",
+        "story": [
+                "字本是平的。塗來了：一團不成字的墨，所過之處，字被抹回散亂的筆畫與墨點。你是紙上剩下的一個「人」。",
+                "鍵盤 1 到 0 是十種筆畫。照筆順寫對一個字，眼前的錯字就正了；寫成識得的字，筆畫化成招式。筆要寫得快，也要寫得對。",
+                "從一個點學會十種筆畫，寫下「一」；線寫到後來首尾相接成圈，圈圍出紙；寫穿紙背、繞過莫比烏斯環，紙摺成正方體；走過超正方體的八個胞，八胞合一，你走進它的裡面。九九歸一。"
+        ],
+        "dims_h": "一卷",
+        "dims_intro": "每一章多一個維度，規則跟著變；每一章的結尾，都替下一章鋪好了路。",
+        "dims": [
+                [
+                        "序章",
+                        "零維 · 點",
+                        "世界只有一個點。十種筆畫都從這一點落下；寫下「一」，點就拉成了線。"
+                ],
+                [
+                        "第一章",
+                        "一維 · 線",
+                        "敵從左右兩頭來，照面前那個字的筆順寫，它就正了。線寫到後來首尾相接，圈出一張紙。"
+                ],
+                [
+                        "第二章",
+                        "二維 · 面",
+                        "每一筆都打得到敵，寫成字就出招。寫穿紙背，字都反了；紙條扭成莫比烏斯環，沒有左右的邊。"
+                ],
+                [
+                        "第三章",
+                        "三維 · 體",
+                        "紙沿著摺痕摺成正方體。前後左右上下，遠處敵身上的字寫出來，字就飛過去。這個正方體只是超正方體的一個胞：照先天八卦，走過雷、水、山、風、火、澤。"
+                ],
+                [
+                        "第四章",
+                        "四維",
+                        "八胞合一，你走進超正方體的裡面。多一個看不見的方向 w，別的 w 上的敵只剩影子。九九歸一，續卷又回到那條線。"
+                ]
+        ],
+        "loop": "九九歸一",
+        "write_h": "試寫",
+        "write_intro": "按鍵盤 1 到 0（或點下面的鍵）寫一筆。照筆順寫成一個字就成字；寫不成字，筆就散了。",
+        "write_try": "試試：9 3 寫「力」，1 3 5 寫「大」，4 9 0 3 5 寫「永」。",
+        "write_cands": "還能寫成",
+        "write_none": "不成字",
+        "write_got": "成字",
+        "write_reset": "重寫",
+        "write_count": "寫成了 {n} 個字，共 {N} 個",
+        "write_idle": "按一個鍵，寫第一筆。",
+        "feat_h": "特色",
+        "feat_intro": "寫得快，也要寫得對。",
+        "strokes_h": "十筆，十招",
+        "strokes_intro": "每一筆有自己的脾氣：橫伸得最遠，點砸得最重，捺推得開敵，鉤拉得回來。",
+        "features": [
+                [
+                        "繁簡一體，兩岸同筆順",
+                        "寫來禦敵的字，繁體、簡體同一個字形，台灣與大陸的筆順也一樣；筆順照教育部《常用國字標準字體筆順》。"
+                ],
+                [
+                        "以字為招",
+                        "寫成「大」，墨化成一圈推開身邊的敵；「火」燒、「口」困、「寸」刺。每個字有次數，不能一個字打到底。"
+                ],
+                [
+                        "習字",
+                        "不打仗也行：主頁有習字模式，五十多個字照筆數排好，一筆一筆寫進米字格。"
+                ],
+                [
+                        "四種語言",
+                        "介面有繁體中文、简体中文、English、日本語；英文版附拼音與字義，日文版附音讀訓讀。"
+                ]
+        ],
+        "facts": [
+                "單人、離線",
+                "鍵盤：1 到 0 寫十種筆畫",
+                "介面：繁體中文、简体中文、English、日本語",
+                "四種難度：故事、入門、深造、爐火純青",
+                "敬請期待"
+        ],
+        "contact_h": "聯絡",
+        "contact": "《力透紙背》是長風「寫意」系列的第三部，還在做。想說什麼，寫信給我們：",
+        "series": "系列第一部《墨畫蒼生》",
+        "video_off": "你的瀏覽器放不了這段影片。",
+        "bio": [
+                "教數學、做研究，也用互動遊戲探索文字與文學。",
+                "《力透紙背》把筆順寫成招式、把維度寫成關卡：由點及線，由線及面，由面及體。"
+        ]
+    },
+    'zh-Hans': {
+        "title": "力透纸背 Through the Page｜长风",
+        "desc": "以笔顺为招式的汉字战斗游戏。你是纸上剩下的一个“人”：键盘 1 到 0 是十种笔画，照笔顺写对，错字就正了。由点及线、由线及面、由面及体，一路写进超正方体的里面。",
+        "nav": [
+                "预告",
+                "故事",
+                "一卷",
+                "试写",
+                "特色",
+                "联系"
+        ],
+        "kicker": "“写意”系列 · 第三部",
+        "tagline": "纸为阵 · 笔为兵 · 墨为甲",
+        "motto": "由点及线 · 由线及面 · 由面及体",
+        "soon": "敬请期待",
+        "watch": "观看预告",
+        "trywrite": "试写一个字",
+        "trailer_h": "预告",
+        "trailer_note": "游戏实机画面。还在做，画面与内容都会再变；配乐是暂用的合成乐。",
+        "story_h": "故事",
+        "quote": "夫纸者阵也，笔者刀槊也，墨者鍪甲也。",
+        "cite": "王羲之〈题卫夫人笔阵图后〉",
+        "story": [
+                "字本是平的。涂来了：一团不成字的墨，所过之处，字被抹回散乱的笔画与墨点。你是纸上剩下的一个“人”。",
+                "键盘 1 到 0 是十种笔画。照笔顺写对一个字，眼前的错字就正了；写成识得的字，笔画化成招式。笔要写得快，也要写得对。",
+                "从一个点学会十种笔画，写下“一”；线写到后来首尾相接成圈，圈围出纸；写穿纸背、绕过莫比乌斯环，纸折成正方体；走过超正方体的八个胞，八胞合一，你走进它的里面。九九归一。"
+        ],
+        "dims_h": "一卷",
+        "dims_intro": "每一章多一个维度，规则跟着变；每一章的结尾，都替下一章铺好了路。",
+        "dims": [
+                [
+                        "序章",
+                        "零维 · 点",
+                        "世界只有一个点。十种笔画都从这一点落下；写下“一”，点就拉成了线。"
+                ],
+                [
+                        "第一章",
+                        "一维 · 线",
+                        "敌从左右两头来，照面前那个字的笔顺写，它就正了。线写到后来首尾相接，圈出一张纸。"
+                ],
+                [
+                        "第二章",
+                        "二维 · 面",
+                        "每一笔都打得到敌，写成字就出招。写穿纸背，字都反了；纸条扭成莫比乌斯环，没有左右的边。"
+                ],
+                [
+                        "第三章",
+                        "三维 · 体",
+                        "纸沿着折痕折成正方体。前后左右上下，远处敌身上的字写出来，字就飞过去。这个正方体只是超正方体的一个胞：照先天八卦，走过雷、水、山、风、火、泽。"
+                ],
+                [
+                        "第四章",
+                        "四维",
+                        "八胞合一，你走进超正方体的里面。多一个看不见的方向 w，别的 w 上的敌只剩影子。九九归一，续卷又回到那条线。"
+                ]
+        ],
+        "loop": "九九归一",
+        "write_h": "试写",
+        "write_intro": "按键盘 1 到 0（或点下面的键）写一笔。照笔顺写成一个字就成字；写不成字，笔就散了。",
+        "write_try": "试试：9 3 写“力”，1 3 5 写“大”，4 9 0 3 5 写“永”。",
+        "write_cands": "还能写成",
+        "write_none": "不成字",
+        "write_got": "成字",
+        "write_reset": "重写",
+        "write_count": "写成了 {n} 个字，共 {N} 个",
+        "write_idle": "按一个键，写第一笔。",
+        "feat_h": "特色",
+        "feat_intro": "写得快，也要写得对。",
+        "strokes_h": "十笔，十招",
+        "strokes_intro": "每一笔有自己的脾气：横伸得最远，点砸得最重，捺推得开敌，钩拉得回来。",
+        "features": [
+                [
+                        "繁简一体，两岸同笔顺",
+                        "写来御敌的字，繁体、简体同一个字形，台湾与大陆的笔顺也一样；笔顺照台湾教育部《常用国字标准字体笔顺》。"
+                ],
+                [
+                        "以字为招",
+                        "写成“大”，墨化成一圈推开身边的敌；“火”烧、“口”困、“寸”刺。每个字有次数，不能一个字打到底。"
+                ],
+                [
+                        "习字",
+                        "不打仗也行：主页有习字模式，五十多个字照笔数排好，一笔一笔写进米字格。"
+                ],
+                [
+                        "四种语言",
+                        "界面有繁體中文、简体中文、English、日本語；英文版附拼音与字义，日文版附音读训读。"
+                ]
+        ],
+        "facts": [
+                "单人、离线",
+                "键盘：1 到 0 写十种笔画",
+                "界面：繁體中文、简体中文、English、日本語",
+                "四种难度：故事、入门、深造、炉火纯青",
+                "敬请期待"
+        ],
+        "contact_h": "联系",
+        "contact": "《力透纸背》是长风“写意”系列的第三部，还在做。想说什么，写信给我们：",
+        "series": "系列第一部《墨画苍生》",
+        "video_off": "你的浏览器放不了这段视频。",
+        "bio": [
+                "教数学、做研究，也用互动游戏探索文字与文学。",
+                "《力透纸背》把笔顺写成招式、把维度写成关卡：由点及线，由线及面，由面及体。"
+        ]
+    },
+    'en': {
+        "title": "Through the Page 力透紙背 | SteJoy",
+        "desc": "A battle game where stroke order is your weapon. You are 人, the last “person” left on the page: keys 1–0 are the ten brush strokes, and writing a character in the right order sets the broken one in front of you right. From point to line, line to plane, plane to solid, and on into the inside of a tesseract.",
+        "nav": [
+                "Trailer",
+                "Story",
+                "The scroll",
+                "Try it",
+                "Features",
+                "Contact"
+        ],
+        "kicker": "The Xieyi series · Part 3",
+        "tagline": "Paper is the battlefield · the brush the soldier · ink the armor",
+        "motto": "From point to line · line to plane · plane to solid",
+        "soon": "Coming soon",
+        "watch": "Watch the trailer",
+        "trywrite": "Write a character",
+        "trailer_h": "Trailer",
+        "trailer_note": "In-game footage. The game is still in the making, so what you see will change; the music is a temporary synthesized track.",
+        "story_h": "Story",
+        "quote": "Paper is the battlefield, the brush is the spear, ink is the armor.",
+        "cite": "Wang Xizhi, postscript to Lady Wei’s Battle Formation of the Brush",
+        "story": [
+                "Characters used to lie flat. Then came 塗, the Smudge: a mass of ink that is no character at all. Wherever it passes, characters are wiped back into loose strokes and blots. You are 人, the one “person” left on the page.",
+                "Keys 1 to 0 are the ten brush strokes. Write a character in the right stroke order and the broken one in front of you is set right; write one you have learned, and its strokes become a spell. Be quick, and be right.",
+                "From a single point you learn the ten strokes and write 一, “one”. The line, written long enough, closes into a ring, and the ring encloses a page. You write through to the back of the page and around a Möbius strip, and the page folds into a cube. You walk the eight cells of a tesseract; the cells become one, and you step inside. Nine nines return to one."
+        ],
+        "dims_h": "The scroll",
+        "dims_intro": "Each chapter adds a dimension, and the rules change with it. Each chapter’s ending lays the road for the next.",
+        "dims": [
+                [
+                        "Prologue",
+                        "0D · The point",
+                        "There is only a point. All ten strokes fall from it; write 一 and the point stretches into a line."
+                ],
+                [
+                        "Chapter 1",
+                        "1D · The line",
+                        "Enemies come from both ends. Write the character in front of you in stroke order and it is set right. In the end the line meets itself and encloses a page."
+                ],
+                [
+                        "Chapter 2",
+                        "2D · The page",
+                        "Every stroke can hit, and finished characters become spells. Write through to the back of the page, where every character is mirrored; twist the strip into a Möbius band, which has no left or right edge."
+                ],
+                [
+                        "Chapter 3",
+                        "3D · The solid",
+                        "The page folds along its creases into a cube. Forward and back, up and down: write the character on a distant enemy and it flies to them. The cube is only one cell of a tesseract; walk the others by the Early Heaven trigrams, through thunder, water, mountain, wind, fire and lake."
+                ],
+                [
+                        "Chapter 4",
+                        "4D",
+                        "The eight cells become one, and you step inside the tesseract. There is one more direction, w, that you cannot see; enemies on other w are only shadows. Nine nines return to one, and the next scroll begins again on the line."
+                ]
+        ],
+        "loop": "Nine nines return to one",
+        "write_h": "Try it",
+        "write_intro": "Press keys 1 to 0 (or tap the keys below) to write a stroke. Strokes in the right order become a character; strokes that make no character scatter.",
+        "write_try": "Try 9 3 for 力 (strength), 1 3 5 for 大 (big), 4 9 0 3 5 for 永 (eternal).",
+        "write_cands": "Could still become",
+        "write_none": "No character",
+        "write_got": "Written",
+        "write_reset": "Clear",
+        "write_count": "{n} of {N} characters written",
+        "write_idle": "Press a key to write the first stroke.",
+        "feat_h": "Features",
+        "feat_intro": "Write fast, and write right.",
+        "strokes_h": "Ten strokes, ten moves",
+        "strokes_intro": "Each stroke has its own temper: the horizontal reaches farthest, the dot hits hardest, the right-falling stroke pushes, the hooks pull back.",
+        "features": [
+                [
+                        "One form, one stroke order",
+                        "Every character you fight with looks the same in Traditional and Simplified Chinese, and is written in the same order in Taiwan and mainland China (following Taiwan’s Ministry of Education standard)."
+                ],
+                [
+                        "Characters as spells",
+                        "Write 大 (big) and ink rings out to push enemies away; 火 burns, 口 traps, 寸 pierces. Each character has limited uses, so no single one wins the whole scroll."
+                ],
+                [
+                        "Practice mode",
+                        "No fighting needed: the home screen has a practice mode with over fifty characters, sorted by stroke count, to write stroke by stroke into a practice grid."
+                ],
+                [
+                        "Four languages",
+                        "Traditional Chinese, Simplified Chinese, English and Japanese. The English version adds pinyin and meanings; the Japanese version adds on and kun readings."
+                ]
+        ],
+        "facts": [
+                "Single-player, offline",
+                "Keyboard: keys 1–0 are the ten strokes",
+                "Interface: Traditional Chinese, Simplified Chinese, English, Japanese",
+                "Four difficulties: Story, Beginner, Advanced, Mastery",
+                "Coming soon"
+        ],
+        "contact_h": "Contact",
+        "contact": "Through the Page is the third game in SteJoy’s 寫意 (Xieyi) series, and still in the making. Write to us:",
+        "series": "Part 1 of the series: InkWild",
+        "video_off": "Your browser cannot play this video.",
+        "bio": [
+                "Math teacher and researcher who explores writing and literature through interactive games.",
+                "Through the Page turns stroke order into combat and dimensions into levels: from point to line, line to plane, plane to solid."
+        ]
+    },
+}
+
+def esc(s):
+    return html.escape(s, quote=True)
+
+def stroke_svg(code, cls=''):
+    s = next(x for x in DATA['strokes'] if x['c'] == code)
+    return f'<svg class="st{(" " + cls) if cls else ""}" viewBox="0 0 240 240" aria-hidden="true"><path d="{s["icon"]}"/></svg>'
+
+def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
+    """HOME：首頁那一份的 studio、author、copy 等共用字（從 build-site.py 的 TEXT 傳進來）。"""
+    L, T = LANGS[code], TEXT[code]
+    up = '../' + L['up']
+    a = up + 'assets/'
+    here = L['dir'] + SLUG
+    title_chars = list('力透纸背' if code == 'zh-Hans' else '力透紙背')
+    alts = '\n'.join(f'<link rel="alternate" hreflang="{c}" href="{SITE}{LANGS[c]["dir"]}{SLUG}">' for c in LANGS) + f'\n<link rel="alternate" hreflang="x-default" href="{SITE}{SLUG}">'
+    langnav = ''.join(f'<a href="{up}{LANGS[c]["dir"]}{SLUG}" lang="{c}"{" aria-current=\"page\"" if c == code else ""}>{LANGS[c]["short"]}</a>' for c in LANGS)
+    nav = ''.join(f'<a href="#{h}">{esc(n)}</a>' for h, n in zip(['trailer', 'story', 'dims', 'write', 'features', 'contact'], T['nav']))
+    h2 = lambda key, text: f'<h2>{stroke_svg(H2_STROKES[key], "h2s")}<span>{esc(text)}</span></h2>'
+    tracks = ''.join(f'<track kind="subtitles" srclang="{c}" label="{LANGS[c]["name"]}" src="{a}media/litou/trailer.{c}.vtt"{" default" if c == code else ""}>' for c in LANGS)
+    story = ''.join(f'<p>{esc(p)}</p>' for p in T['story'])
+    steps = ''.join(f'''
+      <li class="lt-step" data-d="{i}">
+        <p class="lt-step-k"><b>{i}</b>{esc(k)}</p>
+        <h3>{esc(n)}</h3>
+        <p>{esc(t)}</p>
+        <video muted loop playsinline preload="none" poster="{a}media/litou/scenes/{DIM_CLIPS[i]}.jpg" data-src="{a}media/litou/scenes/{DIM_CLIPS[i]}.mp4" data-webm="{a}media/litou/scenes/{DIM_CLIPS[i]}.webm" aria-label="{esc(n)}"></video>
+      </li>''' for i, (k, n, t) in enumerate(T['dims']))
+    sname = 'zh' if code == 'zh-Hant' else 'hans' if code == 'zh-Hans' else 'en'
+    trait = 'trait' if code == 'zh-Hant' else 'traitHans' if code == 'zh-Hans' else 'traitEn'
+    keys = ''.join(f'<button class="lt-key" type="button" data-code="{s["c"]}"><b>{s["key"]}</b>{stroke_svg(s["c"])}<span>{esc(s[sname] if code != "en" else s["short"])}</span></button>' for s in DATA['strokes'])
+    strokes = ''.join(f'<li><span class="lt-kc"><b>{s["key"]}</b>{stroke_svg(s["c"])}</span><div><b>{esc(s[sname])}</b>{" <small>" + esc(s["zh"]) + "</small>" if code == "en" else ""}<p>{esc(s[trait])}</p></div></li>' for s in DATA['strokes'])
+    feats = ''.join(f'<article class="lt-feat"><h3>{esc(h)}</h3><p>{esc(p)}</p></article>' for h, p in T['features'])
+    facts = ''.join(f'<li>{esc(x)}</li>' for x in T['facts'])
+    strings = json.dumps({k: T[k] for k in ('write_cands', 'write_none', 'write_got', 'write_count', 'write_idle')} | {'lang': code}, ensure_ascii=False)
+    banner = json.dumps({c: [t, up + LANGS[c]['dir'] + SLUG] for c, t in HOME['banner'].items()}, ensure_ascii=False)
+    mark_data = json.dumps({'w': 760, 'h': 514, 'turns': [0.2285, 0.5021], 'ribbon': a + 'litou/mark-ribbon.png', 'ren': a + 'litou/mark-ren.png', 'time': a + 'litou/mark-time.png'})
+    return f'''<!doctype html>
+<html lang="{code}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{esc(T['title'])}</title>
+<meta name="description" content="{esc(T['desc'])}">
+<meta name="author" content="{AUTHOR}">
+<link rel="canonical" href="{SITE}{here}">
+{alts}
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{esc(HOME['studio'])}">
+<meta property="og:title" content="{esc(T['title'])}">
+<meta property="og:description" content="{esc(T['desc'])}">
+<meta property="og:image" content="{SITE}assets/media/litou/trailer.jpg">
+<meta property="og:url" content="{SITE}{here}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#efe5cf">
+<link rel="icon" href="{up}favicon.ico" sizes="any">
+<link rel="icon" href="{a}img/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="{a}img/icon-180.png">
+<link rel="stylesheet" href="{a}fonts/fonts.css">
+<link rel="stylesheet" href="{a}css/site.css">
+<link rel="stylesheet" href="{a}css/litou.css">
+<script defer src="{a}js/site.js"></script>
+<script defer src="{a}litou/data.js"></script>
+<script>window.MARK_DATA = {mark_data};</script>
+<script defer src="{a}litou/mark.js"></script>
+<script defer src="{a}js/litou.js"></script>
+</head>
+<body class="lang-{code} litou" data-banner='{esc(banner)}'>
+{FXDEFS}
+<header class="top">
+  <a class="studio" href="{up}{L['dir']}"><img src="{a}img/icon.svg" alt="" width="34" height="34"><span>{esc(HOME['studio'])}</span></a>
+  <nav class="sections" aria-label="sections">{nav}</nav>
+  <nav class="langs" aria-label="language">{langnav}</nav>
+</header>
+<div id="lang-banner" hidden></div>
+
+<main>
+<section class="lt-hero">
+  <div class="lt-hero-text">
+    <p class="lt-kicker">{esc(T['kicker'])}</p>
+    <h1 class="lt-logo" aria-label="{esc(''.join(title_chars))} Through the Page">{''.join(f'<span aria-hidden="true">{c}</span>' for c in title_chars)}</h1>
+    <p class="lt-entitle" aria-hidden="true">Through the Page</p>
+    <p class="lt-tagline">{esc(T['tagline'])}</p>
+    <p class="lt-motto">{esc(T['motto'])}</p>
+    <div class="lt-cta"><span class="lt-seal">{esc(T['soon'])}</span><a class="lt-btn" href="#trailer">{esc(T['watch'])}</a><a class="lt-btn ghost" href="#write">{esc(T['trywrite'])}</a></div>
+  </div>
+  <div class="lt-mark" aria-hidden="true"></div>
+</section>
+
+<section id="trailer" class="lt-sec lt-trailer">
+  {h2('trailer', T['trailer_h'])}
+  <div class="lt-frame">
+    <video controls preload="metadata" playsinline poster="{a}media/litou/trailer.jpg">
+      <source src="{a}media/litou/trailer.mp4" type="video/mp4">
+      <source src="{a}media/litou/trailer.webm" type="video/webm">{tracks}
+      {esc(T['video_off'])}
+    </video>
+  </div>
+  <p class="lt-note">{esc(T['trailer_note'])}</p>
+</section>
+
+<section id="story" class="lt-sec lt-story">
+  {h2('story', T['story_h'])}
+  <blockquote class="lt-quote"><p>{esc(T['quote'])}</p><cite>{esc(T['cite'])}</cite></blockquote>
+  <div class="lt-story-text">{story}</div>
+</section>
+
+<section id="dims" class="lt-dims">
+  <div class="lt-dims-in">
+    {h2('dims', T['dims_h'])}
+    <p class="lt-lead">{esc(T['dims_intro'])}</p>
+    <div class="lt-dims-body">
+      <div class="lt-hc" aria-hidden="true"><canvas id="lt-hypercube"></canvas><span class="lt-hc-n">0</span></div>
+      <ol class="lt-steps">{steps}
+      </ol>
+    </div>
+    <p class="lt-loop">{esc(T['loop'])}</p>
+  </div>
+</section>
+
+<section id="write" class="lt-sec lt-write" data-t='{esc(strings)}'>
+  {h2('write', T['write_h'])}
+  <p class="lt-lead">{esc(T['write_intro'])}</p>
+  <div class="lt-pad">
+    <svg class="lt-grid" viewBox="0 0 1000 1000" aria-hidden="true"><rect class="g" x="8" y="8" width="984" height="984"/><path class="g d" d="M8 8L992 992M992 8L8 992M500 8V992M8 500H992"/><g id="lt-ink"></g></svg>
+    <div class="lt-info" aria-live="polite">
+      <div class="lt-big" id="lt-big"></div>
+      <p class="lt-read" id="lt-read">{esc(T['write_idle'])}</p>
+      <div class="lt-seq" id="lt-seq"></div>
+      <p class="lt-cands" id="lt-cands"></p>
+      <p class="lt-count" id="lt-count"></p>
+      <button class="lt-btn ghost small" type="button" id="lt-reset">{esc(T['write_reset'])}</button>
+    </div>
+  </div>
+  <div class="lt-keys" id="lt-keys">{keys}</div>
+  <p class="lt-try">{esc(T['write_try'])}</p>
+</section>
+
+<section id="features" class="lt-sec lt-features">
+  {h2('features', T['feat_h'])}
+  <p class="lt-lead">{esc(T['feat_intro'])}</p>
+  <h3 class="lt-sub">{esc(T['strokes_h'])}</h3>
+  <p class="lt-sub-intro">{esc(T['strokes_intro'])}</p>
+  <ol class="lt-strokes">{strokes}</ol>
+  <div class="lt-feats">{feats}</div>
+  <ul class="lt-facts">{facts}</ul>
+</section>
+
+<section id="contact" class="lt-sec lt-contact">
+  {h2('contact', T['contact_h'])}
+  <p>{esc(T['contact'])} <a href="mailto:{MAIL}">{MAIL}</a></p>
+  <p class="lt-series"><a href="{up}{L['dir']}">{esc(T['series'])} →</a></p>
+</section>
+</main>
+
+<footer>
+  <div class="author">
+    <p class="author-name"><span>{esc(HOME['author'][0])}</span> {AUTHOR}</p>
+    <p class="author-bio">{' '.join(f'<span>{esc(x)}</span>' for x in T['bio'])}</p>
+    <p class="author-meta">{esc(HOME['author'][3])} <a href="{AUTHOR_URL}" rel="me">stephenjia.com</a> · {esc(HOME['author'][1])} · {esc(HOME['author'][2])} <a href="mailto:{MAIL}">{MAIL}</a></p>
+  </div>
+  <p class="copy">{esc(HOME['copy'])}</p>
+</footer>
+</body>
+</html>
+'''
+
+def build(LANGS, TEXTS, SITE, AUTHOR, AUTHOR_URL, MAIL):
+    """寫出三頁；回傳要放進 sitemap 的網址（相對於網站根目錄）。"""
+    for code, L in LANGS.items():
+        out = ROOT / L['dir'] / SLUG / 'index.html'
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, TEXTS[code]), encoding='utf-8')
+        print(out.relative_to(ROOT), out.stat().st_size)
+    return [L['dir'] + SLUG for L in LANGS.values()]

@@ -1,0 +1,15 @@
+{
+  "point":   { "zh-Hant": "零維：一個點。十種筆畫，都從這一點落下。", "zh-Hans": "零维：一个点。十种笔画，都从这一点落下。", "en": "Zero dimensions: a single point. All ten strokes fall from it." },
+  "line":    { "zh-Hant": "一維：照面前那個字的筆順寫，錯字就正了。", "zh-Hans": "一维：照面前那个字的笔顺写，错字就正了。", "en": "One dimension: write the character in front of you, stroke by stroke, and set it right." },
+  "ring":    { "zh-Hant": "線寫到後來首尾相接，圈出一張紙。", "zh-Hans": "线写到后来首尾相接，圈出一张纸。", "en": "The line meets itself and encloses a page." },
+  "page":    { "zh-Hant": "二維：紙為陣，筆為兵，墨為甲。", "zh-Hans": "二维：纸为阵，笔为兵，墨为甲。", "en": "Two dimensions: paper is the battlefield, the brush the soldier, ink the armor." },
+  "flip":    { "zh-Hant": "力透紙背：寫到紙的背面，字都反了。", "zh-Hans": "力透纸背：写到纸的背面，字都反了。", "en": "Through the page: on the back, every character is mirrored." },
+  "mobius":  { "zh-Hant": "莫比烏斯環：沒有左右的邊，只有一面。", "zh-Hans": "莫比乌斯环：没有左右的边，只有一面。", "en": "A Möbius strip: no left or right edge, and only one side." },
+  "fold":    { "zh-Hant": "紙沿著摺痕，摺成正方體。", "zh-Hans": "纸沿着折痕，折成正方体。", "en": "The page folds along its creases into a cube." },
+  "cube":    { "zh-Hant": "三維：遠處敵身上的字，寫出來就飛過去。", "zh-Hans": "三维：远处敌身上的字，写出来就飞过去。", "en": "Three dimensions: write a distant enemy’s character, and it flies to them." },
+  "tess":    { "zh-Hant": "正方體只是超正方體的一個胞。", "zh-Hans": "正方体只是超正方体的一个胞。", "en": "The cube is only one cell of a tesseract." },
+  "thunder": { "zh-Hant": "照先天八卦：雷、水、山、風、火、澤。", "zh-Hans": "照先天八卦：雷、水、山、风、火、泽。", "en": "By the Early Heaven trigrams: thunder, water, mountain, wind, fire, lake." },
+  "hyper":   { "zh-Hant": "八胞合一，走進它的裡面。", "zh-Hans": "八胞合一，走进它的里面。", "en": "The eight cells become one, and you step inside." },
+  "four":    { "zh-Hant": "四維：多一個看不見的方向。", "zh-Hans": "四维：多一个看不见的方向。", "en": "Four dimensions: one more direction you cannot see." },
+  "end":     { "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", "en": "Coming soon" }
+}
