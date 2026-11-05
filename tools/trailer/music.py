@@ -137,8 +137,10 @@ add(drone(note(-17), starts['night'][1] + 1, 1.5), at('night', -0.3), -0.2, 0.8)
 add(drone(note(-17), starts['gong'][1] + 2, 1.0), at('gong', -0.5), 0.2, 1.0)
 add(hush(starts['snow'][1] + 1), at('snow', -0.2), 0.2, 1.0)   # 雪：悶悶的、低低的
 ev = events('snow'); s, d, frm = starts['snow']
-for fr in (ev['steps'] if ev and ev.get('steps') else [60, 120]):   # 腳步落在畫面上走那一步的那一幀
-    rel = fr / FPS - frm
+last = -99
+for fr in (ev['steps'] if ev and ev.get('steps') else [60, 120]):   # 腳步落在畫面上走那一步的那一幀；四幀內連著走的併成一聲，免得糊成一團
+    if fr - last < 4: continue
+    last = fr; rel = fr / FPS - frm
     if 0 <= rel < d: add(crunch(), s + rel, -0.1, 0.9)
 add(wind(starts['gaze'][1]), at('gaze'), -0.3, 0.5)
 
