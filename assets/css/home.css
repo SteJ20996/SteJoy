@@ -8,9 +8,16 @@ body.home { --night: #15130f; --paper-x: #efe5cf; }
 body.lang-en .hm-kicker { letter-spacing: .08em; }
 .hm-title { margin: 4px 0 10px; font-size: clamp(46px, 7.4vw, 92px); font-weight: 400; line-height: 1.12; letter-spacing: .22em; text-wrap: balance; }
 body.lang-en .hm-title { letter-spacing: 0; font-size: clamp(30px, 4.4vw, 50px); }
-.hm-poem { margin: 0; color: var(--ink-2); font-size: 17px; letter-spacing: .12em; }
-body.lang-en .hm-poem { letter-spacing: 0; font-style: italic; max-width: 760px; }
-.hm-poem cite { font-style: normal; color: var(--dim); font-size: 14px; letter-spacing: .06em; margin-left: 12px; white-space: nowrap; }
+/* 標題底下落一筆（一），再一句話說「寫意」是什麼；李白那兩句只留在「關於長風」 */
+.hm-stroke { display: block; width: min(560px, 92%); height: auto; margin: -10px 0 6px -6px; color: var(--ink); overflow: visible; animation: hm-fall .8s .35s both; }
+@keyframes hm-fall {   /* 先頓（起筆按下去），再一路加速帶出飛白 */
+  0% { clip-path: inset(-30% 100% -30% 0); animation-timing-function: cubic-bezier(.2, .7, .4, 1); }
+  18% { clip-path: inset(-30% 90% -30% 0); animation-timing-function: cubic-bezier(.5, 0, .9, .55); }
+  100% { clip-path: inset(-30% -2% -30% 0); }
+}
+.hm-deck span { display: inline-block; }
+.hm-deck { margin: 0; max-width: 34em; color: var(--ink-2); font-size: 18px; line-height: 1.8; letter-spacing: .1em; text-wrap: pretty; }
+body.lang-en .hm-deck { letter-spacing: 0; font-size: 19px; max-width: 40em; }
 
 /* 選一部 */
 .hm-games { padding-top: 34px !important; }
@@ -103,9 +110,12 @@ body.lang-en .hm-quote p { letter-spacing: 0; font-style: italic; font-size: 20p
   .hm-card, .hm-row.has-active .hm-card, .hm-row.has-active .hm-card.active { flex: none; min-height: 520px; }
   .hm-pitch { max-height: 9em; opacity: 1; }
   .hm-hint { display: none; }
+  .hm-deck { font-size: 16px; letter-spacing: .06em; }
+  body.lang-en .hm-deck { font-size: 17px; letter-spacing: 0; }
   .hm-body { padding: 0 20px 22px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hm-card, .hm-stage video, .hm-pitch, .hm-go b { transition: none; }
   .hm-mark .ren.land { animation: none; opacity: 1; }
+  .hm-stroke { animation: none; }
 }

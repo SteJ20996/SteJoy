@@ -4,7 +4,7 @@
 實機片段反過來看（紙背）。上面一排「種類」可以篩；← → 換一部、Enter 進入。遊戲多了就多幾張紙、多幾個種類。
 《墨畫蒼生》原本的介紹頁搬到 mohuacangsheng/，《力透紙背》在 litouzhibei/。
 """
-import json, html
+import json, html, re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -14,6 +14,27 @@ GAMES = [   # 首頁上的順序；kind 是「種類」那一排的鍵
 ]
 KINDS = ['all', 'survival', 'battle']
 
+# 標題「落筆成局」底下落的那一筆：楷書的長橫（一），起筆斜切、中段略細、往右微微上揚；後半段乾筆飛白（#hm-dry 把筆身切成橫絲，
+# 前半段再疊一層實墨，遮罩是漸層加橫絲雜訊取門檻）。外形是手畫的 Bézier（viewBox 0 0 1000 120），進場時從左到右寫出來（home.css 的 hm-fall）。
+HENG_D = ('M 26 50 C 34 44, 52 42, 70 46 C 300 44, 640 34, 896 30 C 918 27, 944 28, 960 38 C 976 48, 974 64, 958 70 '
+          'C 936 76, 908 70, 880 66 C 640 62, 320 70, 112 86 C 92 90, 76 96, 62 94 C 50 90, 42 76, 26 50 Z')
+HENG = ('<svg class="hm-stroke" viewBox="0 0 1000 120" aria-hidden="true" focusable="false"><defs>'
+        '<filter id="hm-dry" x="-2%" y="-30%" width="104%" height="160%" color-interpolation-filters="sRGB">'
+        '<feTurbulence type="fractalNoise" baseFrequency="0.004 0.16" numOctaves="2" seed="9" result="s"/>'
+        '<feColorMatrix in="s" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -10 0 0 0 5.8" result="m"/>'
+        '<feComposite in="SourceGraphic" in2="m" operator="in" result="c"/>'
+        '<feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="4" result="n"/>'
+        '<feDisplacementMap in="c" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G"/></filter>'
+        '<filter id="hm-thr" x="0" y="0" width="1" height="1" color-interpolation-filters="sRGB">'   # 實墨的遮罩：漸層加橫絲雜訊再取門檻，實墨一絲一絲斷成飛白，不會出現灰的一段
+        '<feTurbulence type="fractalNoise" baseFrequency="0.003 0.2" numOctaves="2" seed="21" result="n"/>'
+        '<feColorMatrix in="n" type="matrix" values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 1" result="g"/>'
+        '<feComposite in="SourceGraphic" in2="g" operator="arithmetic" k1="0" k2="1" k3="2.2" k4="-1.1" result="t"/>'
+        '<feComponentTransfer in="t"><feFuncR type="linear" slope="14" intercept="-6.5"/><feFuncG type="linear" slope="14" intercept="-6.5"/>'
+        '<feFuncB type="linear" slope="14" intercept="-6.5"/><feFuncA type="linear" slope="0" intercept="1"/></feComponentTransfer></filter>'
+        '<linearGradient id="hm-sg" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset=".42" stop-color="#fff"/><stop offset=".8" stop-color="#000"/></linearGradient>'
+        '<mask id="hm-sm" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="120"><rect width="1000" height="120" fill="url(#hm-sg)" filter="url(#hm-thr)"/></mask></defs>'
+        f'<g fill="currentColor" filter="url(#hm-rough)"><path d="{HENG_D}" filter="url(#hm-dry)"/><path d="{HENG_D}" mask="url(#hm-sm)"/></g></svg>')
+
 TEXT = {
     'zh-Hant': {
         'title': '長風｜寫意系列',
@@ -21,7 +42,8 @@ TEXT = {
         'nav': ['遊戲', '關於', '聯絡'],
         'kicker': '「寫意」系列',
         'headline': '落筆成局',   # 使用者嫌「用漢字寫成的遊戲」平；局＝棋局、戰局、布局，一落筆就開局
-        'poem': '長風破浪會有時，直掛雲帆濟滄海。', 'cite': '李白〈行路難〉',
+        'deck': '每一部都拿漢字當材料：字可以拆開、砌起，一筆也可以是一招。',
+        'poem': '長風破浪會有時，直掛雲帆濟滄海。', 'cite': '李白〈行路難〉',   # 只在「關於長風」引一次
         'choose': '選一部', 'hint': '← → 換一部　Enter 進入',
         'kinds': {'all': '全部', 'survival': '生存 · 建造', 'battle': '筆順 · 戰鬥'},
         'games': {
@@ -31,8 +53,7 @@ TEXT = {
                       'pitch': '鍵盤 1 到 0 是十種筆畫，照筆順寫對，錯字就正了。從一個點寫起，一路寫進超正方體的裡面。', 'status': '敬請期待', 'go': '進入'},
         },
         'about_h': '關於長風',
-        'about': ['長風是做「寫意」系列的小工作室，名字取自李白〈行路難〉。',
-                  '「寫意」的每一部都拿漢字當材料：在《墨畫蒼生》裡，字是一塊塊可以拆、可以砌的地；在《力透紙背》裡，筆畫是招式，字寫對了就是一擊。'],
+        'about': ['長風是做「寫意」系列的小工作室，名字取自李白〈行路難〉。'],
         'contact_h': '聯絡', 'contact': '想說什麼，寫信給我們：',
     },
     'zh-Hans': {
@@ -41,6 +62,7 @@ TEXT = {
         'nav': ['游戏', '关于', '联系'],
         'kicker': '“写意”系列',
         'headline': '落笔成局',
+        'deck': '每一部都拿汉字当材料：字可以拆开、砌起，一笔也可以是一招。',
         'poem': '长风破浪会有时，直挂云帆济沧海。', 'cite': '李白〈行路难〉',
         'choose': '选一部', 'hint': '← → 换一部　Enter 进入',
         'kinds': {'all': '全部', 'survival': '生存 · 建造', 'battle': '笔顺 · 战斗'},
@@ -51,8 +73,7 @@ TEXT = {
                       'pitch': '键盘 1 到 0 是十种笔画，照笔顺写对，错字就正了。从一个点写起，一路写进超正方体的里面。', 'status': '敬请期待', 'go': '进入'},
         },
         'about_h': '关于长风',
-        'about': ['长风是做“写意”系列的小工作室，名字取自李白〈行路难〉。',
-                  '“写意”的每一部都拿汉字当材料：在《墨画苍生》里，字是一块块可以拆、可以砌的地；在《力透纸背》里，笔画是招式，字写对了就是一击。'],
+        'about': ['长风是做“写意”系列的小工作室，名字取自李白〈行路难〉。'],
         'contact_h': '联系', 'contact': '想说什么，写信给我们：',
     },
     'en': {
@@ -61,6 +82,7 @@ TEXT = {
         'nav': ['Games', 'About', 'Contact'],
         'kicker': 'The 寫意 (Xieyi) series',
         'headline': 'Set brush to paper, and the game begins',
+        'deck': 'Every game here takes Chinese characters as its material: they come apart, they build up, and a single stroke can be a move.',
         'poem': '“A time will come to ride the long wind and cleave the waves; then I’ll hoist my cloud-white sail and cross the sea.”', 'cite': 'Li Bai, The Hard Road',
         'choose': 'Pick a game', 'hint': '← → to switch · Enter to open',
         'kinds': {'all': 'All', 'survival': 'Survival · Building', 'battle': 'Stroke order · Battle'},
@@ -71,8 +93,7 @@ TEXT = {
                       'pitch': 'Keys 1 to 0 are the ten brush strokes; write a character in the right order and the broken one in front of you is set right. Start from a single point and write your way into a tesseract.', 'status': 'Coming soon', 'go': 'Open'},
         },
         'about_h': 'About SteJoy',
-        'about': ['SteJoy (長風, “the long wind”) is a small studio making the 寫意 (Xieyi) series. The Chinese name comes from Li Bai’s poem The Hard Road.',
-                  'Each Xieyi game takes Chinese characters as its material. In InkWild, characters are ground you can take apart and build with; in Through the Page, strokes are moves, and a character written right is a blow.'],
+        'about': ['SteJoy (長風, “the long wind”) is a small studio making the 寫意 (Xieyi) series. The Chinese name comes from Li Bai’s poem The Hard Road.'],
         'contact_h': 'Contact', 'contact': 'Write to us:',
     },
 }
@@ -109,6 +130,7 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME, LOGO):
       </div>
     </a>''')
     about = ''.join(f'<p>{esc(p)}</p>' for p in T['about'])
+    deck = ''.join(f'<span>{esc(x)}</span>' for x in re.findall(r'[^：，]+[：，]?', T['deck']))   # 一段一段換行
     banner = json.dumps({c: [t, up + LANGS[c]['dir']] for c, t in HOME['banner'].items()}, ensure_ascii=False)
     mark = json.dumps({'w': 760, 'h': 514, 'turns': [0.2285, 0.5021], 'ink': [239, 229, 207], 'ribbon': a + 'litou/mark-ribbon.png', 'ren': a + 'litou/mark-ren.png', 'time': a + 'litou/mark-time.png'})
     return f'''<!doctype html>
@@ -153,7 +175,8 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME, LOGO):
 <section class="hm-hero">
   <p class="hm-kicker">{esc(T['kicker'])}</p>
   <h1 class="hm-title">{esc(T['headline'])}</h1>
-  <p class="hm-poem">{esc(T['poem'])}<cite>{esc(T['cite'])}</cite></p>
+  {HENG}
+  <p class="hm-deck">{deck}</p>
 </section>
 
 <section id="games" class="hm-games" aria-label="{esc(T['choose'])}">
