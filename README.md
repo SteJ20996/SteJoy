@@ -21,6 +21,7 @@ stejoy.com 的網站：《墨畫蒼生》（InkWild）的介紹頁，繁體中�
 - `assets/fonts/`：霞鶩文楷 TC 與思源宋體 SC 的 woff2 分片（瀏覽器只下載用得到的字），SIL OFL 1.1，授權全文在同一資料夾。網站不連 Google Fonts。
 - 字幕燒進畫面的預告（三種語言，各約 45 MB）不放進這個庫：Cloudflare Pages 一個檔最多 25 MiB，庫也會變肥。要的時候照下面第 3 步加 `--burn` 重新出。
 - `tools/`：錄影、剪預告、轉檔、產生頁面的腳本，見下。
+- `functions/assets/media/[[path]].js`：Cloudflare Pages Function，只管 `/assets/media/*`。Pages 的靜態檔不理 `Range`（問一段也整個檔回 200），影片就拖不了進度；這支照常拿到檔，有 `Range` 就切出那一段回 206、沒有就加 `Accept-Ranges: bytes`，出差錯就退回原本的回應。
 
 ## 重新產生
 
@@ -29,12 +30,12 @@ stejoy.com 的網站：《墨畫蒼生》（InkWild）的介紹頁，繁體中�
 1. **錄鏡頭**：在遊戲庫的 `desktop/` 跑 `node copy-game.mjs`（打出帶本機字型的頁面），再
    `python3 -m http.server 8125 --directory <遊戲庫>/desktop/app`，然後
    `node tools/capture/capture.mjs <輸出資料夾>`。Playwright 裝假時鐘，一幀一幀推進、一幀一幀截圖，畫面跟遊戲裡一模一樣；鏡頭寫在 `tools/capture/shots.mjs`。加 `--stills` 只截頭中尾三張對構圖。
-2. **配樂**：`python3 tools/trailer/music.py tools/trailer/edit.json music.wav`。numpy 合成的撥弦、鈴、鼓與雷，沒有用任何外來的音檔；**是暫用的**，有正式配樂就換掉。
+2. **配樂**：`python3 tools/trailer/music.py tools/trailer/edit.json music.wav <鏡頭資料夾>`。numpy 合成的撥弦、鈴、鼓、雷、雨與雪，沒有用任何外來的音檔；**是暫用的**，有正式配樂就換掉。雨是沙沙的雨聲加雨點、雪是悶悶的低風加踩雪聲，各是各的；雷聲與踩雪聲對齊錄鏡頭時記下的那一幀（第 1 步在鏡頭資料夾寫 `thunder.events.json`、`snow.events.json`），不給鏡頭資料夾就照估計的幀。
 3. **剪預告**：`node tools/trailer/build.mjs <鏡頭資料夾> music.wav <輸出資料夾> --burn`。剪接順序與長度在 `tools/trailer/edit.json`，字幕在 `tools/trailer/captions.json`；`--burn` 另出三種語言燒字幕的版本。
 4. **轉成網站用的檔**：`python3 tools/site/media.py <鏡頭資料夾> <預告資料夾>`。只換了片頭（場景沒動）時加 `--trailer`，只重壓預告。
 5. **產生頁面**：`python3 tools/site/build-site.py`。
 
-開頭的字標與寫字動畫跟遊戲起始頁同一份：`tools/site/logo.html` 是遊戲 `index.html` 裡的 `#title-logo`，寫字的遮罩用遊戲庫的 `scripts/make-shui-mask.py` 產生（`python3 <遊戲庫>/scripts/make-shui-mask.py tools/site/logo.html`），時間在 `assets/css/site.css`（照抄遊戲 `style.css` 那一段）；預告的片頭 `tools/capture/title.html` 也是同一份字標，錄的時候放快 1.15 倍（`shots.mjs` 的 `TITLE_SPEED`）。v0.9.50 起照使用者手畫的七步筆順：蜃身、浪頂、浪身、船底、桅杆、掛帆、蜃頭。
+開頭的字標與寫字動畫跟遊戲起始頁同一份：`tools/site/logo.html` 是遊戲 `index.html` 裡的 `#title-logo`，寫字的遮罩用遊戲庫的 `scripts/make-shui-mask.py` 產生（`python3 <遊戲庫>/scripts/make-shui-mask.py tools/site/logo.html`），時間在 `assets/css/site.css`（照抄遊戲 `style.css` 那一段）；預告的片頭 `tools/capture/title.html` 也是同一份字標，錄的時候放快 1.15 倍（`shots.mjs` 的 `TITLE_SPEED`）。v0.9.50 起照使用者手畫的七步筆順：蜃身、浪頂、浪身、船底、桅杆、掛帆、蜃頭；v0.9.51 起第一筆蜃身從右上寫到左下。
 
 ## 上線
 

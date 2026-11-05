@@ -76,6 +76,9 @@ export const SHOTS = [
       const c = window.__c, g = XIEYI.game, p = g.player; const dusk = c.dusk(12); c.at(12, dusk - 0.035);   // 第十三夜（試玩裡就有）
       const { cx, cy } = c.home(); c.put(cx - 1, cy); p.fx = 1; p.fy = 0;
       g.ents.dashT = 1e9; g.ents.list = g.ents.list.filter(e => e.type !== '狼' && e.type !== '虎');
+      // 遊戲裡魄本來就穿得過磚（怕光穿磚），可是鏡頭裡停在磚上看起來像卡在牆裡：錄的時候不讓牠站上人造的東西
+      const ents = g.ents, stand = ents.canStand.bind(ents), built = /[磚甓門窗墟扉籬燈灶櫃床鼎甕缸]/;
+      ents.canStand = (type, x, y, night) => stand(type, x, y, night) && !(type === '魄' && built.test(g.world.get(x, y)));
       window.__home = { cx, cy, dusk };
     },
     frame({ f }) {
@@ -96,7 +99,9 @@ export const SHOTS = [
       w.wx = 'snow'; w.rainUntil = w.time + c.DAY;
     },
     frame({ f }) {
-      const c = window.__c;
+      const c = window.__c, p = XIEYI.game.player, ev = window.__events = window.__events || { steps: [] };
+      if (ev.at !== undefined && (p.x !== ev.px || p.y !== ev.py)) ev.steps.push(f - 1);   // 上一幀推進時走了一步（配樂的踩雪聲照這個）
+      ev.at = f; ev.px = p.x; ev.py = p.y;
       if (f === 60) c.key('KeyA', true); if (f === 66) c.key('KeyA', false);
       if (f === 120) c.key('KeyA', true); if (f === 126) c.key('KeyA', false);
     },
@@ -107,12 +112,16 @@ export const SHOTS = [
       const c = window.__c, g = XIEYI.game, p = g.player, w = g.world; c.at(150, 0.66);
       const { cx, cy } = c.home(); c.put(cx, cy); p.fx = 0; p.fy = 1;
       w.wx = 'thunder'; w.rainUntil = w.time + c.DAY; window.__home = { cx, cy };
+      g.boltT = 1e9;   // 不要遊戲自己隨機落的雷，只要下面排好的三道
+      // 雷先亮一圈（boltWarn），一息後遊戲自己落下來（boltStrike：閃光、劈痕）；記下落在哪一幀，配樂的雷聲照這個對齊
+      const ev = window.__events = { strikes: [] }, strike = g.boltStrike.bind(g);
+      g.boltStrike = (x, y) => { ev.strikes.push(window.__frame); return strike(x, y); };
     },
     frame({ f }) {
       const g = XIEYI.game, h = window.__home;
+      window.__frame = f; g.boltT = 1e9;
       const plan = { 10: [h.cx + 6, h.cy + 4], 70: [h.cx - 7, h.cy - 3], 120: [h.cx + 2, h.cy + 6] };
       if (plan[f]) g.boltWarn(plan[f][0], plan[f][1]);
-      if (plan[f - 30]) g.boltStrike(plan[f - 30][0], plan[f - 30][1]);
     },
   },
   {   // 六、五穀：一塊田，字一筆一筆長出來
