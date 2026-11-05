@@ -6,6 +6,8 @@ import json, os, html, sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import litou   # 《力透紙背》的介紹頁（tools/site/litou.py）
+import home    # 首頁：長風的「寫意」系列，選一部遊戲（tools/site/home.py）
+INK = 'mohuacangsheng/'   # 《墨畫蒼生》的介紹頁搬到這裡（首頁改成選遊戲；三語各一份：mohuacangsheng/、zh-hans/mohuacangsheng/、en/mohuacangsheng/）
 
 ROOT = Path(__file__).resolve().parents[2]
 SITE = 'https://stejoy.com/'
@@ -155,10 +157,10 @@ def esc(s):
     return html.escape(s, quote=True)
 
 def page(code):
-    L, T, up = LANGS[code], TEXT[code], LANGS[code]['up']
+    L, T, up = LANGS[code], TEXT[code], '../' + LANGS[code]['up']   # 比首頁深一層
     a = up + 'assets/'
-    alts = '\n'.join(f'<link rel="alternate" hreflang="{c}" href="{SITE}{LANGS[c]["dir"]}">' for c in LANGS) + f'\n<link rel="alternate" hreflang="x-default" href="{SITE}">'
-    langnav = ''.join(f'<a href="{up}{LANGS[c]["dir"]}" lang="{c}"{" aria-current=\"page\"" if c == code else ""}>{LANGS[c]["short"]}</a>' for c in LANGS)
+    alts = '\n'.join(f'<link rel="alternate" hreflang="{c}" href="{SITE}{LANGS[c]["dir"]}{INK}">' for c in LANGS) + f'\n<link rel="alternate" hreflang="x-default" href="{SITE}{INK}">'
+    langnav = ''.join(f'<a href="{up}{LANGS[c]["dir"]}{INK}" lang="{c}"{" aria-current=\"page\"" if c == code else ""}>{LANGS[c]["short"]}</a>' for c in LANGS)
     nav = ''.join(f'<a href="#{h}">{esc(n)}</a>' for h, n in zip(['trailer', 'story', 'demo', 'features', 'contact'], T['nav']))
     cta = f'<a class="btn primary" href="{STEAM_URL}">{esc(T["wish"])}</a>' if STEAM_URL else f'<span class="badge">{esc(T["soon"])}</span>'
     tracks = ''.join(f'<track kind="subtitles" srclang="{c}" label="{LANGS[c]["name"]}" src="{a}media/trailer.{c}.vtt"{" default" if c == code else ""}>' for c in LANGS)
@@ -176,7 +178,7 @@ def page(code):
     facts = ''.join(f'<li>{esc(x)}</li>' for x in T['facts'])
     story = ''.join(f'<p>{esc(p)}</p>' for p in T['story'])
     lang_note = f'<p class="lang-note">{esc(T["lang_note"])}</p>' if T.get('lang_note') else ''
-    banner = json.dumps({c: [t, up + LANGS[c]['dir']] for c, t in T['banner'].items()}, ensure_ascii=False)
+    banner = json.dumps({c: [t, up + LANGS[c]['dir'] + INK] for c, t in T['banner'].items()}, ensure_ascii=False)
     return f'''<!doctype html>
 <html lang="{code}">
 <head>
@@ -185,14 +187,14 @@ def page(code):
 <title>{esc(T['title'])}</title>
 <meta name="description" content="{esc(T['desc'])}">
 <meta name="author" content="{AUTHOR}">
-<link rel="canonical" href="{SITE}{L['dir']}">
+<link rel="canonical" href="{SITE}{L['dir']}{INK}">
 {alts}
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{esc(T['studio'])}">
 <meta property="og:title" content="{esc(T['title'])}">
 <meta property="og:description" content="{esc(T['desc'])}">
 <meta property="og:image" content="{SITE}assets/img/og.jpg">
-<meta property="og:url" content="{SITE}{L['dir']}">
+<meta property="og:url" content="{SITE}{L['dir']}{INK}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#f4eee2">
 <link rel="icon" href="{up}favicon.ico" sizes="any">
@@ -271,15 +273,17 @@ def page(code):
 '''
 
 for code, L in LANGS.items():
-    out = ROOT / L['dir'] / 'index.html'
+    out = ROOT / L['dir'] / INK / 'index.html'   # 《墨畫蒼生》
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(page(code), encoding='utf-8')
     print(out.relative_to(ROOT), out.stat().st_size)
 
+home.build(LANGS, TEXT, SITE, AUTHOR, AUTHOR_URL, MAIL, LOGO)   # 首頁：選一部遊戲（index.html、zh-hans/index.html、en/index.html）
+
 litou.build(LANGS, TEXT, SITE, AUTHOR, AUTHOR_URL, MAIL)   # 《力透紙背》：litouzhibei/、zh-hans/litouzhibei/、en/litouzhibei/
 
-# sitemap：首頁三語、《力透紙背》三語，各組互相標成同一頁的不同語言
-groups = ['', litou.SLUG]
+# sitemap：首頁、《墨畫蒼生》、《力透紙背》各三語，各組互相標成同一頁的不同語言
+groups = ['', INK, litou.SLUG]
 (ROOT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + ''.join(
     f'  <url><loc>{SITE}{L["dir"]}{g}</loc>' + ''.join(f'<xhtml:link rel="alternate" hreflang="{c}" href="{SITE}{LANGS[c]["dir"]}{g}"/>' for c in LANGS) + '</url>\n' for g in groups for L in LANGS.values()) + '</urlset>\n', encoding='utf-8')
 (ROOT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {SITE}sitemap.xml\n', encoding='utf-8')

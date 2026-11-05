@@ -1,0 +1,198 @@
+"""stejoy.com 的首頁：長風的「寫意」系列，選一部遊戲（使用者要的：在主頁加一個選不同遊戲的介面，先放兩部）。
+三語：index.html、zh-hans/index.html、en/index.html。由 tools/site/build-site.py 一起產生，文字改這個檔案的 TEXT。
+每一部是一張紙：《墨畫蒼生》淺紙、會寫出來的「水」字標、實機片段；《力透紙背》墨黑、照「力」的筆順寫出來的標誌（紙色）、
+實機片段反過來看（紙背）。上面一排「種類」可以篩；← → 換一部、Enter 進入。遊戲多了就多幾張紙、多幾個種類。
+《墨畫蒼生》原本的介紹頁搬到 mohuacangsheng/，《力透紙背》在 litouzhibei/。
+"""
+import json, html
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+GAMES = [   # 首頁上的順序；kind 是「種類」那一排的鍵
+    {'id': 'inkwild', 'slug': 'mohuacangsheng/', 'kind': 'survival', 'clip': 'scenes/gather'},
+    {'id': 'litou', 'slug': 'litouzhibei/', 'kind': 'battle', 'clip': 'litou/scenes/mobius'},
+]
+KINDS = ['all', 'survival', 'battle']
+
+TEXT = {
+    'zh-Hant': {
+        'title': '長風｜寫意系列',
+        'desc': '長風的「寫意」系列：拿漢字當材料的遊戲。《墨畫蒼生》即將登上 Steam，《力透紙背》敬請期待。',
+        'nav': ['遊戲', '關於', '聯絡'],
+        'kicker': '「寫意」系列',
+        'headline': '落筆成局',   # 使用者嫌「用漢字寫成的遊戲」平；局＝棋局、戰局、布局，一落筆就開局
+        'poem': '長風破浪會有時，直掛雲帆濟滄海。', 'cite': '李白〈行路難〉',
+        'choose': '選一部', 'hint': '← → 換一部　Enter 進入',
+        'kinds': {'all': '全部', 'survival': '生存 · 建造', 'battle': '筆順 · 戰鬥'},
+        'games': {
+            'inkwild': {'name': '墨畫蒼生', 'en': 'InkWild', 'genre': '生存 · 建造', 'tag': '寫木為舟 · 寫水成淵',
+                        'pitch': '一張紙落在海上，紙上的字活了。取木、砌磚、點燈，撐過一夜又一夜；膽氣夠了，就造船渡海。', 'status': '即將登上 Steam', 'go': '進入'},
+            'litou': {'name': '力透紙背', 'en': 'Through the Page', 'genre': '筆順 · 戰鬥', 'tag': '由點及線 · 由線及面 · 由面及體',
+                      'pitch': '鍵盤 1 到 0 是十種筆畫，照筆順寫對，錯字就正了。從一個點寫起，一路寫進超正方體的裡面。', 'status': '敬請期待', 'go': '進入'},
+        },
+        'about_h': '關於長風',
+        'about': ['長風是做「寫意」系列的小工作室，名字取自李白〈行路難〉。',
+                  '「寫意」的每一部都拿漢字當材料：在《墨畫蒼生》裡，字是一塊塊可以拆、可以砌的地；在《力透紙背》裡，筆畫是招式，字寫對了就是一擊。'],
+        'contact_h': '聯絡', 'contact': '想說什麼，寫信給我們：',
+    },
+    'zh-Hans': {
+        'title': '长风｜写意系列',
+        'desc': '长风的“写意”系列：拿汉字当材料的游戏。《墨画苍生》即将登陆 Steam，《力透纸背》敬请期待。',
+        'nav': ['游戏', '关于', '联系'],
+        'kicker': '“写意”系列',
+        'headline': '落笔成局',
+        'poem': '长风破浪会有时，直挂云帆济沧海。', 'cite': '李白〈行路难〉',
+        'choose': '选一部', 'hint': '← → 换一部　Enter 进入',
+        'kinds': {'all': '全部', 'survival': '生存 · 建造', 'battle': '笔顺 · 战斗'},
+        'games': {
+            'inkwild': {'name': '墨画苍生', 'en': 'InkWild', 'genre': '生存 · 建造', 'tag': '写木为舟 · 写水成渊',
+                        'pitch': '一张纸落在海上，纸上的字活了。取木、砌砖、点灯，撑过一夜又一夜；胆气够了，就造船渡海。', 'status': '即将登陆 Steam', 'go': '进入'},
+            'litou': {'name': '力透纸背', 'en': 'Through the Page', 'genre': '笔顺 · 战斗', 'tag': '由点及线 · 由线及面 · 由面及体',
+                      'pitch': '键盘 1 到 0 是十种笔画，照笔顺写对，错字就正了。从一个点写起，一路写进超正方体的里面。', 'status': '敬请期待', 'go': '进入'},
+        },
+        'about_h': '关于长风',
+        'about': ['长风是做“写意”系列的小工作室，名字取自李白〈行路难〉。',
+                  '“写意”的每一部都拿汉字当材料：在《墨画苍生》里，字是一块块可以拆、可以砌的地；在《力透纸背》里，笔画是招式，字写对了就是一击。'],
+        'contact_h': '联系', 'contact': '想说什么，写信给我们：',
+    },
+    'en': {
+        'title': 'SteJoy | The Xieyi series',
+        'desc': 'SteJoy’s Xieyi series: games that take Chinese characters as their material. InkWild is coming to Steam; Through the Page is coming soon.',
+        'nav': ['Games', 'About', 'Contact'],
+        'kicker': 'The 寫意 (Xieyi) series',
+        'headline': 'Set brush to paper, and the game begins',
+        'poem': '“A time will come to ride the long wind and cleave the waves; then I’ll hoist my cloud-white sail and cross the sea.”', 'cite': 'Li Bai, The Hard Road',
+        'choose': 'Pick a game', 'hint': '← → to switch · Enter to open',
+        'kinds': {'all': 'All', 'survival': 'Survival · Building', 'battle': 'Stroke order · Battle'},
+        'games': {
+            'inkwild': {'name': '墨畫蒼生', 'en': 'InkWild', 'genre': 'Survival · Building', 'tag': 'Write wood into a boat · write water into the deep',
+                        'pitch': 'A sheet of paper falls on the sea, and the characters on it come alive. Gather wood, lay bricks, light lamps and last night after night; when your courage is enough, build a boat and cross the sea.', 'status': 'Coming to Steam', 'go': 'Open'},
+            'litou': {'name': '力透紙背', 'en': 'Through the Page', 'genre': 'Stroke order · Battle', 'tag': 'From point to line · line to plane · plane to solid',
+                      'pitch': 'Keys 1 to 0 are the ten brush strokes; write a character in the right order and the broken one in front of you is set right. Start from a single point and write your way into a tesseract.', 'status': 'Coming soon', 'go': 'Open'},
+        },
+        'about_h': 'About SteJoy',
+        'about': ['SteJoy (長風, “the long wind”) is a small studio making the 寫意 (Xieyi) series. The Chinese name comes from Li Bai’s poem The Hard Road.',
+                  'Each Xieyi game takes Chinese characters as its material. In InkWild, characters are ground you can take apart and build with; in Through the Page, strokes are moves, and a character written right is a blow.'],
+        'contact_h': 'Contact', 'contact': 'Write to us:',
+    },
+}
+
+def esc(s):
+    return html.escape(s, quote=True)
+
+def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME, LOGO):
+    L, T, up = LANGS[code], TEXT[code], LANGS[code]['up']
+    a = up + 'assets/'
+    alts = '\n'.join(f'<link rel="alternate" hreflang="{c}" href="{SITE}{LANGS[c]["dir"]}">' for c in LANGS) + f'\n<link rel="alternate" hreflang="x-default" href="{SITE}">'
+    langnav = ''.join(f'<a href="{up}{LANGS[c]["dir"]}" lang="{c}"{" aria-current=\"page\"" if c == code else ""}>{LANGS[c]["short"]}</a>' for c in LANGS)
+    nav = ''.join(f'<a href="#{h}">{esc(n)}</a>' for h, n in zip(['games', 'about', 'contact'], T['nav']))
+    n_of = lambda k: len(GAMES) if k == 'all' else sum(g['kind'] == k for g in GAMES)
+    kinds = ''.join(f'<button type="button" class="hm-kind" data-kind="{k}" aria-pressed="{"true" if k == "all" else "false"}">{esc(T["kinds"][k])}<span>{n_of(k)}</span></button>' for k in KINDS)
+    title_chars = '力透纸背' if code == 'zh-Hans' else '力透紙背'
+    cards = []
+    for i, g in enumerate(GAMES):
+        G = T['games'][g['id']]
+        emblem = (f'<div class="hm-logo">{LOGO}</div>' if g['id'] == 'inkwild'
+                  else '<div class="hm-mark" aria-hidden="true"></div>')
+        name = (f'<h3 class="hm-name sr-only">{esc(G["name"])} {esc(G["en"])}</h3>' if g['id'] == 'inkwild'
+                else f'<h3 class="hm-name"><span class="hm-zh">{"".join(f"<i>{c}</i>" for c in title_chars)}</span><span class="hm-en">{esc(G["en"])}</span></h3>')
+        cards.append(f'''
+    <a class="hm-card {g['id']}" href="{g['slug']}" data-kind="{g['kind']}" data-i="{i}">
+      <div class="hm-stage" aria-hidden="true"><video muted loop playsinline preload="none" poster="{a}media/{g['clip']}.jpg" data-src="{a}media/{g['clip']}.mp4" data-webm="{a}media/{g['clip']}.webm"></video></div>
+      {emblem}
+      <div class="hm-body">
+        <p class="hm-genre">{esc(G['genre'])}</p>
+        {name}
+        <p class="hm-tag">{' · '.join(f'<span>{esc(x)}</span>' for x in G['tag'].split(' · '))}</p>
+        <p class="hm-pitch">{esc(G['pitch'])}</p>
+        <p class="hm-meta"><span class="hm-status">{esc(G['status'])}</span><span class="hm-go">{esc(G['go'])} <b aria-hidden="true">→</b></span></p>
+      </div>
+    </a>''')
+    about = ''.join(f'<p>{esc(p)}</p>' for p in T['about'])
+    banner = json.dumps({c: [t, up + LANGS[c]['dir']] for c, t in HOME['banner'].items()}, ensure_ascii=False)
+    mark = json.dumps({'w': 760, 'h': 514, 'turns': [0.2285, 0.5021], 'ink': [239, 229, 207], 'ribbon': a + 'litou/mark-ribbon.png', 'ren': a + 'litou/mark-ren.png', 'time': a + 'litou/mark-time.png'})
+    return f'''<!doctype html>
+<html lang="{code}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{esc(T['title'])}</title>
+<meta name="description" content="{esc(T['desc'])}">
+<meta name="author" content="{AUTHOR}">
+<link rel="canonical" href="{SITE}{L['dir']}">
+{alts}
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{esc(HOME['studio'])}">
+<meta property="og:title" content="{esc(T['title'])}">
+<meta property="og:description" content="{esc(T['desc'])}">
+<meta property="og:image" content="{SITE}assets/img/og.jpg">
+<meta property="og:url" content="{SITE}{L['dir']}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f4eee2">
+<link rel="icon" href="{up}favicon.ico" sizes="any">
+<link rel="icon" href="{a}img/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="{a}img/icon-180.png">
+<link rel="stylesheet" href="{a}fonts/fonts.css">
+<link rel="stylesheet" href="{a}css/site.css">
+<link rel="stylesheet" href="{a}css/home.css">
+<script defer src="{a}js/site.js"></script>
+<script>window.MARK_DATA = {mark};</script>
+<script defer src="{a}litou/mark.js"></script>
+<script defer src="{a}js/home.js"></script>
+</head>
+<body class="lang-{code} home" data-banner='{esc(banner)}'>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="hm-rough" x="-8%" y="-8%" width="116%" height="116%"><feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
+<header class="top">
+  <a class="studio" href="{up}{L['dir']}"><img src="{a}img/icon.svg" alt="" width="34" height="34"><span>{esc(HOME['studio'])}</span></a>
+  <nav class="sections" aria-label="sections">{nav}</nav>
+  <nav class="langs" aria-label="language">{langnav}</nav>
+</header>
+<div id="lang-banner" hidden></div>
+
+<main>
+<section class="hm-hero">
+  <p class="hm-kicker">{esc(T['kicker'])}</p>
+  <h1 class="hm-title">{esc(T['headline'])}</h1>
+  <p class="hm-poem">{esc(T['poem'])}<cite>{esc(T['cite'])}</cite></p>
+</section>
+
+<section id="games" class="hm-games" aria-label="{esc(T['choose'])}">
+  <div class="hm-bar">
+    <h2>{esc(T['choose'])}</h2>
+    <div class="hm-kinds" role="group" aria-label="{esc(T['choose'])}">{kinds}</div>
+    <p class="hm-hint">{esc(T['hint'])}</p>
+  </div>
+  <div class="hm-row">{''.join(cards)}
+  </div>
+</section>
+
+<section id="about" class="hm-about">
+  <h2>{esc(T['about_h'])}</h2>
+  <blockquote class="hm-quote"><p>{esc(T['poem'])}</p><cite>{esc(T['cite'])}</cite></blockquote>
+  {about}
+</section>
+
+<section id="contact" class="contact">
+  <h2>{esc(T['contact_h'])}</h2>
+  <p>{esc(T['contact'])} <a href="mailto:{MAIL}">{MAIL}</a></p>
+</section>
+</main>
+
+<footer>
+  <div class="author">
+    <p class="author-name"><span>{esc(HOME['author'][0])}</span> {AUTHOR}</p>
+    <p class="author-bio"><span>{esc(HOME['bio'][0])}</span></p>
+    <p class="author-meta">{esc(HOME['author'][3])} <a href="{AUTHOR_URL}" rel="me">stephenjia.com</a> · {esc(HOME['author'][1])} · {esc(HOME['author'][2])} <a href="mailto:{MAIL}">{MAIL}</a></p>
+  </div>
+  <p class="copy">{esc(HOME['copy'])}</p>
+</footer>
+</body>
+</html>
+'''
+
+def build(LANGS, TEXTS, SITE, AUTHOR, AUTHOR_URL, MAIL, LOGO):
+    for code, L in LANGS.items():
+        out = ROOT / L['dir'] / 'index.html'
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, TEXTS[code], LOGO), encoding='utf-8')
+        print(out.relative_to(ROOT), out.stat().st_size)

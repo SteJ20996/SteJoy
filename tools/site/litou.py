@@ -480,7 +480,7 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
 <section id="contact" class="lt-sec lt-contact">
   {h2('contact', T['contact_h'])}
   <p>{esc(T['contact'])} <a href="mailto:{MAIL}">{MAIL}</a></p>
-  <p class="lt-series"><a href="{up}{L['dir']}">{esc(T['series'])} →</a></p>
+  <p class="lt-series"><a href="{up}{L['dir']}mohuacangsheng/">{esc(T['series'])} →</a></p>
 </section>
 </main>
 

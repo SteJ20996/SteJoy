@@ -5,7 +5,7 @@
 // 同一筆只往前走，所以沒有回頭筆。少動（prefers-reduced-motion）時直接是寫好的樣子。
 (function () {
   const D = window.MARK_DATA;
-  const INK = [28, 26, 23];
+  const INK = (D && D.ink) || [28, 26, 23];   // 網站的首頁把帶子畫成紙色（墨黑的底上）：MARK_DATA.ink
   // 時間（秒）：等標題的「力」落下再起筆
   const T = { delay: 0.45, s1: 1.0, gap: 0.16, s2: 0.62 };
   T.end1 = T.delay + T.s1; T.start2 = T.end1 + T.gap; T.end2 = T.start2 + T.s2; T.land = T.end2 + 0.05;
