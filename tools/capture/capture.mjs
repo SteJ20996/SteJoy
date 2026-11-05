@@ -42,6 +42,8 @@ for (const shot of SHOTS) {
     await page.clock.runFor(1000 / FPS);
     if (!want || want.has(f)) await page.screenshot({ path: path.join(dir, (stills ? 's' : '') + String(f).padStart(4, '0') + (stills ? '.png' : '.jpg')), type: stills ? 'png' : 'jpeg', quality: stills ? undefined : 95 });
   }
+  const events = await page.evaluate(() => window.__events || null);   // 鏡頭裡記下的事（落雷、腳步落在哪一幀），配樂照這個對齊
+  if (events && !stills) fs.writeFileSync(path.join(OUT, shot.name + '.events.json'), JSON.stringify(events));
   await page.close();
   if (!stills) execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', path.join(dir, '%04d.jpg'), '-c:v', 'libx264', '-preset', 'slow', '-crf', '16', '-pix_fmt', 'yuv420p', path.join(OUT, shot.name + '.mp4')]);
   console.log(shot.name, n + ' frames', ((Date.now() - t0) / 1000).toFixed(0) + 's');

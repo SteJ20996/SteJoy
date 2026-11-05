@@ -47,7 +47,7 @@ body.lang-en .tagline { letter-spacing: .04em; font-style: italic; }
 .lang-note { margin: 22px auto 0; max-width: 560px; font-size: 15px; color: var(--ink-2); border: 1px dashed var(--line); border-radius: 6px; padding: 8px 14px; }
 
 #title-logo .shui-w { stroke-dasharray: 1 1.1; stroke-dashoffset: 1.05; animation: shui-write var(--d) cubic-bezier(.5, .05, .4, 1) var(--t) forwards; }
-#title-logo .shui-band { --t: .1s; --d: .5s; }     /* ① 蜃身：從尾往右上，捲過頭頂那一道弧 */
+#title-logo .shui-band { --t: .1s; --d: .5s; }     /* ① 蜃身：從右上到左下（v0.9.51） */
 #title-logo .shui-crest { --t: .76s; --d: .4s; }    /* ② 浪頂：橫撇 */
 #title-logo .shui-body { --t: 1.32s; --d: .6s; }   /* ③ 浪身：豎折 */
 #title-logo .shui-curl { --t: 1.62s; --d: .32s; }  /*     內捲跟著帶一筆 */
