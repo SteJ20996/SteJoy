@@ -5,6 +5,8 @@
 預告與場景由 tools/litou/ 錄、剪（見 README）。
 """
 import json, html
+import sys, os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from head import HEAD_JS   # iPhone Duo 用電腦版排、頁面大小（tools/site/head.py）
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -333,6 +335,8 @@ TEXT = {
     },
 }
 
+
+
 def esc(s):
     return html.escape(s, quote=True)
 
@@ -374,6 +378,7 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{HEAD_JS}
 <title>{esc(T['title'])}</title>
 <meta name="description" content="{esc(T['desc'])}">
 <meta name="author" content="{AUTHOR}">

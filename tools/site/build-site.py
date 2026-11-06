@@ -6,6 +6,7 @@ import json, os, html, sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import litou   # 《力透紙背》的介紹頁（tools/site/litou.py）
+from head import HEAD_JS   # iPhone Duo 用電腦版排、頁面大小（tools/site/head.py）
 import home    # 首頁：長風的「寫意」系列，選一部遊戲（tools/site/home.py）
 INK = 'mohuacangsheng/'   # 《墨畫蒼生》的介紹頁搬到這裡（首頁改成選遊戲；三語各一份：mohuacangsheng/、zh-hans/mohuacangsheng/、en/mohuacangsheng/）
 
@@ -153,6 +154,8 @@ TEXT = {
     },
 }
 
+
+
 def esc(s):
     return html.escape(s, quote=True)
 
@@ -184,6 +187,7 @@ def page(code):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{HEAD_JS}
 <title>{esc(T['title'])}</title>
 <meta name="description" content="{esc(T['desc'])}">
 <meta name="author" content="{AUTHOR}">

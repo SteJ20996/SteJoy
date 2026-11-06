@@ -5,6 +5,8 @@
 《墨畫蒼生》原本的介紹頁搬到 mohuacangsheng/，《力透紙背》在 litouzhibei/。
 """
 import json, html, re
+import sys, os; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from head import HEAD_JS   # iPhone Duo 用電腦版排、頁面大小（tools/site/head.py）
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -105,6 +107,8 @@ TEXT = {
     },
 }
 
+
+
 def esc(s):
     return html.escape(s, quote=True)
 
@@ -146,6 +150,7 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME, LOGO):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{HEAD_JS}
 <title>{esc(T['title'])}</title>
 <meta name="description" content="{esc(T['desc'])}">
 <meta name="author" content="{AUTHOR}">

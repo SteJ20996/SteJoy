@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){var m=document.querySelector('meta[name=viewport]'),D='width=device-width, initial-scale=1',r0=0;function fit(){var w=innerWidth,h=innerHeight;r0=w/h;if(/iPhone/.test(navigator.userAgent)&&w>=600&&w<860&&h>=600){m.setAttribute('content','width=900');document.documentElement.classList.add('duo')}}fit();addEventListener('resize',function(){if(Math.abs(innerWidth/innerHeight-r0)<.05)return;m.setAttribute('content',D);document.documentElement.classList.remove('duo');requestAnimationFrame(function(){requestAnimationFrame(fit)})})})();try{var z=+localStorage.getItem('stejoy.zoom');if(z>=.7&&z<=1.2){z=Math.min(z,innerWidth<880?1:Math.min(1.2,Math.floor(innerWidth/88)/10));if(z!==1){document.documentElement.style.zoom=z;document.documentElement.style.setProperty('--z',z)}}}catch(e){}</script>
 <title>力透紙背 Through the Page｜長風</title>
 <meta name="description" content="以筆順為招式的漢字戰鬥遊戲。你是紙上剩下的一個「人」：鍵盤 1 到 0 是十種筆畫，照筆順寫對，錯字就正了。由點及線、由線及面、由面及體，一路寫進超正方體的裡面。">
 <meta name="author" content="Stephen Jia">

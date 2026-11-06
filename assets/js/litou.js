@@ -42,11 +42,21 @@
     const LABELS = [...'人十大口天水火木永玉石古本生正立'], labels = LABELS.map((c, i) => D && D.chars[c] ? c : Object.keys(D ? D.chars : {}).filter(x => D.chars[x].seq.length >= 2 && !LABELS.includes(x))[i] || '');
     let s = 0, target = 0, t0 = performance.now(), W = 0, H = 0, dpr = 1;
     const size = () => { const r = cv.getBoundingClientRect(); dpr = Math.min(2, window.devicePixelRatio || 1); W = r.width; H = r.height; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); };
-    size(); addEventListener('resize', size);
-    const measure = () => {   // 捲到哪一章：那一章的中線過了畫面中間多少
-      const mid = innerHeight * 0.5; let v = 0;
-      steps.forEach((el, i) => { const r = el.getBoundingClientRect(); const p = (mid - r.top) / r.height; if (i === 0) v = Math.max(0, p); else if (p > 0) v = i + Math.min(1, p); el.classList.toggle('on', r.top < innerHeight * 0.62 && r.bottom > innerHeight * 0.38); });
-      target = Math.max(0, Math.min(4, v - 0.35));
+    size(); addEventListener('resize', size);   // 頁面縮放時 site.js 也會發一次 resize
+    // 捲到哪一章：第 i 章的內容在讀的地方時，超正方體停在 i 維；兩章交界經過讀的地方，才長出下一個方向
+    // （以前是「這一章讀了幾成就長幾成」，讀第二章時已經長出三維，使用者說動畫比文字早）。
+    // 讀的地方：寬螢幕是畫面正中；手機上超正方體黏在頂上，是它底下那一塊的正中
+    // 畫面多高：量一個釘滿畫面的空元素，跟其他元素的位置同一套座標（左下角把頁面縮放了也對得上）
+    const vp = document.createElement('div'); vp.setAttribute('aria-hidden', 'true'); vp.style.cssText = 'position:fixed;left:0;top:0;width:1px;height:100%;visibility:hidden;pointer-events:none';
+    document.body.appendChild(vp);
+    const hcBox = cv.parentElement, ease = (v) => v <= 0 ? 0 : v >= 1 ? 1 : v * v * (3 - 2 * v);
+    const measure = () => {
+      const hb = hcBox.getBoundingClientRect(), sr = steps[0].getBoundingClientRect(), vh = vp.getBoundingClientRect().height || innerHeight, top = hb.right > sr.left + 1 ? Math.max(0, hb.bottom) : 0;
+      const mid = (top + vh) / 2, half = (vh - top) * 0.12;
+      const c = steps.map(el => { const r = el.getBoundingClientRect(); el.classList.toggle('on', r.top < mid + half && r.bottom > mid - half); return r.top + r.height / 2; });
+      let v = mid >= c[c.length - 1] ? c.length - 1 : 0;
+      for (let i = 0; i < c.length - 1; i++) if (mid >= c[i] && mid < c[i + 1]) { const u = (mid - c[i]) / (c[i + 1] - c[i]); v = i + ease((u - 0.3) / 0.4); }   // 前三成停在 i、中間四成換、後三成停在 i+1
+      target = Math.max(0, Math.min(4, v));
     };
     addEventListener('scroll', measure, { passive: true }); measure();
     // 四維 → 二維：xw、yw、xz、yz 四個平面轉，再兩次透視（這是加寬以前的透視，近處的頂點放得大）
@@ -98,9 +108,8 @@
       if (s > 0.6) {
         const vis = Math.min(1, (s - 0.6) * 1.5);
         // 還沒展開的方向上，頂點疊在同一點（一維時十六個頂點只有兩個位置）：那個方向展開了，分出來的頂點的字才淡進來，疊著的只畫一個
-        const sm = (v) => v <= 0 ? 0 : v >= 1 ? 1 : v * v * (3 - 2 * v);
         P.map((p, i) => [p, i]).sort((m, n) => m[0][4] - n[0][4]).forEach(([p, i]) => {
-          let al = vis; for (let k = 0; k < 4; k++) if (i >> k & 1) al *= sm((a[k] - 0.04) / 0.26);   // 一離開重疊就全亮（展開三成時已分開幾個字寬）
+          let al = vis; for (let k = 0; k < 4; k++) if (i >> k & 1) al *= ease((a[k] - 0.04) / 0.26);   // 一離開重疊就全亮（展開三成時已分開幾個字寬）
           if (al < 0.02) return;
           const fs = Math.max(11, 13 * p[4] + 4);
           ctx.font = fs + 'px "LXGW WenKai TC", serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';

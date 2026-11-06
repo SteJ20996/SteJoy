@@ -11,7 +11,7 @@ a { color: var(--red); text-underline-offset: 3px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* 頂欄 */
-.top { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 24px; padding: 10px max(16px, calc(50vw - 560px));
+.top { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 24px; padding: 10px max(16px, calc(50% - 560px));
   background: rgba(244, 238, 226, .86); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
 .studio { display: flex; align-items: center; gap: 8px; color: var(--ink); text-decoration: none; font: 600 19px/1 var(--en); letter-spacing: .06em; }
 body.lang-zh-Hant .studio { font: 400 23px/1 var(--zh); letter-spacing: .16em; }   /* 中文頁寫「長風」：繁中用霞鶩文楷 */
@@ -125,12 +125,27 @@ footer .copy { margin: 0; }
 
 /* 語言建議（照瀏覽器的語言，不自動跳） */
 #lang-banner { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 20; display: flex; align-items: center; gap: 12px;
-  background: var(--ink); color: var(--paper); border-radius: 8px; padding: 8px 10px 8px 16px; font-size: 15px; box-shadow: 0 10px 30px -12px rgba(0,0,0,.5); max-width: calc(100vw - 32px); }
+  background: var(--ink); color: var(--paper); border-radius: 8px; padding: 8px 10px 8px 16px; font-size: 15px; box-shadow: 0 10px 30px -12px rgba(0,0,0,.5); max-width: calc(100vw / var(--z, 1) - 32px); }
 #lang-banner[hidden] { display: none; }
 #lang-banner a { color: #f3c9a6; }
 #lang-banner button { border: 0; background: transparent; color: var(--paper); font-size: 20px; line-height: 1; cursor: pointer; padding: 4px 8px; }
 
+/* 頁面大小：左下角「− 100% ＋」（使用者要的：有人看到大圖會不舒服）。整頁用根元素的 CSS zoom 縮放，--z 是倍率；
+   vh、vw 不跟著 zoom 變，要撐滿畫面的高度寫成 calc(100vh / var(--z, 1) …)。按鈕自己反縮放，永遠一樣大 */
+:root { --z: 1; }
+.zoom { position: fixed; z-index: 21; left: calc(12px + env(safe-area-inset-left, 0px)); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; gap: 2px; padding: 3px;
+  background: rgba(28, 26, 23, .9); color: var(--paper); border: 1px solid rgba(244, 238, 226, .22); border-radius: 8px; box-shadow: 0 8px 24px -10px rgba(0, 0, 0, .5); font: 15px/1 var(--en); }
+.zoom button { font: inherit; color: inherit; background: transparent; border: 0; border-radius: 5px; min-width: 36px; height: 34px; padding: 0 8px; cursor: pointer; }
+.zoom button:hover:not(:disabled) { background: rgba(244, 238, 226, .14); }
+.zoom button:disabled { opacity: .32; cursor: default; }
+.zoom button:focus-visible { outline: 2px solid #e05a45; outline-offset: 1px; }
+.zoom .zv { min-width: 54px; font-size: 13.5px; letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+html.duo .zoom { font-size: 20px; }   /* iPhone Duo 打開時整頁照 900 寬縮到螢幕上（tools/site/head.py），按鈕跟著小了，放回手指按得到的大小 */
+html.duo .zoom button { min-width: 50px; height: 46px; }
+html.duo .zoom .zv { min-width: 74px; font-size: 18px; }
+
 @media (max-width: 760px) {
+  #lang-banner { bottom: calc(60px / var(--z, 1) + env(safe-area-inset-bottom, 0px)); }   /* 讓出左下角的頁面大小（頁面縮放了也讓得開） */
   body { font-size: 17px; }
   .sections { display: none; }
   .langs { margin-left: auto; }
