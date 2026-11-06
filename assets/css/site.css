@@ -106,7 +106,7 @@ body.lang-en .feat h3 { letter-spacing: 0; }
 .facts li { border: 1px solid var(--line); border-radius: 999px; padding: 3px 14px; font-size: 15px; color: var(--ink-2); }
 
 .contact p { margin: 0; }
-/* 連到「寫意」系列第三部《力透紙背》的介紹頁（還在做，寫「敬請期待」） */
+/* 連到「寫意」系列第二部《力透紙背》的介紹頁（還在做，寫「敬請期待」） */
 .contact .next-game { margin-top: 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
 .next-game span { font-size: 14px; color: var(--red); border: 1px solid currentColor; border-radius: 3px; padding: 0 8px; letter-spacing: .12em; }
 body.lang-en .next-game span { letter-spacing: .04em; }
