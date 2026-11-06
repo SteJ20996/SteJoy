@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>力透紙背 · 片頭</title>
+<!-- 預告的片頭與片尾：遊戲起始頁的字標（粗墨、墨暈、紙背反字、橫掃一筆、硃砂濺點）與照「力」的筆順寫出來的標誌，排成 1920×1080。
+     ?end=1 是片尾（一開始就寫好）。capture.mjs 每一幀呼叫 __seek(毫秒) 把 CSS 動畫與標誌撥到那一刻。?game= 是遊戲網址（字型、標誌從那裡來）。 -->
+<link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@700&text=%E5%8A%9B%E9%80%8F%E7%B4%99%E8%83%8C&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&display=block" rel="stylesheet">
+<style>
+:root { --paper: #efe5cf; --ink: #1c1a17; --ink-2: #4a4238; --red: #b4392a; --font: "LXGW WenKai TC", serif; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+body::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 38% 42%, #f6eedb 0%, var(--paper) 50%, #e3d6b8 100%); }
+.wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 90px; padding: 0 150px 0 190px; }
+.left { position: relative; z-index: 2; }
+.kicker { font: 34px var(--font); color: var(--red); letter-spacing: .3em; margin: 0 0 18px 8px; animation: rise .6s .9s ease-out both; }
+h1 { position: relative; isolation: isolate; width: fit-content; margin: 0; display: flex; align-items: flex-end; gap: .1em; font: 700 176px/1 var(--font); letter-spacing: .06em; color: var(--ink); padding: 20px 0 24px; animation: thud .28s .42s ease-out both; }
+h1 > span { position: relative; display: inline-block; filter: url(#f-ink); animation: slam .34s var(--d) cubic-bezier(.2, .9, .3, 1.2) both; }
+h1 > span::after { content: attr(data-g); position: absolute; inset: 0; z-index: -1; filter: url(#f-bleed); opacity: .2; animation: soak 1.5s calc(var(--d) + .2s) ease-out both; }
+h1 > span::before { content: attr(data-g); position: absolute; inset: 0; z-index: -2; transform: scaleX(-1) translate(.06em, .07em); filter: blur(2.6px); opacity: .09; animation: soakb 2s calc(var(--d) + .5s) ease-out both; }
+h1 > span:nth-of-type(1) { --d: .18s; color: var(--red); font-size: 1.22em; rotate: -5deg; translate: 0 .04em; }
+h1 > span:nth-of-type(2) { --d: .52s; rotate: 1.5deg; }
+h1 > span:nth-of-type(3) { --d: .62s; font-size: .95em; rotate: -1deg; translate: 0 .03em; }
+h1 > span:nth-of-type(4) { --d: .72s; font-size: 1.04em; rotate: 2deg; }
+h1 .sweep { position: absolute; left: -7%; width: 116%; top: 30%; height: 66%; z-index: -3; overflow: visible; animation: sweep .32s .04s cubic-bezier(.3, .7, .2, 1) both; }
+h1 .splat { position: absolute; left: -38%; top: -38%; width: 176%; height: 176%; z-index: -1; overflow: visible; rotate: 4deg; }
+h1 .splat > * { transform-box: fill-box; transform-origin: center; animation: splat .2s calc(.4s + var(--i, 0) * .02s) cubic-bezier(.2, .8, .3, 1.3) both; }
+.en { font: italic 46px Georgia, serif; letter-spacing: .22em; color: var(--ink-2); margin: 10px 0 0 8px; animation: rise .7s 1.3s ease-out both; }
+.motto { font: 38px var(--font); letter-spacing: .32em; color: var(--ink-2); margin: 26px 0 0 8px; opacity: .8; animation: rise .7s 1.6s ease-out both; }
+.mark { position: relative; width: 660px; aspect-ratio: 760 / 514; flex: none; }
+.mark > * { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.mark .ren { transform-origin: 31.6% 67%; opacity: 0; }
+.mark .ren.land { animation: ren .34s cubic-bezier(.2, .9, .3, 1.25) both; }
+@keyframes slam { 0% { opacity: 0; transform: translateY(-22%) scale(1.9); } 55% { opacity: 1; transform: translateY(3%) scale(.92); } 100% { opacity: 1; transform: none; } }
+@keyframes soak { from { opacity: 0; transform: scale(.88); } to { opacity: .2; transform: none; } }
+@keyframes soakb { from { opacity: 0; } to { opacity: .09; } }
+@keyframes sweep { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(-20% -2% -20% 0); } }
+@keyframes thud { 0%, 100% { transform: none; } 20% { transform: translate(0, 8px); } 45% { transform: translate(-5px, -2px); } 70% { transform: translate(2px, 1px); } }
+@keyframes splat { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: none; } }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes ren { 0% { opacity: 0; transform: translateY(-40%) scale(2.2); } 60% { opacity: 1; transform: translateY(2%) scale(.92); } 100% { opacity: 1; transform: none; } }
+.fxdefs { position: absolute; width: 0; height: 0; }
+</style>
+</head>
+<body>
+<svg class="fxdefs" width="0" height="0" aria-hidden="true" focusable="false">
+  <filter id="f-ink" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="f-bleed" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+    <feMorphology in="SourceGraphic" operator="dilate" radius="1" result="d"/>
+    <feGaussianBlur in="d" stdDeviation="0.9" result="b"/>
+    <feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="3" seed="7" result="n"/>
+    <feDisplacementMap in="b" in2="n" scale="4.5" xChannelSelector="R" yChannelSelector="G" result="w"/>
+    <feComponentTransfer in="w"><feFuncA type="table" tableValues="0 0.5 0.85 1"/></feComponentTransfer>
+  </filter>
+  <filter id="f-dry" x="-2%" y="-30%" width="104%" height="160%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.003 0.2" numOctaves="2" seed="9" result="s"/>
+    <feColorMatrix in="s" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -10 0 0 0 5.7" result="m"/>
+    <feComposite in="SourceGraphic" in2="m" operator="in" result="c"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="4" result="n"/>
+    <feDisplacementMap in="c" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="f-stamp" x="-6%" y="-6%" width="112%" height="112%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="11" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="1.4" xChannelSelector="R" yChannelSelector="G" result="r"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.16" numOctaves="3" seed="5" result="m"/>
+    <feColorMatrix in="m" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -20 0 0 0 13.6" result="mask"/>
+    <feComposite in="r" in2="mask" operator="in"/>
+  </filter>
+</svg>
+<div class="wrap">
+  <div class="left">
+    <p class="kicker">「寫意」系列 · 第三部</p>
+    <h1><span>力</span><span>透</span><span>紙</span><span>背</span></h1>
+    <p class="en">Through the Page</p>
+    <p class="motto">由點及線 · 由線及面 · 由面及體</p>
+  </div>
+  <div class="mark" aria-hidden="true"></div>
+</div>
+<script>
+(function () {
+  const q = new URLSearchParams(location.search), GAME = q.get('game') || 'http://127.0.0.1:8123/', END = q.get('end') === '1';
+  const load = (src) => new Promise((ok, no) => { const s = document.createElement('script'); s.src = GAME + src; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
+  load('src/util.js').then(() => load('src/brush.js')).then(() => load('src/mark-data.js')).then(() => load('src/mark.js')).then(async () => {
+    const h1 = document.querySelector('h1'), spans = [...h1.children]; spans.forEach(s => s.dataset.g = s.textContent);
+    const NS = 'http://www.w3.org/2000/svg', f = (v) => v.toFixed(1);
+    const sh = BRUSH.shape('H', [[40, 132], [968, 92]], 96, 1, 2024);
+    const d = sh.polys.map(P => 'M' + P.map(p => f(p[0]) + ' ' + f(p[1])).join(' L') + 'Z').join(' ');
+    const dry = sh.dry.map(S => 'M' + S.map(p => f(p[0]) + ' ' + f(p[1])).join(' L')).join(' ');
+    const sw = document.createElementNS(NS, 'svg'); sw.setAttribute('class', 'sweep'); sw.setAttribute('viewBox', '0 0 1000 200'); sw.setAttribute('preserveAspectRatio', 'none');
+    sw.innerHTML = '<defs><linearGradient id="sg" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#fff"/><stop offset=".8" stop-color="#fff" stop-opacity="0"/></linearGradient><mask id="sm" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="200"><rect width="1000" height="200" fill="url(#sg)"/></mask></defs><g fill="rgba(28,26,23,.15)"><path d="' + d + '" filter="url(#f-dry)"/><path d="' + d + '" mask="url(#sm)"/></g><path d="' + dry + '" fill="none" stroke="rgba(239,229,207,.9)" stroke-width="3.2" stroke-linecap="round"/>';
+    h1.appendChild(sw);
+    const DROPS = [[-8, 96, 5.2], [-21, 86, 2.6], [-2, 112, 2], [-26, 104, 1.4], [-14, 70, 1.1], [112, 30, 3.4], [124, 18, 1.5], [104, 100, 2.2], [118, 92, 1.1]], C = [48, 54];
+    const sp = document.createElementNS(NS, 'svg'); sp.setAttribute('class', 'splat'); sp.setAttribute('viewBox', '-38 -38 176 176');
+    sp.innerHTML = DROPS.map(([x, y, r], i) => { const a = Math.atan2(y - C[1], x - C[0]) * 180 / Math.PI; return '<g style="--i:' + i + '" fill="#b4392a" opacity="' + (r > 2 ? .85 : .7) + '"><circle cx="' + x + '" cy="' + y + '" r="' + r + '"/>' + (r > 1.5 ? '<path d="M' + f(x) + ' ' + f(y - r * .55) + ' L' + f(x - r * 3.4) + ' ' + f(y) + ' L' + f(x) + ' ' + f(y + r * .55) + 'Z" transform="rotate(' + f(a + 180) + ' ' + f(x) + ' ' + f(y) + ')"/>' : '') + '</g>'; }).join('');
+    spans[0].appendChild(sp);
+    await MARK.mount(document.querySelector('.mark'));
+    // 撥到某一刻：CSS 動畫與標誌一起；片尾一開始就寫好
+    window.__seek = (ms) => {
+      const t = END ? ms + 20000 : ms;
+      MARK.stop(); MARK.at(t / 1000);   // 先畫標誌（兩筆寫完時「人」才掛上落下的動畫）
+      for (const a of document.getAnimations()) { const el = a.effect && a.effect.target, off = el && el.classList && el.classList.contains('ren') ? MARK.T.land * 1000 : 0; a.pause(); a.currentTime = Math.max(0, t - off); }
+    };
+    window.__seek(0);
+    window.__ready = true;
+  });
+})();
+</script>
+</body>
+</html>

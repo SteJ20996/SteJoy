@@ -1,0 +1,75 @@
+{
+  "fade": 0.5,
+  "clips": [
+    {
+      "shot": "title",
+      "from": 0.0,
+      "dur": 4.6
+    },
+    {
+      "shot": "point",
+      "from": 0.3,
+      "dur": 5.8
+    },
+    {
+      "shot": "line",
+      "from": 0.5,
+      "dur": 4.4
+    },
+    {
+      "shot": "ring",
+      "from": 0.0,
+      "dur": 4.4
+    },
+    {
+      "shot": "page",
+      "from": 0.2,
+      "dur": 5.2
+    },
+    {
+      "shot": "flip",
+      "from": 0.0,
+      "dur": 5.2
+    },
+    {
+      "shot": "mobius",
+      "from": 2.0,
+      "dur": 6.4
+    },
+    {
+      "shot": "fold",
+      "from": 0.0,
+      "dur": 5.4
+    },
+    {
+      "shot": "cube",
+      "from": 0.4,
+      "dur": 4.2
+    },
+    {
+      "shot": "tess",
+      "from": 0.0,
+      "dur": 5.0
+    },
+    {
+      "shot": "thunder",
+      "from": 0.4,
+      "dur": 3.6
+    },
+    {
+      "shot": "hyper",
+      "from": 0.0,
+      "dur": 4.6
+    },
+    {
+      "shot": "four",
+      "from": 0.4,
+      "dur": 4.2
+    },
+    {
+      "shot": "end",
+      "from": 0.0,
+      "dur": 4.2
+    }
+  ]
+}

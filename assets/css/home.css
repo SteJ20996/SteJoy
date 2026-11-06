@@ -1,0 +1,121 @@
+/* 首頁：長風的「寫意」系列，選一部。每一部是一張紙：《墨畫蒼生》淺紙，《力透紙背》墨黑（同一張紙的正面與背面）。
+   滑過或用 ← → 選到的那一張展開、放實機片段；頂欄、頁尾、聯絡沿用 site.css。 */
+@font-face { font-family: 'LXGW WenKai TC'; font-style: normal; font-weight: 700; font-display: swap; src: url(../fonts/lxgw-wenkai-tc-700-litou.woff2) format('woff2'); unicode-range: U+529B, U+7D19, U+7EB8, U+80CC, U+900F; }
+body.home { --night: #15130f; --paper-x: #efe5cf; }
+
+.hm-hero { text-align: left; padding-top: 56px !important; padding-bottom: 8px !important; }
+.hm-kicker { margin: 0; color: var(--red); letter-spacing: .3em; font-size: 16px; }
+body.lang-en .hm-kicker { letter-spacing: .08em; }
+.hm-title { margin: 4px 0 10px; font-size: clamp(46px, 7.4vw, 92px); font-weight: 400; line-height: 1.12; letter-spacing: .22em; text-wrap: balance; }
+body.lang-en .hm-title { letter-spacing: 0; font-size: clamp(30px, 4.4vw, 50px); }
+/* 標題底下落一筆（一），再一句話說「寫意」是什麼；李白那兩句只留在「關於長風」 */
+.hm-stroke { display: block; width: min(560px, 92%); height: auto; margin: -10px 0 6px -6px; color: var(--ink); overflow: visible; animation: hm-fall .8s .35s both; }
+@keyframes hm-fall {   /* 先頓（起筆按下去），再一路加速帶出飛白 */
+  0% { clip-path: inset(-30% 100% -30% 0); animation-timing-function: cubic-bezier(.2, .7, .4, 1); }
+  18% { clip-path: inset(-30% 90% -30% 0); animation-timing-function: cubic-bezier(.5, 0, .9, .55); }
+  100% { clip-path: inset(-30% -2% -30% 0); }
+}
+.hm-deck span { display: inline-block; }
+.hm-deck { margin: 0; max-width: 34em; color: var(--ink-2); font-size: 18px; line-height: 1.8; letter-spacing: .1em; text-wrap: pretty; }
+body.lang-en .hm-deck { letter-spacing: 0; font-size: 19px; max-width: 40em; }
+
+/* 選一部 */
+.hm-games { padding-top: 34px !important; }
+.hm-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-bottom: 18px; }
+.hm-bar h2 { margin: 0; font-size: 26px; }
+.hm-kinds { display: flex; flex-wrap: wrap; gap: 8px; }
+.hm-kind { font: 15px var(--zh); color: var(--ink-2); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 4px 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+body.lang-zh-Hans .hm-kind { font-family: var(--sc); }
+body.lang-en .hm-kind { font-family: var(--en); }
+.hm-kind span { font: 12px var(--en); color: var(--dim); }
+.hm-kind:hover { border-color: var(--ink); color: var(--ink); }
+.hm-kind[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.hm-kind[aria-pressed="true"] span { color: rgba(244, 238, 226, .7); }
+.hm-kind:focus-visible, .hm-card:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+.hm-hint { margin: 0 0 0 auto; color: var(--dim); font-size: 13px; }
+
+.hm-row { display: flex; gap: 18px; height: clamp(480px, 70vh, 640px); }
+.hm-card { position: relative; flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; border-radius: 6px; text-decoration: none; color: var(--ink); transition: flex-grow .55s cubic-bezier(.2, .8, .2, 1), transform .3s, box-shadow .3s; }
+.hm-row.has-active .hm-card { flex-grow: .78; }
+.hm-row.has-active .hm-card.active { flex-grow: 1.45; }
+.hm-card[hidden] { display: none; }
+.hm-row.single .hm-card { flex-grow: 1; }
+
+/* 片段：紙的上半張，往下淡進紙色 */
+.hm-stage { position: absolute; inset: 0 0 38% 0; overflow: hidden; }
+.hm-stage video { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.06); transition: transform 6s linear, opacity .5s; }
+.hm-card.active .hm-stage video { transform: scale(1.12); }
+.hm-stage::after { content: ""; position: absolute; inset: 0; }
+.hm-body { position: relative; z-index: 2; padding: 0 30px 26px; }
+.hm-genre { margin: 6px 0 8px; font-size: 14px; letter-spacing: .26em; }
+body.lang-en .hm-genre { letter-spacing: .06em; text-transform: none; }
+.hm-tag { margin: 8px 0 6px; font-size: 18px; letter-spacing: .24em; text-wrap: balance; }
+.hm-tag span { white-space: nowrap; }   /* 斷行只斷在「·」上，不把「由面及體」拆開 */
+body.lang-en .hm-tag { letter-spacing: 0; font-style: italic; }
+.hm-pitch { margin: 0 0 16px; font-size: 15.5px; line-height: 1.75; max-width: 34em; max-height: 0; opacity: 0; overflow: hidden; transition: max-height .5s, opacity .4s .1s; }
+.hm-card.active .hm-pitch, .hm-row:not(.has-active) .hm-pitch, .hm-row.single .hm-pitch { max-height: 9em; opacity: 1; }
+.hm-meta { margin: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.hm-status { font-size: 14px; padding: 2px 12px; border-radius: 3px; letter-spacing: .1em; }
+.hm-go { font-size: 17px; letter-spacing: .1em; display: inline-flex; gap: 8px; align-items: center; }
+.hm-go b { font-weight: 400; transition: transform .25s; display: inline-block; }
+.hm-card:hover .hm-go b, .hm-card.active .hm-go b { transform: translateX(6px); }
+
+/* 墨畫蒼生：淺紙；水字標浮在片段下緣 */
+.hm-card.inkwild { background: #f7f2e7; border: 1px solid var(--line); box-shadow: 0 18px 40px -26px rgba(28, 26, 23, .45); }
+.hm-card.inkwild .hm-stage::after { background: linear-gradient(180deg, rgba(247, 242, 231, .1) 0%, rgba(247, 242, 231, .35) 55%, #f7f2e7 100%); }
+.hm-card.inkwild .hm-stage video { opacity: .7; }
+.hm-card.inkwild.active .hm-stage video { opacity: .9; }
+.hm-logo { position: relative; z-index: 2; padding: 0 22px; margin-bottom: 4px; }
+.hm-logo #title-logo { width: min(100%, 470px); height: auto; display: block; filter: drop-shadow(0 0 14px rgba(247, 242, 231, .95)) drop-shadow(0 0 4px rgba(247, 242, 231, .9)); }
+.hm-card.inkwild .hm-genre { color: var(--red); }
+.hm-card.inkwild .hm-pitch, .hm-card.inkwild .hm-tag { color: var(--ink-2); }
+.hm-card.inkwild .hm-status { color: var(--ink-2); border: 1px dashed rgba(28, 26, 23, .45); }
+.hm-card.inkwild:hover, .hm-card.inkwild.active { box-shadow: 0 26px 50px -24px rgba(28, 26, 23, .55); }
+
+/* 力透紙背：墨黑；片段反過來看（紙背），標誌照筆順寫成紙色，紅印 */
+.hm-card.litou { background: var(--night); color: var(--paper-x); box-shadow: 10px 10px 0 var(--red); }
+.hm-card.litou .hm-stage video { filter: invert(1) hue-rotate(180deg) contrast(1.05); opacity: .55; }
+.hm-card.litou.active .hm-stage video { opacity: .75; }
+.hm-card.litou .hm-stage::after { background: linear-gradient(180deg, rgba(21, 19, 15, .15) 0%, rgba(21, 19, 15, .5) 60%, var(--night) 100%), radial-gradient(ellipse at 30% 20%, rgba(180, 57, 42, .22), transparent 60%); }
+.hm-mark { position: relative; z-index: 2; width: min(78%, 360px); aspect-ratio: 760 / 514; margin: 0 0 -4px 22px; }
+.hm-mark > * { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hm-mark .ren { transform-origin: 31.6% 67%; opacity: 0; }
+.hm-mark .ren.land { animation: hm-ren .34s cubic-bezier(.2, .9, .3, 1.25) both; }
+.hm-mark .ren.still { opacity: 1; }
+.hm-name { margin: 0; font-weight: 400; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
+.hm-zh { font: 700 clamp(40px, 4.6vw, 62px)/1 var(--zh); letter-spacing: .04em; display: inline-flex; align-items: flex-end; gap: .06em; }
+body.lang-zh-Hans .hm-zh { font-family: var(--zh); }
+.hm-zh i { font-style: normal; display: inline-block; filter: url(#hm-rough); }
+.hm-zh i:first-child { color: #e05a45; font-size: 1.18em; rotate: -5deg; }
+.hm-zh i:nth-child(3) { font-size: .95em; rotate: -1deg; }
+.hm-zh i:nth-child(4) { rotate: 2deg; }
+.hm-en { font: italic 18px var(--en); letter-spacing: .18em; color: rgba(239, 229, 207, .72); }
+.hm-card.litou .hm-genre { color: #e05a45; }
+.hm-card.litou .hm-tag { color: rgba(239, 229, 207, .88); }
+.hm-card.litou .hm-pitch { color: rgba(239, 229, 207, .76); }
+.hm-card.litou .hm-status { background: var(--red); color: #f7efe0; rotate: -3deg; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .35); }
+.hm-card.litou:hover, .hm-card.litou.active { box-shadow: 14px 14px 0 var(--red); }
+
+/* 關於 */
+.hm-about p { max-width: 760px; margin: 0 0 1em; }
+.hm-quote { margin: 0 0 24px; padding-left: 20px; border-left: 3px solid var(--red); }
+.hm-quote p { margin: 0; font-size: 24px; letter-spacing: .14em; }
+body.lang-en .hm-quote p { letter-spacing: 0; font-style: italic; font-size: 20px; }
+.hm-quote cite { display: block; margin-top: 4px; color: var(--dim); font-style: normal; font-size: 14px; }
+
+@keyframes hm-ren { 0% { opacity: 0; transform: translateY(-40%) scale(2.2); } 60% { opacity: 1; transform: translateY(2%) scale(.92); } 100% { opacity: 1; transform: none; } }
+
+@media (max-width: 860px) {
+  .hm-row { flex-direction: column; height: auto; }
+  .hm-card, .hm-row.has-active .hm-card, .hm-row.has-active .hm-card.active { flex: none; min-height: 520px; }
+  .hm-pitch { max-height: 9em; opacity: 1; }
+  .hm-hint { display: none; }
+  .hm-deck { font-size: 16px; letter-spacing: .06em; }
+  body.lang-en .hm-deck { font-size: 17px; letter-spacing: 0; }
+  .hm-body { padding: 0 20px 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hm-card, .hm-stage video, .hm-pitch, .hm-go b { transition: none; }
+  .hm-mark .ren.land { animation: none; opacity: 1; }
+  .hm-stroke { animation: none; }
+}
