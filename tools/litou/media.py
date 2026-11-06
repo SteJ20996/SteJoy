@@ -16,7 +16,7 @@ def ff(*a):
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', *a], check=True)
 
 # 一卷五章：從哪一息起、多長、海報取第幾息（序章、一維、二維莫比烏斯、三維超正方體、四維）
-SCENES = {'point': (0.3, 6.4, 2.0), 'line': (0.5, 4.8, 3.2), 'mobius': (0.0, 10.0, 3.9), 'tess': (0.0, 5.4, 1.6), 'hyper': (0.0, 5.0, 1.0)}
+SCENES = {'point': (0.3, 6.4, 2.0), 'line': (0.5, 4.8, 2.4), 'mobius': (0.0, 9.4, 3.6), 'tess': (0.0, 5.4, 1.6), 'hyper': (0.0, 5.0, 1.0)}
 for s, (a, d, p) in ({} if ONLY_TRAILER else SCENES).items():
     src = SHOTS / f'{s}.mp4'
     ff('-ss', str(a), '-t', str(d), '-i', str(src), '-an', '-vf', 'scale=1280:720:flags=lanczos,format=yuv420p',

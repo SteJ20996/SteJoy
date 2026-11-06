@@ -30,7 +30,7 @@ const strokes = R.STROKE_ORDER.map(c => {
   const icon = s.dot ? 'M8.5 6.5 Q 16 8.5 17 15.5 Q 13.5 19 10.5 15 Q 9 11 8.5 6.5 Z' : BRUSH.svg(c, s.path.map(([a, b]) => [12 + a * 17, 12 + b * 17]), 4.6, 11).d;
   return { c, key: s.key, zh: s.name, hans: hans(s.name), en: s.en, short: s.short, trait: s.trait, traitHans: hans(s.trait), traitEn: s.traitEn, icon: pack(icon, 10) };   // 圖示：viewBox 0 0 240 240
 });
-// 「力」不在遊戲的字表裡，介紹頁另外加（橫折鉤、撇；繁簡一體、兩岸同筆順）
+// 「力」v0.9 起也在遊戲的字表裡；這裡保留，舊版遊戲庫也產得出（橫折鉤、撇；繁簡一體、兩岸同筆順）
 const GLYPHS = Object.assign({}, PROLOGUE.GLYPHS, { '力': [['J', [0.18, 0.3], [0.8, 0.27], [0.75, 0.86], [0.6, 0.77]], ['P', [0.53, 0.08], [0.47, 0.5], [0.12, 0.9]]] });
 const SEQ = Object.assign({}, R.SEQ, { '力': 'JP' }), MEAN = Object.assign({}, R.MEAN, { '力': ['lì', 'strength, force'] });
 const chars = {};

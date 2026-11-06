@@ -33,13 +33,13 @@
     },
     {
       "shot": "mobius",
-      "from": 2.0,
-      "dur": 6.4
+      "from": 0.0,
+      "dur": 7.6
     },
     {
       "shot": "fold",
       "from": 0.0,
-      "dur": 5.4
+      "dur": 6.0
     },
     {
       "shot": "cube",

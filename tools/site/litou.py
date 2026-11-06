@@ -86,6 +86,7 @@ TEXT = {
         "feat_intro": "寫得快，也要寫得對。",
         "strokes_h": "十筆，十招",
         "strokes_intro": "每一筆有自己的脾氣：橫伸得最遠，點砸得最重，捺推得開敵，鉤拉得回來。",
+        "strokes_more": "漢字的筆畫不只這十種：七、元的豎彎鉤，我的斜鉤，心的臥鉤，山的豎折，乃的橫折折折鉤……分法不同，數起來二三十種都有。這裡只用最常見的十種，一鍵一筆；遊戲裡的八十九個字，都是只用這十種就寫得出、繁簡一樣、兩岸筆順相同的字。",
         "features": [
                 [
                         "繁簡一體，兩岸同筆順",
@@ -190,6 +191,7 @@ TEXT = {
         "feat_intro": "写得快，也要写得对。",
         "strokes_h": "十笔，十招",
         "strokes_intro": "每一笔有自己的脾气：横伸得最远，点砸得最重，捺推得开敌，钩拉得回来。",
+        "strokes_more": "汉字的笔画不只这十种：七、元的竖弯钩，我的斜钩，心的卧钩，山的竖折，乃的横折折折钩……分法不同，数起来二三十种都有。这里只用最常见的十种，一键一笔；游戏里的八十九个字，都是只用这十种就写得出、繁简一样、两岸笔顺相同的字。",
         "features": [
                 [
                         "繁简一体，两岸同笔顺",
@@ -294,6 +296,7 @@ TEXT = {
         "feat_intro": "Write fast, and write right.",
         "strokes_h": "Ten strokes, ten moves",
         "strokes_intro": "Each stroke has its own temper: the horizontal reaches farthest, the dot hits hardest, the right-falling stroke pushes, the hooks pull back.",
+        "strokes_more": "These ten are not all the strokes Chinese has: there is the bending hook of 七 and 元, the slanting hook of 我, the lying hook of 心, the fold of 山, the zigzag of 乃 — some twenty to thirty shapes, depending on how you count. The game uses only the ten most common, one key each; each of its 89 characters was chosen because it needs nothing beyond them, looks the same in Traditional and Simplified, and has the same stroke order in Taiwan and mainland China.",
         "features": [
                 [
                         "One form, one stroke order",
@@ -473,6 +476,7 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
   <h3 class="lt-sub">{esc(T['strokes_h'])}</h3>
   <p class="lt-sub-intro">{esc(T['strokes_intro'])}</p>
   <ol class="lt-strokes">{strokes}</ol>
+  <p class="lt-sub-intro lt-more">{esc(T['strokes_more'])}</p>
   <div class="lt-feats">{feats}</div>
   <ul class="lt-facts">{facts}</ul>
 </section>
