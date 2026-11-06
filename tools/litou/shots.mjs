@@ -139,8 +139,8 @@ export const SHOTS = [
     },
   },
   {   // 二維寫完：紙沿展開圖的摺痕摺成正方體
-    // v0.8.5：環打完 → 升起看到環 → 從接縫剪開 → 六格、撕兩格 → 展開圖 → 摺成正方體（6.4 息；pace 1.1 是遊戲的 1.1 倍快）
-    name: 'fold', sec: 7.0, warm: 1.0,
+    // v0.8.5：環打完 → 升起看到環 → 從接縫剪開 → 六格、撕兩格 → 展開圖 → 摺成正方體（7 息；v0.9.2 人先浮出紙面；pace 1.1 是遊戲的 1.1 倍快）
+    name: 'fold', sec: 7.6, warm: 1.0,
     setup() { window.__c.run(); ZHAN.game.enterDim(2, { page: 2, tutorial: false }); window.__c.pace(1.1); },
     frame({ f }) { const g = ZHAN.game; window.__c.tick(0); if (f === 6) { g.dimClear(); g.ascendGo(); } },
   },
