@@ -133,7 +133,7 @@ F = np.fft.rfftfreq(len(mix), 1 / SR)[:, None]
 mix = np.fft.irfft(np.fft.rfft(mix, axis=0) / np.sqrt(1 + (F / 8000) ** 4), n=len(mix), axis=0)
 tail = np.minimum(1, (len(mix) / SR - np.arange(len(mix)) / SR) / 1.2)[:, None]
 mix *= tail
-mix /= max(1e-9, np.abs(mix).max()) / 0.72   # 峰值約 −2.9 dBFS，整首約 −21 LUFS：跟改之前一樣大聲，只是不刺耳
+mix /= max(1e-9, np.abs(mix).max()) / 0.85   # 峰值約 −1.4 dBFS，整首約 −21 LUFS：跟改之前一樣大聲，只是不刺耳（換掉 Shepard 以後整首輕了 1.4 dB，補回來）
 with wave.open(sys.argv[2], 'wb') as w:
     w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR)
     w.writeframes((mix * 32767).astype('<i2').tobytes())

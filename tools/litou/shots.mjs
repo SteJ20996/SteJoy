@@ -79,6 +79,9 @@ export const COMMON = () => {
     },
     // 轉場放慢（只在轉場那幾息）：遊戲裡的轉場前段就做完了，預告裡要看得清楚
     slow(k) { const u0 = g.update.bind(g); g.update = (dt) => u0(g.state === 'shift' ? dt * k : dt); },
+    // 轉場照片子的幀走、跟瀏覽器幾時給 requestAnimationFrame 無關：每一幀轉場走 rate/30 息（rate 1 就是遊戲的實際速度）。
+    // slow(k) 的快慢會跟著機器忙不忙變（同一個 k 量過 3.7 秒、也量過 9 秒），要準就用這個
+    pace(rate) { const u0 = g.update.bind(g); let last = -1; g.update = (dt) => { if (g.state !== 'shift') return u0(dt); if (window.__f === last) return u0(0); last = window.__f; return u0(rate / 30); }; },
     run(opts) { localStorage.clear(); g.newRun('easy', Object.assign({ prologue: false, tutorial: false }, opts || {})); g.run.learned = Object.keys(Rr.CHARS); },
   };
 };
@@ -127,18 +130,18 @@ export const SHOTS = [
     frame({ f }) { const g = ZHAN.game; window.__c.tick(f === 3 ? 0 : 2); if (f === 3) g.levelShift('flip', 1); },
   },
   {   // 莫比烏斯環：紙條扭成環，鏡頭降到「人」站的環面、攤成這一關的紙，接著打塗（遊戲 v0.8.4 的轉場）
-    // 假時鐘下遊戲走得比片子快（量過：slow(1/3) 時 5.4 息的轉場只佔 3.7 秒），slow(0.23) 才是遊戲裡的實際速度：轉場 5.4 息 ≈ 片子 5.4 秒
-    name: 'mobius', sec: 10.6, warm: 1.4,   // v0.8.5 起轉場 5.8 息：紙背先拉長成紙條
-    setup() { window.__c.run(); ZHAN.game.enterDim(2, { page: 1, tutorial: false }); window.__c.slow(0.23); },
+    // 轉場照遊戲的實際速度錄（pace(1)：5.8 息 = 片子 5.8 秒）
+    name: 'mobius', sec: 9.4, warm: 1.4,   // v0.8.5 起轉場 5.8 息：紙背先拉長成紙條
+    setup() { window.__c.run(); ZHAN.game.enterDim(2, { page: 1, tutorial: false }); window.__c.pace(1); },
     frame({ f }) {
       const g = ZHAN.game; window.__c.tick(2); if (f === 3) g.levelShift('mobius', 2);
       if (g.state === 'play' && g.mob && !window.__landed) { window.__landed = true; g.introT = Math.min(g.introT || 0, 0.4); }   // 落地後不等關名那一段，塗早點來
     },
   },
   {   // 二維寫完：紙沿展開圖的摺痕摺成正方體
-    // v0.8.5：環打完 → 升起看到環 → 從接縫剪開 → 六格、撕兩格 → 展開圖 → 摺成正方體（6.4 息；slow 0.25 約是遊戲的 1.1 倍快）
-    name: 'fold', sec: 7.2, warm: 1.0,
-    setup() { window.__c.run(); ZHAN.game.enterDim(2, { page: 2, tutorial: false }); window.__c.slow(0.25); },
+    // v0.8.5：環打完 → 升起看到環 → 從接縫剪開 → 六格、撕兩格 → 展開圖 → 摺成正方體（6.4 息；pace 1.1 是遊戲的 1.1 倍快）
+    name: 'fold', sec: 7.0, warm: 1.0,
+    setup() { window.__c.run(); ZHAN.game.enterDim(2, { page: 2, tutorial: false }); window.__c.pace(1.1); },
     frame({ f }) { const g = ZHAN.game; window.__c.tick(0); if (f === 6) { g.dimClear(); g.ascendGo(); } },
   },
   {   // 三維：前後左右上下；遠處敵身上的字寫出來，字就飛過去
