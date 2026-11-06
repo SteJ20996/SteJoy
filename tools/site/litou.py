@@ -1,4 +1,4 @@
-"""《力透紙背》（Through the Page）的介紹頁：「寫意」系列第三部，還在做（頁上寫「敬請期待」）。
+"""《力透紙背》（Through the Page）的介紹頁：「寫意」系列第二部，還在做（頁上寫「敬請期待」）。
 三語三頁：litouzhibei/（繁中）、zh-hans/litouzhibei/、en/litouzhibei/。由 tools/site/build-site.py 一起產生，文字改這個檔案的 TEXT。
 風格刻意跟首頁《墨畫蒼生》不同：墨重、斜、快；紅印「敬請期待」；一卷五章用一個會展開的超正方體（點→線→面→體→四維）；
 可以直接按 1–0 寫字（跟遊戲同一套筆順與字形）。遊戲的資料（筆形、字形、標誌）由 tools/litou/data.mjs 從遊戲庫抄出來，
@@ -27,7 +27,7 @@ TEXT = {
                 "特色",
                 "聯絡"
         ],
-        "kicker": "「寫意」系列 · 第三部",
+        "kicker": "「寫意」系列 · 第二部",
         "tagline": "紙為陣 · 筆為兵 · 墨為甲",
         "motto": "由點及線 · 由線及面 · 由面及體",
         "soon": "敬請期待",
@@ -113,7 +113,7 @@ TEXT = {
                 "敬請期待"
         ],
         "contact_h": "聯絡",
-        "contact": "《力透紙背》是長風「寫意」系列的第三部，還在做。想說什麼，寫信給我們：",
+        "contact": "《力透紙背》是長風「寫意」系列的第二部，還在做。想說什麼，寫信給我們：",
         "series": "系列第一部《墨畫蒼生》",
         "video_off": "你的瀏覽器放不了這段影片。",
         "bio": [
@@ -132,7 +132,7 @@ TEXT = {
                 "特色",
                 "联系"
         ],
-        "kicker": "“写意”系列 · 第三部",
+        "kicker": "“写意”系列 · 第二部",
         "tagline": "纸为阵 · 笔为兵 · 墨为甲",
         "motto": "由点及线 · 由线及面 · 由面及体",
         "soon": "敬请期待",
@@ -218,7 +218,7 @@ TEXT = {
                 "敬请期待"
         ],
         "contact_h": "联系",
-        "contact": "《力透纸背》是长风“写意”系列的第三部，还在做。想说什么，写信给我们：",
+        "contact": "《力透纸背》是长风“写意”系列的第二部，还在做。想说什么，写信给我们：",
         "series": "系列第一部《墨画苍生》",
         "video_off": "你的浏览器放不了这段视频。",
         "bio": [
@@ -237,7 +237,7 @@ TEXT = {
                 "Features",
                 "Contact"
         ],
-        "kicker": "The Xieyi series · Part 3",
+        "kicker": "The Xieyi series · Part 2",
         "tagline": "Paper is the battlefield · the brush the soldier · ink the armor",
         "motto": "From point to line · line to plane · plane to solid",
         "soon": "Coming soon",
@@ -323,7 +323,7 @@ TEXT = {
                 "Coming soon"
         ],
         "contact_h": "Contact",
-        "contact": "Through the Page is the third game in SteJoy’s 寫意 (Xieyi) series, and still in the making. Write to us:",
+        "contact": "Through the Page is the second game in SteJoy’s 寫意 (Xieyi) series, and still in the making. Write to us:",
         "series": "Part 1 of the series: InkWild",
         "video_off": "Your browser cannot play this video.",
         "bio": [

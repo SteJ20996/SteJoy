@@ -37,9 +37,10 @@
     const ctx = cv.getContext('2d'), V = [], E = [];
     for (let i = 0; i < 16; i++) V.push([i & 1 ? 1 : -1, i & 2 ? 1 : -1, i & 4 ? 1 : -1, i & 8 ? 1 : -1]);
     for (let i = 0; i < 16; i++) for (let k = 0; k < 4; k++) { const j = i ^ (1 << k); if (j > i) E.push([i, j, k]); }
-    // 頂點上的字：不用單筆的「一丨丿丶乀」（看起來像一條線，蓋在別的字上像被一筆劃掉）
-    const pool = Object.keys(D ? D.chars : {}).filter(c => D.chars[c].seq.length >= 2), labels = V.map((_, i) => pool[(i * 7 + 3) % pool.length] || '人');
-    let s = 0, target = 0, t0 = performance.now(), W = 0, H = 0, dpr = 1, swap = 0, fit = 1;
+    // 頂點上的字固定、不重複（使用者看到兩個頂點都叫「人」）：頂點 i 的四個位元是 x y z w，第幾個方向展開時分出來，就寫那一章的字，
+    // 筆數跟著維度長：人（起點）、十（一維，兩筆）、大口（二維的招，三筆）、天水火木（三維的浮字，四筆）、永玉石古本生正立（射墨字與字盾，五筆）
+    const LABELS = [...'人十大口天水火木永玉石古本生正立'], labels = LABELS.map((c, i) => D && D.chars[c] ? c : Object.keys(D ? D.chars : {}).filter(x => D.chars[x].seq.length >= 2 && !LABELS.includes(x))[i] || '');
+    let s = 0, target = 0, t0 = performance.now(), W = 0, H = 0, dpr = 1;
     const size = () => { const r = cv.getBoundingClientRect(); dpr = Math.min(2, window.devicePixelRatio || 1); W = r.width; H = r.height; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); };
     size(); addEventListener('resize', size);
     const measure = () => {   // 捲到哪一章：那一章的中線過了畫面中間多少
@@ -48,27 +49,37 @@
       target = Math.max(0, Math.min(4, v - 0.35));
     };
     addEventListener('scroll', measure, { passive: true }); measure();
+    // 四維 → 二維：xw、yw、xz、yz 四個平面轉，再兩次透視（這是加寬以前的透視，近處的頂點放得大）
+    const project = (v, a, t) => {
+      const A1 = t * 0.35 * a[2], A2 = t * 0.27 * a[3], A3 = 0.5 + t * 0.12 * a[2];
+      let [x, y, z, w] = v.map((c, k) => c * a[k]);
+      let c = Math.cos(A2), q = Math.sin(A2); [x, w] = [x * c - w * q, x * q + w * c];            // xw 平面轉
+      c = Math.cos(A1 * 0.7); q = Math.sin(A1 * 0.7); [y, w] = [y * c - w * q, y * q + w * c];    // yw
+      c = Math.cos(A3); q = Math.sin(A3); [x, z] = [x * c - z * q, x * q + z * c];                // xz
+      c = Math.cos(0.42 * a[2]); q = Math.sin(0.42 * a[2]); [y, z] = [y * c - z * q, y * q + z * c];
+      const k4 = 2.6 / (2.6 - w * 0.9), k3 = 4.2 / (4.2 - z * k4 * 0.9);   // 一路轉下去分母最小約 1.0 與 1.7（量過），不會翻過去
+      return [x * k4 * k3, y * k4 * k3, z * k4, w, k4 * k3];
+    };
+    // 展開到 s 時，頂點一路轉下去最遠到哪（x、y 各自）：每 0.05 算一格（三千個時刻、一格約十毫秒，捲到才算），兩格之間內插
+    const EXT = [], ext = (sv) => {
+      const cell = (b) => {
+        if (EXT[b]) return EXT[b];
+        const a = [0, 1, 2, 3].map(k => Math.max(0, Math.min(1, b / 20 - k))); let mx = 0.01, my = 0.01;
+        for (let n = 0; n < 3000; n++) { const t = n * 0.42; for (const v of V) { const p = project(v, a, t); mx = Math.max(mx, Math.abs(p[0])); my = Math.max(my, Math.abs(p[1])); } }
+        return (EXT[b] = [mx * 1.02, my * 1.02]);
+      };
+      const b = Math.max(0, Math.min(80, sv * 20)), b0 = Math.floor(b), b1 = Math.min(80, b0 + 1), f = b - b0, e0 = cell(b0), e1 = cell(b1);
+      return [e0[0] + (e1[0] - e0[0]) * f, e0[1] + (e1[1] - e0[1]) * f];
+    };
     const draw = (now) => {
       const t = (now - t0) / 1000;
       s += (target - s) * (reduce ? 1 : 0.08);
       if (num) { const n = Math.min(4, Math.round(s)); if (num.textContent !== String(n)) num.textContent = n; }
       const a = [0, 1, 2, 3].map(k => Math.max(0, Math.min(1, s - k + 0.0)));   // 第 k 個方向展開了幾成
-      const A1 = t * 0.35 * a[2], A2 = t * 0.27 * a[3], A3 = 0.5 + t * 0.12 * a[2];
-      const P = V.map(v => {
-        let [x, y, z, w] = v.map((c, k) => c * a[k]);
-        let c = Math.cos(A2), q = Math.sin(A2); [x, w] = [x * c - w * q, x * q + w * c];            // xw 平面轉
-        c = Math.cos(A1 * 0.7); q = Math.sin(A1 * 0.7); [y, w] = [y * c - w * q, y * q + w * c];    // yw
-        c = Math.cos(A3); q = Math.sin(A3); [x, z] = [x * c - z * q, x * q + z * c];                // xz
-        c = Math.cos(0.42 * a[2]); q = Math.sin(0.42 * a[2]); [y, z] = [y * c - z * q, y * q + z * c];
-        // 透視收斂一點：以前 k3 的分母乘上 k4，頂點轉到近處時分母趨近零、整個衝出畫面（使用者看到「左邊衝出去了」）
-        const k4 = 3 / (3 - w * 0.6), k3 = 5 / (5 - z * 0.7);
-        return [x * k4 * k3, y * k4 * k3, z * k4, w, k4 * k3];
-      });
-      // 放得進畫框：量這一格所有頂點的範圍，超出就整個縮小（平滑地縮，不會一跳一跳）；字的圓留一點邊
-      let mx = 0.01, my = 0.01; for (const p of P) { mx = Math.max(mx, Math.abs(p[0])); my = Math.max(my, Math.abs(p[1])); }
-      const base = Math.min(W, H) * 0.2, pad = 26, want = Math.min(base, (W / 2 - pad) / mx, (H / 2 - pad) / my);
-      fit = want < fit * base ? want / base : fit + (want / base - fit) * 0.05;   // 要縮就立刻縮，要放大就慢慢放
-      const sc = base * fit;
+      const P = V.map(v => project(v, a, t));
+      // 大圖（使用者要回到加寬以前那種透視），但整個要放得進畫布：每個展開程度先算過頂點會轉到多遠（ext），照最遠的定比例，
+      // 不會被框切掉，也不會一陣一陣縮放
+      const base = Math.min(W, H) * 0.2, pad = W < 520 ? 18 : 34, [ex, ey] = ext(s), sc = Math.min(base, (W / 2 - pad) / ex, (H / 2 - pad) / ey);
       for (const p of P) { p[0] = W / 2 + p[0] * sc; p[1] = H / 2 + p[1] * sc; }
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
       ctx.lineCap = 'round';
@@ -79,12 +90,11 @@
         ctx.lineWidth = (fresh ? 2.6 : 1.2 + depth * 0.9);
         ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(q2[0], q2[1]); ctx.stroke();
       }
-      // 頂點：一開始只有一個點；展開以後每個頂點是一個字，字隔一陣子換一個
+      // 頂點：一開始只有一個點；展開以後每個頂點是一個字（固定，見 LABELS）
       if (s < 0.15) {
         const g = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, 40); g.addColorStop(0, 'rgba(239,229,207,.9)'); g.addColorStop(.18, 'rgba(239,229,207,.9)'); g.addColorStop(.2, 'rgba(239,229,207,.18)'); g.addColorStop(1, 'rgba(239,229,207,0)');
         ctx.fillStyle = g; ctx.beginPath(); ctx.arc(W / 2, H / 2, 40, 0, Math.PI * 2); ctx.fill();
       }
-      if (t > swap) { swap = t + 1.1; const i = Math.floor(Math.random() * 16); labels[i] = pool[Math.floor(Math.random() * pool.length)] || '人'; }
       if (s > 0.6) {
         const vis = Math.min(1, (s - 0.6) * 1.5);
         // 還沒展開的方向上，頂點疊在同一點（一維時十六個頂點只有兩個位置）：那個方向展開了，分出來的頂點的字才淡進來，疊著的只畫一個
@@ -96,7 +106,7 @@
           ctx.font = fs + 'px "LXGW WenKai TC", serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
           ctx.fillStyle = `rgba(21, 19, 15, ${.85 * al})`; ctx.beginPath(); ctx.arc(p[0], p[1], fs * 0.72, 0, Math.PI * 2); ctx.fill();
           ctx.fillStyle = i === 0 ? `rgba(224, 90, 69, ${al})` : `rgba(239, 229, 207, ${0.95 * al})`;   // 每個頂點的字一樣亮（遠近只看線）
-          ctx.fillText(i === 0 ? '人' : labels[i], p[0], p[1] + 1);
+          ctx.fillText(labels[i], p[0], p[1] + 1);
         });
       }
       requestAnimationFrame(draw);

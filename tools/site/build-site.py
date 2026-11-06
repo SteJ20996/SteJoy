@@ -61,7 +61,7 @@ TEXT = {
         'facts': ['單人、離線', '鍵盤與滑鼠', '介面：繁體中文、簡體中文', '三種難度：入門、資深、大師'],
         'contact_h': '聯絡',
         'contact': '《墨畫蒼生》是長風「寫意」系列的第一部。想說什麼，寫信給我們：',
-        'next': ('「寫意」系列第三部《力透紙背》', '敬請期待'),   # 首頁「聯絡」底下連到第三部的介紹頁
+        'next': ('「寫意」系列第二部《力透紙背》', '敬請期待'),   # 首頁「聯絡」底下連到第二部的介紹頁（原本的第二部《人間塵世》暫停開發，使用者改定）
         'banner': {'zh-Hans': '有简体中文页面', 'en': 'This page is also in English'},
         'video_off': '你的瀏覽器放不了這段影片。',
         'author': ('作者', '長風工作室', '聯絡', '個人主頁'),
@@ -102,7 +102,7 @@ TEXT = {
         'facts': ['单人、离线', '键盘与鼠标', '界面：繁体中文、简体中文', '三种难度：入门、资深、大师'],
         'contact_h': '联系',
         'contact': '《墨画苍生》是长风“写意”系列的第一部。想说什么，写信给我们：',
-        'next': ('“写意”系列第三部《力透纸背》', '敬请期待'),
+        'next': ('“写意”系列第二部《力透纸背》', '敬请期待'),
         'banner': {'zh-Hant': '這一頁也有繁體中文', 'en': 'This page is also in English'},
         'video_off': '你的浏览器播放不了这段视频。',
         'author': ('作者', '长风工作室', '联系', '个人主页'),
@@ -144,7 +144,7 @@ TEXT = {
         'facts': ['Single-player, offline', 'Keyboard and mouse', 'Text: Traditional and Simplified Chinese', 'Three difficulties'],
         'contact_h': 'Contact',
         'contact': 'InkWild is the first game in SteJoy\'s 寫意 (Xieyi) series. Write to us:',
-        'next': ('Part 3 of the Xieyi series: Through the Page', 'coming soon'),
+        'next': ('Part 2 of the Xieyi series: Through the Page', 'coming soon'),
         'banner': {'zh-Hant': '這一頁也有繁體中文', 'zh-Hans': '有简体中文页面'},
         'video_off': 'Your browser cannot play this video.',
         'author': ('Created by', 'SteJoy', 'Contact', 'Homepage'),
