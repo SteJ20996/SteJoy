@@ -16,9 +16,10 @@ GAMES = [   # 首頁上的順序；kind 是「種類」那一排的鍵
 ]
 KINDS = ['all', 'survival', 'battle']
 
-# 標題「落筆成局」底下放什麼：'stroke' 一筆「一」、'deck' 一句話說「寫意」。使用者暫定什麼都不放（李白那兩句跟「關於長風」重複，刪了）；
-# 沒放 'deck' 時，「寫意」是什麼寫在「關於長風」第二段（about2）。
-SUB = set()
+# 標題「落筆成局」底下放什麼：'stroke' 一筆「一」、'deck' 一句話。原本什麼都不放（李白那兩句跟「關於長風」重複，刪了）；
+# 2026-11-06 使用者：有人測試網頁，不知道這是兩個遊戲——標題底下寫一句「用漢字組成的各式各樣的遊戲」，並指明下面每一張紙是一部。
+# 「寫意」每一部拿漢字當什麼材料，照舊寫在「關於長風」第二段（about2）。
+SUB = {'deck'}
 
 # 標題「落筆成局」底下落的那一筆：楷書的長橫（一），起筆斜切、中段略細、往右微微上揚；後半段乾筆飛白（#hm-dry 把筆身切成橫絲，
 # 前半段再疊一層實墨，遮罩是漸層加橫絲雜訊取門檻）。外形是手畫的 Bézier（viewBox 0 0 1000 120），進場時從左到右寫出來（home.css 的 hm-fall）。
@@ -48,7 +49,7 @@ TEXT = {
         'nav': ['遊戲', '關於', '聯絡'],
         'kicker': '「寫意」系列',
         'headline': '落筆成局',   # 使用者嫌「用漢字寫成的遊戲」平；局＝棋局、戰局、布局，一落筆就開局
-        'deck': '每一部都拿漢字當材料：字可以拆開、砌起，一筆也可以是一招。',
+        'deck': '用漢字組成的各式各樣的遊戲。下面每一張紙，都是一部。',
         'poem': '長風破浪會有時，直掛雲帆濟滄海。', 'cite': '李白〈行路難〉',   # 只在「關於長風」引一次
         'choose': '選一部', 'hint': '← → 換一部　Enter 進入',
         'kinds': {'all': '全部', 'survival': '生存 · 建造', 'battle': '筆順 · 戰鬥'},
@@ -69,7 +70,7 @@ TEXT = {
         'nav': ['游戏', '关于', '联系'],
         'kicker': '“写意”系列',
         'headline': '落笔成局',
-        'deck': '每一部都拿汉字当材料：字可以拆开、砌起，一笔也可以是一招。',
+        'deck': '用汉字组成的各式各样的游戏。下面每一张纸，都是一部。',
         'poem': '长风破浪会有时，直挂云帆济沧海。', 'cite': '李白〈行路难〉',
         'choose': '选一部', 'hint': '← → 换一部　Enter 进入',
         'kinds': {'all': '全部', 'survival': '生存 · 建造', 'battle': '笔顺 · 战斗'},
@@ -90,7 +91,7 @@ TEXT = {
         'nav': ['Games', 'About', 'Contact'],
         'kicker': 'The 寫意 (Xieyi) series',
         'headline': 'Set brush to paper, and the game begins',
-        'deck': 'Every game here takes Chinese characters as its material: they come apart, they build up, and a single stroke can be a move.',
+        'deck': 'Games of every kind, made from Chinese characters. Each sheet below is a separate game.',
         'poem': '“A time will come to ride the long wind and cleave the waves; then I’ll hoist my cloud-white sail and cross the sea.”', 'cite': 'Li Bai, The Hard Road',
         'choose': 'Pick a game', 'hint': '← → to switch · Enter to open',
         'kinds': {'all': 'All', 'survival': 'Survival · Building', 'battle': 'Stroke order · Battle'},
@@ -140,8 +141,8 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME, LOGO):
         <p class="hm-meta"><span class="hm-status">{esc(G['status'])}</span><span class="hm-go">{esc(G['go'])} <b aria-hidden="true">→</b></span></p>
       </div>
     </a>''')
-    about = ''.join(f'<p>{esc(p)}</p>' for p in T['about'] + ([] if 'deck' in SUB else [T['about2']]))
-    deck = ''.join(f'<span>{esc(x)}</span>' for x in re.findall(r'[^：，]+[：，]?', T['deck']))   # 一段一段換行
+    about = ''.join(f'<p>{esc(p)}</p>' for p in T['about'] + [T['about2']])   # 標題下那句只說「有好幾部」，每一部拿漢字當什麼材料照舊在這裡說
+    deck = ''.join(f'<span>{esc(x)}</span>' for x in re.findall(r'[^：，。]+[：，。]?', T['deck']))   # 一段一段換行
     sub = (f'  {HENG}\n' if 'stroke' in SUB else '') + (f'  <p class="hm-deck">{deck}</p>\n' if 'deck' in SUB else '')
     banner = json.dumps({c: [t, up + LANGS[c]['dir']] for c, t in HOME['banner'].items()}, ensure_ascii=False)
     mark = json.dumps({'w': 760, 'h': 514, 'turns': [0.2285, 0.5021], 'ink': [239, 229, 207], 'ribbon': a + 'litou/mark-ribbon.png', 'ren': a + 'litou/mark-ren.png', 'time': a + 'litou/mark-time.png'})
