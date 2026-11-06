@@ -97,6 +97,9 @@ h1 .splat > * { transform-box: fill-box; transform-origin: center; animation: sp
     sp.innerHTML = DROPS.map(([x, y, r], i) => { const a = Math.atan2(y - C[1], x - C[0]) * 180 / Math.PI; return '<g style="--i:' + i + '" fill="#b4392a" opacity="' + (r > 2 ? .85 : .7) + '"><circle cx="' + x + '" cy="' + y + '" r="' + r + '"/>' + (r > 1.5 ? '<path d="M' + f(x) + ' ' + f(y - r * .55) + ' L' + f(x - r * 3.4) + ' ' + f(y) + ' L' + f(x) + ' ' + f(y + r * .55) + 'Z" transform="rotate(' + f(a + 180) + ' ' + f(x) + ' ' + f(y) + ')"/>' : '') + '</g>'; }).join('');
     spans[0].appendChild(sp);
     await MARK.mount(document.querySelector('.mark'));
+    // 預告片頭：「人」踩在配樂的第四個重音上落下（使用者要的）。配樂（tools/litou/music.py）片頭四聲撥弦在 0.3 + k × 1.5 拍（一拍 60/96 息），
+    // 第四聲在 3.1125 息；人落下的動畫（.34 息）在 60% 處著地，所以提早 0.2 息起跳。遊戲與網站的標誌照舊：兩筆寫完就落
+    if (!END) MARK.T.land = 0.3 + 3 * 1.5 * 60 / 96 - 0.2;
     // 撥到某一刻：CSS 動畫與標誌一起；片尾一開始就寫好
     window.__seek = (ms) => {
       const t = END ? ms + 20000 : ms;

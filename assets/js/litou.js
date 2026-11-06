@@ -37,8 +37,9 @@
     const ctx = cv.getContext('2d'), V = [], E = [];
     for (let i = 0; i < 16; i++) V.push([i & 1 ? 1 : -1, i & 2 ? 1 : -1, i & 4 ? 1 : -1, i & 8 ? 1 : -1]);
     for (let i = 0; i < 16; i++) for (let k = 0; k < 4; k++) { const j = i ^ (1 << k); if (j > i) E.push([i, j, k]); }
-    const pool = Object.keys(D ? D.chars : {}), labels = V.map((_, i) => pool[(i * 7 + 3) % pool.length] || '人');
-    let s = 0, target = 0, t0 = performance.now(), W = 0, H = 0, dpr = 1, swap = 0;
+    // 頂點上的字：不用單筆的「一丨丿丶乀」（看起來像一條線，蓋在別的字上像被一筆劃掉）
+    const pool = Object.keys(D ? D.chars : {}).filter(c => D.chars[c].seq.length >= 2), labels = V.map((_, i) => pool[(i * 7 + 3) % pool.length] || '人');
+    let s = 0, target = 0, t0 = performance.now(), W = 0, H = 0, dpr = 1, swap = 0, fit = 1;
     const size = () => { const r = cv.getBoundingClientRect(); dpr = Math.min(2, window.devicePixelRatio || 1); W = r.width; H = r.height; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); };
     size(); addEventListener('resize', size);
     const measure = () => {   // 捲到哪一章：那一章的中線過了畫面中間多少
@@ -59,9 +60,16 @@
         c = Math.cos(A1 * 0.7); q = Math.sin(A1 * 0.7); [y, w] = [y * c - w * q, y * q + w * c];    // yw
         c = Math.cos(A3); q = Math.sin(A3); [x, z] = [x * c - z * q, x * q + z * c];                // xz
         c = Math.cos(0.42 * a[2]); q = Math.sin(0.42 * a[2]); [y, z] = [y * c - z * q, y * q + z * c];
-        const k4 = 2.6 / (2.6 - w * 0.9), k3 = 4.2 / (4.2 - z * k4 * 0.9), sc = Math.min(W, H) * 0.2;
-        return [W / 2 + x * k4 * k3 * sc, H / 2 + y * k4 * k3 * sc, z * k4, w, k4 * k3];
+        // 透視收斂一點：以前 k3 的分母乘上 k4，頂點轉到近處時分母趨近零、整個衝出畫面（使用者看到「左邊衝出去了」）
+        const k4 = 3 / (3 - w * 0.6), k3 = 5 / (5 - z * 0.7);
+        return [x * k4 * k3, y * k4 * k3, z * k4, w, k4 * k3];
       });
+      // 放得進畫框：量這一格所有頂點的範圍，超出就整個縮小（平滑地縮，不會一跳一跳）；字的圓留一點邊
+      let mx = 0.01, my = 0.01; for (const p of P) { mx = Math.max(mx, Math.abs(p[0])); my = Math.max(my, Math.abs(p[1])); }
+      const base = Math.min(W, H) * 0.2, pad = 26, want = Math.min(base, (W / 2 - pad) / mx, (H / 2 - pad) / my);
+      fit = want < fit * base ? want / base : fit + (want / base - fit) * 0.05;   // 要縮就立刻縮，要放大就慢慢放
+      const sc = base * fit;
+      for (const p of P) { p[0] = W / 2 + p[0] * sc; p[1] = H / 2 + p[1] * sc; }
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
       ctx.lineCap = 'round';
       for (const [i, j, k] of E) {
@@ -79,11 +87,15 @@
       if (t > swap) { swap = t + 1.1; const i = Math.floor(Math.random() * 16); labels[i] = pool[Math.floor(Math.random() * pool.length)] || '人'; }
       if (s > 0.6) {
         const vis = Math.min(1, (s - 0.6) * 1.5);
+        // 還沒展開的方向上，頂點疊在同一點（一維時十六個頂點只有兩個位置）：那個方向展開了，分出來的頂點的字才淡進來，疊著的只畫一個
+        const sm = (v) => v <= 0 ? 0 : v >= 1 ? 1 : v * v * (3 - 2 * v);
         P.map((p, i) => [p, i]).sort((m, n) => m[0][4] - n[0][4]).forEach(([p, i]) => {
+          let al = vis; for (let k = 0; k < 4; k++) if (i >> k & 1) al *= sm((a[k] - 0.2) / 0.6);
+          if (al < 0.02) return;
           const fs = Math.max(11, 13 * p[4] + 4);
           ctx.font = fs + 'px "LXGW WenKai TC", serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-          ctx.fillStyle = `rgba(21, 19, 15, ${.85 * vis})`; ctx.beginPath(); ctx.arc(p[0], p[1], fs * 0.72, 0, Math.PI * 2); ctx.fill();
-          ctx.fillStyle = i === 0 ? `rgba(224, 90, 69, ${vis})` : `rgba(239, 229, 207, ${Math.min(1, .45 + p[4] * .3) * vis})`;
+          ctx.fillStyle = `rgba(21, 19, 15, ${.85 * al})`; ctx.beginPath(); ctx.arc(p[0], p[1], fs * 0.72, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = i === 0 ? `rgba(224, 90, 69, ${al})` : `rgba(239, 229, 207, ${Math.min(1, .45 + p[4] * .3) * al})`;
           ctx.fillText(i === 0 ? '人' : labels[i], p[0], p[1] + 1);
         });
       }
