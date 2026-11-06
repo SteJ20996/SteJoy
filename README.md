@@ -53,7 +53,8 @@ stejoy.com 的網站：工作室**長風**的首頁（「寫意」系列，選�
 - 文字：`tools/site/litou.py` 的 `TEXT`（三語）；`python3 tools/site/build-site.py` 會連首頁、《墨畫蒼生》一起產生、一起寫進 sitemap。
 - 樣式與互動：`assets/css/litou.css`、`assets/js/litou.js`（標題的墨、標誌、超正方體、試寫）。標題五個字的粗體是 `assets/fonts/lxgw-wenkai-tc-700-litou.woff2`（霞鶩文楷 TC 700，只取力透紙纸背；SIL OFL 1.1，同資料夾的授權全文）。
 - 遊戲的資料：`assets/litou/data.js`（十筆的圖示與性質、五十七個字的筆順、讀音字義與米字格字形、標題身後那一筆）由 `node tools/litou/data.mjs <遊戲庫>` 產生；簡體用遊戲的繁轉簡表。標誌 `assets/litou/mark.js` 與 `mark-ribbon.png`、`mark-ren.png`、`mark-time.png` 抄自遊戲庫的 `src/mark.js` 與 `src/mark-data.js`（照「力」的筆順寫出來：橫折鉤、撇）。
-- 預告與一卷五章的片段：`assets/media/litou/`（預告 1920×1080、59 秒，H.264 約 7.7 MB、VP9 約 3.9 MB；字幕 `trailer.<語言>.vtt`；五段場景 1280×720）。重新做（遊戲庫 `SteJ20996/Qidofun_Xieyi_LiTouZhiBei` 在它的根目錄 `python3 -m http.server 8123`）：
+- 預告與一卷五章的片段：`assets/media/litou/`（預告 1920×1080、61 秒，H.264 約 8.0 MB、VP9 約 4.1 MB；字幕 `trailer.<語言>.vtt`；五段場景 1280×720）。重新做（遊戲庫 `SteJ20996/Qidofun_Xieyi_LiTouZhiBei` 在它的根目錄 `python3 -m http.server 8123`）：
+  莫比烏斯環那一段（遊戲 v0.8.4 起）：紙條扭成環以後，鏡頭降到「人」站的環面、攤成這一關的紙，再接打「塗」（使用者看了舊片段說環與打鬥的紙面接不上）。這個鏡頭照遊戲的實際速度錄（`shots.mjs` 的 `slow(0.23)`：假時鐘下遊戲走得比片子快，量過才定的）；場景片段 10 秒，預告裡取 2.0–8.4 秒。
   1. `node tools/litou/capture.mjs <鏡頭資料夾>`：假時鐘逐幀錄十四個鏡頭（片頭片尾是 `tools/litou/title.html`），鏡頭寫在 `tools/litou/shots.mjs`；轉場在錄的時候放慢（`slow`），遊戲裡轉場前段就做完了。每個鏡頭記下落筆、成字、正字的那一幀（`<鏡頭>.events.json`）。
   2. `python3 tools/litou/music.py tools/litou/edit.json music.wav <鏡頭資料夾>`：numpy 合成的暫用配樂——每一刀一記鼓、遊戲裡每一筆一聲筆刷、撥弦每進一維高一層、升維的轉場底下一道永遠升不完的 Shepard 音。
   3. `EDIT=tools/litou/edit.json CAPTIONS=tools/litou/captions.json node tools/trailer/build.mjs <鏡頭資料夾> music.wav <預告資料夾>`。

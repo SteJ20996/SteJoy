@@ -123,10 +123,13 @@ export const SHOTS = [
     frame({ f }) { const g = ZHAN.game; window.__c.tick(f === 3 ? 0 : 2); if (f === 3) g.levelShift('flip', 1); },
   },
   {   // 莫比烏斯環：紙條扭成環，鏡頭降到「人」站的環面、攤成這一關的紙，接著打塗（遊戲 v0.8.4 的轉場）
-    // 假時鐘下每一幀遊戲走 0.1 息（兩次 requestAnimationFrame、各被夾到 0.05），slow(1/3) 就是遊戲裡的實際速度：轉場 5.4 息 ≈ 片子 5.4 秒
-    name: 'mobius', sec: 8.8, warm: 1.4,
-    setup() { window.__c.run(); ZHAN.game.enterDim(2, { page: 1, tutorial: false }); window.__c.slow(1 / 3); },
-    frame({ f }) { const g = ZHAN.game; window.__c.tick(2); if (f === 3) g.levelShift('mobius', 2); },
+    // 假時鐘下遊戲走得比片子快（量過：slow(1/3) 時 5.4 息的轉場只佔 3.7 秒），slow(0.23) 才是遊戲裡的實際速度：轉場 5.4 息 ≈ 片子 5.4 秒
+    name: 'mobius', sec: 10.0, warm: 1.4,
+    setup() { window.__c.run(); ZHAN.game.enterDim(2, { page: 1, tutorial: false }); window.__c.slow(0.23); },
+    frame({ f }) {
+      const g = ZHAN.game; window.__c.tick(2); if (f === 3) g.levelShift('mobius', 2);
+      if (g.state === 'play' && g.mob && !window.__landed) { window.__landed = true; g.introT = Math.min(g.introT || 0, 0.4); }   // 落地後不等關名那一段，塗早點來
+    },
   },
   {   // 二維寫完：紙沿展開圖的摺痕摺成正方體
     name: 'fold', sec: 5.6, warm: 1.0,
