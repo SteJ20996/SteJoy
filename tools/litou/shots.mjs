@@ -58,9 +58,25 @@ export const COMMON = () => {
     for (const c of ['H', 'S', 'P', 'N', 'D', 'Z', 'W']) { const s = hits(c); if (s > bs) { bs = s; best = c; } }
     if (best) { g.stroke(best); B.wait = B.gap * 0.7; }
   }
+  // 三維、四維裡人照一條路線走（使用者要的：預告裡人要往各個方向動起來）：→ ↑ 前 ← ↓ 後，四維再加 U（w 大）、Y（w 小）；
+  // 一段約半秒，走一圈回到原處；靠牆就反過來走。邊走邊寫字
+  const PAT3 = [[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, 1, 0], [-1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 0]];
+  const PAT4 = [[1, 0, 0, 0], [0, 0, 0, 1], [0, -1, 0, 0], [0, 0, 1, 0], [0, 0, 0, -1], [-1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 0]];
+  function move3() {
+    const p = g.p, S = Rr.SPACE, four = g.dim === 4, pat = four ? PAT4 : PAT3, seg = Math.floor((window.__f || 0) / 14) % pat.length;
+    let [dx, dy, dz, dw] = pat[seg];
+    if (p.x < 2.5) dx = 1; else if (p.x > S.X - 2.5) dx = -1;
+    if (p.y < 2.5) dy = 1; else if (p.y > S.Y - 2.5) dy = -1;
+    if (p.z < 0.8) dz = Math.max(dz, 0); else if (p.z > S.Z - 4) dz = Math.min(dz, 0);
+    if (four) { if (p.w < 1) dw = 1; else if (p.w > Rr.HYPER.N - 1) dw = -1; }
+    keys(dx, dy);
+    for (const k of ['Space', 'KeyB', 'KeyU', 'KeyY']) g.keys.delete(k);
+    if (dz > 0) g.keys.add('Space'); else if (dz < 0) g.keys.add('KeyB');
+    if (four) { if (dw > 0) g.keys.add('KeyU'); else if (dw < 0) g.keys.add('KeyY'); }
+  }
   function bot3() {
     const p = g.p, live = g.foes.filter(e => e.live && e.spawnT <= 0 && !e.doomed);
-    g.keys.delete('Space'); g.keys.delete('KeyB'); keys(0, 0);
+    move3();
     if (B.wait > 0 || p.strokeCd > 0) return;
     if (B.plan.length) { write(B.plan.shift()); return; }
     const ts = SPACE.targets(g).sort((a, b) => Math.hypot(a.x - p.x, a.y - p.y, a.z - p.z) - Math.hypot(b.x - p.x, b.y - p.y, b.z - p.z));
