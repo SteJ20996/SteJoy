@@ -90,12 +90,12 @@
         // 還沒展開的方向上，頂點疊在同一點（一維時十六個頂點只有兩個位置）：那個方向展開了，分出來的頂點的字才淡進來，疊著的只畫一個
         const sm = (v) => v <= 0 ? 0 : v >= 1 ? 1 : v * v * (3 - 2 * v);
         P.map((p, i) => [p, i]).sort((m, n) => m[0][4] - n[0][4]).forEach(([p, i]) => {
-          let al = vis; for (let k = 0; k < 4; k++) if (i >> k & 1) al *= sm((a[k] - 0.2) / 0.6);
+          let al = vis; for (let k = 0; k < 4; k++) if (i >> k & 1) al *= sm((a[k] - 0.04) / 0.26);   // 一離開重疊就全亮（展開三成時已分開幾個字寬）
           if (al < 0.02) return;
           const fs = Math.max(11, 13 * p[4] + 4);
           ctx.font = fs + 'px "LXGW WenKai TC", serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
           ctx.fillStyle = `rgba(21, 19, 15, ${.85 * al})`; ctx.beginPath(); ctx.arc(p[0], p[1], fs * 0.72, 0, Math.PI * 2); ctx.fill();
-          ctx.fillStyle = i === 0 ? `rgba(224, 90, 69, ${al})` : `rgba(239, 229, 207, ${Math.min(1, .45 + p[4] * .3) * al})`;
+          ctx.fillStyle = i === 0 ? `rgba(224, 90, 69, ${al})` : `rgba(239, 229, 207, ${0.95 * al})`;   // 每個頂點的字一樣亮（遠近只看線）
           ctx.fillText(i === 0 ? '人' : labels[i], p[0], p[1] + 1);
         });
       }
