@@ -70,10 +70,10 @@ export const SHOTS = [
       if (f >= 6 && (f - 6) % 4 === 0 && plan[i]) XIEYI.game.world.set(plan[i][0], plan[i][1], plan[i][2]);
     },
   },
-  {   // 三、入夜：天暗下來，屋裡屋外點著燈，魄從暗處飄來、在燈外徘徊，最後一隻撲上來被燈燒滅
-    name: 'night', sec: 8, seed: 7,
+  {   // 三、入夜：縮時從日落前快轉到天黑——燈照著的磚甓一起慢慢由墨色變成暗光（遊戲 v0.9.57），照不到的照舊是墨字；天黑透了魄從暗處飄來、在燈外徘徊，最後一隻撲上來被燈燒滅
+    name: 'night', sec: 9, seed: 7,
     setup() {
-      const c = window.__c, g = XIEYI.game, p = g.player; const dusk = c.dusk(12); c.at(12, dusk - 0.035);   // 第十三夜（試玩裡就有）
+      const c = window.__c, g = XIEYI.game, p = g.player; const dusk = c.dusk(12); c.at(12, dusk - 0.025);   // 第十三夜（試玩裡就有）；從日落前約三十分起
       const { cx, cy } = c.home(); c.put(cx - 1, cy); p.fx = 1; p.fy = 0;
       g.ents.dashT = 1e9; g.ents.list = g.ents.list.filter(e => e.type !== '狼' && e.type !== '虎');
       // 遊戲裡魄本來就穿得過磚（怕光穿磚），可是鏡頭裡停在磚上看起來像卡在牆裡：錄的時候不讓牠站上人造的東西
@@ -83,11 +83,11 @@ export const SHOTS = [
     },
     frame({ f }) {
       const c = window.__c, g = XIEYI.game, w = g.world, h = window.__home;
-      if (f < 90) w.time += c.DAY * 0.07 / 90;
-      const spots = { 60: [h.cx + 8, h.cy - 3], 80: [h.cx - 8, h.cy + 4], 100: [h.cx + 7, h.cy + 6], 120: [h.cx - 6, h.cy - 5] };
+      if (f < 135) w.time += c.DAY * 0.09 / 135;   // 前四息半：日落前三十分快轉到日落後九十多分（燈照著的字在日落後五刻亮足，約第一百一十幀）
+      const spots = { 150: [h.cx + 8, h.cy - 3], 168: [h.cx - 8, h.cy + 4], 186: [h.cx + 7, h.cy + 6], 204: [h.cx - 6, h.cy - 5] };
       if (spots[f]) g.ents.add('魄', spots[f][0], spots[f][1], {});
-      if (f === 175) g.ents.dashT = 0;
-      if (f === 185) g.ents.dashT = 1e9;
+      if (f === 240) g.ents.dashT = 0;
+      if (f === 250) g.ents.dashT = 1e9;
     },
   },
   {   // 四、雪：開春的傍晚，屋裡屋外點著燈
