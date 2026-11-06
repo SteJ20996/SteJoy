@@ -4,7 +4,7 @@
     { "shot": "title",   "from": 0.0, "dur": 4.6 },
     { "shot": "gather",  "from": 0.5, "dur": 4.0 },
     { "shot": "build",   "from": 0.2, "dur": 5.2 },
-    { "shot": "night",   "from": 0.0, "dur": 7.6 },
+    { "shot": "night",   "from": 0.0, "dur": 8.6 },
     { "shot": "snow",    "from": 0.4, "dur": 4.6 },
     { "shot": "thunder", "from": 0.2, "dur": 5.4 },
     { "shot": "crops",   "from": 0.3, "dur": 5.5 },
