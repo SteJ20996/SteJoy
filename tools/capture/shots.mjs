@@ -144,7 +144,7 @@ export const SHOTS = [
     },
   },
   {   // 七、觀星：晴夜抬頭，天慢慢轉。抬頭放慢（2026-11-06 使用者：預告第 35 秒抬頭太快）：第 36 幀才抬、走 4 息（遊戲裡是 1.6 息；遊戲自己會照 smoothstep 緩進緩出，這裡只把進度線性推慢），抬完了天才開始轉
-    name: 'gaze', sec: 9.6, seed: 7,
+    name: 'gaze', sec: 9.6, seed: 7, fresh: true,   // fresh：截到跟上一幀一樣的畫面就重截（capture.mjs）
     setup() {
       const c = window.__c, g = XIEYI.game, p = g.player; const d = c.dusk(11); c.at(11, Math.min(0.98, d + 0.12));   // 第十一夜，晴（試玩裡就有）
       const { cx, cy } = c.home(); c.put(cx, cy + 5); p.fx = 0; p.fy = -1;
@@ -154,10 +154,13 @@ export const SHOTS = [
       const g = XIEYI.game, F0 = 36, RAISE = 120;   // 30 幀一息：1.2 息時抬頭、5.2 息抬完
       if (f === F0) g.toggleGaze();
       if (!g.gaze || f < F0) return;
+      g.gaze.hit = g.hitN || 0;   // 2026-11-06 使用者：預告第 40 秒觀星有一陣抖動。錄影時命一直補滿，夜裡野獸咬了一口看不出來，可是遊戲記著「挨了打就回過神來低頭」，下面又每幀把頭拉回去，兩邊拉扯、天就上下跳（低多少看那一幀遊戲畫了幾回）。每幀把挨打的數對齊，不讓它低頭
       const u = Math.min(1, (f - F0) / RAISE);
       g.gaze.dir = u < 1 ? 0 : 1; g.gaze.s = u;   // 自己推抬頭的進度，不讓遊戲照 1.6 息走（畫的時候遊戲再照 smoothstep 緩進緩出）
       if (u >= 1) { const k = Math.min(1, (f - F0 - RAISE) / 30); g.gaze.az += 0.0035 * k; g.gaze.alt = Math.min(1.05, g.gaze.alt + 0.0012 * k); }   // 抬完了天才慢慢轉起來
+      if (g.sky) g.sky.mwKey = null;   // 銀河每幀都重畫：遊戲為了省力，天在轉時銀河那層每 0.12 息才重畫一次，星每幀動、銀河一格一格跳
     },
+    paint() { const g = XIEYI.game; g.renderer.draw(g, 0, g.animT || 0); if (g.gaze) g.gazeTick(0, false); },   // capture.mjs 截圖前叫：照這一幀的視角畫好（dt 0，live false 不判挨打）
   },
   {   // 八、渡海（完整版）：孤帆沿著海岸往東開，海上浮著蜃
     name: 'sail', sec: 6, seed: 7, full: true, warm: 1.5, tile: 56,
