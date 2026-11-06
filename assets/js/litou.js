@@ -132,8 +132,9 @@
       const kb = keys.find(k => k.dataset.code === code); if (kb) { kb.classList.add('hit'); setTimeout(() => kb.classList.remove('hit'), 110); }
       clearTimeout(timer);
       if (missing) { missing = false; buf = ''; }   // 筆還在散：直接從這一筆重新開始
-      // 剛寫成一個字、這一筆又接不下去：提筆成字，這一筆是下一個字的第一筆（跟遊戲一樣）
-      if (buf && ALL.some(c => CH[c].seq === buf) && !ALL.some(c => CH[c].seq.startsWith(buf + code))) buf = '';
+      // 剛寫成一個字、這一筆又接不下去：提筆成字，這一筆是下一個字的第一筆（跟遊戲一樣）。
+      // 只有一筆的「字」（一丨丿丶乀）不算：點了一點再接豎鉤，是想寫別的字寫錯了，要散給人看（使用者試出來的）
+      if (buf.length >= 2 && ALL.some(c => CH[c].seq === buf) && !ALL.some(c => CH[c].seq.startsWith(buf + code))) buf = '';
       const next = buf + code;
       if (!ALL.some(c => CH[c].seq.startsWith(next))) { buf = next; miss(code); return; }
       buf = next;
