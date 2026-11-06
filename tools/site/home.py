@@ -1,5 +1,5 @@
 """stejoy.com 的首頁：長風的「寫意」系列，選一部遊戲（使用者要的：在主頁加一個選不同遊戲的介面，先放兩部）。
-三語：index.html、zh-hans/index.html、en/index.html。由 tools/site/build-site.py 一起產生，文字改這個檔案的 TEXT。
+四語：index.html、zh-hans/index.html、en/index.html、ja/index.html（日文 2026-11-06 加）。由 tools/site/build-site.py 一起產生，文字改這個檔案的 TEXT。
 每一部是一張紙：《墨畫蒼生》淺紙、會寫出來的「水」字標、實機片段；《力透紙背》墨黑、照「力」的筆順寫出來的標誌（紙色）、
 實機片段反過來看（紙背）。上面一排「種類」可以篩；← → 換一部、Enter 進入。遊戲多了就多幾張紙、多幾個種類。
 《墨畫蒼生》原本的介紹頁搬到 mohuacangsheng/，《力透紙背》在 litouzhibei/。
@@ -91,7 +91,7 @@ TEXT = {
         'nav': ['Games', 'About', 'Contact'],
         'kicker': 'The 寫意 (Xieyi) series',
         'headline': 'Set brush to paper, and the game begins',
-        'deck': 'Games of every kind, made from Chinese characters. Each sheet below is a separate game.',
+        'deck': 'Games of every kind, made from Chinese characters (Hanzi/Kanji). Each sheet below is a separate game.',   # 2026-11-06 使用者：英文版加（Hanzi/Kanji）
         'poem': '“A time will come to ride the long wind and cleave the waves; then I’ll hoist my cloud-white sail and cross the sea.”', 'cite': 'Li Bai, The Hard Road',
         'choose': 'Pick a game', 'hint': '← → to switch · Enter to open',
         'kinds': {'all': 'All', 'survival': 'Survival · Building', 'battle': 'Stroke order · Battle'},
@@ -105,6 +105,27 @@ TEXT = {
         'about': ['SteJoy (長風, “the long wind”) is a small studio making the 寫意 (Xieyi) series. The Chinese name comes from Li Bai’s poem The Hard Road.'],
         'about2': 'Each Xieyi game takes Chinese characters as its material. In InkWild, characters are ground you can take apart and build with; in Through the Page, strokes are moves, and a character written right is a blow.',
         'contact_h': 'Contact', 'contact': 'Write to us:',
+    },
+    'ja': {
+        'title': '長風｜「写意」シリーズ',
+        'desc': '長風の「写意」シリーズ：漢字を素材にしたゲーム。『墨畫蒼生』は近日 Steam で配信、『力透紙背』は開発中です。',
+        'nav': ['ゲーム', '長風について', 'お問い合わせ'],
+        'kicker': '「写意」シリーズ',   # 系列名照《力透紙背》日文版的寫法（写意，新字體）
+        'headline': '筆を下ろせば、一局が始まる',   # 落筆成局；《力透紙背》日文版的「落筆」鈕就是「筆を下ろす」
+        'deck': '漢字で組み上げた、さまざまなゲーム。下に並ぶ紙の一枚一枚が、それぞれ一本のゲームです。',
+        'poem': '長風浪を破る 会ず時有り、直ちに雲帆を挂けて滄海を済らん。', 'cite': '李白「行路難」',
+        'choose': 'ゲームを選ぶ', 'hint': '← → で切り替え　Enter で開く',
+        'kinds': {'all': 'すべて', 'survival': 'サバイバル · 建築', 'battle': '筆順 · バトル'},
+        'games': {
+            'inkwild': {'name': '墨畫蒼生', 'en': 'InkWild', 'genre': 'サバイバル · 建築', 'tag': '木を書けば舟となり · 水を書けば淵となる',
+                        'pitch': '一枚の紙が海に落ち、紙の上の字が生きはじめた。木を取り、煉瓦を積み、灯をともして、幾夜も生き延びる。胆気が満ちたら、舟を造って海を渡る。', 'status': '近日 Steam で配信', 'go': '開く'},
+            'litou': {'name': '力透紙背', 'en': 'Through the Page', 'genre': '筆順 · バトル', 'tag': '点から線へ · 線から面へ · 面から立体へ',
+                      'pitch': 'キーボードの 1 から 0 が十種の画。筆順どおりに書けば、崩れた字が正される。一つの点から書きはじめ、超立方体の内側まで書き進む。', 'status': '乞うご期待', 'go': '開く'},
+        },
+        'about_h': '長風について',
+        'about': ['長風（ちょうふう）は「写意」シリーズを作る小さなスタジオです。名前は李白の「行路難」から取りました。英語名は SteJoy です。'],
+        'about2': '「写意」の作品は、どれも漢字を素材にしています。『墨畫蒼生』では、字は崩しては積み直せる一マス一マスの大地。『力透紙背』では、画が技になり、正しく書けた字が一撃になります。',
+        'contact_h': 'お問い合わせ', 'contact': 'ご意見・ご感想はメールでどうぞ：',
     },
 }
 
@@ -142,7 +163,7 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME, LOGO):
       </div>
     </a>''')
     about = ''.join(f'<p>{esc(p)}</p>' for p in T['about'] + [T['about2']])   # 標題下那句只說「有好幾部」，每一部拿漢字當什麼材料照舊在這裡說
-    deck = ''.join(f'<span>{esc(x)}</span>' for x in re.findall(r'[^：，。]+[：，。]?', T['deck']))   # 一段一段換行
+    deck = ''.join(f'<span>{esc(x)}</span>' for x in re.findall(r'[^：，、。]+[：，、。]?', T['deck']))   # 一段一段換行（日文的讀點「、」也斷得開）
     sub = (f'  {HENG}\n' if 'stroke' in SUB else '') + (f'  <p class="hm-deck">{deck}</p>\n' if 'deck' in SUB else '')
     banner = json.dumps({c: [t, up + LANGS[c]['dir']] for c, t in HOME['banner'].items()}, ensure_ascii=False)
     mark = json.dumps({'w': 760, 'h': 514, 'turns': [0.2285, 0.5021], 'ink': [239, 229, 207], 'ribbon': a + 'litou/mark-ribbon.png', 'ren': a + 'litou/mark-ren.png', 'time': a + 'litou/mark-time.png'})

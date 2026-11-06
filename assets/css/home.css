@@ -119,3 +119,14 @@ body.lang-en .hm-quote p { letter-spacing: 0; font-style: italic; font-size: 20p
   .hm-mark .ren.land { animation: none; opacity: 1; }
   .hm-stroke { animation: none; }
 }
+
+/* 日文頁（2026-11-06 加）：標題「筆を下ろせば、一局が始まる」比「落筆成局」長三倍，字小一點、字距收 */
+body.lang-ja .hm-kicker { letter-spacing: .16em; }
+body.lang-ja .hm-title { letter-spacing: .06em; font-size: clamp(32px, 5.2vw, 64px); }
+body.lang-ja .hm-deck { letter-spacing: .04em; }
+body.lang-ja .hm-kind { font-family: var(--ja); }
+body.lang-ja .hm-genre { letter-spacing: .12em; }
+body.lang-ja .hm-tag { letter-spacing: .08em; }
+body.lang-ja .hm-status { letter-spacing: .04em; }
+body.lang-ja .hm-quote p { letter-spacing: .04em; font-size: 22px; }
+@media (max-width: 860px) { body.lang-ja .hm-deck { letter-spacing: .02em; } }

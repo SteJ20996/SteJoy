@@ -26,8 +26,8 @@
   // 按鈕自己反縮放，永遠一樣大
   (() => {
     const Z = [0.7, 0.8, 0.9, 1, 1.1, 1.2], KEY = 'stejoy.zoom', root = document.documentElement;
-    const lang = document.body.classList.contains('lang-en') ? 'en' : document.body.classList.contains('lang-zh-Hans') ? 'hans' : 'hant';
-    const T = { hant: ['頁面大小', '縮小', '放大', '回到 100%'], hans: ['页面大小', '缩小', '放大', '回到 100%'], en: ['Page size', 'Smaller', 'Larger', 'Back to 100%'] }[lang];
+    const cl = document.body.classList, lang = cl.contains('lang-en') ? 'en' : cl.contains('lang-ja') ? 'ja' : cl.contains('lang-zh-Hans') ? 'hans' : 'hant';
+    const T = { hant: ['頁面大小', '縮小', '放大', '回到 100%'], hans: ['页面大小', '缩小', '放大', '回到 100%'], en: ['Page size', 'Smaller', 'Larger', 'Back to 100%'], ja: ['ページの大きさ', '縮小', '拡大', '100% に戻す'] }[lang];
     let want = 1; try { want = +localStorage.getItem(KEY) || 1; } catch (e) {}
     if (!Z.includes(want)) want = 1;
     const cap = () => innerWidth < 880 ? 1 : Math.min(Z[Z.length - 1], Math.floor(innerWidth / 88) / 10);
@@ -54,12 +54,12 @@
     cur = parseFloat(root.style.zoom) || 1; apply(false);
   })();
 
-  // 語言提示：瀏覽器是簡中、繁中、英文，而這一頁不是，就在下面提一句（不自動跳轉；關掉了就不再提）
+  // 語言提示：瀏覽器是簡中、繁中、日文、英文，而這一頁不是，就在下面提一句（不自動跳轉；關掉了就不再提）
   try {
     const box = document.getElementById('lang-banner'), offers = JSON.parse(document.body.dataset.banner || '{}');
     const prefs = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || '']).map((x) => x.toLowerCase());
     const top = prefs[0] || '';
-    const want = /^zh-(cn|sg|hans)/.test(top) || top === 'zh' ? 'zh-Hans' : /^zh/.test(top) ? 'zh-Hant' : 'en';
+    const want = /^zh-(cn|sg|hans)/.test(top) || top === 'zh' ? 'zh-Hans' : /^zh/.test(top) ? 'zh-Hant' : /^ja/.test(top) ? 'ja' : 'en';
     let off = null; try { off = localStorage.getItem('stejoy.lang.off'); } catch (e) {}
     if (box && offers[want] && !off) {
       const [label, href] = offers[want];
