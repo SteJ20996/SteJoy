@@ -1,12 +1,12 @@
 {
-  "gather":  { "zh-Hant": "一張紙落在海上，紙上的字活了。", "zh-Hans": "一张纸落在海上，纸上的字活了。", "en": "A sheet of paper falls on the sea, and the characters on it come alive." },
-  "build":   { "zh-Hant": "取木、砌磚，寫下一個家。", "zh-Hans": "取木、砌砖，写下一个家。", "en": "Gather wood. Lay bricks. Write yourself a home." },
-  "night":   { "zh-Hant": "第十三夜起，魄夜行。點一盞燈，撐過這一夜。", "zh-Hans": "第十三夜起，魄夜行。点一盏灯，撑过这一夜。", "en": "From the 13th night, the spirits walk. Light a lamp and hold out until dawn." },
-  "snow":    { "zh-Hant": "照著節氣過日子：雪、", "zh-Hans": "照着节气过日子：雪、", "en": "Live by the solar terms: snow," },
-  "thunder": { "zh-Hant": "雷、風、雨。", "zh-Hans": "雷、风、雨。", "en": "thunder, wind and rain." },
-  "crops":   { "zh-Hant": "種五穀，字一筆一筆長出來。", "zh-Hans": "种五谷，字一笔一笔长出来。", "en": "Sow the five grains and watch them grow, stroke by stroke." },
-  "gaze":    { "zh-Hant": "夜裡抬頭，認星官。", "zh-Hans": "夜里抬头，认星官。", "en": "At night, look up and learn the stars." },
-  "sail":    { "zh-Hant": "膽氣夠了，就造船渡海。", "zh-Hans": "胆气够了，就造船渡海。", "en": "When your courage is enough, build a boat and cross the sea." },
-  "gong":    { "zh-Hant": "去找撞歪天地的共工。", "zh-Hans": "去找撞歪天地的共工。", "en": "Find Gonggong, who tilted the world." },
-  "end":     { "zh-Hant": "即將登上 Steam", "zh-Hans": "即将登陆 Steam", "en": "Coming to Steam" }
+  "gather":  { "zh-Hant": "一張紙落在海上，紙上的字活了。", "zh-Hans": "一张纸落在海上，纸上的字活了。", "en": "A sheet of paper falls on the sea, and the characters on it come alive.", "ja": "一枚の紙が海に落ち、紙の上の字が生きはじめた。" },
+  "build":   { "zh-Hant": "取木、砌磚，寫下一個家。", "zh-Hans": "取木、砌砖，写下一个家。", "en": "Gather wood. Lay bricks. Write yourself a home.", "ja": "木を取り、煉瓦を積み、家を書き上げる。" },
+  "night":   { "zh-Hant": "第十三夜起，魄夜行。點一盞燈，撐過這一夜。", "zh-Hans": "第十三夜起，魄夜行。点一盏灯，撑过这一夜。", "en": "From the 13th night, the spirits walk. Light a lamp and hold out until dawn.", "ja": "第十三夜から、魄が夜をさまよう。灯をともして、この夜を越えよう。" },
+  "snow":    { "zh-Hant": "照著節氣過日子：雪、", "zh-Hans": "照着节气过日子：雪、", "en": "Live by the solar terms: snow,", "ja": "節気とともに暮らす。雪、" },
+  "thunder": { "zh-Hant": "雷、風、雨。", "zh-Hans": "雷、风、雨。", "en": "thunder, wind and rain.", "ja": "雷、風、雨。" },
+  "crops":   { "zh-Hant": "種五穀，字一筆一筆長出來。", "zh-Hans": "种五谷，字一笔一笔长出来。", "en": "Sow the five grains and watch them grow, stroke by stroke.", "ja": "五穀を蒔けば、字が一画ずつ育っていく。" },
+  "gaze":    { "zh-Hant": "夜裡抬頭，認星官。", "zh-Hans": "夜里抬头，认星官。", "en": "At night, look up and learn the stars.", "ja": "夜には空を見上げ、星官を覚える。" },
+  "sail":    { "zh-Hant": "膽氣夠了，就造船渡海。", "zh-Hans": "胆气够了，就造船渡海。", "en": "When your courage is enough, build a boat and cross the sea.", "ja": "胆気が満ちたら、舟を造って海を渡る。" },
+  "gong":    { "zh-Hant": "去找撞歪天地的共工。", "zh-Hans": "去找撞歪天地的共工。", "en": "Find Gonggong, who tilted the world.", "ja": "天地を傾けた共工を探しに行く。" },
+  "end":     { "zh-Hant": "即將登上 Steam", "zh-Hans": "即将登陆 Steam", "en": "Coming to Steam", "ja": "近日 Steam で配信" }
 }

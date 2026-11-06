@@ -28,7 +28,7 @@ ff('-i', str(TRAILER / 'trailer.mp4'), '-c:v', 'libx264', '-preset', 'slow', '-c
    '-movflags', '+faststart', '-c:a', 'aac', '-b:a', '128k', str(M / 'trailer.mp4'))
 ff('-i', str(TRAILER / 'trailer.mp4'), '-c:v', 'libvpx-vp9', '-crf', '42', '-b:v', '0', '-row-mt', '1', '-deadline', 'good', '-cpu-used', '2',
    '-c:a', 'libopus', '-b:a', '112k', str(M / 'trailer.webm'))
-for lang in ('zh-Hant', 'zh-Hans', 'en'):
+for lang in ('zh-Hant', 'zh-Hans', 'en', 'ja'):
     shutil.copy(TRAILER / f'trailer.{lang}.vtt', M / f'trailer.{lang}.vtt')
 ff('-ss', '3.2', '-i', str(TRAILER / 'trailer.mp4'), '-frames:v', '1', '-vf', 'scale=1280:720:flags=lanczos', '-q:v', '3', str(M / 'trailer.jpg'))   # 海報：片頭寫好的字標
 

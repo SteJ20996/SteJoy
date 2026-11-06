@@ -187,3 +187,16 @@ body.lang-en .lt-feat h3, body.lang-en .lt-sub { letter-spacing: 0; }
   .lt-mark .ren.land { opacity: 1; }
   .lt-reveal .h2s, .lt-reveal h2 span { transition: none; clip-path: none; opacity: 1; transform: none; }
 }
+
+/* 日文頁（2026-11-06 加）：字距收一點；試寫的讀音（音讀・訓讀）照內文字型；段首空一字 */
+body.litou.lang-ja h2 { letter-spacing: .06em; }
+body.lang-ja .lt-kicker { letter-spacing: .16em; }
+body.lang-ja .lt-tagline, body.lang-ja .lt-motto { letter-spacing: .1em; }
+body.lang-ja .lt-seal { letter-spacing: .1em; }
+body.lang-ja .lt-quote p { letter-spacing: .02em; }
+body.lang-ja .lt-story-text p { text-indent: 1em; }
+body.lang-ja .lt-step h3, body.lang-ja .lt-step-k { letter-spacing: .06em; }
+body.lang-ja .lt-loop { letter-spacing: .3em; }
+body.lang-ja .lt-read { font-family: inherit; }
+body.lang-ja .lt-big.miss { letter-spacing: .06em; font-size: 34px; }
+body.lang-ja .lt-feat h3, body.lang-ja .lt-sub, body.lang-ja .lt-strokes li > div b { letter-spacing: .04em; }
