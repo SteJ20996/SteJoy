@@ -2,6 +2,7 @@
 要的是力道：每一刀剪接一記鼓；遊戲裡寫下的每一筆一聲筆刷（錄鏡頭時記下的那一幀，<鏡頭資料夾>/<鏡頭>.events.json）；
 撥弦照五聲往上走，每進一維高一層；升維的轉場底下是一道一直往上、卻永遠升不完的 Shepard 音（無窮）。
 用法：python3 tools/litou/music.py tools/litou/edit.json out.wav <鏡頭資料夾>
+不刺耳（使用者聽了說「背景樂有點刺耳」，量過是撥弦：原本每進一維高一個八度，三、四維的音落在 1.8–10 kHz，2–6 kHz 的能量九成四是它）：撥弦從 A2 起、每進一維只高兩個五聲音級，最高約 1 kHz，泛音只到 5 kHz；鼓、鼓邊、筆刷的雜音都先濾掉高頻；整首最後再過一道柔和的低通。
 """
 import json, os, sys, wave
 import numpy as np
@@ -26,6 +27,10 @@ def add(sig, at, pan=0.0, gain=1.0):
     L[i:i + len(sig)] += sig * np.sqrt(0.5 * (1 - pan)); R[i:i + len(sig)] += sig * np.sqrt(0.5 * (1 + pan))
 
 def env_t(dur): return np.arange(int(dur * SR)) / SR
+def lp(x, fc):   # 高斯低通（約在 fc 以上滾降），雜音用：白雜訊直接聽是嘶嘶的
+    sg = SR / (2 * np.pi * fc); r = int(4 * sg) + 1
+    k = np.exp(-np.arange(-r, r + 1) ** 2 / (2 * sg * sg)); return np.convolve(x, k / k.sum(), 'same')
+def noise(n, fc): return lp(rng.standard_normal(n), fc) * np.sqrt(SR / (2.5 * fc))   # 濾過還保留差不多的響度
 def note(n): return 440.0 * 2 ** (n / 12)
 PENTA = [0, 3, 5, 7, 10]   # 羽調：A C D E G
 def deg(k, octave=0): return note(PENTA[k % 5] + 12 * (k // 5 + octave))
@@ -34,28 +39,26 @@ def drum(big=1.0):   # 大鼓：低音往下掉、皮面的雜音
     tt = env_t(1.2)
     f = 46 + 70 * np.exp(-tt * 18)
     body = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-tt * (4.2 / big))
-    skin = rng.standard_normal(len(tt)) * np.exp(-tt * 45) * 0.35
+    skin = noise(len(tt), 2200) * np.exp(-tt * 45) * 0.3
     return (body + skin) * 0.55 * big
 
 def rim():   # 鼓邊：短而硬
     tt = env_t(0.12)
-    return (np.sin(2 * np.pi * 820 * tt) * 0.4 + rng.standard_normal(len(tt)) * 0.6) * np.exp(-tt * 70) * 0.18
+    return (np.sin(2 * np.pi * 620 * tt) * 0.5 + noise(len(tt), 3000) * 0.5) * np.exp(-tt * 60) * 0.15
 
 def brush(pan=0.0):   # 一筆：帶通的沙沙聲，先重後輕（像筆鋒掃過紙）
     tt = env_t(0.22)
     n = rng.standard_normal(len(tt))
-    k = np.exp(-np.arange(-40, 41) ** 2 / 300.0); k /= k.sum()
-    n = n - np.convolve(n, k, 'same')            # 去掉低頻
-    n = np.convolve(n, np.ones(3) / 3, 'same')    # 去掉最尖的
+    n = lp(n - lp(n, 500), 3200) * 1.8            # 只留 0.5–3.2 kHz：紙上的沙沙聲，不是嘶嘶聲
     e = np.minimum(1, tt / 0.012) * np.exp(-tt * 16)
-    return n * e * 0.16
+    return n * e * 0.13
 
 def pluck(f, dur=2.6, bright=1.0):
     tt = env_t(dur); s = np.zeros_like(tt)
-    for n in range(1, 10):
-        if f * n > 9000: break
-        s += (1 / n ** (1.3 / bright)) * np.sin(2 * np.pi * f * n * tt * (1 + 0.0004 * n)) * np.exp(-tt * (1.4 + 0.9 * n))
-    return (s * np.minimum(1, tt / 0.004) + rng.standard_normal(len(tt)) * np.exp(-tt * 60) * 0.12) * 0.3
+    for n in range(1, 9):
+        if f * n > 5000: break                    # 泛音只到 5 kHz
+        s += (1 / n ** (1.7 / bright)) * np.sin(2 * np.pi * f * n * tt * (1 + 0.0004 * n)) * np.exp(-tt * (1.2 + 1.5 * n))
+    return (s * np.minimum(1, tt / 0.006) + noise(len(tt), 1800) * np.exp(-tt * 60) * 0.08) * 0.42
 
 def drone(f, dur, swell=1.2):
     tt = env_t(dur); e = np.minimum(1, tt / swell) * np.minimum(1, (dur - tt) / swell)
@@ -103,9 +106,9 @@ for i, (shot, at, dur, frm) in enumerate(clips):
         if d >= 2 and b % 2 == 0: add(drum(0.7), tb, -0.1, 0.45)
         if d >= 1 and b % 2 == 1: add(rim(), tb + BEAT / 2, 0.3, 0.9)
         if d >= 3: add(rim(), tb + BEAT * 0.75, -0.3, 0.6)
-    # 撥弦：每段四個音，越往後越高
+    # 撥弦：每段四個音，越往後越高——從 A2（110 Hz）起，每進一維高兩個五聲音級（原本高一個八度，四維就到 10 kHz）
     for k in range(4):
-        add(pluck(deg(2 * k + (i % 3), d - 1 if d else -1)), at + 0.3 + k * BEAT * 1.5, (k % 2) * 0.6 - 0.3, 0.8)
+        add(pluck(deg(2 * k + (i % 3) + 2 * d, -2)), at + 0.3 + k * BEAT * 1.5, (k % 2) * 0.6 - 0.3, 0.8)
     # 遊戲裡寫下的每一筆：一聲筆刷；成字、正字再加一記鼓邊
     ev = events(shot)
     if ev:
@@ -114,12 +117,15 @@ for i, (shot, at, dur, frm) in enumerate(clips):
             if 0 <= ts <= dur: add(brush(rng.uniform(-0.5, 0.5)), at + ts, 0, 1.0)
         for f in ev.get('casts', []) + ev.get('zheng', []):
             ts = f / 30 - frm
-            if 0 <= ts <= dur: add(rim(), at + ts, 0, 1.4); add(pluck(deg(4, d)), at + ts, 0.2, 0.5)
+            if 0 <= ts <= dur: add(rim(), at + ts, 0, 1.2); add(pluck(deg(7 + 2 * d, -2)), at + ts, 0.2, 0.5)   # 成字一聲：0.5–0.8 kHz
 
 mix = np.stack([L, R], 1)[: int((TOTAL + 0.2) * SR)]
+# 整首過一道柔和的低通（零相位，約 8 kHz 起、每八度降 12 dB）：合成的東西高頻乾而硬，留著就刺耳
+F = np.fft.rfftfreq(len(mix), 1 / SR)[:, None]
+mix = np.fft.irfft(np.fft.rfft(mix, axis=0) / np.sqrt(1 + (F / 8000) ** 4), n=len(mix), axis=0)
 tail = np.minimum(1, (len(mix) / SR - np.arange(len(mix)) / SR) / 1.2)[:, None]
 mix *= tail
-mix /= max(1e-9, np.abs(mix).max()) / 0.89
+mix /= max(1e-9, np.abs(mix).max()) / 0.72   # 峰值約 −2.9 dBFS，整首約 −21 LUFS：跟改之前一樣大聲，只是不刺耳
 with wave.open(sys.argv[2], 'wb') as w:
     w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR)
     w.writeframes((mix * 32767).astype('<i2').tobytes())

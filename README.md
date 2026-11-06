@@ -57,6 +57,7 @@ stejoy.com 的網站：工作室**長風**的首頁（「寫意」系列，選�
   莫比烏斯環那一段（遊戲 v0.8.4 起）：紙條扭成環以後，鏡頭降到「人」站的環面、攤成這一關的紙，再接打「塗」（使用者看了舊片段說環與打鬥的紙面接不上）。這個鏡頭照遊戲的實際速度錄（`shots.mjs` 的 `slow(0.23)`：假時鐘下遊戲走得比片子快，量過才定的）；場景片段 10 秒，預告裡取 2.0–8.4 秒。
   1. `node tools/litou/capture.mjs <鏡頭資料夾>`：假時鐘逐幀錄十四個鏡頭（片頭片尾是 `tools/litou/title.html`），鏡頭寫在 `tools/litou/shots.mjs`；轉場在錄的時候放慢（`slow`），遊戲裡轉場前段就做完了。每個鏡頭記下落筆、成字、正字的那一幀（`<鏡頭>.events.json`）。
   2. `python3 tools/litou/music.py tools/litou/edit.json music.wav <鏡頭資料夾>`：numpy 合成的暫用配樂——每一刀一記鼓、遊戲裡每一筆一聲筆刷、撥弦每進一維高一層、升維的轉場底下一道永遠升不完的 Shepard 音。
+     不刺耳（使用者說「背景樂有點刺耳」；量過是撥弦，原本每進一維高一個八度、三四維落在 1.8–10 kHz，2–6 kHz 的能量九成四是它）：撥弦從 A2 起、每進一維只高兩個五聲音級（最高約 1 kHz），鼓、鼓邊、筆刷的雜音先濾掉高頻，整首再過一道 8 kHz 的柔和低通；2–6 kHz 比改之前低 14 dB，整首響度照舊（約 −21 LUFS）。
   3. `EDIT=tools/litou/edit.json CAPTIONS=tools/litou/captions.json node tools/trailer/build.mjs <鏡頭資料夾> music.wav <預告資料夾>`。
   4. `python3 tools/litou/media.py <鏡頭資料夾> <預告資料夾>`。
 
