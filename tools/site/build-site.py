@@ -208,7 +208,7 @@ def page(code):
 <link rel="stylesheet" href="{a}css/site.css">
 <script defer src="{a}js/site.js"></script>
 </head>
-<body class="lang-{code}" data-banner='{esc(banner)}'>
+<body class="lang-{code} mohua" data-banner='{esc(banner)}'>
 <header class="top">
   <a class="studio" href="{up}{L['dir']}"><img src="{a}img/icon.svg" alt="" width="34" height="34"><span>{esc(T['studio'])}</span></a>
   <nav class="sections" aria-label="sections">{nav}</nav>
