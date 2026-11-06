@@ -24,6 +24,11 @@ body.lang-zh-Hans .studio { font: 400 22px/1 var(--sc); letter-spacing: .16em; }
 .langs a[aria-current] { background: var(--ink); color: var(--paper); }
 
 main > section { max-width: 1080px; margin: 0 auto; padding: 72px 16px 24px; }
+/* 《墨畫蒼生》介紹頁的寬度照《力透紙背》（使用者定）：版面 1350、開頭 1550、兩邊留 20，頂欄與頁尾跟著寬；說明文字的行寬照舊 */
+body.mohua .top { padding-left: max(16px, calc(50vw - 700px)); padding-right: max(16px, calc(50vw - 700px)); }
+body.mohua main > section { max-width: 1350px; padding-left: 20px; padding-right: 20px; }
+body.mohua .hero { max-width: 1550px; }
+body.mohua footer { max-width: 1350px; }
 h2 { display: flex; align-items: center; gap: 12px; margin: 0 0 22px; font-size: 30px; font-weight: 400; letter-spacing: .12em; }
 h2::before { content: ""; width: 14px; height: 14px; background: var(--red); border-radius: 2px; flex: none; }
 body.lang-en h2 { letter-spacing: .02em; }
@@ -36,6 +41,7 @@ body.lang-en h2 { letter-spacing: .02em; }
 body.lang-en .kicker { letter-spacing: .12em; }
 .hero h1 { margin: 0; }
 #title-logo { display: block; width: min(820px, 92vw); height: auto; margin: 0 auto; }
+body.mohua #title-logo { width: min(100%, calc((100svh - 330px) * 3.2)); min-width: min(100%, 640px); }   /* 字標撐滿開頭；矮的螢幕照高收，按鈕留在第一屏 */
 .tagline { margin: 20px 0 30px; font-size: 22px; letter-spacing: .32em; }
 body.lang-en .tagline { letter-spacing: .04em; font-style: italic; }
 .cta { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
