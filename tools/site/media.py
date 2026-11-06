@@ -18,7 +18,7 @@ def ff(*a):
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', *a], check=True)
 
 # 試玩場景：從哪一息起、多長、海報取第幾息
-SCENES = {'gather': (0.5, 5.0, 2.6), 'build': (0.2, 5.4, 5.0), 'snow': (0.4, 5.2, 3.0), 'night': (1.0, 7.8, 6.6), 'gaze': (1.2, 6.5, 6.5)}
+SCENES = {'gather': (0.5, 5.0, 2.6), 'build': (0.2, 5.4, 5.0), 'snow': (0.4, 5.2, 3.0), 'night': (1.0, 7.8, 6.6), 'gaze': (0.8, 8.6, 8.8)}   # 觀星：2026-11-06 抬頭放慢，從抬頭前一點起、抬完再看幾息星
 for s, (a, d, p) in ({} if ONLY_TRAILER else SCENES).items():
     src = SHOTS / f'{s}.mp4'
     ff('-ss', str(a), '-t', str(d), '-i', str(src), '-an', '-vf', 'scale=1280:720:flags=lanczos,format=yuv420p',

@@ -143,17 +143,20 @@ export const SHOTS = [
       w.cropDay = w.dayIdx() - 1; w.cropTick();
     },
   },
-  {   // 七、觀星：晴夜抬頭，天慢慢轉
-    name: 'gaze', sec: 8, seed: 7,
+  {   // 七、觀星：晴夜抬頭，天慢慢轉。抬頭放慢（2026-11-06 使用者：預告第 35 秒抬頭太快）：第 36 幀才抬、走 4 息（遊戲裡是 1.6 息；遊戲自己會照 smoothstep 緩進緩出，這裡只把進度線性推慢），抬完了天才開始轉
+    name: 'gaze', sec: 9.6, seed: 7,
     setup() {
       const c = window.__c, g = XIEYI.game, p = g.player; const d = c.dusk(11); c.at(11, Math.min(0.98, d + 0.12));   // 第十一夜，晴（試玩裡就有）
       const { cx, cy } = c.home(); c.put(cx, cy + 5); p.fx = 0; p.fy = -1;
       g.gazeCulture = 0;
     },
     frame({ f }) {
-      const g = XIEYI.game;
-      if (f === 20) g.toggleGaze();
-      if (g.gaze && f > 20) { g.gaze.az += 0.0035; g.gaze.alt = Math.min(1.05, g.gaze.alt + 0.0012); }
+      const g = XIEYI.game, F0 = 36, RAISE = 120;   // 30 幀一息：1.2 息時抬頭、5.2 息抬完
+      if (f === F0) g.toggleGaze();
+      if (!g.gaze || f < F0) return;
+      const u = Math.min(1, (f - F0) / RAISE);
+      g.gaze.dir = u < 1 ? 0 : 1; g.gaze.s = u;   // 自己推抬頭的進度，不讓遊戲照 1.6 息走（畫的時候遊戲再照 smoothstep 緩進緩出）
+      if (u >= 1) { const k = Math.min(1, (f - F0 - RAISE) / 30); g.gaze.az += 0.0035 * k; g.gaze.alt = Math.min(1.05, g.gaze.alt + 0.0012 * k); }   // 抬完了天才慢慢轉起來
     },
   },
   {   // 八、渡海（完整版）：孤帆沿著海岸往東開，海上浮著蜃
