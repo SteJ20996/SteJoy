@@ -3,10 +3,11 @@
 @font-face { font-family: 'LXGW WenKai TC'; font-style: normal; font-weight: 700; font-display: swap; src: url(../fonts/lxgw-wenkai-tc-700-litou.woff2) format('woff2'); unicode-range: U+529B, U+7D19, U+7EB8, U+80CC, U+900F; }   /* 只有標題那五個字：力透紙纸背 */
 body.litou { --paper: #efe5cf; --paper-2: #e6d9bd; --ink: #1c1a17; --ink-2: #4a4238; --dim: #8a7f6c; --red: #b4392a; --red-2: #8f2c20; --night: #15130f; --line: rgba(28, 26, 23, .18); background: var(--paper); }
 body.litou::before { background: radial-gradient(ellipse at 22% 0%, #f8f0dd 0%, var(--paper) 42%, #e2d3b2 100%); }
-body.litou .top { background: rgba(239, 229, 207, .88); }
+body.litou .top { background: rgba(239, 229, 207, .88); padding-left: max(16px, calc(50vw - 700px)); padding-right: max(16px, calc(50vw - 700px)); }   /* 這一頁比站上別頁寬 25%（使用者要的，好讓超正方體放大） */
+body.litou footer { max-width: 1350px; }
 body.litou h2::before { display: none; }
 .fxdefs { position: absolute; width: 0; height: 0; overflow: hidden; }
-.lt-sec { max-width: 1080px; margin: 0 auto; padding: 104px 20px 24px; }
+.lt-sec { max-width: 1350px; margin: 0 auto; padding: 104px 20px 24px; }
 .lt-lead { color: var(--ink-2); margin: -6px 0 30px; max-width: 760px; }
 
 /* 節標題：前面是一筆（橫豎撇點捺提），捲到時寫出來 */
@@ -19,7 +20,7 @@ body.litou.lang-en h2 { letter-spacing: .02em; }
 .lt-reveal.in h2 span { opacity: 1; transform: none; }
 
 /* 開頭 */
-.lt-hero { position: relative; max-width: 1240px !important; margin: 0 auto; min-height: min(calc(100vh - 58px), 900px); padding: 48px 20px 40px; display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); align-items: center; gap: 28px; }
+.lt-hero { position: relative; max-width: 1550px !important; margin: 0 auto; min-height: min(calc(100vh - 58px), 900px); padding: 48px 20px 40px; display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); align-items: center; gap: 28px; }
 .lt-hero-text { position: relative; z-index: 2; }
 .lt-kicker { margin: 0 0 10px 4px; color: var(--red); font-size: 18px; letter-spacing: .32em; animation: lt-rise .6s .9s ease-out both; }
 body.lang-en .lt-kicker { letter-spacing: .12em; }
@@ -50,7 +51,7 @@ body.lang-en .lt-seal { letter-spacing: .08em; font-size: 19px; }
 .lt-btn.ghost:hover { background: var(--ink); color: var(--paper); }
 .lt-btn.small { min-height: 34px; padding: 0 14px; font-size: 15px; box-shadow: 3px 3px 0 var(--red); }
 /* 標誌：這個環是一個「力」，照筆順寫出來；身後一張米字格 */
-.lt-mark { position: relative; width: 100%; max-width: 560px; justify-self: center; aspect-ratio: 760 / 514; }
+.lt-mark { position: relative; width: 100%; max-width: 700px; justify-self: center; aspect-ratio: 760 / 514; }
 .lt-mark::before { content: ""; position: absolute; left: 50%; top: 50%; width: 92%; aspect-ratio: 1; transform: translate(-50%, -50%) rotate(-4deg); border: 1.5px solid rgba(180, 57, 42, .28); z-index: -1;
   background: linear-gradient(45deg, transparent calc(50% - .6px), rgba(180, 57, 42, .2) 50%, transparent calc(50% + .6px)), linear-gradient(-45deg, transparent calc(50% - .6px), rgba(180, 57, 42, .2) 50%, transparent calc(50% + .6px)),
     linear-gradient(90deg, transparent calc(50% - .6px), rgba(180, 57, 42, .22) 50%, transparent calc(50% + .6px)), linear-gradient(0deg, transparent calc(50% - .6px), rgba(180, 57, 42, .22) 50%, transparent calc(50% + .6px)); }
@@ -76,12 +77,13 @@ body.lang-en .lt-story-text p { text-indent: 0; }
 /* 一卷：墨黑的底，左邊一個會展開的超正方體（點→線→面→體→四維），右邊五章 */
 .lt-dims { max-width: none; margin-top: 110px; padding: 0; background: var(--night); color: #efe5cf; position: relative; overflow: clip; }   /* 整條墨黑，不受 site.css 的 main > section 寬度限制 */
 .lt-dims::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 20%, rgba(180, 57, 42, .12), transparent 55%), radial-gradient(ellipse at 80% 90%, rgba(239, 229, 207, .06), transparent 60%); pointer-events: none; }
-.lt-dims-in { position: relative; max-width: 1200px; margin: 0 auto; padding: 96px 20px 90px; }
+.lt-dims-in { position: relative; max-width: 1500px; margin: 0 auto; padding: 96px 20px 90px; }
 .lt-dims .h2s { fill: #e05a45; }
 .lt-dims .lt-lead { color: rgba(239, 229, 207, .72); }
-.lt-dims-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; }
-.lt-hc { position: sticky; top: 72px; height: calc(100vh - 110px); max-height: 760px; }
-.lt-hc canvas { width: 100%; height: 100%; display: block; }
+.lt-dims-body { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 40px; }
+.lt-hc { position: sticky; top: 72px; height: calc(100vh - 110px); max-height: 950px;
+  --bl: clamp(0px, calc((100vw - 1500px) / 2 + 4px), 160px); }   /* 畫布往左伸進頁邊、往右伸進欄距、上下伸到頂欄與視窗底：大圖放得下，不會被框切掉 */
+.lt-hc canvas { position: absolute; display: block; top: -14px; left: calc(-1 * var(--bl)); width: calc(100% + var(--bl) + 30px); height: calc(100% + 52px); }
 .lt-hc-n { position: absolute; left: 0; bottom: 6px; font: 180px/1 var(--en); color: transparent; -webkit-text-stroke: 1.5px rgba(239, 229, 207, .28); pointer-events: none; transition: color .3s; }
 .lt-hc-n::after { content: "D"; font-size: .32em; margin-left: .06em; -webkit-text-stroke-width: 1px; }
 .lt-steps { list-style: none; margin: 0; padding: 0; }
@@ -97,7 +99,7 @@ body.lang-en .lt-step h3, body.lang-en .lt-step-k { letter-spacing: .02em; }
 body.lang-en .lt-loop { letter-spacing: .06em; font-style: italic; font-family: var(--en); }
 
 /* 試寫：按 1–0，照筆順寫成一個字 */
-.lt-pad { display: grid; grid-template-columns: minmax(220px, 340px) minmax(0, 1fr); gap: 44px; align-items: center; }
+.lt-pad { display: grid; grid-template-columns: minmax(220px, 425px) minmax(0, 1fr); gap: 44px; align-items: center; }
 .lt-grid { width: 100%; aspect-ratio: 1; background: #fbf5e7; box-shadow: 10px 10px 0 var(--ink); border: 2px solid var(--ink); }
 .lt-grid .g { fill: none; stroke: rgba(180, 57, 42, .38); stroke-width: 3; }
 .lt-grid .g.d { stroke-dasharray: 16 14; stroke-width: 2.4; }
@@ -130,7 +132,7 @@ body.lang-zh-Hant .lt-read, body.lang-zh-Hans .lt-read { font-family: inherit; }
 
 /* 特色 */
 .lt-sub { margin: 10px 0 4px; font-size: 26px; font-weight: 400; letter-spacing: .12em; }
-.lt-sub-intro { margin: 0 0 22px; color: var(--ink-2); font-size: 16px; }
+.lt-sub-intro { margin: 0 0 22px; color: var(--ink-2); font-size: 16px; max-width: 54em; }   /* 頁面加寬了，說明文字的行寬照舊 */
 .lt-strokes { list-style: none; padding: 0; margin: 0 0 54px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 26px; }
 .lt-strokes li { display: flex; gap: 14px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
 .lt-kc { position: relative; flex: none; width: 58px; height: 58px; border: 2px solid var(--ink); border-radius: 4px; background: #fbf5e7; display: flex; align-items: center; justify-content: center; box-shadow: 3px 3px 0 var(--ink); }
@@ -170,6 +172,7 @@ body.lang-en .lt-feat h3, body.lang-en .lt-sub { letter-spacing: 0; }
   .lt-mark { order: -1; max-width: 420px; }
   .lt-dims-body { grid-template-columns: 1fr; gap: 0; }
   .lt-hc { top: 56px; height: 38vh; z-index: 1; background: linear-gradient(var(--night) 80%, transparent); }
+  .lt-hc canvas { top: 0; left: 0; width: 100%; height: 100%; }
   .lt-hc-n { font-size: 96px; }
   .lt-step { min-height: 0; padding: 40px 0; }
   .lt-pad { grid-template-columns: 1fr; gap: 24px; }
