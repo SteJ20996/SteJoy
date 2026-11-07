@@ -40,8 +40,12 @@
     const minus = btn('−', T[1]), val = btn('100%', T[3]), plus = btn('+', T[2]); val.className = 'zv';
     box.append(minus, val, plus); document.body.appendChild(box);
     let cur = 1;
+    let shownZ = null, shownCap = null;
     const apply = (keep) => {
       const z = Math.min(want, cap()), y = keep && document.documentElement.scrollHeight > innerHeight ? scrollY / (document.documentElement.scrollHeight - innerHeight) : null;
+      // 值沒變就什麼都不寫：iPhone 的 Safari 捲動時網址列一收一放就連發 resize，每次都重寫整頁的 zoom 與 --z 會一直重算樣式
+      if (z === shownZ && cap() === shownCap) return;
+      shownZ = z; shownCap = cap();
       root.style.zoom = z === 1 ? '' : z; root.style.setProperty('--z', z); box.style.zoom = z === 1 ? '' : 1 / z;
       val.textContent = Math.round(z * 100) + '%'; val.setAttribute('aria-label', T[0] + ' ' + val.textContent + '，' + T[3]);
       minus.disabled = z <= Z[0]; plus.disabled = z >= cap();
