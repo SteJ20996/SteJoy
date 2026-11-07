@@ -43,7 +43,7 @@ TEXT = {
         "story": [
                 "字本是平的。塗來了：一團不成字的墨，所過之處，字被抹回散亂的筆畫與墨點。你是紙上剩下的一個「人」。",
                 "鍵盤 1 到 0 是十種筆畫。照筆順寫對一個字，眼前的錯字就正了；寫成識得的字，筆畫化成招式。筆要寫得快，也要寫得對。",
-                "從一個點學會十種筆畫，寫下「一」；線寫到後來首尾相接成圈，圈圍出紙；寫穿紙背、繞過莫比烏斯環，紙摺成正方體；走過超正方體的八個胞，八胞合一，你走進它的裡面。九九歸一。"
+                "從一個點學會十種筆畫，寫下「一」。點會拉成線，線會圍成紙，紙會摺成……再往下，要你自己寫進去。"
         ],
         "dims_h": "一卷",
         "dims_intro": "每一章多一個維度，規則跟著變；每一章的結尾，都替下一章鋪好了路。",
@@ -66,12 +66,12 @@ TEXT = {
                 [
                         "第三章",
                         "三維 · 體",
-                        "紙沿著摺痕摺成正方體。前後左右上下，遠處敵身上的字寫出來，字就飛過去。這個正方體只是超正方體的一個胞：照先天八卦，走過雷、水、山、風、火、澤。"
+                        "紙沿著摺痕摺成正方體。前後左右上下，遠處敵身上的字寫出來，字就飛過去。這個正方體只是超正方體的一個胞：照先天八卦，一胞一象。"
                 ],
                 [
                         "第四章",
                         "四維",
-                        "八胞合一，你走進超正方體的裡面。多一個看不見的方向 w，別的 w 上的敵只剩影子。九九歸一，續卷又回到那條線。"
+                        "八胞合一，你走進超正方體的裡面。多一個看不見的方向 w，別的 w 上的敵只剩影子。"
                 ]
         ],
         "loop": "九九歸一",
@@ -148,7 +148,7 @@ TEXT = {
         "story": [
                 "字本是平的。涂来了：一团不成字的墨，所过之处，字被抹回散乱的笔画与墨点。你是纸上剩下的一个“人”。",
                 "键盘 1 到 0 是十种笔画。照笔顺写对一个字，眼前的错字就正了；写成识得的字，笔画化成招式。笔要写得快，也要写得对。",
-                "从一个点学会十种笔画，写下“一”；线写到后来首尾相接成圈，圈围出纸；写穿纸背、绕过莫比乌斯环，纸折成正方体；走过超正方体的八个胞，八胞合一，你走进它的里面。九九归一。"
+                "从一个点学会十种笔画，写下“一”。点会拉成线，线会围成纸，纸会折成……再往下，要你自己写进去。"
         ],
         "dims_h": "一卷",
         "dims_intro": "每一章多一个维度，规则跟着变；每一章的结尾，都替下一章铺好了路。",
@@ -171,12 +171,12 @@ TEXT = {
                 [
                         "第三章",
                         "三维 · 体",
-                        "纸沿着折痕折成正方体。前后左右上下，远处敌身上的字写出来，字就飞过去。这个正方体只是超正方体的一个胞：照先天八卦，走过雷、水、山、风、火、泽。"
+                        "纸沿着折痕折成正方体。前后左右上下，远处敌身上的字写出来，字就飞过去。这个正方体只是超正方体的一个胞：照先天八卦，一胞一象。"
                 ],
                 [
                         "第四章",
                         "四维",
-                        "八胞合一，你走进超正方体的里面。多一个看不见的方向 w，别的 w 上的敌只剩影子。九九归一，续卷又回到那条线。"
+                        "八胞合一，你走进超正方体的里面。多一个看不见的方向 w，别的 w 上的敌只剩影子。"
                 ]
         ],
         "loop": "九九归一",
@@ -253,7 +253,7 @@ TEXT = {
         "story": [
                 "Characters used to lie flat. Then came 塗, the Smudge: a mass of ink that is no character at all. Wherever it passes, characters are wiped back into loose strokes and blots. You are 人, the one “person” left on the page.",
                 "Keys 1 to 0 are the ten brush strokes. Write a character in the right stroke order and the broken one in front of you is set right; write one you have learned, and its strokes become a spell. Be quick, and be right.",
-                "From a single point you learn the ten strokes and write 一, “one”. The line, written long enough, closes into a ring, and the ring encloses a page. You write through to the back of the page and around a Möbius strip, and the page folds into a cube. You walk the eight cells of a tesseract; the cells become one, and you step inside. Nine nines return to one."
+                "From a single point you learn the ten strokes and write 一, “one”. The point will stretch into a line, the line will enclose a page, the page will fold into… Beyond that, you have to write your own way in."
         ],
         "dims_h": "The scroll",
         "dims_intro": "Each chapter adds a dimension, and the rules change with it. Each chapter’s ending lays the road for the next.",
@@ -276,12 +276,12 @@ TEXT = {
                 [
                         "Chapter 3",
                         "3D · The solid",
-                        "The page folds along its creases into a cube. Forward and back, up and down: write the character on a distant enemy and it flies to them. The cube is only one cell of a tesseract; walk the others by the Early Heaven trigrams, through thunder, water, mountain, wind, fire and lake."
+                        "The page folds along its creases into a cube. Forward and back, up and down: write the character on a distant enemy and it flies to them. The cube is only one cell of a tesseract; walk the others by the Early Heaven trigrams, one image to each cell."
                 ],
                 [
                         "Chapter 4",
                         "4D",
-                        "The eight cells become one, and you step inside the tesseract. There is one more direction, w, that you cannot see; enemies on other w are only shadows. Nine nines return to one, and the next scroll begins again on the line."
+                        "The eight cells become one, and you step inside the tesseract. There is one more direction, w, that you cannot see; enemies on other w are only shadows."
                 ]
         ],
         "loop": "Nine nines return to one",
@@ -351,7 +351,7 @@ TEXT = {
         "story": [
                 "字はもともと平らだった。そこへ塗がやって来た。字にならない墨のかたまりで、通ったあとの字は、ばらばらの画と墨の点に戻されてしまう。あなたは紙に残った一字、「人」。",
                 "キーボードの 1 から 0 が十種の画。目の前の字を筆順どおりに書けば、崩れた字が正される。覚えた字を書き上げれば、画が技に変わる。速く書き、しかも正しく書くこと。",
-                "一つの点から十種の画を覚え、「一」を書く。線は書き進むうちに端と端がつながって輪になり、輪が一枚の紙を囲む。紙の裏まで書き抜け、メビウスの帯を回ると、紙は立方体に折れる。超立方体の八つの胞を歩き、八つの胞が一つになると、あなたはその内側へ入る。九九帰一。"
+                "一つの点から十種の画を覚え、「一」を書く。点は線に伸び、線は紙を囲み、紙は折られて……その先へは、あなた自身の筆で書き進むしかない。"
         ],
         "dims_h": "一巻",
         "dims_intro": "章ごとに次元が一つ増え、ルールも変わる。どの章の結末も、次の章への道を敷いている。",
@@ -359,8 +359,8 @@ TEXT = {
                 ["序章", "零次元 · 点", "点が一つあるだけ。十種の画は、すべてこの一点から落ちる。「一」を書けば、点が線に伸びる。"],
                 ["第一章", "一次元 · 線", "敵は左右の両端から来る。目の前の字を筆順どおりに書けば、字は正される。線はやがて端と端がつながり、一枚の紙を囲む。"],
                 ["第二章", "二次元 · 面", "どの画も敵に当たり、字を書き上げれば技が出る。紙の裏まで書き抜けると字はみな裏返り、紙の帯はねじれてメビウスの帯になる。左右の端は、もうない。"],
-                ["第三章", "三次元 · 立体", "紙が折り目に沿って立方体に折れる。前後左右上下、遠くの敵の字を書けば、字がそこへ飛んでいく。この立方体は超立方体の胞の一つにすぎない。先天八卦に従って、雷・水・山・風・火・沢をめぐる。"],
-                ["第四章", "四次元", "八つの胞が一つになり、あなたは超立方体の内側へ入る。目に見えない方向 w がもう一つ増え、別の w にいる敵は影しか見えない。九九帰一、次の巻はまたあの線から始まる。"]
+                ["第三章", "三次元 · 立体", "紙が折り目に沿って立方体に折れる。前後左右上下、遠くの敵の字を書けば、字がそこへ飛んでいく。この立方体は超立方体の胞の一つにすぎない。先天八卦に従い、胞ごとに一つの象。"],
+                ["第四章", "四次元", "八つの胞が一つになり、あなたは超立方体の内側へ入る。目に見えない方向 w がもう一つ増え、別の w にいる敵は影しか見えない。"]
         ],
         "loop": "九九帰一",
         "write_h": "試し書き",
