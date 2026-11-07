@@ -6,7 +6,7 @@
   "flip":    { "zh-Hant": "力透紙背：寫到紙的背面，字都反了。", "zh-Hans": "力透纸背：写到纸的背面，字都反了。", "en": "Through the page: on the back, every character is mirrored.", "ja": "力透紙背：紙の裏まで書き抜けると、字はみな裏返る。" },
   "mobius":  { "zh-Hant": "莫比烏斯環：沒有左右的邊，只有一面。", "zh-Hans": "莫比乌斯环：没有左右的边，只有一面。", "en": "A Möbius strip: no left or right edge, and only one side.", "ja": "メビウスの帯：左右の端がなく、面は一つしかない。" },
   "fold":    { "zh-Hant": "紙沿著摺痕，摺成正方體。", "zh-Hans": "纸沿着折痕，折成正方体。", "en": "The page folds along its creases into a cube.", "ja": "紙は折り目に沿って、立方体に折れる。" },
-  "cube":    { "zh-Hant": "三維：遠處敵身上的字，寫出來就飛過去。", "zh-Hans": "三维：远处敌身上的字，写出来就飞过去。", "en": "Three dimensions: write a distant enemy’s character, and it flies to them.", "ja": "三次元：遠くの敵が帯びた字を書けば、字がそこへ飛んでいく。" },
+  "cube":    { "zh-Hant": "三維：遠處敵身上的字，寫出來就飛過去。", "zh-Hans": "三维：远处敌身上的字，写出来就飞过去。", "en": "Three dimensions: write a distant enemy’s character, and it flies to them.", "ja": "三次元：遠くの敵の字を書けば、字がそこへ飛んでいく。" },
   "tess":    { "zh-Hant": "正方體只是超正方體的一個胞。", "zh-Hans": "正方体只是超正方体的一个胞。", "en": "The cube is only one cell of a tesseract.", "ja": "立方体は、超立方体の胞の一つにすぎない。" },
   "thunder": { "zh-Hant": "照先天八卦：雷、水、山、風、火、澤。", "zh-Hans": "照先天八卦：雷、水、山、风、火、泽。", "en": "By the Early Heaven trigrams: thunder, water, mountain, wind, fire, lake.", "ja": "先天八卦に従って：雷・水・山・風・火・沢。" },
   "hyper":   { "zh-Hant": "八胞合一，走進它的裡面。", "zh-Hans": "八胞合一，走进它的里面。", "en": "The eight cells become one, and you step inside.", "ja": "八つの胞が一つになり、その内側へ入る。" },
