@@ -1,4 +1,4 @@
-// stejoy.com：字標寫完拿掉遮罩、試玩場景捲到才載入、照瀏覽器語言提示有別的語言版本
+// stejoy.com：字標寫完拿掉遮罩、試玩場景捲到才載入、記住選的語言（換語言停在原本那一節）、提示有別的語言版本
 (() => {
   // 字標：墨鋪滿以後拿掉遮罩（套著遮罩時邊緣的反鋸齒會差一點；跟遊戲起始頁同一個做法）
   const ink = document.querySelector('#title-logo .shui'), bleed = document.querySelector('#title-logo .shui-bleed');
@@ -65,18 +65,68 @@
     cur = parseFloat(root.style.zoom) || 1; apply(false);
   })();
 
-  // 語言提示：瀏覽器是簡中、繁中、日文、英文，而這一頁不是，就在下面提一句（不自動跳轉；關掉了就不再提）
+  // 語言：右上角（或下面那條提示）選了哪一種，就記在這台瀏覽器（stejoy.lang），整個網站照它，之後不再跳提示叫你換回去。
+  // 換語言是在同一個分頁換頁；換過去以後停在原本讀到的那一節的同一個位置（sessionStorage 的 stejoy.lang.at，十秒內有效）。
+  // 使用者：右上角選了語言，下面又跳出「這一頁也有繁體中文 →」（照瀏覽器語言提示的），像是開了另一個分頁
+  const LANG = 'stejoy.lang', AT = 'stejoy.lang.at';
+  const here = document.documentElement.lang;
+  const get = (st, k) => { try { return st.getItem(k); } catch (e) { return null; } };
+  const put = (st, k, v) => { try { if (v === null) st.removeItem(k); else st.setItem(k, v); } catch (e) {} };
+  const bar = () => { const t = document.querySelector('header.top'); return t ? t.getBoundingClientRect().bottom : 0; };
+  // 記「畫面頂上那一段」：四種語言的頁面是同一個模子產生的，段落一一對得上；段落長短不同，所以對齊段落而不是照比例
+  const PARTS = 'h1, h2, h3, p, li, article, blockquote, video, figure';
+  const parts = (sec) => [...sec.querySelectorAll(PARTS)].filter((e) => e.getClientRects().length);
+  const pick = (a, ev) => {
+    if (ev.button || ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.altKey) return;   // 自己要開新分頁的照舊
+    put(localStorage, LANG, a.lang);
+    if (scrollY < 4) return;
+    const top = bar();
+    let at = null;
+    for (const sec of document.querySelectorAll('main section[id]')) {
+      const r = sec.getBoundingClientRect(); if (r.bottom <= top || r.height <= 0) continue;
+      // 頂上那條線穿過的段落裡挑最裡面的那一段（top 最大的）；線剛好落在段落之間就取下面那一段
+      const ps = parts(sec); let i = -1, best = -Infinity;
+      ps.forEach((e, k) => { const q = e.getBoundingClientRect(); if (q.bottom > top && q.top <= top + 1 && q.top > best) { best = q.top; i = k; } });
+      if (i < 0) i = ps.findIndex((e) => e.getBoundingClientRect().bottom > top);
+      at = { id: sec.id, f: Math.max(0, (top - r.top) / r.height), n: ps.length, i };
+      if (i >= 0) { const q = ps[i].getBoundingClientRect(); if (q.top <= top && q.height > 0) at.fy = (top - q.top) / q.height; else at.dy = q.top - top; }   // 線穿過那一段：記穿過它的幾成（各語言段落高矮不同）
+      break;
+    }
+    if (at) put(sessionStorage, AT, JSON.stringify(Object.assign(at, { path: new URL(a.href, location.href).pathname, t: Date.now() })));
+  };
+  document.querySelectorAll('nav.langs a[lang]').forEach((a) => { if (!a.hasAttribute('aria-current')) a.addEventListener('click', (ev) => pick(a, ev)); });
+  // 換過來的：照記下的那一節捲回去（等圖與字型排好再捲，免得位置又被撐開）
+  try {
+    const at = JSON.parse(get(sessionStorage, AT) || 'null');
+    put(sessionStorage, AT, null);
+    const sec = at && at.path === location.pathname && Date.now() - at.t < 10000 && !location.hash && document.getElementById(at.id);
+    if (sec) {
+      const go = () => {
+        const ps = parts(sec), el = at.i >= 0 && ps.length === at.n ? ps[at.i] : null, r = sec.getBoundingClientRect();
+        let y = r.top + at.f * r.height;   // 段落對不上（不該發生）就照那一節的比例
+        if (el) { const q = el.getBoundingClientRect(); y = at.fy != null ? q.top + at.fy * q.height : q.top - (at.dy || 0); }
+        scrollTo({ top: Math.max(0, scrollY + y - bar()), behavior: 'instant' });   // 不要 html 的 smooth：直接停在那裡，不從頂上滑下去
+      };
+      go(); addEventListener('load', go, { once: true });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(go);
+    }
+  } catch (e) {}
+
+  // 語言提示：選過語言的照選的；沒選過的照瀏覽器語言（簡中、繁中、日文，其餘當英文）。這一頁不是那種語言，就在下面提一句
+  // （不自動跳轉；關掉了就不再提）
   try {
     const box = document.getElementById('lang-banner'), offers = JSON.parse(document.body.dataset.banner || '{}');
     const prefs = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || '']).map((x) => x.toLowerCase());
     const top = prefs[0] || '';
-    const want = /^zh-(cn|sg|hans)/.test(top) || top === 'zh' ? 'zh-Hans' : /^zh/.test(top) ? 'zh-Hant' : /^ja/.test(top) ? 'ja' : 'en';
-    let off = null; try { off = localStorage.getItem('stejoy.lang.off'); } catch (e) {}
-    if (box && offers[want] && !off) {
+    const chosen = get(localStorage, LANG);
+    const want = chosen || (/^zh-(cn|sg|hans)/.test(top) || top === 'zh' ? 'zh-Hans' : /^zh/.test(top) ? 'zh-Hant' : /^ja/.test(top) ? 'ja' : 'en');
+    const off = get(localStorage, 'stejoy.lang.off');
+    if (box && want !== here && offers[want] && !off) {
       const [label, href] = offers[want];
       const a = document.createElement('a'); a.href = href; a.textContent = label + ' →'; a.lang = want;
+      a.addEventListener('click', (ev) => pick(a, ev));
       const x = document.createElement('button'); x.type = 'button'; x.setAttribute('aria-label', 'close'); x.textContent = '×';
-      x.addEventListener('click', () => { box.hidden = true; try { localStorage.setItem('stejoy.lang.off', '1'); } catch (e) {} });
+      x.addEventListener('click', () => { box.hidden = true; put(localStorage, 'stejoy.lang.off', '1'); });
       box.append(a, x); box.hidden = false;
     }
   } catch (e) {}
