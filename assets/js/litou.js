@@ -41,8 +41,18 @@
     // 筆數跟著維度長：人（起點）、十（一維，兩筆）、大口（二維的招，三筆）、天水火木（三維的浮字，四筆）、永玉石古本生正立（射墨字與字盾，五筆）
     const LABELS = [...'人十大口天水火木永玉石古本生正立'], labels = LABELS.map((c, i) => D && D.chars[c] ? c : Object.keys(D ? D.chars : {}).filter(x => D.chars[x].seq.length >= 2 && !LABELS.includes(x))[i] || '');
     let s = 0, target = 0, last = performance.now(), W = 0, H = 0, dpr = 1;
-    const size = () => { const r = cv.getBoundingClientRect(); dpr = Math.min(2, window.devicePixelRatio || 1); W = r.width; H = r.height; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); };
+    // 畫布大小：尺寸真的變了才重新配置（iPhone 捲動時網址列一收一放就發一次 resize，每次都整塊重配，記憶體跟不上，
+    // 使用者在 Duo 上遇過整頁被 Safari 關掉）；像素數最多約 240 萬，大螢幕、三倍密度也不超過
+    const size = () => {
+      const r = cv.getBoundingClientRect(); W = r.width; H = r.height;
+      dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1, Math.sqrt(2.4e6 / Math.max(1, W * H))));
+      const w = Math.round(W * dpr), h = Math.round(H * dpr);
+      if (cv.width !== w) cv.width = w; if (cv.height !== h) cv.height = h;
+    };
     size(); addEventListener('resize', size);   // 頁面縮放時 site.js 也會發一次 resize
+    // 一卷那一段不在畫面上時不畫（以前整頁不管捲到哪都每幀重畫）
+    let shown = true;
+    if ('IntersectionObserver' in window) new IntersectionObserver((l) => { shown = l[0].isIntersecting; }, { rootMargin: '120px 0px' }).observe(cv.closest('.lt-dims') || cv.parentElement);
     // 捲到哪一章：第 i 章的內容在讀的地方時，超正方體停在 i 維；兩章交界經過讀的地方，才長出下一個方向
     // （以前是「這一章讀了幾成就長幾成」，讀第二章時已經長出三維，使用者說動畫比文字早）。
     // 讀的地方：寬螢幕是畫面正中；手機上超正方體黏在頂上，是它底下那一塊的正中
@@ -99,6 +109,7 @@
       return [e0[0] + (e1[0] - e0[0]) * f, e0[1] + (e1[1] - e0[1]) * f];
     };
     const draw = (now) => {
+      if (!shown) { s = target; last = now; requestAnimationFrame(draw); return; }   // 看不到時直接停在該有的維度，捲進來不必從頭長
       const dt = Math.max(0, Math.min(0.1, (now - last) / 1000)); last = now;   // 分頁切走再回來：不補那一段
       // 跟著捲動：時間常數約六分之一秒，但一秒最多 RATE 維（以前每幀追 8%，高更新率的螢幕追得更快）
       if (reduce) s = target;

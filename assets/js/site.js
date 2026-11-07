@@ -9,6 +9,9 @@
   const clips = [...document.querySelectorAll('video[data-src]')];
   const h264 = document.createElement('video').canPlayType('video/mp4; codecs="avc1.640028"');   // 有的瀏覽器（例如沒裝解碼器的 Linux）放不了 H.264，就換 WebM
   const load = (v) => { if (!v.getAttribute('src')) v.src = h264 || !v.dataset.webm ? v.dataset.src : v.dataset.webm; };
+  // 捲遠了就卸下（拿掉 src 再 load()，解碼器與緩衝才放掉；封面圖照樣在）：使用者在 iPhone 上捲完力透紙背頁，五支短片一直掛著，
+  // 加上預告與動畫，Safari 記憶體不夠把整頁關掉（「Webpage Crashed」）。捲回來再載，從頭播
+  const unload = (v) => { if (!v.getAttribute('src')) return; v.pause(); v.removeAttribute('src'); v.load(); };
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((list) => {
       for (const e of list) {
@@ -16,7 +19,8 @@
         if (e.isIntersecting) { load(v); if (!reduce) v.play().catch(() => {}); } else if (!v.paused) v.pause();
       }
     }, { rootMargin: '160px 0px', threshold: 0.25 });
-    clips.forEach((v) => io.observe(v));
+    const far = new IntersectionObserver((list) => { for (const e of list) if (!e.isIntersecting) unload(e.target); }, { rootMargin: '60% 0px' });   // 上下各多六成屏以外
+    clips.forEach((v) => { io.observe(v); far.observe(v); });
   } else clips.forEach(load);
   clips.forEach((v) => v.addEventListener('click', () => { load(v); if (v.paused) v.play().catch(() => {}); else v.pause(); }));
 
@@ -48,6 +52,9 @@
       }
     };
     const step = (d) => { const i = Z.indexOf(Math.min(want, cap())); want = Z[Math.max(0, Math.min(Z.length - 1, i + d))]; if (want > cap()) want = cap(); try { localStorage.setItem(KEY, String(want)); } catch (e) {} apply(true); };
+    // 平常是淡的（site.css）；點了以後清楚幾秒，再淡回去
+    let lit = 0; const wake = () => { box.classList.add('on'); clearTimeout(lit); lit = setTimeout(() => box.classList.remove('on'), 2500); };
+    box.addEventListener('pointerdown', wake);
     minus.addEventListener('click', () => step(-1)); plus.addEventListener('click', () => step(1));
     val.addEventListener('click', () => { want = 1; try { localStorage.removeItem(KEY); } catch (e) {} apply(true); });
     addEventListener('resize', (e) => { if (e.isTrusted) apply(false); });

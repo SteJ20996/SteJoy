@@ -140,7 +140,10 @@ footer .copy { margin: 0; }
    vh、vw 不跟著 zoom 變，要撐滿畫面的高度寫成 calc(100vh / var(--z, 1) …)。按鈕自己反縮放，永遠一樣大 */
 :root { --z: 1; }
 .zoom { position: fixed; z-index: 21; left: calc(12px + env(safe-area-inset-left, 0px)); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; gap: 2px; padding: 3px;
-  background: rgba(28, 26, 23, .9); color: var(--paper); border: 1px solid rgba(244, 238, 226, .22); border-radius: 8px; box-shadow: 0 8px 24px -10px rgba(0, 0, 0, .5); font: 15px/1 var(--en); }
+  background: rgba(28, 26, 23, .72); color: var(--paper); border: 1px solid rgba(244, 238, 226, .14); border-radius: 8px; font: 15px/1 var(--en);
+  opacity: .42; transition: opacity .3s, background-color .3s, box-shadow .3s; }   /* 平常淡淡的，透得到後面（使用者在 Duo 上看：要透明一些）；要用時才清楚 */
+.zoom.on, .zoom:has(:focus-visible) { opacity: 1; background: rgba(28, 26, 23, .9); box-shadow: 0 8px 24px -10px rgba(0, 0, 0, .5); }   /* .on：點過的那幾秒（site.js）；用鍵盤移到上面時也清楚 */
+@media (hover: hover) { .zoom:hover { opacity: 1; background: rgba(28, 26, 23, .9); box-shadow: 0 8px 24px -10px rgba(0, 0, 0, .5); } }   /* 只有滑鼠：手機點一下會一直「停在上面」，淡不回去 */
 .zoom button { font: inherit; color: inherit; background: transparent; border: 0; border-radius: 5px; min-width: 36px; height: 34px; padding: 0 8px; cursor: pointer; }
 .zoom button:hover:not(:disabled) { background: rgba(244, 238, 226, .14); }
 .zoom button:disabled { opacity: .32; cursor: default; }
