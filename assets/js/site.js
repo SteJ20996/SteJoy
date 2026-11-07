@@ -39,7 +39,7 @@
     const apply = (keep) => {
       const z = Math.min(want, cap()), y = keep && document.documentElement.scrollHeight > innerHeight ? scrollY / (document.documentElement.scrollHeight - innerHeight) : null;
       root.style.zoom = z === 1 ? '' : z; root.style.setProperty('--z', z); box.style.zoom = z === 1 ? '' : 1 / z;
-      val.textContent = Math.round(z * 100) + '%'; val.setAttribute('aria-label', T[0] + ' ' + val.textContent + '，' + T[3]);
+      val.textContent = Math.round(z * 100) + '%'; val.setAttribute('aria-label', T[0] + ' ' + val.textContent + ({ en: ', ', ja: '、' }[lang] || '，') + T[3]);
       minus.disabled = z <= Z[0]; plus.disabled = z >= cap();
       if (z !== cur) {
         cur = z;
