@@ -1,6 +1,7 @@
 // 剪預告：照 edit.json 把錄好的鏡頭接起來（每段之間交疊淡入淡出），配上 music.wav；
 // 另出三種語言的字幕（WebVTT 給網站；燒進畫面的版本給 Steam 與社群，字是用 Playwright 照網站的字型畫成透明圖再疊上去）。
 // 用法：node build.mjs <鏡頭資料夾> <music.wav> <輸出資料夾> [--burn]
+//       node build.mjs - - <輸出資料夾> --captions   只照剪接表重寫字幕（WebVTT），不剪畫面（加語言、改字幕時用；2026-11-06 加日文時加的）
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -8,11 +9,11 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const here = path.dirname(new URL(import.meta.url).pathname);
 const [SHOTS, MUSIC, OUT] = process.argv.slice(2);
-const burn = process.argv.includes('--burn');
+const burn = process.argv.includes('--burn'), capsOnly = process.argv.includes('--captions');
 // EDIT、CAPTIONS 環境變數可以換成別的剪接表與字幕（《力透紙背》的在 tools/litou/）
 const edit = JSON.parse(fs.readFileSync(process.env.EDIT || path.join(here, 'edit.json'), 'utf8'));
 const caps = JSON.parse(fs.readFileSync(process.env.CAPTIONS || path.join(here, 'captions.json'), 'utf8'));
-const LANGS = ['zh-Hant', 'zh-Hans', 'en'];
+const LANGS = ['zh-Hant', 'zh-Hans', 'en', 'ja'];
 fs.mkdirSync(OUT, { recursive: true });
 
 // 每段在成片裡從幾秒開始
@@ -20,7 +21,9 @@ const F = edit.fade; let t = 0; const at = [];
 edit.clips.forEach((c, i) => { at.push(t); t += c.dur - (i < edit.clips.length - 1 ? F : 0); });
 const TOTAL = t;
 
-// 一、畫面：trim 每段、依序 xfade
+const clean = path.join(OUT, 'trailer.mp4');
+// 一、畫面：trim 每段、依序 xfade（--captions 時跳過）
+if (!capsOnly) {
 const args = ['-y', '-loglevel', 'error'];
 edit.clips.forEach(c => args.push('-i', path.join(SHOTS, c.shot + '.mp4')));
 args.push('-i', MUSIC);
@@ -31,9 +34,9 @@ for (let i = 1; i < edit.clips.length; i++) {
   fc += `;[${prev}][v${i}]xfade=transition=fade:duration=${F}:offset=${off}[${lab}]`; prev = lab;
 }
 fc += `;[vx]fade=t=in:st=0:d=0.6,fade=t=out:st=${(TOTAL - 0.8).toFixed(3)}:d=0.8[vout]`;
-const clean = path.join(OUT, 'trailer.mp4');
 execFileSync('ffmpeg', [...args, '-filter_complex', fc, '-map', '[vout]', '-map', `${edit.clips.length}:a`, '-c:v', 'libx264', '-preset', 'slow', '-crf', '20', '-pix_fmt', 'yuv420p', '-profile:v', 'high', '-movflags', '+faststart', '-c:a', 'aac', '-b:a', '160k', '-shortest', clean]);
 console.log('trailer.mp4', TOTAL.toFixed(2) + 's', (fs.statSync(clean).size / 1e6).toFixed(1) + 'MB');
+}
 
 // 二、字幕：每段淡入後 0.3 息出字，下一段淡入前收
 const cues = [];

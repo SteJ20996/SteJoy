@@ -1,12 +1,14 @@
 /* stejoy.com：紙與墨。墨與朱照遊戲的起始頁；紙比遊戲白一點、少一點黃（使用者定） */
 :root { --paper: #f4eee2; --paper-2: #ebe4d4; --ink: #1c1a17; --ink-2: #4a4238; --dim: #7d725f; --red: #b4392a; --line: rgba(28, 26, 23, .16);
-  --zh: "LXGW WenKai TC", "Noto Serif TC", "Songti TC", serif; --sc: "Noto Serif SC", "Songti SC", serif; --en: Georgia, "Times New Roman", "LXGW WenKai TC", serif; }
+  --zh: "LXGW WenKai TC", "Noto Serif TC", "Songti TC", serif; --sc: "Noto Serif SC", "Songti SC", serif; --en: Georgia, "Times New Roman", "LXGW WenKai TC", serif;
+  --ja: "Klee One", "LXGW WenKai TC", "Hiragino Mincho ProN", "Yu Mincho", serif; }   /* 日文頁：Klee One（霞鶩文楷的原型，字形照日本的寫法） */
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; color: var(--ink); background: var(--paper); font: 18px/1.85 var(--zh); -webkit-font-smoothing: antialiased; }
 body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse at 50% 0%, #f9f6ee 0%, var(--paper) 45%, #ede6d6 100%); }   /* 紙的明暗：用固定的底層，手機上 background-attachment: fixed 不管用 */
 body.lang-zh-Hans { font-family: var(--sc); }
 body.lang-en { font-family: var(--en); font-size: 18px; line-height: 1.7; }
+body.lang-ja { font-family: var(--ja); }
 a { color: var(--red); text-underline-offset: 3px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
@@ -16,6 +18,7 @@ a { color: var(--red); text-underline-offset: 3px; }
 .studio { display: flex; align-items: center; gap: 8px; color: var(--ink); text-decoration: none; font: 600 19px/1 var(--en); letter-spacing: .06em; }
 body.lang-zh-Hant .studio { font: 400 23px/1 var(--zh); letter-spacing: .16em; }   /* 中文頁寫「長風」：繁中用霞鶩文楷 */
 body.lang-zh-Hans .studio { font: 400 22px/1 var(--sc); letter-spacing: .16em; }   /* 简中用思源宋体 */
+body.lang-ja .studio { font: 400 23px/1 var(--ja); letter-spacing: .16em; }   /* 日文頁也寫「長風」 */
 .sections { display: flex; gap: 20px; margin-left: auto; }
 .sections a, .langs a { color: var(--ink-2); text-decoration: none; font-size: 15px; }
 .sections a:hover, .langs a:hover { color: var(--red); }
@@ -44,6 +47,7 @@ body.lang-en .kicker { letter-spacing: .12em; }
 body.mohua #title-logo { width: min(100%, calc((100svh / var(--z, 1) - 330px) * 3.2)); min-width: min(100%, 640px); }   /* 字標撐滿開頭；矮的螢幕照高收，按鈕留在第一屏 */
 .tagline { margin: 20px 0 30px; font-size: 22px; letter-spacing: .32em; }
 body.lang-en .tagline { letter-spacing: .04em; font-style: italic; }
+.tagline span { white-space: nowrap; }   /* 窄的畫面只在「·」換行（日文頁「水を／書けば」被拆開過） */
 .cta { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
 .btn, .badge { display: inline-flex; align-items: center; min-height: 46px; padding: 0 22px; border-radius: 6px; font-size: 17px; text-decoration: none; }
 .btn { border: 1px solid var(--ink); color: var(--ink); background: transparent; }
@@ -88,6 +92,7 @@ body.lang-en .tagline { letter-spacing: .04em; font-style: italic; }
 video::cue { font-family: "LXGW WenKai TC", serif; color: #f6efdf; background: rgba(28, 26, 23, .55); }
 body.lang-zh-Hans video::cue { font-family: "Noto Serif SC", serif; }
 body.lang-en video::cue { font-family: Georgia, serif; }
+body.lang-ja video::cue { font-family: "Klee One", "LXGW WenKai TC", serif; }
 
 /* 故事 */
 .story p { max-width: 760px; margin: 0 0 1em; text-indent: 2em; }
@@ -124,6 +129,7 @@ footer .author-name { color: var(--ink); font-size: 17px; letter-spacing: .04em;
 footer .author-name span { color: var(--dim); font-family: var(--zh); font-size: 14px; letter-spacing: .12em; margin-right: .4em; }
 body.lang-zh-Hans footer .author-name span { font-family: var(--sc); }
 body.lang-en footer .author-name span { font-family: var(--en); letter-spacing: .02em; }
+body.lang-ja footer .author-name span { font-family: var(--ja); letter-spacing: .06em; }
 footer .author-bio { color: var(--ink-2); font-size: 14px; line-height: 1.7; max-width: 760px; margin: 4px 0 2px !important; }
 footer .author-bio span { display: block; }   /* 簡介一句一行 */
 footer .author-meta { color: var(--ink-2); font-size: 14px; margin-top: 4px !important; }
@@ -163,3 +169,13 @@ html.duo .zoom .zv { min-width: 74px; font-size: 18px; }
   .tagline { font-size: 18px; letter-spacing: .18em; }
   h2 { font-size: 26px; }
 }
+
+/* 日文頁（2026-11-06 加）：字距比中文收一點（假名多、句子長）；段首空一字；標題照文節換行（word-break: auto-phrase，認得的瀏覽器才用） */
+body.lang-ja h2 { letter-spacing: .06em; }
+body.lang-ja .kicker { letter-spacing: .16em; }
+body.lang-ja .tagline { letter-spacing: .14em; }
+body.lang-ja .story p { text-indent: 1em; }
+body.lang-ja .clip figcaption b, body.lang-ja .feat h3 { letter-spacing: .04em; }
+body.lang-ja .next-game span { letter-spacing: .06em; }
+body.lang-ja :is(h1, h2, h3, .tagline, .kicker, .lead, .lang-note, .hm-title, .hm-tag, .lt-tagline, .lt-motto, .lt-loop) { word-break: auto-phrase; }
+body.lang-ja .lang-note { max-width: 620px; }   /* 「日本語版はありません」一行放得下，不斷在「あ／りません」 */

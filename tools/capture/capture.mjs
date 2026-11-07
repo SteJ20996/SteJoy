@@ -37,11 +37,20 @@ for (const shot of SHOTS) {
   const n = Math.round(shot.sec * FPS), dir = path.join(OUT, shot.name);
   fs.rmSync(dir, { recursive: true, force: true }); fs.mkdirSync(dir, { recursive: true });
   const want = stills ? new Set([0, Math.floor(n / 2), n - 1]) : null;
+  let prev = null, retried = 0, stale = 0;
   for (let f = 0; f < n; f++) {
     if (shot.frame) await page.evaluate(shot.frame, { f, n, fps: FPS, arg: shot.arg || null });
     await page.clock.runFor(1000 / FPS);
-    if (!want || want.has(f)) await page.screenshot({ path: path.join(dir, (stills ? 's' : '') + String(f).padStart(4, '0') + (stills ? '.png' : '.jpg')), type: stills ? 'png' : 'jpeg', quality: stills ? undefined : 95 });
+    if (want && !want.has(f)) continue;
+    const opt = { type: stills ? 'png' : 'jpeg', quality: stills ? undefined : 95 };
+    if (shot.paint) await page.evaluate(shot.paint);   // 截圖前照這一刻的狀態再畫一次（時間差 0，不推動遊戲）：假時鐘下遊戲那一步有時一次也沒畫，截到的是上一步的畫面
+    let buf = await page.screenshot(opt);
+    // 2026-11-06：觀星那段偶爾截到上一幀還沒換掉的畫面（同一張圖連兩幀，下一幀再跳兩步，看起來一頓一頓）。
+    // 跟上一幀一模一樣就等一下再截；畫面本來就停著的（例如一段靜止）重截幾回也一樣，照收
+    if (shot.fresh) for (let r = 0; r < 4 && prev && buf.equals(prev); r++) { await page.waitForTimeout(40); buf = await page.screenshot(opt); retried++; if (r === 3 && buf.equals(prev)) stale++; }
+    fs.writeFileSync(path.join(dir, (stills ? 's' : '') + String(f).padStart(4, '0') + (stills ? '.png' : '.jpg')), buf); prev = buf;
   }
+  if (retried) console.log('  ' + shot.name + ': 重截 ' + retried + ' 回，仍同上一幀 ' + stale + ' 幀');
   const events = await page.evaluate(() => window.__events || null);   // 鏡頭裡記下的事（落雷、腳步落在哪一幀），配樂照這個對齊
   if (events && !stills) fs.writeFileSync(path.join(OUT, shot.name + '.events.json'), JSON.stringify(events));
   await page.close();

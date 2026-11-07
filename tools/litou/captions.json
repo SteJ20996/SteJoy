@@ -1,15 +1,15 @@
 {
-  "point":   { "zh-Hant": "零維：一個點。十種筆畫，都從這一點落下。", "zh-Hans": "零维：一个点。十种笔画，都从这一点落下。", "en": "Zero dimensions: a single point. All ten strokes fall from it." },
-  "line":    { "zh-Hant": "一維：照面前那個字的筆順寫，錯字就正了。", "zh-Hans": "一维：照面前那个字的笔顺写，错字就正了。", "en": "One dimension: write the character in front of you, stroke by stroke, and set it right." },
-  "ring":    { "zh-Hant": "線寫到後來首尾相接，圈出一張紙。", "zh-Hans": "线写到后来首尾相接，圈出一张纸。", "en": "The line meets itself and encloses a page." },
-  "page":    { "zh-Hant": "二維：紙為陣，筆為兵，墨為甲。", "zh-Hans": "二维：纸为阵，笔为兵，墨为甲。", "en": "Two dimensions: paper is the battlefield, the brush the soldier, ink the armor." },
-  "flip":    { "zh-Hant": "力透紙背：寫到紙的背面，字都反了。", "zh-Hans": "力透纸背：写到纸的背面，字都反了。", "en": "Through the page: on the back, every character is mirrored." },
-  "mobius":  { "zh-Hant": "莫比烏斯環：沒有左右的邊，只有一面。", "zh-Hans": "莫比乌斯环：没有左右的边，只有一面。", "en": "A Möbius strip: no left or right edge, and only one side." },
-  "fold":    { "zh-Hant": "紙沿著摺痕，摺成正方體。", "zh-Hans": "纸沿着折痕，折成正方体。", "en": "The page folds along its creases into a cube." },
-  "cube":    { "zh-Hant": "三維：遠處敵身上的字，寫出來就飛過去。", "zh-Hans": "三维：远处敌身上的字，写出来就飞过去。", "en": "Three dimensions: write a distant enemy’s character, and it flies to them." },
-  "tess":    { "zh-Hant": "正方體只是超正方體的一個胞。", "zh-Hans": "正方体只是超正方体的一个胞。", "en": "The cube is only one cell of a tesseract." },
-  "thunder": { "zh-Hant": "照先天八卦：雷、水、山、風、火、澤。", "zh-Hans": "照先天八卦：雷、水、山、风、火、泽。", "en": "By the Early Heaven trigrams: thunder, water, mountain, wind, fire, lake." },
-  "hyper":   { "zh-Hant": "八胞合一，走進它的裡面。", "zh-Hans": "八胞合一，走进它的里面。", "en": "The eight cells become one, and you step inside." },
-  "four":    { "zh-Hant": "四維：多一個看不見的方向。", "zh-Hans": "四维：多一个看不见的方向。", "en": "Four dimensions: one more direction you cannot see." },
-  "end":     { "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", "en": "Coming soon" }
+  "point":   { "zh-Hant": "零維：一個點。十種筆畫，都從這一點落下。", "zh-Hans": "零维：一个点。十种笔画，都从这一点落下。", "en": "Zero dimensions: a single point. All ten strokes fall from it.", "ja": "零次元：一つの点。十種の画は、すべてこの一点から落ちる。" },
+  "line":    { "zh-Hant": "一維：照面前那個字的筆順寫，錯字就正了。", "zh-Hans": "一维：照面前那个字的笔顺写，错字就正了。", "en": "One dimension: write the character in front of you, stroke by stroke, and set it right.", "ja": "一次元：目の前の字を筆順どおりに書けば、崩れた字が正される。" },
+  "ring":    { "zh-Hant": "線寫到後來首尾相接，圈出一張紙。", "zh-Hans": "线写到后来首尾相接，圈出一张纸。", "en": "The line meets itself and encloses a page.", "ja": "線は書き進むうちに端と端がつながり、一枚の紙を囲む。" },
+  "page":    { "zh-Hant": "二維：紙為陣，筆為兵，墨為甲。", "zh-Hans": "二维：纸为阵，笔为兵，墨为甲。", "en": "Two dimensions: paper is the battlefield, the brush the soldier, ink the armor.", "ja": "二次元：紙は陣、筆は兵、墨は甲。" },
+  "flip":    { "zh-Hant": "力透紙背：寫到紙的背面，字都反了。", "zh-Hans": "力透纸背：写到纸的背面，字都反了。", "en": "Through the page: on the back, every character is mirrored.", "ja": "力透紙背：紙の裏まで書き抜けると、字はみな裏返る。" },
+  "mobius":  { "zh-Hant": "莫比烏斯環：沒有左右的邊，只有一面。", "zh-Hans": "莫比乌斯环：没有左右的边，只有一面。", "en": "A Möbius strip: no left or right edge, and only one side.", "ja": "メビウスの帯：左右の端がなく、面は一つしかない。" },
+  "fold":    { "zh-Hant": "紙沿著摺痕，摺成正方體。", "zh-Hans": "纸沿着折痕，折成正方体。", "en": "The page folds along its creases into a cube.", "ja": "紙は折り目に沿って、立方体に折れる。" },
+  "cube":    { "zh-Hant": "三維：遠處敵身上的字，寫出來就飛過去。", "zh-Hans": "三维：远处敌身上的字，写出来就飞过去。", "en": "Three dimensions: write a distant enemy’s character, and it flies to them.", "ja": "三次元：遠くの敵の字を書けば、字がそこへ飛んでいく。" },
+  "tess":    { "zh-Hant": "正方體只是超正方體的一個胞。", "zh-Hans": "正方体只是超正方体的一个胞。", "en": "The cube is only one cell of a tesseract.", "ja": "立方体は、超立方体の胞の一つにすぎない。" },
+  "thunder": { "zh-Hant": "照先天八卦：雷、水、山、風、火、澤。", "zh-Hans": "照先天八卦：雷、水、山、风、火、泽。", "en": "By the Early Heaven trigrams: thunder, water, mountain, wind, fire, lake.", "ja": "先天八卦に従って：雷・水・山・風・火・沢。" },
+  "hyper":   { "zh-Hant": "八胞合一，走進它的裡面。", "zh-Hans": "八胞合一，走进它的里面。", "en": "The eight cells become one, and you step inside.", "ja": "八つの胞が一つになり、その内側へ入る。" },
+  "four":    { "zh-Hant": "四維：多一個看不見的方向。", "zh-Hans": "四维：多一个看不见的方向。", "en": "Four dimensions: one more direction you cannot see.", "ja": "四次元：目に見えない方向が、もう一つ増える。" },
+  "end":     { "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", "en": "Coming soon", "ja": "乞うご期待" }
 }

@@ -1,5 +1,5 @@
 """《力透紙背》（Through the Page）的介紹頁：「寫意」系列第二部，還在做（頁上寫「敬請期待」）。
-三語三頁：litouzhibei/（繁中）、zh-hans/litouzhibei/、en/litouzhibei/。由 tools/site/build-site.py 一起產生，文字改這個檔案的 TEXT。
+四語四頁：litouzhibei/（繁中）、zh-hans/litouzhibei/、en/litouzhibei/、ja/litouzhibei/（日文 2026-11-06 加；筆畫名、性質、音讀訓讀照遊戲的日文版）。由 tools/site/build-site.py 一起產生，文字改這個檔案的 TEXT。
 風格刻意跟首頁《墨畫蒼生》不同：墨重、斜、快；紅印「敬請期待」；一卷五章用一個會展開的超正方體（點→線→面→體→四維）；
 可以直接按 1–0 寫字（跟遊戲同一套筆順與字形）。遊戲的資料（筆形、字形、標誌）由 tools/litou/data.mjs 從遊戲庫抄出來，
 預告與場景由 tools/litou/ 錄、剪（見 README）。
@@ -100,7 +100,7 @@ TEXT = {
                 ],
                 [
                         "習字",
-                        "不打仗也行：主頁有習字模式，五十多個字照筆數排好，一筆一筆寫進米字格。"
+                        "不打仗也行：主頁有習字模式，八十九個字照筆數排好，一筆一筆寫進米字格。"
                 ],
                 [
                         "四種語言",
@@ -205,7 +205,7 @@ TEXT = {
                 ],
                 [
                         "习字",
-                        "不打仗也行：主页有习字模式，五十多个字照笔数排好，一笔一笔写进米字格。"
+                        "不打仗也行：主页有习字模式，八十九个字照笔数排好，一笔一笔写进米字格。"
                 ],
                 [
                         "四种语言",
@@ -310,7 +310,7 @@ TEXT = {
                 ],
                 [
                         "Practice mode",
-                        "No fighting needed: the home screen has a practice mode with over fifty characters, sorted by stroke count, to write stroke by stroke into a practice grid."
+                        "No fighting needed: the home screen has a practice mode with 89 characters, sorted by stroke count, to write stroke by stroke into a practice grid."
                 ],
                 [
                         "Four languages",
@@ -331,6 +331,72 @@ TEXT = {
         "bio": [
                 "Math teacher and researcher who explores writing and literature through interactive games.",
                 "Through the Page turns stroke order into combat and dimensions into levels: from point to line, line to plane, plane to solid."
+        ]
+    },
+    'ja': {   # 遊戲本身有日文版：副標、標語、章名、難度、筆畫名照遊戲（src/rules.js、index.html 的 data-ja）
+        "title": "力透紙背 Through the Page｜長風",
+        "desc": "筆順が技になる、漢字のバトルゲーム。あなたは紙に残った一字「人」。キーボードの 1 から 0 が十種の画で、筆順どおりに書けば崩れた字が正される。点から線へ、線から面へ、面から立体へ、そして超立方体の内側へと書き進む。",
+        "nav": ["予告編", "物語", "一巻", "試し書き", "特徴", "お問い合わせ"],
+        "kicker": "「写意」シリーズ · 第二部",   # 照遊戲日文版的標題畫面
+        "tagline": "紙は陣 · 筆は兵 · 墨は甲",
+        "motto": "点から線へ · 線から面へ · 面から立体へ",
+        "soon": "乞うご期待",
+        "watch": "予告編を見る",
+        "trywrite": "一字書いてみる",
+        "trailer_h": "予告編",
+        "trailer_note": "ゲームの実機映像です。開発中のため、画面も内容もまだ変わります。音楽は仮の合成音源です。",
+        "story_h": "物語",
+        "quote": "夫れ紙は陣なり、筆は刀槊なり、墨は鍪甲なり。",
+        "cite": "王羲之「題衛夫人筆陣図後」",
+        "story": [
+                "字はもともと平らだった。そこへ塗がやって来た。字にならない墨のかたまりで、通ったあとの字は、ばらばらの画と墨の点に戻されてしまう。あなたは紙に残った一字、「人」。",
+                "キーボードの 1 から 0 が十種の画。目の前の字を筆順どおりに書けば、崩れた字が正される。覚えた字を書き上げれば、画が技に変わる。速く書き、しかも正しく書くこと。",
+                "一つの点から十種の画を覚え、「一」を書く。線は書き進むうちに端と端がつながって輪になり、輪が一枚の紙を囲む。紙の裏まで書き抜け、メビウスの帯を回ると、紙は立方体に折れる。超立方体の八つの胞を歩き、八つの胞が一つになると、あなたはその内側へ入る。九九帰一。"
+        ],
+        "dims_h": "一巻",
+        "dims_intro": "章ごとに次元が一つ増え、ルールも変わる。どの章の結末も、次の章への道を敷いている。",
+        "dims": [
+                ["序章", "零次元 · 点", "点が一つあるだけ。十種の画は、すべてこの一点から落ちる。「一」を書けば、点が線に伸びる。"],
+                ["第一章", "一次元 · 線", "敵は左右の両端から来る。目の前の字を筆順どおりに書けば、字は正される。線はやがて端と端がつながり、一枚の紙を囲む。"],
+                ["第二章", "二次元 · 面", "どの画も敵に当たり、字を書き上げれば技が出る。紙の裏まで書き抜けると字はみな裏返り、紙の帯はねじれてメビウスの帯になる。左右の端は、もうない。"],
+                ["第三章", "三次元 · 立体", "紙が折り目に沿って立方体に折れる。前後左右上下、遠くの敵の字を書けば、字がそこへ飛んでいく。この立方体は超立方体の胞の一つにすぎない。先天八卦に従って、雷・水・山・風・火・沢をめぐる。"],
+                ["第四章", "四次元", "八つの胞が一つになり、あなたは超立方体の内側へ入る。目に見えない方向 w がもう一つ増え、別の w にいる敵は影しか見えない。九九帰一、次の巻はまたあの線から始まる。"]
+        ],
+        "loop": "九九帰一",
+        "write_h": "試し書き",
+        "write_intro": "キーボードの 1 から 0（または下のキー）で一画ずつ書く。筆順どおりに書けば字になり、字にならなければ画は散ってしまう。",
+        "write_try": "試してみよう：9 3 で「力」、1 3 5 で「大」、4 9 0 3 5 で「永」。",
+        "write_cands": "ほかに書ける字",
+        "write_none": "字にならない",
+        "write_got": "書けた",
+        "write_reset": "書き直す",
+        "write_count": "{N} 字のうち {n} 字を書いた",
+        "write_idle": "キーを押して、最初の一画を書こう。",
+        "feat_h": "特徴",
+        "feat_intro": "速く書き、しかも正しく書く。",
+        "strokes_h": "十画、十の技",
+        "strokes_intro": "画にはそれぞれ気性がある。横画はいちばん遠くまで届き、点はいちばん重く打ち、右払いは敵を押しのけ、はねのある画は敵を引き寄せる。",
+        "strokes_more": "漢字の画はこの十種だけではない。七・元の最後の曲がってはねる画、我の斜めにはねる画、心の寝かせたはね、山の縦から横へ折れる画、乃のつづら折りの画……分け方によって二十から三十種にもなる。ここではいちばんよく使う十種だけを、一つのキーに一画ずつ割り当てた。ゲームの八十九字は、どれもこの十種だけで書け、繁体字と簡体字で字形が同じで、台湾と中国大陸で筆順も同じ字だ。",
+        "features": [
+                ["字形も筆順も一つ", "敵を防ぐために書く字は、繁体字でも簡体字でも字形が同じで、台湾と中国大陸の筆順も同じものだけを選んだ。筆順は台湾教育部の「常用国字標準字体筆順」に従う。王・玉・主の三字は日本の筆順と異なり、日本語版では序章と習字の説明でそのことを断っている。"],
+                ["字を技に", "「大」を書けば墨が輪になって周りの敵を押しのけ、「火」は焼き、「口」は閉じ込め、「寸」は刺す。字ごとに使える回数があり、一字だけで最後まで戦い抜くことはできない。"],
+                ["習字", "戦わなくてもいい。ホーム画面の習字モードでは八十九字が画数順に並び、米字の補助線が入ったマスに一画ずつ書いていける。"],
+                ["四つの言語", "表示は繁体字中国語・簡体字中国語・英語・日本語。英語版はピンインと字義、日本語版は音読み・訓読みと字義つき。"]
+        ],
+        "facts": [
+                "シングルプレイ・オフライン",
+                "キーボード：1 から 0 で十種の画",
+                "表示言語：繁体字中国語・簡体字中国語・英語・日本語",
+                "難易度は四段階（物語・入門・上級・達人）",
+                "乞うご期待"
+        ],
+        "contact_h": "お問い合わせ",
+        "contact": "『力透紙背』は長風の「写意」シリーズ第二部で、まだ開発中です。ご意見・ご感想はメールでどうぞ：",
+        "series": "シリーズ第一部『墨畫蒼生』",
+        "video_off": "お使いのブラウザではこの動画を再生できません。",
+        "bio": [
+                "数学を教え、研究をしながら、インタラクティブなゲームで文字と文学を探っています。",
+                "『力透紙背』は、筆順を技に、次元をステージにした作品です。点から線へ、線から面へ、面から立体へ。"
         ]
     },
 }
@@ -364,10 +430,11 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
         <p>{esc(t)}</p>
         <video muted loop playsinline preload="none" poster="{a}media/litou/scenes/{DIM_CLIPS[i]}.jpg" data-src="{a}media/litou/scenes/{DIM_CLIPS[i]}.mp4" data-webm="{a}media/litou/scenes/{DIM_CLIPS[i]}.webm" aria-label="{esc(n)}"></video>
       </li>''' for i, (k, n, t) in enumerate(T['dims']))
-    sname = 'zh' if code == 'zh-Hant' else 'hans' if code == 'zh-Hans' else 'en'
-    trait = 'trait' if code == 'zh-Hant' else 'traitHans' if code == 'zh-Hans' else 'traitEn'
-    keys = ''.join(f'<button class="lt-key" type="button" data-code="{s["c"]}"><b>{s["key"]}</b>{stroke_svg(s["c"])}<span>{esc(s[sname] if code != "en" else s["short"])}</span></button>' for s in DATA['strokes'])
-    strokes = ''.join(f'<li><span class="lt-kc"><b>{s["key"]}</b>{stroke_svg(s["c"])}</span><div><b>{esc(s[sname])}</b>{" <small>" + esc(s["zh"]) + "</small>" if code == "en" else ""}<p>{esc(s[trait])}</p></div></li>' for s in DATA['strokes'])
+    sname = {'zh-Hant': 'zh', 'zh-Hans': 'hans', 'en': 'en', 'ja': 'ja'}[code]
+    short = {'en': 'short', 'ja': 'shortJa'}.get(code, sname)   # 鍵上的短名
+    trait = {'zh-Hant': 'trait', 'zh-Hans': 'traitHans', 'en': 'traitEn', 'ja': 'traitJa'}[code]
+    keys = ''.join(f'<button class="lt-key" type="button" data-code="{s["c"]}"><b>{s["key"]}</b>{stroke_svg(s["c"])}<span>{esc(s[short])}</span></button>' for s in DATA['strokes'])
+    strokes = ''.join(f'<li><span class="lt-kc"><b>{s["key"]}</b>{stroke_svg(s["c"])}</span><div><b>{esc(s[sname])}</b>{" <small>" + esc(s["zh"]) + "</small>" if code in ("en", "ja") else ""}<p>{esc(s[trait])}</p></div></li>' for s in DATA['strokes'])
     feats = ''.join(f'<article class="lt-feat"><h3>{esc(h)}</h3><p>{esc(p)}</p></article>' for h, p in T['features'])
     facts = ''.join(f'<li>{esc(x)}</li>' for x in T['facts'])
     strings = json.dumps({k: T[k] for k in ('write_cands', 'write_none', 'write_got', 'write_count', 'write_idle')} | {'lang': code}, ensure_ascii=False)
@@ -506,7 +573,7 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
 '''
 
 def build(LANGS, TEXTS, SITE, AUTHOR, AUTHOR_URL, MAIL):
-    """寫出三頁；回傳要放進 sitemap 的網址（相對於網站根目錄）。"""
+    """寫出四語各一頁；回傳要放進 sitemap 的網址（相對於網站根目錄）。"""
     for code, L in LANGS.items():
         out = ROOT / L['dir'] / SLUG / 'index.html'
         out.parent.mkdir(parents=True, exist_ok=True)

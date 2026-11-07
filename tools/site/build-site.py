@@ -1,4 +1,4 @@
-"""stejoy.com 的三語靜態頁：一份範本、三份文字，產出 index.html（繁中）、zh-hans/index.html、en/index.html。
+"""stejoy.com 的四語靜態頁：一份範本、四份文字，產出 index.html（繁中）、zh-hans/、en/、ja/（日文，2026-11-06 加）底下的各頁。
 用法（在庫的根目錄）：python3 tools/site/build-site.py
 字標與寫字動畫從遊戲正式庫抄來（tools/site/logo.html，見 README）；文字改這個檔案的 TEXT。
 """
@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import litou   # 《力透紙背》的介紹頁（tools/site/litou.py）
 from head import HEAD_JS   # iPhone Duo 用電腦版排、頁面大小（tools/site/head.py）
 import home    # 首頁：長風的「寫意」系列，選一部遊戲（tools/site/home.py）
-INK = 'mohuacangsheng/'   # 《墨畫蒼生》的介紹頁搬到這裡（首頁改成選遊戲；三語各一份：mohuacangsheng/、zh-hans/mohuacangsheng/、en/mohuacangsheng/）
+INK = 'mohuacangsheng/'   # 《墨畫蒼生》的介紹頁搬到這裡（首頁改成選遊戲；四語各一份：mohuacangsheng/、zh-hans/、en/、ja/ 底下的 mohuacangsheng/）
 
 ROOT = Path(__file__).resolve().parents[2]
 SITE = 'https://stejoy.com/'
@@ -22,6 +22,7 @@ LANGS = {
     'zh-Hant': {'dir': '', 'up': '', 'name': '繁體中文', 'short': '繁'},
     'zh-Hans': {'dir': 'zh-hans/', 'up': '../', 'name': '简体中文', 'short': '简'},
     'en': {'dir': 'en/', 'up': '../', 'name': 'English', 'short': 'EN'},
+    'ja': {'dir': 'ja/', 'up': '../', 'name': '日本語', 'short': '日本語'},   # 2026-11-06 使用者：整個網頁增加日文版
 }
 
 SCENES = ['gather', 'build', 'snow', 'night', 'gaze']
@@ -63,7 +64,7 @@ TEXT = {
         'contact_h': '聯絡',
         'contact': '《墨畫蒼生》是長風「寫意」系列的第一部。想說什麼，寫信給我們：',
         'next': ('「寫意」系列第二部《力透紙背》', '敬請期待'),   # 首頁「聯絡」底下連到第二部的介紹頁（原本的第二部《人間塵世》暫停開發，使用者改定）
-        'banner': {'zh-Hans': '有简体中文页面', 'en': 'This page is also in English'},
+        'banner': {'zh-Hans': '有简体中文页面', 'en': 'This page is also in English', 'ja': '日本語のページもあります'},
         'video_off': '你的瀏覽器放不了這段影片。',
         'author': ('作者', '長風工作室', '聯絡', '個人主頁'),
         'bio': ('教數學、做研究，也用互動遊戲探索文字與文學。', '《墨畫蒼生》把《山海經》的山海與二十四節氣，寫成一座用漢字搭起來的島。'),
@@ -104,7 +105,7 @@ TEXT = {
         'contact_h': '联系',
         'contact': '《墨画苍生》是长风“写意”系列的第一部。想说什么，写信给我们：',
         'next': ('“写意”系列第二部《力透纸背》', '敬请期待'),
-        'banner': {'zh-Hant': '這一頁也有繁體中文', 'en': 'This page is also in English'},
+        'banner': {'zh-Hant': '這一頁也有繁體中文', 'en': 'This page is also in English', 'ja': '日本語のページもあります'},
         'video_off': '你的浏览器播放不了这段视频。',
         'author': ('作者', '长风工作室', '联系', '个人主页'),
         'bio': ('教数学、做研究，也用互动游戏探索文字与文学。', '《墨画苍生》把《山海经》的山海与二十四节气，写成一座用汉字搭起来的岛。'),
@@ -146,11 +147,53 @@ TEXT = {
         'contact_h': 'Contact',
         'contact': 'InkWild is the first game in SteJoy\'s 寫意 (Xieyi) series. Write to us:',
         'next': ('Part 2 of the Xieyi series: Through the Page', 'coming soon'),
-        'banner': {'zh-Hant': '這一頁也有繁體中文', 'zh-Hans': '有简体中文页面'},
+        'banner': {'zh-Hant': '這一頁也有繁體中文', 'zh-Hans': '有简体中文页面', 'ja': '日本語のページもあります'},
         'video_off': 'Your browser cannot play this video.',
         'author': ('Created by', 'SteJoy', 'Contact', 'Homepage'),
         'bio': ('Math teacher and researcher who explores writing and literature through interactive games.', 'InkWild turns the mountains and seas of the Shanhaijing and the 24 solar terms into an island built from Chinese characters.'),
         'copy': '© 2026 SteJoy. Fonts: LXGW WenKai, Noto Serif (SIL Open Font License 1.1).',
+    },
+    'ja': {
+        'studio': '長風',   # 日文頁也寫「長風」（日本人讀得出：ちょうふう）；英文名 SteJoy 寫在「長風について」與頁尾
+        'title': '墨畫蒼生 InkWild｜長風',
+        'desc': '一枚の紙が海に落ち、紙の上の漢字が生きはじめた。あなたはその中の一字「人」。木を取り、煉瓦を積み、灯をともして、第十三夜から煉瓦を抜けてくる魄をしのぐ。節気に合わせて五穀を育て、釣りをし、星を見る。胆気が満ちたら舟を造って海を渡り、天地を傾けた共工を探しに行く。',
+        'nav': ['予告編', '物語', '体験版', '特徴', 'お問い合わせ'],
+        'kicker': '字と字のあいだ · 紙一枚の島',
+        'tagline': '木を書けば舟となり · 水を書けば淵となる',
+        'soon': '近日 Steam で配信', 'wish': 'Steam でウィッシュリストに追加', 'watch': '予告編を見る',
+        'trailer_h': '予告編', 'trailer_note': 'ゲームの実機映像です。音楽は仮の合成音源です。',
+        'lang_note': '『墨畫蒼生』の表示言語は繁体字中国語と簡体字中国語だけで、日本語版はありません。',   # 遊戲沒有日文版（跟英文頁一樣先說清楚）
+        'story_h': '物語',
+        'story': [
+            '鳥が山に棲む、それを島という。一枚の紙が海に落ち、紙の上の字が生きはじめた。あなたはその中の一字、素手の「人」。紙の一マス一マスが、どれも一つの字だ。木は木、山は山、水は水、虎はそのまま虎。取った字は材料になり、書き入れた字はあなたの家になる。',
+            'この紙は傾いている。共工が「怒りて不周の山に触れ」、天柱は折れ、地維は絶えた。紙の角はめくれ上がり、修蛇、封豨、大風が放たれた。青龍・白虎・朱雀・玄武は、四隅を押さえる文鎮だ。一夜をしのぎ、また一夜をしのぐ。胆気が満ちたら、舟を一艘造ってこの島を離れる。',
+        ],
+        'scenes_h': '体験版の場面',
+        'scenes_intro': '体験版は本島での最初の十三夜。下の場面は、どれも体験版で遊べます。',
+        'scenes': {
+            'gather': ('木を取る', '林の一マス一マスが字。取れば材料になる。'),
+            'build': ('家を建てる', '煉瓦を一つずつ積み、寝床、竈、櫃、灯を置く。'),
+            'snow': ('雪', '春先の数日はよく雪が降る。灯は屋外にも屋内にもともす。'),
+            'night': ('第十三夜', '日が暮れると、灯に照らされた煉瓦がゆっくりとほの明るく光りだす。光を嫌う魄が暗がりから漂ってくるが、地に置いた灯がそれを焼き消す。'),
+            'gaze': ('星を見る', '晴れた夜に空を見上げ、中国の星官も西洋の星座も覚えられる。'),
+        },
+        'feat_h': '製品版',
+        'feat_intro': '体験版のあとも、紙はまだ広い。',
+        'features': {
+            'thunder': ('節気とともに暮らす', '一年は三百六十日、二十四節気と七十二候のとおりに巡る。雨、雪、雷雨、強風、雹。砂漠と火山には乾いた雷だけが落ちる。'),
+            'crops': ('五穀は一画ずつ育つ', '稲・黍・稷・麦・菽を育て、雀や鼠や蝗から守る。釜と甑で五穀を料理し、取り合わせて食べれば効き目が増す。'),
+            'sail': ('舟を造って海を渡る', '胆気が満ちたら孤帆や方舟を造って海へ。紙の上には大陸、群島、砂漠、火山、雪原があり、海には蜃が潜む。'),
+            'gong': ('不周山へ', '修蛇・封豨・大風を倒し、北の玄武から経を授かり、不周山に登って、天地を傾けた共工を探しに行く。'),
+        },
+        'facts': ['シングルプレイ・オフライン', 'キーボードとマウス', '表示言語：繁体字中国語・簡体字中国語', '難易度は三段階（入門・資深・大師）'],
+        'contact_h': 'お問い合わせ',
+        'contact': '『墨畫蒼生』は長風の「写意」シリーズ第一部です。ご意見・ご感想はメールでどうぞ：',
+        'next': ('「写意」シリーズ第二部『力透紙背』', '乞うご期待'),   # 「第○部」照《力透紙背》日文版標題畫面的寫法
+        'banner': {'zh-Hant': '這一頁也有繁體中文', 'zh-Hans': '有简体中文页面', 'en': 'This page is also in English'},
+        'video_off': 'お使いのブラウザではこの動画を再生できません。',
+        'author': ('作者', '長風（SteJoy）', '連絡先', 'ホームページ'),
+        'bio': ('数学を教え、研究をしながら、インタラクティブなゲームで文字と文学を探っています。', '『墨畫蒼生』は、『山海経』の山と海、そして二十四節気を、漢字で組み上げた一つの島に描いた作品です。'),
+        'copy': '© 2026 長風。フォント：Klee One、霞鶩文楷（いずれも SIL Open Font License 1.1）。',
     },
 }
 
@@ -220,7 +263,7 @@ def page(code):
 <section class="hero">
   <p class="kicker">{esc(T['kicker'])}</p>
   <h1><span class="sr-only">{esc('墨畫蒼生 InkWild')}</span>{LOGO}</h1>
-  <p class="tagline">{esc(T['tagline'])}</p>
+  <p class="tagline">{' · '.join(f'<span>{esc(x)}</span>' for x in T['tagline'].split(' · '))}</p>
   <div class="cta">{cta}<a class="btn" href="#trailer">{esc(T['watch'])}</a></div>
   {lang_note}
 </section>
@@ -286,7 +329,7 @@ home.build(LANGS, TEXT, SITE, AUTHOR, AUTHOR_URL, MAIL, LOGO)   # 首頁：選�
 
 litou.build(LANGS, TEXT, SITE, AUTHOR, AUTHOR_URL, MAIL)   # 《力透紙背》：litouzhibei/、zh-hans/litouzhibei/、en/litouzhibei/
 
-# sitemap：首頁、《墨畫蒼生》、《力透紙背》各三語，各組互相標成同一頁的不同語言
+# sitemap：首頁、《墨畫蒼生》、《力透紙背》各四語，各組互相標成同一頁的不同語言
 groups = ['', INK, litou.SLUG]
 (ROOT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + ''.join(
     f'  <url><loc>{SITE}{L["dir"]}{g}</loc>' + ''.join(f'<xhtml:link rel="alternate" hreflang="{c}" href="{SITE}{LANGS[c]["dir"]}{g}"/>' for c in LANGS) + '</url>\n' for g in groups for L in LANGS.values()) + '</urlset>\n', encoding='utf-8')
