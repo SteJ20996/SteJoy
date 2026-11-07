@@ -170,20 +170,25 @@ export const SHOTS = [
     setup() { window.__c.run(); ZHAN.game.enterDim(3, { page: 0, tutorial: false }); window.__c.slow(0.45); },
     frame({ f }) { const g = ZHAN.game; window.__c.tick(0); if (f === 3) g.levelShift('tess', 1); },
   },
-  {   // 震：雷
+  {   // 震：雷。一息後鏡頭升到「高處」（遊戲 v0.9.4 的視角），那一柱落在哪、地上那條紅帶，從上往下看得清楚
     name: 'thunder', sec: 4.6, warm: 2.0,
-    setup() { window.__c.run(); ZHAN.game.enterDim(3, { page: 1, tutorial: false }); },
-    frame() { window.__c.tick(3); },
+    setup() { window.__c.run(); ZHAN.game.enterDim(3, { page: 1, tutorial: false }); ZHAN.game.view = 0; },
+    frame({ f }) { window.__c.tick(3); if (f === 33) ZHAN.game.view = 1; },
+  },
+  {   // 換視角（遊戲 v0.9.4，使用者要預告裡也有）：離（火）燒起一段深度時，身後 → 高處 → 斜側，各一息多
+    name: 'views', sec: 5.0, warm: 2.4,
+    setup() { window.__c.run(); const g = ZHAN.game; g.enterDim(3, { page: 5, tutorial: false }); g.view = 0; g.space.fireT = 2.7; },
+    frame({ f }) { window.__c.tick(3); const g = ZHAN.game; if (f === 40) g.view = 1; if (f === 86) g.view = 2; },
   },
   {   // 八胞合一，走進超正方體裡面
     name: 'hyper', sec: 5.0, warm: 1.0,
     setup() { window.__c.run(); ZHAN.game.enterDim(3, { page: 7, tutorial: false }); window.__c.slow(0.4); },
     frame({ f }) { const g = ZHAN.game; window.__c.tick(0); if (f === 6) { g.dimClear(); g.ascendGo(); } },
   },
-  {   // 四維：看不見的方向 w，別的 w 上的敵只剩影子
+  {   // 四維：看不見的方向 w，別的 w 上的敵只剩影子。鏡頭慢慢繞開一點（遊戲 v0.9.5 的偷看），影子的前後層次看得出來
     name: 'four', sec: 5.4, warm: 2.4,
-    setup() { window.__c.run(); ZHAN.game.enterDim(4, { tutorial: false }); },
-    frame() { window.__c.tick(3); },
+    setup() { window.__c.run(); ZHAN.game.enterDim(4, { tutorial: false }); ZHAN.game.view = 0; },
+    frame({ f, n }) { window.__c.tick(3); const k = Math.min(1, f / n), e = k * k * (3 - 2 * k); SPACE.orbitTo(ZHAN.render, ZHAN.game, 0.55 * e, 0.24 * e); },
   },
   {   // 片尾：寫好的字標
     name: 'end', sec: 4.2, page: 'title.html?end=1',

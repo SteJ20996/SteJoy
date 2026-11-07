@@ -57,6 +57,11 @@
       "dur": 3.6
     },
     {
+      "shot": "views",
+      "from": 0.3,
+      "dur": 4.6
+    },
+    {
       "shot": "hyper",
       "from": 0.0,
       "dur": 4.6
