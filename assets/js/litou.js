@@ -40,7 +40,7 @@
     // 頂點上的字固定、不重複（使用者看到兩個頂點都叫「人」）：頂點 i 的四個位元是 x y z w，第幾個方向展開時分出來，就寫那一章的字，
     // 筆數跟著維度長：人（起點）、十（一維，兩筆）、大口（二維的招，三筆）、天水火木（三維的浮字，四筆）、永玉石古本生正立（射墨字與字盾，五筆）
     const LABELS = [...'人十大口天水火木永玉石古本生正立'], labels = LABELS.map((c, i) => D && D.chars[c] ? c : Object.keys(D ? D.chars : {}).filter(x => D.chars[x].seq.length >= 2 && !LABELS.includes(x))[i] || '');
-    let s = 0, target = 0, t0 = performance.now(), W = 0, H = 0, dpr = 1;
+    let s = 0, target = 0, last = performance.now(), W = 0, H = 0, dpr = 1;
     const size = () => { const r = cv.getBoundingClientRect(); dpr = Math.min(2, window.devicePixelRatio || 1); W = r.width; H = r.height; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); };
     size(); addEventListener('resize', size);   // 頁面縮放時 site.js 也會發一次 resize
     // 捲到哪一章：第 i 章的內容在讀的地方時，超正方體停在 i 維；兩章交界經過讀的地方，才長出下一個方向
@@ -59,34 +59,61 @@
       target = Math.max(0, Math.min(4, v));
     };
     addEventListener('scroll', measure, { passive: true }); measure();
-    // 四維 → 二維：xw、yw、xz、yz 四個平面轉，再兩次透視（這是加寬以前的透視，近處的頂點放得大）
-    const project = (v, a, t) => {
-      const A1 = t * 0.35 * a[2], A2 = t * 0.27 * a[3], A3 = 0.5 + t * 0.12 * a[2];
+    // 四維 → 二維：xw、yw、xz、yz 四個平面轉，再兩次透視（這是加寬以前的透視，近處的頂點放得大）。g 是三個轉角：
+    // g[0] 三維起的 xz（真的立體轉）、g[1] g[2] 四維才有的 xw、yw。xz 另有固定的 0.5、yz 固定斜 0.42，二維的方塊也看得出是斜放的紙
+    const project = (v, a, g) => {
       let [x, y, z, w] = v.map((c, k) => c * a[k]);
-      let c = Math.cos(A2), q = Math.sin(A2); [x, w] = [x * c - w * q, x * q + w * c];            // xw 平面轉
-      c = Math.cos(A1 * 0.7); q = Math.sin(A1 * 0.7); [y, w] = [y * c - w * q, y * q + w * c];    // yw
-      c = Math.cos(A3); q = Math.sin(A3); [x, z] = [x * c - z * q, x * q + z * c];                // xz
+      let c = Math.cos(g[1]), q = Math.sin(g[1]); [x, w] = [x * c - w * q, x * q + w * c];                // xw
+      c = Math.cos(g[2]); q = Math.sin(g[2]); [y, w] = [y * c - w * q, y * q + w * c];                    // yw
+      c = Math.cos(0.5 + g[0]); q = Math.sin(0.5 + g[0]); [x, z] = [x * c - z * q, x * q + z * c];      // xz
       c = Math.cos(0.42 * a[2]); q = Math.sin(0.42 * a[2]); [y, z] = [y * c - z * q, y * q + z * c];
-      const k4 = 2.6 / (2.6 - w * 0.9), k3 = 4.2 / (4.2 - z * k4 * 0.9);   // 一路轉下去分母最小約 1.0 與 1.7（量過），不會翻過去
+      const k4 = 2.6 / (2.6 - w * 0.9), k3 = 4.2 / (4.2 - z * k4 * 0.9);   // 不管怎麼轉，分母最小約 1.04 與 1.71（|w| ≤ √3、z² + w² ≤ 4 算得出），不會翻過去
       return [x * k4 * k3, y * k4 * k3, z * k4, w, k4 * k3];
     };
-    // 展開到 s 時，頂點一路轉下去最遠到哪（x、y 各自）：每 0.05 算一格（三千個時刻、一格約十毫秒，捲到才算），兩格之間內插
+    // 換維不再狂轉（使用者：切換維度時轉得太快、崩壞）。以前轉角是「開頁到現在的秒數 × 這一維展開了幾成」，頁面開得越久，
+    // 換維那一下就轉越多圈（開兩分鐘，一幀跳六百多 px）；三維時還在 y、w 平面上轉，w 沒展開，方塊隔一陣子就壓扁一次。
+    // 現在每一種轉有自己的角度（ph），一幀一幀累加：那一維展開九成以上才開始轉；收回去時照捲動把角度退回最近的半圈
+    // （退得最多四分之一圈；捲回去就倒帶）。三維只在 xz 上轉，四維才加 xw、yw
+    // bs 是收回去時要退到的那個半圈：全展開時跟著 ph 取最近的半圈，一開始收就定住（收合整段慢慢退，不會中途換方向）
+    const AXK = [2, 3, 3], OM = [0.2, 0.27, 0.19], ph = [0, 0, 0], bs = [0, 0, 0], PI = Math.PI;
+    const eff = (r, b, ak) => b + (r - b) * ease(ak);   // 全展開 = r；收到零 = b
+    const RATE = 0.7;   // 一秒最多長（收）0.7 維：一口氣捲過好幾章，也是一維一維長出來
+    // 收合時轉角要退回 bs：要退得多，就收得慢，轉角一秒最多退 VMAX 弧度（不然四維捲回三維那一下，外圈的頂點一幀甩二十幾 px）
+    const VMAX = 0.8, rateAt = (sv) => {
+      const k = Math.floor(sv), ak = sv - k; if (k < 2 || k > 3 || ak <= 0) return RATE;
+      const U = Math.hypot(...AXK.map((ax, i) => (ax === k ? ph[i] - bs[i] : 0))), sl = 6 * ak * (1 - ak) * U;   // 6ak(1−ak)：ease 的斜率
+      return sl > 1e-6 ? Math.min(RATE, VMAX / sl) : RATE;
+    };
+    // 展開到 s 時，頂點最遠到哪（x、y 各自）：每 0.05 算一格（三個轉角各取三千組、一格約十毫秒，捲到才算），兩格之間內插
     const EXT = [], ext = (sv) => {
       const cell = (b) => {
         if (EXT[b]) return EXT[b];
         const a = [0, 1, 2, 3].map(k => Math.max(0, Math.min(1, b / 20 - k))); let mx = 0.01, my = 0.01;
-        for (let n = 0; n < 3000; n++) { const t = n * 0.42; for (const v of V) { const p = project(v, a, t); mx = Math.max(mx, Math.abs(p[0])); my = Math.max(my, Math.abs(p[1])); } }
+        for (let n = 0; n < 3000; n++) {   // 三維的低差異序列，把三個轉角的組合鋪滿
+          const g = [0.8191725, 0.6710436, 0.5497005].map((f, i) => { const r = ((n * f) % 1) * 2 * PI - PI; return eff(r, Math.round(r / PI) * PI, a[AXK[i]]); });
+          for (const v of V) { const p = project(v, a, g); mx = Math.max(mx, Math.abs(p[0])); my = Math.max(my, Math.abs(p[1])); }
+        }
         return (EXT[b] = [mx * 1.02, my * 1.02]);
       };
       const b = Math.max(0, Math.min(80, sv * 20)), b0 = Math.floor(b), b1 = Math.min(80, b0 + 1), f = b - b0, e0 = cell(b0), e1 = cell(b1);
       return [e0[0] + (e1[0] - e0[0]) * f, e0[1] + (e1[1] - e0[1]) * f];
     };
     const draw = (now) => {
-      const t = (now - t0) / 1000;
-      s += (target - s) * (reduce ? 1 : 0.08);
+      const dt = Math.max(0, Math.min(0.1, (now - last) / 1000)); last = now;   // 分頁切走再回來：不補那一段
+      // 跟著捲動：時間常數約六分之一秒，但一秒最多 RATE 維（以前每幀追 8%，高更新率的螢幕追得更快）
+      if (reduce) s = target;
+      else { const d = (target - s) * (1 - Math.exp(-dt * 6)), lim = rateAt(s) * dt; s += Math.max(-lim, Math.min(lim, d)); if (Math.abs(target - s) < 1e-4) s = target; }
       if (num) { const n = Math.min(4, Math.round(s)); if (num.textContent !== String(n)) num.textContent = n; }
-      const a = [0, 1, 2, 3].map(k => Math.max(0, Math.min(1, s - k + 0.0)));   // 第 k 個方向展開了幾成
-      const P = V.map(v => project(v, a, t));
+      const a = [0, 1, 2, 3].map(k => Math.max(0, Math.min(1, s - k)));   // 第 k 個方向展開了幾成
+      // 轉角：展開九成以上才轉（九成到全開之間慢慢加速）；收到零時停在 bs，下次從那裡起轉。偏好減少動態的不轉
+      const g = ph.map((_, i) => {
+        const ak = a[AXK[i]];
+        if (ak <= 0) ph[i] = bs[i];
+        else if (!reduce) ph[i] += OM[i] * ease((ak - 0.9) / 0.1) * dt;
+        if (ak >= 1) { if (ph[i] > PI) ph[i] -= 2 * PI; bs[i] = Math.round(ph[i] / PI) * PI; }   // 全展開時 eff = ph，換算一圈看不出來
+        return eff(ph[i], bs[i], ak);
+      });
+      const P = V.map(v => project(v, a, g));
       // 大圖（使用者要回到加寬以前那種透視），但整個要放得進畫布：每個展開程度先算過頂點會轉到多遠（ext），照最遠的定比例，
       // 不會被框切掉，也不會一陣一陣縮放
       const base = Math.min(W, H) * 0.2, pad = W < 520 ? 18 : 34, [ex, ey] = ext(s), sc = Math.min(base, (W / 2 - pad) / ex, (H / 2 - pad) / ey);

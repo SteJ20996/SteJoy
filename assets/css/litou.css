@@ -168,7 +168,7 @@ body.lang-en .lt-feat h3, body.lang-en .lt-sub { letter-spacing: 0; }
 @keyframes lt-scatter { to { opacity: 0; transform: translate(var(--sx, 0), var(--sy, 30px)) rotate(var(--sr, 20deg)) scale(.6); } }
 
 @media (max-width: 860px) {
-  .lt-hero { grid-template-columns: 1fr; min-height: 0; padding-top: 28px; gap: 8px; }
+  .lt-hero { grid-template-columns: 1fr; min-height: 0; padding-top: 28px; gap: 8px; overflow-x: clip; }   /* 標誌的「人」落下時先放大 2.2 倍，窄螢幕上會凸出畫面右邊三分之一秒、整頁跟著能左右晃：裁掉 */
   .lt-mark { order: -1; max-width: 420px; }
   .lt-dims-body { grid-template-columns: 1fr; gap: 0; }
   .lt-hc { top: 56px; height: calc(38vh / var(--z, 1)); z-index: 1; background: linear-gradient(var(--night) 80%, transparent); }
