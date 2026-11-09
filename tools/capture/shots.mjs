@@ -143,6 +143,28 @@ export const SHOTS = [
       w.cropDay = w.dayIdx() - 1; w.cropTick();
     },
   },
+  {   // 六之二、造字（遊戲 v0.9.69 錄）：月夜，廢村井邊二十格內的一間屋，人把偏旁「子」擺進屋裡——「从子在宀下」，第一個字民「字」走出字典；
+      // 那一刻天雨粟（身邊飄起「粟」），那一夜鬼夜哭（屋外的魄一隻隻散掉）。全是遊戲自己的 placeZi()，鏡頭只擺場面
+    name: 'zi', sec: 6, seed: 7, warm: 0.5,
+    setup() {
+      const c = window.__c, g = XIEYI.game, p = g.player, w = g.world; const d = c.dusk(12); c.at(12, d + 0.07);   // 第十三夜（試玩裡就有），天黑透、月亮在天上
+      const well = g.cunWell(), cx = well.x - 10, cy = well.y - 3;   // seed 7 的廢村東邊是海、西南有寺：屋蓋在村的西北邊，村井與一圈墟留在畫面右邊
+      c.fill(cx - 6, cy - 6, well.x - 5, well.y, '草');
+      for (const [x, y, ch] of c.house(cx, cy, 3, 2)) w.set(x, y, ch);
+      w.set(cx - 2, cy - 1, '燈'); w.set(cx + 2, cy - 1, '櫃'); w.chests.set(U.key(cx + 2, cy - 1), [{ n: '稷', c: 4 }]);   // 屋裡一盞燈、一口櫃裝著穀（字民一天吃一份）
+      w.set(well.x + 1, well.y + 2, '燈');
+      c.put(cx + 1, cy + 1); p.fx = 0; p.fy = -1;
+      p.cun = { wrote: { '休': 1, '明': 1, '囷': 1 } }; g.mingNow = true;   // 只錄「字」這一下：休明囷當作寫過了，屋裡有窗也不再跳「明」
+      p.bag = [{ n: '子', c: 1 }]; p.sel = 0; g.barSig = '';
+      g.ents.dashT = 1e9; g.ents.list = g.ents.list.filter(e => e.tame || e.type === '魚');
+      const ents = g.ents, stand = ents.canStand.bind(ents), built = /[磚甓門窗墟扉籬燈灶櫃床鼎甕缸]/;   // 跟第十三夜那段一樣：錄的時候魄不站上人造的東西
+      ents.canStand = (type, x, y, night) => stand(type, x, y, night) && !(type === '魄' && built.test(w.get(x, y)));
+      for (const [x, y] of [[cx + 6, cy - 5], [cx - 7, cy + 3], [cx + 4, cy + 5], [cx - 5, cy - 6]]) g.ents.add('魄', x, y, {});
+    },
+    frame({ f }) {
+      if (f === 45) XIEYI.game.placeZi();   // 一息半：擺下子
+    },
+  },
   {   // 七、觀星：晴夜抬頭，天慢慢轉。抬頭放慢（2026-11-06 使用者：預告第 35 秒抬頭太快）：第 36 幀才抬、走 4 息（遊戲裡是 1.6 息；遊戲自己會照 smoothstep 緩進緩出，這裡只把進度線性推慢），抬完了天才開始轉
     name: 'gaze', sec: 9.6, seed: 7, fresh: true,   // fresh：截到跟上一幀一樣的畫面就重截（capture.mjs）
     setup() {

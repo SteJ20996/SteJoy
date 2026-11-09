@@ -176,3 +176,13 @@ body.lang-ja .clip figcaption b, body.lang-ja .feat h3 { letter-spacing: .04em; 
 body.lang-ja .next-game span { letter-spacing: .06em; }
 body.lang-ja :is(h1, h2, h3, .tagline, .kicker, .lead, .lang-note, .hm-title, .hm-tag, .lt-tagline, .lt-motto, .lt-loop) { word-break: auto-phrase; }
 body.lang-ja .lang-note { max-width: 620px; }   /* 「日本語版はありません」一行放得下，不斷在「あ／りません」 */
+
+/* 造字（2026-11-09，遊戲 v0.9.69）：試玩場景最後一張佔整排，底下一排拆字（照《說文》） */
+.clip.wide { grid-column: 1 / -1; }
+.chai { display: flex; flex-wrap: wrap; gap: 6px 40px; margin: 14px 0 0; }
+.chai .eq { display: flex; flex-direction: column; margin: 0; }
+.chai .g { font-size: 34px; line-height: 1.3; letter-spacing: .06em; color: var(--ink); }
+.chai .g i { font-style: normal; color: var(--dim); font-size: 22px; margin: 0 .25em; vertical-align: .15em; }
+.chai .g b, .clip figcaption .chai .g b { display: inline; margin: 0; font-size: inherit; letter-spacing: inherit; font-weight: 400; color: var(--red); }   /* 上面 figcaption b 是標題、display: block；這裡的是等號後面的字，要跟著同一行 */
+.chai small { color: var(--ink-2); font-size: 14px; line-height: 1.5; }
+.chai-note { margin: 6px 0 0; color: var(--dim); font-size: 13px; }
