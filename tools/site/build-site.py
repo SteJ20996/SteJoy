@@ -25,7 +25,8 @@ LANGS = {
     'ja': {'dir': 'ja/', 'up': '../', 'name': '日本語', 'short': '日本語'},   # 2026-11-06 使用者：整個網頁增加日文版
 }
 
-SCENES = ['gather', 'build', 'snow', 'night', 'gaze']
+SCENES = ['gather', 'build', 'snow', 'night', 'gaze', 'zi']   # 造字（遊戲 v0.9.69，2026-11-09 加）排最後、佔整排，底下一排拆字
+CHAI = [('人', '木', '休'), ('月', '囧', '明'), ('子', '宀', '字')]   # 拆字：照《說文》（休「从人依木」、明「从月从囧」囧是窗、字「从子在宀下」）
 FEATURES = ['thunder', 'crops', 'sail', 'gong']
 
 TEXT = {
@@ -40,17 +41,19 @@ TEXT = {
         'trailer_h': '預告', 'trailer_note': '遊戲實機畫面。配樂是暫用的合成樂。',
         'story_h': '故事',
         'story': [
-            '鳥棲於山，是為島。一張紙落在海上，紙上的字活了。你是其中的一個「人」，赤手空拳。紙上每一格都是一個字：木是樹，山是山，水是水，虎就是虎。取下來的字是材料，寫下去的字是你的家。',
+            '鳥棲於山，是為島。一張紙落在海上，紙上的字活了。你是其中的一個「人」，赤手空拳。紙上每一格都是一個字：木是樹，山是山，水是水，虎就是虎。取下來的字是材料，寫下去的字是你的家。島上有一座廢村，碑上寫著：村裡沒有人，人都在字典裡。',
             '這張紙在歪。共工「怒而觸不周之山」，天柱折，地維絕；紙角翹起來，跑出了修蛇、封豨、大風。青龍、白虎、朱雀、玄武，是壓住四角的鎮紙。撐過一夜，再撐過一夜；膽氣夠了，就造一艘船離開。',
         ],
         'scenes_h': '試玩裡的場景',
         'scenes_intro': '試玩版是本島上的頭十三夜，下面這幾段都在試玩裡。',
+        'chai': (['从人依木', '从月从囧', '从子在宀下'], '《說文解字》的說法；囧是窗。'),
         'scenes': {
             'gather': ('取木', '林子裡的每一格都是字，取下來就是材料。'),
             'build': ('砌屋', '一塊磚一塊磚砌起來，再擺床、灶、櫃、燈。'),
             'snow': ('雪', '開春頭幾天常下雪；燈點在屋外也點在屋裡。'),
             'night': ('第十三夜', '天一黑，燈照著的磚慢慢透出暗光；怕光的魄從暗處飄來，地上的燈燒得滅它們。'),
             'gaze': ('觀星', '晴夜抬頭，認星官，也認星座。'),
+            'zi': ('造字', '人靠著木就是「休」，月照進窗就是「明」。從村井撈起偏旁「子」，擺進屋裡——子在宀下，第一個字民「字」走出字典。'),
         },
         'feat_h': '完整版',
         'feat_intro': '試玩之後，紙還很大。',
@@ -60,7 +63,7 @@ TEXT = {
             'sail': ('造船渡海', '膽氣夠了就造孤帆、方舟出海。紙上有大陸、群島、大漠、火山、雪原，海上有蜃。'),
             'gong': ('上不周山', '先斃修蛇、封豨、大風，向北方玄武取經，再上不周山，去找撞歪天地的共工。'),
         },
-        'facts': ['單人、離線', '鍵盤與滑鼠', '介面：繁體中文、簡體中文', '三種難度：入門、資深、大師'],
+        'facts': ['單人、離線', '鍵盤與滑鼠', '介面：繁體中文、簡體中文', '四種難度：逍遙、初履、人間、宗師'],
         'contact_h': '聯絡',
         'contact': '《墨畫蒼生》是長風「寫意」系列的第一部。想說什麼，寫信給我們：',
         'next': ('「寫意」系列第二部《力透紙背》', '敬請期待'),   # 首頁「聯絡」底下連到第二部的介紹頁（原本的第二部《人間塵世》暫停開發，使用者改定）
@@ -81,17 +84,19 @@ TEXT = {
         'trailer_h': '预告', 'trailer_note': '游戏实机画面。配乐是暂用的合成乐。',
         'story_h': '故事',
         'story': [
-            '鸟栖于山，是为岛。一张纸落在海上，纸上的字活了。你是其中的一个“人”，赤手空拳。纸上每一格都是一个字：木是树，山是山，水是水，虎就是虎。取下来的字是材料，写下去的字是你的家。',
+            '鸟栖于山，是为岛。一张纸落在海上，纸上的字活了。你是其中的一个“人”，赤手空拳。纸上每一格都是一个字：木是树，山是山，水是水，虎就是虎。取下来的字是材料，写下去的字是你的家。岛上有一座废村，碑上写着：村里没有人，人都在字典里。',
             '这张纸在歪。共工“怒而触不周之山”，天柱折，地维绝；纸角翘起来，跑出了修蛇、封豨、大风。青龙、白虎、朱雀、玄武，是压住四角的镇纸。撑过一夜，再撑过一夜；胆气够了，就造一艘船离开。',
         ],
         'scenes_h': '试玩里的场景',
         'scenes_intro': '试玩版是本岛上的头十三夜，下面这几段都在试玩里。',
+        'chai': (['从人依木', '从月从囧', '从子在宀下'], '《说文解字》的说法；囧是窗。'),
         'scenes': {
             'gather': ('取木', '林子里的每一格都是字，取下来就是材料。'),
             'build': ('砌屋', '一块砖一块砖砌起来，再摆床、灶、柜、灯。'),
             'snow': ('雪', '开春头几天常下雪；灯点在屋外也点在屋里。'),
             'night': ('第十三夜', '天一黑，灯照着的砖慢慢透出暗光；怕光的魄从暗处飘来，地上的灯烧得灭它们。'),
             'gaze': ('观星', '晴夜抬头，认星官，也认星座。'),
+            'zi': ('造字', '人靠着木就是“休”，月照进窗就是“明”。从村井捞起偏旁“子”，摆进屋里——子在宀下，第一个字民“字”走出字典。'),
         },
         'feat_h': '完整版',
         'feat_intro': '试玩之后，纸还很大。',
@@ -101,7 +106,7 @@ TEXT = {
             'sail': ('造船渡海', '胆气够了就造孤帆、方舟出海。纸上有大陆、群岛、大漠、火山、雪原，海上有蜃。'),
             'gong': ('上不周山', '先毙修蛇、封豨、大风，向北方玄武取经，再上不周山，去找撞歪天地的共工。'),
         },
-        'facts': ['单人、离线', '键盘与鼠标', '界面：繁体中文、简体中文', '三种难度：入门、资深、大师'],
+        'facts': ['单人、离线', '键盘与鼠标', '界面：繁体中文、简体中文', '四种难度：逍遥、初履、人间、宗师'],
         'contact_h': '联系',
         'contact': '《墨画苍生》是长风“写意”系列的第一部。想说什么，写信给我们：',
         'next': ('“写意”系列第二部《力透纸背》', '敬请期待'),
@@ -123,17 +128,19 @@ TEXT = {
         'lang_note': 'InkWild is in Traditional and Simplified Chinese only. There is no English version.',
         'story_h': 'Story',
         'story': [
-            'In Chinese, 島 (island) is written as a bird, 鳥, perched on a mountain, 山. A sheet of paper falls on the sea, and the characters written on it come alive. You are one of them: 人, a person, empty-handed. Every tile on the paper is a character. 木 is a tree, 山 is a mountain, 水 is water, 虎 is a tiger. The characters you take become materials; the characters you set down become your home.',
+            'In Chinese, 島 (island) is written as a bird, 鳥, perched on a mountain, 山. A sheet of paper falls on the sea, and the characters written on it come alive. You are one of them: 人, a person, empty-handed. Every tile on the paper is a character. 木 is a tree, 山 is a mountain, 水 is water, 虎 is a tiger. The characters you take become materials; the characters you set down become your home. On the island stands a ruined village. Its stone reads: "No one lives here. The people are all in the dictionary."',
             'The paper is tilting. Gonggong, in his fury, rammed Mount Buzhou, as the Huainanzi tells it, and the pillar of heaven broke. The corners curled up and let loose the giant serpent Xiushe, the great boar Fengxi and the Great Wind. The Azure Dragon, White Tiger, Vermilion Bird and Black Tortoise are the paperweights holding the four corners. Survive one night, then the next; when your courage is enough, build a boat and leave.',
         ],
         'scenes_h': 'Scenes from the demo',
         'scenes_intro': 'The demo covers the first 13 nights on the home island. Every clip below is in it.',
+        'chai': (['person by a tree: rest', 'moon and window: bright', 'child under a roof: character'], 'As the Shuowen Jiezi, a dictionary from about 100 CE, explains them; 囧 is a window.'),
         'scenes': {
             'gather': ('Gathering', 'Every tile in the woods is a character. Take it, and it becomes material.'),
             'build': ('Building', 'Lay the bricks one by one, then a bed, a stove, a chest and a lamp.'),
             'snow': ('Snow', 'Snow often falls in the first days of spring. Lamps burn outside and in.'),
             'night': ('The 13th night', 'As dark falls, the bricks your lamps reach begin to glow. Spirits that fear light drift in; lamps on the ground burn them away.'),
             'gaze': ('Stargazing', 'On a clear night, look up and learn the Chinese asterisms or the Western constellations.'),
+            'zi': ('Making characters', 'A person (人) leaning on a tree (木) writes 休, "rest"; moonlight through a window writes 明, "bright". Fish the part 子, "child", out of the village well and set it under a roof (宀): the first character-folk, 字, steps out of the dictionary.'),
         },
         'feat_h': 'The full game',
         'feat_intro': 'After the demo, the paper is still large.',
@@ -143,7 +150,7 @@ TEXT = {
             'sail': ('Cross the sea', 'With enough courage, build a sailboat or an ark. The paper holds continents, archipelagos, deserts, volcanoes and snowfields, and the 蜃 haunts the sea.'),
             'gong': ('Climb Mount Buzhou', 'Defeat Xiushe, Fengxi and the Great Wind, take scrolls from the Black Tortoise, then climb Mount Buzhou to find Gonggong.'),
         },
-        'facts': ['Single-player, offline', 'Keyboard and mouse', 'Text: Traditional and Simplified Chinese', 'Three difficulties'],
+        'facts': ['Single-player, offline', 'Keyboard and mouse', 'Text: Traditional and Simplified Chinese', 'Four difficulties'],
         'contact_h': 'Contact',
         'contact': 'InkWild is the first game in SteJoy\'s 寫意 (Xieyi) series. Write to us:',
         'next': ('Part 2 of the Xieyi series: Through the Page', 'coming soon'),
@@ -166,17 +173,19 @@ TEXT = {
         'lang_note': '『墨畫蒼生』の表示言語は繁体字中国語と簡体字中国語だけで、日本語版はありません。',   # 遊戲沒有日文版（跟英文頁一樣先說清楚）
         'story_h': '物語',
         'story': [
-            '鳥が山に棲む、それを島という。一枚の紙が海に落ち、紙の上の字が生きはじめた。あなたはその中の一字、素手の「人」。紙の一マス一マスが、どれも一つの字だ。木は木、山は山、水は水、虎はそのまま虎。取った字は材料になり、書き入れた字はあなたの家になる。',
+            '鳥が山に棲む、それを島という。一枚の紙が海に落ち、紙の上の字が生きはじめた。あなたはその中の一字、素手の「人」。紙の一マス一マスが、どれも一つの字だ。木は木、山は山、水は水、虎はそのまま虎。取った字は材料になり、書き入れた字はあなたの家になる。島には廃村があり、碑にこうある。「村には誰もいない。人はみな字典の中にいる。」',
             'この紙は傾いている。共工が「怒りて不周の山に触れ」、天柱は折れ、地維は絶えた。紙の角はめくれ上がり、修蛇、封豨、大風が放たれた。青龍・白虎・朱雀・玄武は、四隅を押さえる文鎮だ。一夜をしのぎ、また一夜をしのぐ。胆力が十分についたら、舟を一艘造ってこの島を離れる。',
         ],
         'scenes_h': '体験版の場面',
         'scenes_intro': '体験版は本島での最初の十三夜。下の場面は、どれも体験版で遊べます。',
+        'chai': (['人が木に依る', '月と窓（囧）', '子が屋根（宀）の下に'], '『説文解字』の説明による。囧は窓のこと。'),
         'scenes': {
             'gather': ('木を取る', '林の一マス一マスが字。取れば材料になる。'),
             'build': ('家を建てる', '煉瓦を一つずつ積み、寝床、竈、櫃、灯を置く。'),
             'snow': ('雪', '春先の数日はよく雪が降る。灯は屋外にも屋内にもともす。'),
             'night': ('第十三夜', '日が暮れると、灯に照らされた煉瓦がゆっくりとほの明るく光りだす。人が死ぬと魂は天へ昇り、魄（はく）は地に残るという。その魄が暗がりから漂ってくる。光を嫌い、煉瓦も抜けて近づいては心をむしばむが、地に置いた灯がそれを焼き消す。'),
             'gaze': ('星を見る', '晴れた夜に空を見上げ、中国の星官も西洋の星座も覚えられる。'),
+            'zi': ('字をつくる', '人が木に寄りかかれば「休」、月が窓から差し込めば「明」。村の井戸から部品「子」をすくい上げ、屋根（宀）の下に置くと、最初の字民「字」が字典から歩み出る。'),
         },
         'feat_h': '製品版',
         'feat_intro': '体験版のあとも、紙はまだ広い。',
@@ -186,7 +195,7 @@ TEXT = {
             'sail': ('舟を造って海を渡る', '胆力が十分についたら孤帆や方舟を造って海へ。紙の上には大陸、群島、砂漠、火山、雪原があり、海には蜃が潜む。'),
             'gong': ('不周山へ', '修蛇・封豨・大風を倒し、北の玄武から経を授かり、不周山に登って、天地を傾けた共工を探しに行く。'),
         },
-        'facts': ['シングルプレイ・オフライン', 'キーボードとマウス', '表示言語：繁体字中国語・簡体字中国語', '難易度は三段階（入門・資深・大師）'],
+        'facts': ['シングルプレイ・オフライン', 'キーボードとマウス', '表示言語：繁体字中国語・簡体字中国語', '難易度は四段階（逍遙・初履・人間・宗師）'],
         'contact_h': 'お問い合わせ',
         'contact': '『墨畫蒼生』は長風の「写意」シリーズ第一部です。ご意見・ご感想はメールでどうぞ：',
         'next': ('「写意」シリーズ第二部『力透紙背』', '乞うご期待'),   # 「第○部」照《力透紙背》日文版標題畫面的寫法
@@ -211,10 +220,12 @@ def page(code):
     nav = ''.join(f'<a href="#{h}">{esc(n)}</a>' for h, n in zip(['trailer', 'story', 'demo', 'features', 'contact'], T['nav']))
     cta = f'<a class="btn primary" href="{STEAM_URL}">{esc(T["wish"])}</a>' if STEAM_URL else f'<span class="badge">{esc(T["soon"])}</span>'
     tracks = ''.join(f'<track kind="subtitles" srclang="{c}" label="{LANGS[c]["name"]}" src="{a}media/trailer.{c}.vtt"{" default" if c == code else ""}>' for c in LANGS)
+    gl, cn = T['chai']
+    chai = '<div class="chai">' + ''.join(f'<p class="eq"><span class="g" lang="zh-Hant">{p}<i>＋</i>{q}<i>＝</i><b>{r}</b></span><small>{esc(gl[k])}</small></p>' for k, (p, q, r) in enumerate(CHAI)) + f'</div><p class="chai-note">{esc(cn)}</p>'
     scenes = ''.join(f'''
-      <figure class="clip">
+      <figure class="clip{' wide' if s == 'zi' else ''}">
         <video muted loop playsinline preload="none" poster="{a}media/scenes/{s}.jpg" data-src="{a}media/scenes/{s}.mp4" data-webm="{a}media/scenes/{s}.webm" aria-label="{esc(T['scenes'][s][0])}"></video>
-        <figcaption><b>{esc(T['scenes'][s][0])}</b>{esc(T['scenes'][s][1])}</figcaption>
+        <figcaption><b>{esc(T['scenes'][s][0])}</b>{esc(T['scenes'][s][1])}{chai if s == 'zi' else ''}</figcaption>
       </figure>''' for s in SCENES)
     feats = ''.join(f'''
       <article class="feat">

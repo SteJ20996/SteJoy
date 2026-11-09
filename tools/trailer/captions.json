@@ -5,6 +5,7 @@
   "snow":    { "zh-Hant": "照著節氣過日子：雪、", "zh-Hans": "照着节气过日子：雪、", "en": "Live by the solar terms: snow,", "ja": "節気とともに暮らす。雪、" },
   "thunder": { "zh-Hant": "雷、風、雨。", "zh-Hans": "雷、风、雨。", "en": "thunder, wind and rain.", "ja": "雷、風、雨。" },
   "crops":   { "zh-Hant": "種五穀，字一筆一筆長出來。", "zh-Hans": "种五谷，字一笔一笔长出来。", "en": "Sow the five grains and watch them grow, stroke by stroke.", "ja": "五穀を蒔けば、字が一画ずつ育っていく。" },
+  "zi":      { "zh-Hant": "把偏旁擺對，字就走出字典。", "zh-Hans": "把偏旁摆对，字就走出字典。", "en": "Put the parts in place, and a character steps out of the dictionary.", "ja": "字の部品を正しく置けば、字が字典から歩み出る。" },
   "gaze":    { "zh-Hant": "夜裡抬頭，認星官。", "zh-Hans": "夜里抬头，认星官。", "en": "At night, look up and learn the stars.", "ja": "夜には空を見上げ、星官を覚える。" },
   "sail":    { "zh-Hant": "膽氣夠了，就造船渡海。", "zh-Hans": "胆气够了，就造船渡海。", "en": "When your courage is enough, build a boat and cross the sea.", "ja": "胆力が十分についたら、舟を造って海を渡る。" },
   "gong":    { "zh-Hant": "去找撞歪天地的共工。", "zh-Hans": "去找撞歪天地的共工。", "en": "Find Gonggong, who tilted the world.", "ja": "天地を傾けた共工を探しに行く。" },

@@ -186,6 +186,14 @@ t0 = at('crops', 0.2); step = (starts['crops'][1] - 0.4) / len(mel)
 for i, k in enumerate(mel):
     add(pluck(deg(k, -1), 2.0, 1.3), t0 + i * step, 0.3 * np.cos(i), 0.75)
 
+# 造字（2026-11-09 加）：月夜兩下低的撥弦；子擺下去（畫面第 45 幀）一串往上的鈴，字走出字典；接著細碎的撥弦落下，像天雨粟
+s, d, frm = starts['zi']; birth = s + 45 / FPS - frm
+add(pluck(deg(0, -2), 4.0, 0.6), s + 0.15, -0.2, 0.75); add(pluck(deg(3, -2), 4.0, 0.6), s + 0.75, 0.2, 0.7)
+for i, k in enumerate([5, 7, 8, 10, 12]):
+    add(bell(deg(k, -1)), birth + i * 0.12, 0.5 * np.sin(i * 1.3), 0.5)
+for i, k in enumerate([12, 10, 9, 7, 8, 5, 7, 4]):
+    add(pluck(deg(k, -1), 1.5, 1.4), birth + 0.7 + i * 0.3, 0.4 * np.sin(i * 2.1), 0.42)
+
 # 觀星：長鈴、慢
 for i, k in enumerate([10, 12, 9, 11, 13, 10]):
     add(bell(deg(k, -1)), at('gaze', 0.6 + i * 1.1), 0.6 * np.sin(i * 1.7), 0.55)

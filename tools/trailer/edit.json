@@ -8,6 +8,7 @@
     { "shot": "snow",    "from": 0.4, "dur": 4.6 },
     { "shot": "thunder", "from": 0.2, "dur": 5.4 },
     { "shot": "crops",   "from": 0.3, "dur": 5.5 },
+    { "shot": "zi",      "from": 0.6, "dur": 5.2 },
     { "shot": "gaze",    "from": 0.4, "dur": 8.6 },
     { "shot": "sail",    "from": 0.3, "dur": 4.8 },
     { "shot": "gong",    "from": 0.3, "dur": 6.2 },
