@@ -208,3 +208,15 @@ body.lang-ja .lt-loop { letter-spacing: .3em; }
 body.lang-ja .lt-read { font-family: inherit; }
 body.lang-ja .lt-big.miss { letter-spacing: .06em; font-size: 34px; }
 body.lang-ja .lt-feat h3, body.lang-ja .lt-sub, body.lang-ja .lt-strokes li > div b { letter-spacing: .04em; }
+/* 越南文頁（2026-11-10，只有這一頁有）：拉丁字母，字距照英文頁；字用霞鶩文楷（有越南文字集），讀音那一行也用它 */
+body.litou.lang-vi h2 { letter-spacing: .02em; }
+body.lang-vi .lt-kicker { letter-spacing: .1em; }
+body.lang-vi .lt-entitle { font-family: var(--vi); font-style: normal; letter-spacing: .14em; }
+body.lang-vi .lt-tagline, body.lang-vi .lt-motto { letter-spacing: .03em; }
+body.lang-vi .lt-seal { letter-spacing: .06em; font-size: 19px; }
+body.lang-vi .lt-quote p { letter-spacing: 0; }
+body.lang-vi .lt-story-text p { text-indent: 0; }
+body.lang-vi .lt-step h3, body.lang-vi .lt-step-k { letter-spacing: .02em; }
+body.lang-vi .lt-loop { letter-spacing: .06em; }
+body.lang-vi .lt-read { font-family: inherit; }
+body.lang-vi .lt-feat h3, body.lang-vi .lt-sub { letter-spacing: 0; }

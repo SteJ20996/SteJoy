@@ -1,7 +1,8 @@
 /* stejoy.com：紙與墨。墨與朱照遊戲的起始頁；紙比遊戲白一點、少一點黃（使用者定） */
 :root { --paper: #f4eee2; --paper-2: #ebe4d4; --ink: #1c1a17; --ink-2: #4a4238; --dim: #7d725f; --red: #b4392a; --line: rgba(28, 26, 23, .16);
   --zh: "LXGW WenKai TC", "Noto Serif TC", "Songti TC", serif; --sc: "Noto Serif SC", "Songti SC", serif; --en: Georgia, "Times New Roman", "LXGW WenKai TC", serif;
-  --ja: "Klee One", "LXGW WenKai TC", "Hiragino Mincho ProN", "Yu Mincho", serif; }   /* 日文頁：Klee One（霞鶩文楷的原型，字形照日本的寫法） */
+  --ja: "Klee One", "LXGW WenKai TC", "Hiragino Mincho ProN", "Yu Mincho", serif;   /* 日文頁：Klee One（霞鶩文楷的原型，字形照日本的寫法） */
+  --vi: "LXGW WenKai TC", "Noto Serif", Georgia, serif; }   /* 越南文頁（只有《力透紙背》，2026-11-10）：霞鶩文楷有越南文的字集（聲調符號），跟遊戲的越南文版同一套字 */
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; color: var(--ink); background: var(--paper); font: 18px/1.85 var(--zh); -webkit-font-smoothing: antialiased; }
@@ -9,6 +10,7 @@ body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-even
 body.lang-zh-Hans { font-family: var(--sc); }
 body.lang-en { font-family: var(--en); font-size: 18px; line-height: 1.7; }
 body.lang-ja { font-family: var(--ja); }
+body.lang-vi { font-family: var(--vi); font-size: 18px; line-height: 1.7; }
 a { color: var(--red); text-underline-offset: 3px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
@@ -93,6 +95,7 @@ video::cue { font-family: "LXGW WenKai TC", serif; color: #f6efdf; background: r
 body.lang-zh-Hans video::cue { font-family: "Noto Serif SC", serif; }
 body.lang-en video::cue { font-family: Georgia, serif; }
 body.lang-ja video::cue { font-family: "Klee One", "LXGW WenKai TC", serif; }
+body.lang-vi video::cue { font-family: "LXGW WenKai TC", Georgia, serif; }
 
 /* 故事 */
 .story p { max-width: 760px; margin: 0 0 1em; text-indent: 2em; }

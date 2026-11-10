@@ -339,10 +339,10 @@ for code, L in LANGS.items():
 
 home.build(LANGS, TEXT, SITE, AUTHOR, AUTHOR_URL, MAIL, LOGO)   # 首頁：選一部遊戲（index.html、zh-hans/index.html、en/index.html）
 
-litou.build(LANGS, TEXT, SITE, AUTHOR, AUTHOR_URL, MAIL)   # 《力透紙背》：litouzhibei/、zh-hans/litouzhibei/、en/litouzhibei/
+litou.build(LANGS, TEXT, SITE, AUTHOR, AUTHOR_URL, MAIL)   # 《力透紙背》：litouzhibei/、zh-hans/litouzhibei/、en/litouzhibei/、ja/litouzhibei/、vi/litouzhibei/（越南文只有這一頁）
 
 # sitemap：首頁、《墨畫蒼生》、《力透紙背》各四語，各組互相標成同一頁的不同語言
-groups = ['', INK, litou.SLUG]
+groups = [('', LANGS), (INK, LANGS), (litou.SLUG, litou.langs(LANGS))]   # 《力透紙背》多一個越南文（2026-11-10）
 (ROOT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + ''.join(
-    f'  <url><loc>{SITE}{L["dir"]}{g}</loc>' + ''.join(f'<xhtml:link rel="alternate" hreflang="{c}" href="{SITE}{LANGS[c]["dir"]}{g}"/>' for c in LANGS) + '</url>\n' for g in groups for L in LANGS.values()) + '</urlset>\n', encoding='utf-8')
+    f'  <url><loc>{SITE}{L["dir"]}{g}</loc>' + ''.join(f'<xhtml:link rel="alternate" hreflang="{c}" href="{SITE}{LL[c]["dir"]}{g}"/>' for c in LL) + '</url>\n' for g, LL in groups for L in LL.values()) + '</urlset>\n', encoding='utf-8')
 (ROOT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {SITE}sitemap.xml\n', encoding='utf-8')

@@ -112,14 +112,16 @@
     }
   } catch (e) {}
 
-  // 語言提示：選過語言的照選的；沒選過的照瀏覽器語言（簡中、繁中、日文，其餘當英文）。這一頁不是那種語言，就在下面提一句
+  // 語言提示：選過語言的照選的；沒選過的照瀏覽器語言（簡中、繁中、日文、越南文，其餘當英文）。這一頁不是那種語言，就在下面提一句
+  // （越南文只有《力透紙背》那一頁有；別的頁沒有越南文，就改提英文）
   // （不自動跳轉；關掉了就不再提）
   try {
     const box = document.getElementById('lang-banner'), offers = JSON.parse(document.body.dataset.banner || '{}');
     const prefs = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || '']).map((x) => x.toLowerCase());
     const top = prefs[0] || '';
     const chosen = get(localStorage, LANG);
-    const want = chosen || (/^zh-(cn|sg|hans)/.test(top) || top === 'zh' ? 'zh-Hans' : /^zh/.test(top) ? 'zh-Hant' : /^ja/.test(top) ? 'ja' : 'en');
+    let want = chosen || (/^zh-(cn|sg|hans)/.test(top) || top === 'zh' ? 'zh-Hans' : /^zh/.test(top) ? 'zh-Hant' : /^ja/.test(top) ? 'ja' : /^vi/.test(top) ? 'vi' : 'en');
+    if (want === 'vi' && !offers.vi && here !== 'vi') want = 'en';
     const off = get(localStorage, 'stejoy.lang.off');
     if (box && want !== here && offers[want] && !off) {
       const [label, href] = offers[want];
