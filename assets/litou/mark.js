@@ -22,6 +22,9 @@
     return 1;
   }
   const M = { T, mounted: false, t: 0, raf: 0 };
+  // 四個著地的時刻（遊戲 v0.11.8，給標題對拍）：畫面上「力」是三筆——上面那一小段（第一筆寫到右肩，PLAN1 的 0.30）、
+  // 右邊的大弧連底下一鉤（第一筆寫完）、撇（第二筆寫完）——再加「人」落下著地（.ren.land 那 .34 息的動畫在六成處著地）
+  M.hits = () => [T.delay + PLAN1[1][0] * T.s1, T.end1, T.end2, T.land + 0.34 * 0.6];
   let cv, ctx, img, idx, al, st, tt, ren, box, sum1 = 0, sum2 = 0;
   const loadImg = (src) => new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = src; });
   function pixels(i) { const c = document.createElement('canvas'); c.width = D.w; c.height = D.h; const x = c.getContext('2d'); x.drawImage(i, 0, 0); return x.getImageData(0, 0, D.w, D.h).data; }

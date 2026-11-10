@@ -472,7 +472,6 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
 <script defer src="{a}litou/data.js"></script>
 <script>window.MARK_DATA = {mark_data};</script>
 <script defer src="{a}litou/mark.js"></script>
-<script defer src="{a}litou/title-ink.js"></script>
 <script defer src="{a}js/litou.js"></script>
 </head>
 <body class="lang-{code} litou" data-banner='{esc(banner)}'>

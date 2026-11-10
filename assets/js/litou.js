@@ -8,9 +8,15 @@
   const logo = document.querySelector('.lt-logo');
   if (logo && D) {
     const spans = [...logo.querySelectorAll(':scope > span')]; spans.forEach(s => s.dataset.g = s.textContent);
-    // 照筆順一筆一筆寫出來（assets/litou/title-ink.js，遊戲的 src/title-ink.js）：一個字一拍，四拍寫完；橫掃那一筆、一震、蓋印照 --fin 排在最後
-    const BEAT = { t0: 0.15, beat: 0.56, dur: 0.5 }, starts = spans.map((s, i) => BEAT.t0 + i * BEAT.beat);
-    if (window.TITLEINK) { TITLEINK.mount(logo, { starts, dur: BEAT.dur }); logo.parentElement.style.setProperty('--fin', (starts[starts.length - 1] + BEAT.dur).toFixed(2) + 's'); }
+    // 四個字整字砸下來，照標誌的四個時刻著地（使用者：節奏同標誌裡「力」的三筆與最後的「人」；遊戲 v0.11.8 同一個做法）：
+    // 上面那一小段、右邊大弧連底下一鉤、撇各自寫完，「人」著地；「人」改成撇寫完後隔一拍（前三拍的平均）才落。砸下的動畫在第 55% 著地
+    if (window.MARK && MARK.hits) {
+      const T = MARK.T, h0 = MARK.hits()[0]; T.land = T.end2 + (T.end2 - h0) / 2 - 0.34 * 0.6;
+      const hits = MARK.hits();
+      spans.forEach((s, i) => s.style.setProperty('--d', (hits[Math.min(i, 3)] - 0.34 * 0.55).toFixed(3) + 's'));
+      logo.style.setProperty('--fin', (hits[3] + 0.12).toFixed(3) + 's');
+      logo.parentElement.style.setProperty('--fin', (hits[3] + 0.12).toFixed(3) + 's');
+    }
     const sw = document.createElementNS(NS, 'svg');
     sw.setAttribute('class', 'sweep'); sw.setAttribute('viewBox', '0 0 1000 200'); sw.setAttribute('preserveAspectRatio', 'none'); sw.setAttribute('aria-hidden', 'true');
     sw.innerHTML = '<defs><linearGradient id="lt-sg" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#fff"/><stop offset=".8" stop-color="#fff" stop-opacity="0"/></linearGradient><mask id="lt-sm" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="200"><rect width="1000" height="200" fill="url(#lt-sg)"/></mask></defs>' +
