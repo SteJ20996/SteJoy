@@ -35,8 +35,12 @@ const GLYPHS = Object.assign({}, PROLOGUE.GLYPHS, { '力': [['J', [0.18, 0.3], [
 const SEQ = Object.assign({}, R.SEQ, { '力': 'JP' }), MEAN = Object.assign({}, R.MEAN, { '力': ['lì', 'strength, force'] });
 const MEAN_JA = Object.assign({}, R.MEAN_JA, { '力': ['リョク・リキ・ちから', '力'] });   // 日文頁：音讀・訓讀與字義（遊戲的 R.MEAN_JA）
 const chars = {};
+// 只收十筆寫得出的字：遊戲 v0.11 起深造、爐火純青的三維、四維多三筆（豎彎鉤、撇折、豎折）與十三個字，
+// 遊戲裡也要教過才列出來；介紹頁只說「還有三筆在等你」、不攤開（使用者定，留懸念），試寫也就只有 1–0 十個鍵
+const TEN = new Set(R.STROKE_ORDER);
 for (const ch of Object.keys(SEQ)) {
   const G = GLYPHS[ch]; if (!G) continue;
+  if ([...SEQ[ch]].some(k => !TEN.has(k))) continue;
   chars[ch] = { seq: SEQ[ch], py: MEAN[ch][0], en: MEAN[ch][1], ja: MEAN_JA[ch], d: G.map((sk, i) => pack(BRUSH.svg(sk[0], sk.slice(1).map(([a, b]) => [a * 100, b * 100]), sk[0] === 'D' ? 10 : 9.5, 7 + i * 13).d, 10)) };   // 字形：viewBox 0 0 1000 1000
   if (G.map(s => s[0]).join('') !== SEQ[ch]) throw new Error('glyph strokes differ from stroke order: ' + ch);
 }
