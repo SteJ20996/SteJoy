@@ -30,7 +30,7 @@ ff('-i', str(TRAILER / 'trailer.mp4'), '-c:v', 'libvpx-vp9', '-crf', '42', '-b:v
    '-c:a', 'libopus', '-b:a', '112k', str(M / 'trailer.webm'))
 for lang in ('zh-Hant', 'zh-Hans', 'en', 'ja'):
     shutil.copy(TRAILER / f'trailer.{lang}.vtt', M / f'trailer.{lang}.vtt')
-ff('-ss', '3.2', '-i', str(TRAILER / 'trailer.mp4'), '-frames:v', '1', '-vf', 'scale=1280:720:flags=lanczos', '-q:v', '3', str(M / 'trailer.jpg'))   # 海報：片頭寫好的字標
+ff('-sseof', '-2.5', '-i', str(TRAILER / 'trailer.mp4'), '-frames:v', '1', '-vf', 'scale=1280:720:flags=lanczos', '-q:v', '3', str(M / 'trailer.jpg'))   # 海報：片尾那一格（完整的字標）。2026-11-10 起片頭四個字踩撥弦砸下來、橫掃與印在 3.2 息以後，片頭來不及停在完整的那一格
 
 for f in sorted(M.rglob('*')):
     if f.is_file(): print(f'{f.relative_to(ROOT)}  {f.stat().st_size / 1e6:.2f} MB')
