@@ -14,28 +14,36 @@ body::before { content: ""; position: absolute; inset: 0; background: radial-gra
 .wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 90px; padding: 0 150px 0 190px; }
 .left { position: relative; z-index: 2; }
 .kicker { font: 34px var(--font); color: var(--red); letter-spacing: .3em; margin: 0 0 18px 8px; animation: rise .6s .9s ease-out both; }
-h1 { position: relative; isolation: isolate; width: fit-content; margin: 0; display: flex; align-items: flex-end; gap: .1em; font: 700 176px/1 var(--font); letter-spacing: .06em; color: var(--ink); padding: 20px 0 24px; animation: thud .28s .42s ease-out both; }
-h1 > span { position: relative; display: inline-block; filter: url(#f-ink); animation: slam .34s var(--d) cubic-bezier(.2, .9, .3, 1.2) both; }
-h1 > span::after { content: attr(data-g); position: absolute; inset: 0; z-index: -1; filter: url(#f-bleed); opacity: .2; animation: soak 1.5s calc(var(--d) + .2s) ease-out both; }
-h1 > span::before { content: attr(data-g); position: absolute; inset: 0; z-index: -2; transform: scaleX(-1) translate(.06em, .07em); filter: blur(2.6px); opacity: .09; animation: soakb 2s calc(var(--d) + .5s) ease-out both; }
-h1 > span:nth-of-type(1) { --d: .18s; color: var(--red); font-size: 1.22em; rotate: -5deg; translate: 0 .04em; }
-h1 > span:nth-of-type(2) { --d: .52s; rotate: 1.5deg; }
-h1 > span:nth-of-type(3) { --d: .62s; font-size: .95em; rotate: -1deg; translate: 0 .03em; }
-h1 > span:nth-of-type(4) { --d: .72s; font-size: 1.04em; rotate: 2deg; }
-h1 .sweep { position: absolute; left: -7%; width: 116%; top: 30%; height: 66%; z-index: -3; overflow: visible; animation: sweep .32s .04s cubic-bezier(.3, .7, .2, 1) both; }
+h1 { position: relative; isolation: isolate; width: fit-content; margin: 0; display: flex; align-items: flex-end; gap: .1em; font: 700 176px/1 var(--font); letter-spacing: .06em; color: var(--ink); padding: 20px 0 24px; animation: thud .28s calc(var(--fin, 2.13s) + .3s) ease-out both; }
+/* 照筆順一筆一筆寫（遊戲 v0.11.7 的 src/title-ink.js）：一個字一拍，力、紙踩在配樂第一、二聲撥弦上，透、背在半拍；橫掃那一筆落在第三聲，人照舊在第四聲 */
+h1 > span { --c: var(--ink); color: transparent; position: relative; display: inline-block; filter: url(#f-ink); animation: beat .24s var(--e, .7s) ease-out both; }
+svg.ti { position: absolute; left: 0; top: 0; width: 1em; height: 1em; overflow: visible; }
+svg.ti text { font: inherit; font-size: 100px; letter-spacing: 0; fill: var(--c); }
+svg.ti .ti-s { fill: none; stroke: #fff; stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1 2; animation-name: ti-write; animation-fill-mode: both; animation-timing-function: cubic-bezier(.35, .05, .4, 1); }
+svg.ti .ti-fill { fill: #fff; animation-name: ti-fill; animation-fill-mode: both; animation-timing-function: linear; }
+h1 > span::after { content: attr(data-g); color: var(--c); position: absolute; inset: 0; z-index: -1; filter: url(#f-bleed); opacity: .2; animation: soak 1.5s var(--e, .7s) ease-out both; }
+h1 > span::before { content: attr(data-g); color: var(--c); position: absolute; inset: 0; z-index: -2; transform: scaleX(-1) translate(.06em, .07em); filter: blur(2.6px); opacity: .09; animation: soakb 2s calc(var(--e, .7s) + .3s) ease-out both; }
+h1 > span:nth-of-type(1) { --c: var(--red); font-size: 1.22em; rotate: -5deg; translate: 0 .04em; }
+h1 > span:nth-of-type(2) { rotate: 1.5deg; }
+h1 > span:nth-of-type(3) { font-size: .95em; rotate: -1deg; translate: 0 .03em; }
+h1 > span:nth-of-type(4) { font-size: 1.04em; rotate: 2deg; }
+h1 .sweep { position: absolute; left: -7%; width: 116%; top: 30%; height: 66%; z-index: -3; overflow: visible; animation: sweep .32s calc(var(--fin, 2.13s) + .05s) cubic-bezier(.3, .7, .2, 1) both; }
 h1 .splat { position: absolute; left: -38%; top: -38%; width: 176%; height: 176%; z-index: -1; overflow: visible; rotate: 4deg; }
-h1 .splat > * { transform-box: fill-box; transform-origin: center; animation: splat .2s calc(.4s + var(--i, 0) * .02s) cubic-bezier(.2, .8, .3, 1.3) both; }
+h1 .splat > * { transform-box: fill-box; transform-origin: center; animation: splat .2s calc(var(--e, .7s) + var(--i, 0) * .02s) cubic-bezier(.2, .8, .3, 1.3) both; }
 /* 「寫意」朱印（2026-11-10，照《墨畫蒼生》字標裡的印）：蓋在標題右下，標題落定、濺完墨之後才蓋下去；片尾一開始就在 */
 .logo-row { position: relative; width: fit-content; }
-.xieyi { position: absolute; z-index: 1; left: calc(100% + 14px); bottom: 28px; height: 78px; width: auto; aspect-ratio: 38 / 56; overflow: visible; animation: stamp .24s 1.05s cubic-bezier(.2, .9, .3, 1.25) both; }
+.xieyi { position: absolute; z-index: 1; left: calc(100% + 14px); bottom: 28px; height: 78px; width: auto; aspect-ratio: 38 / 56; overflow: visible; animation: stamp .24s calc(var(--fin, 2.13s) + .5s) cubic-bezier(.2, .9, .3, 1.25) both; }
 @keyframes stamp { from { opacity: 0; transform: scale(1.6) rotate(-8deg); } 60% { opacity: 1; } to { opacity: 1; transform: none; } }
-.en { font: italic 46px Georgia, serif; letter-spacing: .22em; color: var(--ink-2); margin: 10px 0 0 8px; animation: rise .7s 1.3s ease-out both; }
-.motto { font: 38px var(--font); letter-spacing: .32em; color: var(--ink-2); margin: 26px 0 0 8px; opacity: .8; animation: rise .7s 1.6s ease-out both; }
+.en { font: italic 46px Georgia, serif; letter-spacing: .22em; color: var(--ink-2); margin: 10px 0 0 8px; animation: rise .7s calc(var(--fin, 2.13s) + .3s) ease-out both; }
+.motto { font: 38px var(--font); letter-spacing: .32em; color: var(--ink-2); margin: 26px 0 0 8px; opacity: .8; animation: rise .7s calc(var(--fin, 2.13s) + .55s) ease-out both; }
 .mark { position: relative; width: 660px; aspect-ratio: 760 / 514; flex: none; }
 .mark > * { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .mark .ren { transform-origin: 31.6% 67%; opacity: 0; }
 .mark .ren.land { animation: ren .34s cubic-bezier(.2, .9, .3, 1.25) both; }
 @keyframes slam { 0% { opacity: 0; transform: translateY(-22%) scale(1.9); } 55% { opacity: 1; transform: translateY(3%) scale(.92); } 100% { opacity: 1; transform: none; } }
+@keyframes beat { 0%, 100% { transform: none; } 40% { transform: scale(1.07); } }
+@keyframes ti-write { from { stroke-dashoffset: 1.02; opacity: 0; } 1% { opacity: 1; } to { stroke-dashoffset: 0; opacity: 1; } }
+@keyframes ti-fill { from { opacity: 0; } to { opacity: 1; } }
 @keyframes soak { from { opacity: 0; transform: scale(.88); } to { opacity: .2; transform: none; } }
 @keyframes soakb { from { opacity: 0; } to { opacity: .09; } }
 @keyframes sweep { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(-20% -2% -20% 0); } }
@@ -87,8 +95,12 @@ h1 .splat > * { transform-box: fill-box; transform-origin: center; animation: sp
 (function () {
   const q = new URLSearchParams(location.search), GAME = q.get('game') || 'http://127.0.0.1:8123/', END = q.get('end') === '1';
   const load = (src) => new Promise((ok, no) => { const s = document.createElement('script'); s.src = GAME + src; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
-  load('src/util.js').then(() => load('src/brush.js')).then(() => load('src/mark-data.js')).then(() => load('src/mark.js')).then(async () => {
+  load('src/util.js').then(() => load('src/brush.js')).then(() => load('src/mark-data.js')).then(() => load('src/mark.js')).then(() => load('src/title-ink.js')).then(async () => {
     const h1 = document.querySelector('h1'), spans = [...h1.children]; spans.forEach(s => s.dataset.g = s.textContent);
+    // 照筆順寫：一拍 = 配樂的 0.75 拍（60/96 × 0.75 息），力在第一聲撥弦（0.3 息）、紙在第二聲；四個字寫完正好第三聲（2.175 息）掃那一橫
+    const BEAT = 0.75 * 60 / 96, starts = [0, 1, 2, 3].map(i => 0.3 + i * BEAT), DUR = 0.42;
+    TITLEINK.mount(h1, { starts, dur: DUR });
+    document.querySelector('.left').style.setProperty('--fin', (starts[3] + DUR).toFixed(3) + 's');
     const NS = 'http://www.w3.org/2000/svg', f = (v) => v.toFixed(1);
     const sh = BRUSH.shape('H', [[40, 132], [968, 92]], 96, 1, 2024);
     const d = sh.polys.map(P => 'M' + P.map(p => f(p[0]) + ' ' + f(p[1])).join(' L') + 'Z').join(' ');

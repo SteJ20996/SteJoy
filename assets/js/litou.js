@@ -8,6 +8,9 @@
   const logo = document.querySelector('.lt-logo');
   if (logo && D) {
     const spans = [...logo.querySelectorAll(':scope > span')]; spans.forEach(s => s.dataset.g = s.textContent);
+    // 照筆順一筆一筆寫出來（assets/litou/title-ink.js，遊戲的 src/title-ink.js）：一個字一拍，四拍寫完；橫掃那一筆、一震、蓋印照 --fin 排在最後
+    const BEAT = { t0: 0.15, beat: 0.56, dur: 0.5 }, starts = spans.map((s, i) => BEAT.t0 + i * BEAT.beat);
+    if (window.TITLEINK) { TITLEINK.mount(logo, { starts, dur: BEAT.dur }); logo.parentElement.style.setProperty('--fin', (starts[starts.length - 1] + BEAT.dur).toFixed(2) + 's'); }
     const sw = document.createElementNS(NS, 'svg');
     sw.setAttribute('class', 'sweep'); sw.setAttribute('viewBox', '0 0 1000 200'); sw.setAttribute('preserveAspectRatio', 'none'); sw.setAttribute('aria-hidden', 'true');
     sw.innerHTML = '<defs><linearGradient id="lt-sg" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#fff"/><stop offset=".8" stop-color="#fff" stop-opacity="0"/></linearGradient><mask id="lt-sm" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="200"><rect width="1000" height="200" fill="url(#lt-sg)"/></mask></defs>' +
