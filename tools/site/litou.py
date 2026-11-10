@@ -74,7 +74,7 @@ TEXT = {
                 [
                         "第四章",
                         "四維",
-                        "八胞合一，你走進超正方體的裡面。多一個看不見的方向 w，別的 w 上的敵只剩影子。"
+                        "八胞合一，你走進超正方體的裡面。多一個看不見的方向 w：你看得清的，只是你所在那一層的三維切面；別的 w 上的東西，只剩影子。"
                 ]
         ],
         "loop": "九九歸一",
@@ -179,7 +179,7 @@ TEXT = {
                 [
                         "第四章",
                         "四维",
-                        "八胞合一，你走进超正方体的里面。多一个看不见的方向 w，别的 w 上的敌只剩影子。"
+                        "八胞合一，你走进超正方体的里面。多一个看不见的方向 w：你看得清的，只是你所在那一层的三维切面；别的 w 上的东西，只剩影子。"
                 ]
         ],
         "loop": "九九归一",
@@ -284,7 +284,7 @@ TEXT = {
                 [
                         "Chapter 4",
                         "4D",
-                        "The eight cells become one, and you step inside the tesseract. There is one more direction, w, that you cannot see; enemies on other w are only shadows."
+                        "The eight cells become one, and you step inside the tesseract. There is one more direction, w, that you cannot see: what you see clearly is only the 3D slice at your own w, and anything at another w is only a shadow."
                 ]
         ],
         "loop": "Nine nines return to one",
@@ -363,7 +363,7 @@ TEXT = {
                 ["第一章", "一次元 · 線", "敵は左右の両端から来る。目の前の字を筆順どおりに書けば、字は正される。線はやがて端と端がつながり、一枚の紙を囲む。"],
                 ["第二章", "二次元 · 面", "どの画も敵に当たり、字を書き上げれば技が出る。紙の裏まで書き抜けると字はみな裏返り、紙の帯はねじれてメビウスの帯になる。左右の端は、もうない。"],
                 ["第三章", "三次元 · 立体", "紙が折り目に沿って立方体に折れる。前後左右上下、遠くの敵の字を書けば、字がそこへ飛んでいく。この立方体は超立方体の胞の一つにすぎない。先天八卦に従い、胞ごとに一つの象。"],
-                ["第四章", "四次元", "八つの胞が一つになり、あなたは超立方体の内側へ入る。目に見えない方向 w がもう一つ増え、別の w にいる敵は影しか見えない。"]
+                ["第四章", "四次元", "八つの胞が一つになり、あなたは超立方体の内側へ入る。目に見えない方向 w がもう一つ増える。はっきり見えるのは、いま居る層の三次元の切り口だけ。別の w にあるものは、影しか残らない。"]
         ],
         "loop": "九九帰一",
         "write_h": "試し書き",
