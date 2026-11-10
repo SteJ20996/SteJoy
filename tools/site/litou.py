@@ -88,11 +88,11 @@ TEXT = {
         "feat_intro": "寫得快，也要寫得對。",
         "strokes_h": "十筆，十招",
         "strokes_intro": "每一筆有自己的脾氣：橫伸得最遠，點砸得最重，捺推得開敵，鉤拉得回來。",
-        "strokes_more": "漢字的筆畫不只這十種：七、元的豎彎鉤，我的斜鉤，心的臥鉤，山的豎折，乃的橫折折折鉤……分法不同，數起來二三十種都有。這裡只用最常見的十種，一鍵一筆；遊戲裡的八十九個字，都是只用這十種就寫得出、繁簡一樣、兩岸筆順相同的字。",
+        "strokes_more": "漢字的筆畫不只這十種：我的斜鉤，心的臥鉤，九的橫折彎鉤，乃的橫折折折鉤……分法不同，數起來二三十種都有。這裡用最常見的十種，一鍵一筆；遊戲裡的八十九個字，都是只用這十種就寫得出、繁簡一樣、兩岸筆順相同的字。到了深造、爐火純青的三維與四維，還有三筆在等你。",
         "features": [
                 [
                         "繁簡一體，兩岸同筆順",
-                        "寫來禦敵的字，繁體、簡體同一個字形，台灣與大陸的筆順也一樣；筆順照教育部《常用國字標準字體筆順》。"
+                        "寫來禦敵的字，繁體、簡體同一個字形，台灣與大陸的筆順也一樣；筆順照教育部《常用國字標準字體筆順》。只有一個字兩岸筆順不同，照台灣的寫，遊戲裡註明了。"
                 ],
                 [
                         "以字為招",
@@ -193,11 +193,11 @@ TEXT = {
         "feat_intro": "写得快，也要写得对。",
         "strokes_h": "十笔，十招",
         "strokes_intro": "每一笔有自己的脾气：横伸得最远，点砸得最重，捺推得开敌，钩拉得回来。",
-        "strokes_more": "汉字的笔画不只这十种：七、元的竖弯钩，我的斜钩，心的卧钩，山的竖折，乃的横折折折钩……分法不同，数起来二三十种都有。这里只用最常见的十种，一键一笔；游戏里的八十九个字，都是只用这十种就写得出、繁简一样、两岸笔顺相同的字。",
+        "strokes_more": "汉字的笔画不只这十种：我的斜钩，心的卧钩，九的横折弯钩，乃的横折折折钩……分法不同，数起来二三十种都有。这里用最常见的十种，一键一笔；游戏里的八十九个字，都是只用这十种就写得出、繁简一样、两岸笔顺相同的字。到了深造、炉火纯青的三维与四维，还有三笔在等你。",
         "features": [
                 [
                         "繁简一体，两岸同笔顺",
-                        "写来御敌的字，繁体、简体同一个字形，台湾与大陆的笔顺也一样；笔顺照台湾教育部《常用国字标准字体笔顺》。"
+                        "写来御敌的字，繁体、简体同一个字形，台湾与大陆的笔顺也一样；笔顺照台湾教育部《常用国字标准字体笔顺》。只有一个字两岸笔顺不同，照台湾的写，游戏里注明了。"
                 ],
                 [
                         "以字为招",
@@ -298,11 +298,11 @@ TEXT = {
         "feat_intro": "Write fast, and write right.",
         "strokes_h": "Ten strokes, ten moves",
         "strokes_intro": "Each stroke has its own temper: the horizontal reaches farthest, the dot hits hardest, the right-falling stroke pushes, the hooks pull back.",
-        "strokes_more": "These ten are not all the strokes Chinese has: there is the bending hook of 七 and 元, the slanting hook of 我, the lying hook of 心, the fold of 山, the zigzag of 乃 — some twenty to thirty shapes, depending on how you count. The game uses only the ten most common, one key each; each of its 89 characters was chosen because it needs nothing beyond them, looks the same in Traditional and Simplified, and has the same stroke order in Taiwan and mainland China.",
+        "strokes_more": "These ten are not all the strokes Chinese has: there is the slanting hook of 我, the lying hook of 心, the turn-and-bend hook of 九, the zigzag of 乃 — some twenty to thirty shapes, depending on how you count. The game starts with the ten most common, one key each; each of its 89 characters was chosen because it needs nothing beyond them, looks the same in Traditional and Simplified, and has the same stroke order in Taiwan and mainland China. On Advanced and Mastery, three more strokes wait for you in the third and fourth dimensions.",
         "features": [
                 [
                         "One form, one stroke order",
-                        "Every character you fight with looks the same in Traditional and Simplified Chinese, and is written in the same order in Taiwan and mainland China (following Taiwan’s Ministry of Education standard)."
+                        "Every character you fight with looks the same in Traditional and Simplified Chinese, and is written in the same order in Taiwan and mainland China (following Taiwan’s Ministry of Education standard). Just one character is written in a different order on the two sides; the game follows Taiwan’s and says so."
                 ],
                 [
                         "Characters as spells",
@@ -376,9 +376,9 @@ TEXT = {
         "feat_intro": "速く書き、しかも正しく書く。",
         "strokes_h": "十画、十の技",
         "strokes_intro": "画にはそれぞれ気性がある。横画はいちばん遠くまで届き、点はいちばん重く打ち、右払いは敵を押しのけ、はねのある画は敵を引き寄せる。",
-        "strokes_more": "漢字の画はこの十種だけではない。七・元の最後の曲がってはねる画、我の斜めにはねる画、心の寝かせたはね、山の縦から横へ折れる画、乃のつづら折りの画……分け方によって二十から三十種にもなる。ここではいちばんよく使う十種だけを、一つのキーに一画ずつ割り当てた。ゲームの八十九字は、どれもこの十種だけで書け、繁体字と簡体字で字形が同じで、台湾と中国大陸で筆順も同じ字だ。",
+        "strokes_more": "漢字の画はこの十種だけではない。我の斜めにはねる画、心の寝かせたはね、九の横から折れて曲がりはねる画、乃のつづら折りの画……分け方によって二十から三十種にもなる。ここではいちばんよく使う十種を、一つのキーに一画ずつ割り当てた。ゲームの八十九字は、どれもこの十種だけで書け、繁体字と簡体字で字形が同じで、台湾と中国大陸で筆順も同じ字だ。上級・達人の三次元と四次元では、さらに三つの画が待っている。",
         "features": [
-                ["字形も筆順も一つ", "敵を防ぐために書く字は、繁体字でも簡体字でも字形が同じで、台湾と中国大陸の筆順も同じものだけを選んだ。筆順は台湾教育部の「常用国字標準字体筆順」に従う。王・玉・主の三字は日本の筆順と異なり、日本語版では序章と習字の説明でそのことを断っている。"],
+                ["字形も筆順も一つ", "敵を防ぐために書く字は、繁体字でも簡体字でも字形が同じで、台湾と中国大陸の筆順も同じものを選んだ。筆順は台湾教育部の「常用国字標準字体筆順」に従う。両岸で筆順が異なる字が一つだけあり、それは台湾の筆順で書く（ゲーム内に注記あり）。王・玉・主の三字は日本の筆順と異なり、日本語版では序章と習字の説明でそのことを断っている。"],
                 ["字を技に", "「大」を書けば墨が輪になって周りの敵を押しのけ、「火」は焼き、「口」は閉じ込め、「寸」は刺す。字ごとに使える回数があり、一字だけで最後まで戦い抜くことはできない。"],
                 ["習字", "戦わなくてもいい。ホーム画面の習字モードでは八十九字が画数順に並び、米字の補助線が入ったマスに一画ずつ書いていける。"],
                 ["四つの言語", "表示は繁体字中国語・簡体字中国語・英語・日本語。英語版はピンインと字義、日本語版は音読み・訓読みと字義つき。"]
