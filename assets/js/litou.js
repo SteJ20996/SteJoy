@@ -16,6 +16,7 @@
       spans.forEach((s, i) => s.style.setProperty('--d', (hits[Math.min(i, 3)] - 0.34 * 0.55).toFixed(3) + 's'));
       logo.style.setProperty('--fin', (hits[3] + 0.12).toFixed(3) + 's');
       logo.parentElement.style.setProperty('--fin', (hits[3] + 0.12).toFixed(3) + 's');
+      hits.forEach((t, i) => logo.parentElement.style.setProperty('--h' + (i + 1), t.toFixed(3) + 's'));   // 每個字著地，標題那一列震一小下
     }
     const sw = document.createElementNS(NS, 'svg');
     sw.setAttribute('class', 'sweep'); sw.setAttribute('viewBox', '0 0 1000 200'); sw.setAttribute('preserveAspectRatio', 'none'); sw.setAttribute('aria-hidden', 'true');
