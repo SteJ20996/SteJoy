@@ -1,5 +1,5 @@
 """《力透紙背》（Through the Page）的介紹頁：「寫意」系列第二部，還在做（頁上寫「敬請期待」）。
-四語四頁：litouzhibei/（繁中）、zh-hans/litouzhibei/、en/litouzhibei/、ja/litouzhibei/（日文 2026-11-06 加；筆畫名、性質、音讀訓讀照遊戲的日文版）。由 tools/site/build-site.py 一起產生，文字改這個檔案的 TEXT。
+五語五頁：litouzhibei/（繁中）、zh-hans/litouzhibei/、en/litouzhibei/、ja/litouzhibei/（日文 2026-11-06 加；筆畫名、性質、音讀訓讀照遊戲的日文版）、vi/litouzhibei/（越南文 2026-11-10 加，只有這一頁有；筆畫名、性質、漢越音照遊戲 v0.12 的越南文版）。由 tools/site/build-site.py 一起產生，文字改這個檔案的 TEXT。
 風格刻意跟首頁《墨畫蒼生》不同：墨重、斜、快；紅印「敬請期待」；一卷五章用一個會展開的超正方體（點→線→面→體→四維）；
 可以直接按 1–0 寫字（跟遊戲同一套筆順與字形）。遊戲的資料（筆形、字形、標誌）由 tools/litou/data.mjs 從遊戲庫抄出來，
 預告與場景由 tools/litou/ 錄、剪（見 README）。
@@ -106,14 +106,14 @@ TEXT = {
                         "不打仗也行：主頁有習字模式，八十九個字照筆數排好，一筆一筆寫進米字格。"
                 ],
                 [
-                        "四種語言",
-                        "介面有繁體中文、简体中文、English、日本語；英文版附拼音與字義，日文版附音讀訓讀。"
+                        "五種語言",
+                        "介面有繁體中文、简体中文、English、日本語、Tiếng Việt；英文版附拼音與字義，日文版附音讀訓讀，越南文版附漢越音與一個用到這個字的越南語詞。"
                 ]
         ],
         "facts": [
                 "單人、離線",
                 "鍵盤：1 到 0 寫十種筆畫",
-                "介面：繁體中文、简体中文、English、日本語",
+                "介面：繁體中文、简体中文、English、日本語、Tiếng Việt",
                 "四種難度：故事、入門、通透、爐火純青",
                 "敬請期待"
         ],
@@ -211,14 +211,14 @@ TEXT = {
                         "不打仗也行：主页有习字模式，八十九个字照笔数排好，一笔一笔写进米字格。"
                 ],
                 [
-                        "四种语言",
-                        "界面有繁體中文、简体中文、English、日本語；英文版附拼音与字义，日文版附音读训读。"
+                        "五种语言",
+                        "界面有繁體中文、简体中文、English、日本語、Tiếng Việt；英文版附拼音与字义，日文版附音读训读，越南文版附汉越音与一个用到这个字的越南语词。"
                 ]
         ],
         "facts": [
                 "单人、离线",
                 "键盘：1 到 0 写十种笔画",
-                "界面：繁體中文、简体中文、English、日本語",
+                "界面：繁體中文、简体中文、English、日本語、Tiếng Việt",
                 "四种难度：故事、入门、通透、炉火纯青",
                 "敬请期待"
         ],
@@ -316,14 +316,14 @@ TEXT = {
                         "No fighting needed: the home screen has a practice mode with 89 characters, sorted by stroke count, to write stroke by stroke into a practice grid."
                 ],
                 [
-                        "Four languages",
-                        "Traditional Chinese, Simplified Chinese, English and Japanese. The English version adds pinyin and meanings; the Japanese version adds on and kun readings."
+                        "Five languages",
+                        "Traditional Chinese, Simplified Chinese, English, Japanese and Vietnamese. The English version adds pinyin and meanings; the Japanese version adds on and kun readings; the Vietnamese version adds Sino-Vietnamese readings and a familiar Vietnamese word for each character."
                 ]
         ],
         "facts": [
                 "Single-player, offline",
                 "Keyboard: keys 1–0 are the ten strokes",
-                "Interface: Traditional Chinese, Simplified Chinese, English, Japanese",
+                "Interface: Traditional Chinese, Simplified Chinese, English, Japanese, Vietnamese",
                 "Four difficulties: Story, Beginner, Advanced, Mastery",
                 "Coming soon"
         ],
@@ -384,12 +384,12 @@ TEXT = {
                 ["字形も筆順も一つ", "敵を防ぐために書く字は、繁体字でも簡体字でも字形が同じで、台湾と中国大陸の筆順も同じものを選んだ。筆順は台湾教育部の「常用国字標準字体筆順」に従う。両岸で筆順が異なる字が一つだけあり、それは台湾の筆順で書く（ゲーム内に注記あり）。王・玉・主の三字は日本の筆順と異なり、日本語版では序章と習字の説明でそのことを断っている。"],
                 ["字を技に", "「大」を書けば墨が輪になって周りの敵を押しのけ、「火」は焼き、「口」は閉じ込め、「寸」は刺す。字ごとに使える回数があり、一字だけで最後まで戦い抜くことはできない。"],
                 ["習字", "戦わなくてもいい。ホーム画面の習字モードでは八十九字が画数順に並び、米字の補助線が入ったマスに一画ずつ書いていける。"],
-                ["四つの言語", "表示は繁体字中国語・簡体字中国語・英語・日本語。英語版はピンインと字義、日本語版は音読み・訓読みと字義つき。"]
+                ["五つの言語", "表示は繁体字中国語・簡体字中国語・英語・日本語・ベトナム語。英語版はピンインと字義、日本語版は音読み・訓読みと字義、ベトナム語版は漢越音と字義、その字を使う身近なベトナム語つき。"]
         ],
         "facts": [
                 "シングルプレイ・オフライン",
                 "キーボード：1 から 0 で十種の画",
-                "表示言語：繁体字中国語・簡体字中国語・英語・日本語",
+                "表示言語：繁体字中国語・簡体字中国語・英語・日本語・ベトナム語",
                 "難易度は四段階（物語・入門・上級・達人）",
                 "乞うご期待"
         ],
@@ -402,9 +402,88 @@ TEXT = {
                 "『力透紙背』は、筆順を技に、次元をステージにした作品です。点から線へ、線から面へ、面から立体へ。"
         ]
     },
+    'vi': {   # 2026-11-10 使用者：網頁版力透紙背也加一個越南文版（遊戲 v0.12 有越南文版）。只有這一頁有越南文；首頁、墨畫蒼生連到英文頁
+        "title": "Lực Thấu Chỉ Bối 力透紙背 | SteJoy",
+        "desc": "Trò chơi chiến đấu bằng chữ Hán, lấy thứ tự nét làm chiêu thức. Bạn là chữ 人 (nhân – người) cuối cùng còn lại trên trang giấy: phím 1 đến 0 là mười nét bút, viết đúng thứ tự nét thì chữ sai trước mặt được sửa đúng. Từ điểm thành đường, từ đường thành mặt, từ mặt thành khối, rồi đi vào bên trong siêu lập phương.",
+        "nav": ["Trailer", "Câu chuyện", "Một quyển", "Viết thử", "Đặc điểm", "Liên hệ"],
+        "kicker": "Loạt «Tả ý» · Phần 2",   # 寫意：越南畫論本來就叫 tranh tả ý（照遊戲越南文版）
+        "entitle": "Lực Thấu Chỉ Bối",   # 標題底下寫漢越讀法（英文頁是 Through the Page）
+        "tagline": "Giấy là trận · bút là binh · mực là giáp",
+        "motto": "Từ điểm thành đường · từ đường thành mặt · từ mặt thành khối",
+        "soon": "Hãy đón chờ",
+        "watch": "Xem trailer",
+        "trywrite": "Viết thử một chữ",
+        "trailer_h": "Trailer",
+        "trailer_note": "Hình ảnh thật trong trò chơi. Trò chơi vẫn đang được làm, hình ảnh và nội dung còn thay đổi; nhạc nền là bản tổng hợp tạm thời.",
+        "story_h": "Câu chuyện",
+        "quote": "Giấy là trận, bút là đao giáo, mực là mũ giáp.",
+        "cite": "Vương Hy Chi, lời đề sau «Bút trận đồ» của Vệ phu nhân",
+        "story": [
+                "Chữ vốn phẳng. Rồi 塗 (đồ – bôi nhòe) kéo đến: một đám mực chẳng thành chữ, đi tới đâu, chữ ở đó bị xóa về thành những nét rời và chấm mực. Bạn là chữ 人 (nhân – người) còn sót lại trên trang giấy.",
+                "Phím 1 đến 0 là mười nét bút. Viết một chữ đúng thứ tự nét, chữ sai trước mặt liền được sửa đúng; viết thành một chữ đã học, các nét hóa thành chiêu thức. Phải viết nhanh, và phải viết đúng.",
+                "Từ một điểm, bạn học mười nét bút và viết chữ 一 (nhất – một). Điểm sẽ kéo thành đường, đường sẽ bao thành trang giấy, giấy sẽ gấp thành… Xa hơn nữa, bạn phải tự mình viết mà vào."
+        ],
+        "dims_h": "Một quyển",
+        "dims_intro": "Mỗi chương thêm một chiều, luật chơi cũng đổi theo. Cái kết của mỗi chương đều trải sẵn con đường cho chương sau.",
+        "dims": [
+                ["Mở đầu", "Không chiều · Điểm", "Thế giới chỉ có một điểm. Mười nét bút đều hạ xuống từ điểm ấy; viết chữ 一, điểm kéo dài thành đường."],
+                ["Chương 1", "Một chiều · Đường", "Địch tới từ hai đầu. Viết chữ trước mặt theo đúng thứ tự nét, nó liền được sửa đúng. Ba đoạn Khởi, Thừa, Hợp; viết tới cuối, đường thẳng khép đầu đuôi, bao ra một trang giấy."],
+                ["Chương 2", "Hai chiều · Mặt", "Nét nào cũng đánh trúng địch, viết thành chữ là tung chiêu. Viết xuyên ra mặt sau, chữ nào cũng ngược; dải giấy xoắn thành dải Möbius, không còn mép trái phải."],
+                ["Chương 3", "Ba chiều · Khối", "Giấy gấp theo nếp thành khối lập phương. Tiến lùi, lên xuống: viết chữ trên mình địch ở xa, chữ sẽ bay tới. Khối lập phương chỉ là một ô của siêu lập phương; theo Tiên thiên bát quái, mỗi ô một tượng: Khôn, Chấn, Khảm, Cấn, Tốn, Ly, Đoài, Càn."],
+                ["Chương 4", "Bốn chiều", "Tám ô hợp một, bạn bước vào bên trong siêu lập phương. Có thêm một hướng w không nhìn thấy: thứ bạn thấy rõ chỉ là lát cắt ba chiều ở tầng w của bạn; những gì ở w khác chỉ còn là bóng."]
+        ],
+        "loop": "Cửu cửu quy nhất",
+        "write_h": "Viết thử",
+        "write_intro": "Nhấn phím 1 đến 0 (hoặc chạm các phím bên dưới) để viết từng nét. Đúng thứ tự thì thành chữ; không thành chữ thì nét tan đi. Chữ nào cũng có âm Hán Việt và nghĩa.",
+        "write_try": "Thử 9 3 thành 力 (lực – sức), 1 3 5 thành 大 (đại – lớn), 4 9 0 3 5 thành 永 (vĩnh – mãi mãi).",
+        "write_cands": "Còn có thể thành",
+        "write_none": "Không thành chữ",
+        "write_got": "Đã viết",
+        "write_reset": "Viết lại",
+        "write_count": "Đã viết {n}/{N} chữ",
+        "write_idle": "Nhấn một phím để viết nét đầu tiên.",
+        "feat_h": "Đặc điểm",
+        "feat_intro": "Viết nhanh, và viết đúng.",
+        "strokes_h": "Mười nét, mười chiêu",
+        "strokes_intro": "Mỗi nét có tính khí riêng: nét ngang vươn xa nhất, nét chấm đánh nặng nhất, nét mác đẩy địch lùi, các nét móc kéo địch lại gần.",
+        "strokes_more": "Chữ Hán không chỉ có mười nét này: còn nét móc chéo của 我, nét móc nằm của 心, nét ngang gập cong móc của 九, nét gập nhiều lần của 乃… tùy cách đếm, có đến hai ba mươi loại. Trò chơi bắt đầu với mười nét thông dụng nhất, mỗi phím một nét, gọi theo cách quen thuộc với người học tiếng Trung ở Việt Nam (ngang, sổ, phẩy, chấm, mác, hất, móc, gập); 89 chữ trong trò chơi đều chỉ cần mười nét ấy, có cùng một dạng ở phồn thể và giản thể, và cùng thứ tự nét ở Đài Loan và Trung Quốc đại lục. Ở mức Thông thấu và Lô hỏa thuần thanh, trong ba chiều và bốn chiều còn ba nét nữa đang chờ bạn.",
+        "features": [
+                ["Một dạng chữ, một thứ tự nét", "Mọi chữ bạn viết để chống địch đều có cùng một dạng ở phồn thể và giản thể, và cùng thứ tự nét ở Đài Loan và Trung Quốc đại lục (theo chuẩn của Bộ Giáo dục Đài Loan). Chỉ có một chữ hai bên viết khác thứ tự; trò chơi theo cách của Đài Loan và có ghi chú."],
+                ["Chữ thành chiêu", "Viết 大 (đại – lớn) thì mực tỏa thành vòng đẩy địch ra xa; 火 (hỏa) đốt, 口 (khẩu) giam, 寸 (thốn) đâm. Mỗi chữ có số lượt giới hạn, không chữ nào đánh trọn được cả quyển."],
+                ["Chữ Hán gần gũi", "Bản tiếng Việt ghi âm Hán Việt, nghĩa và một từ quen thuộc dùng chữ ấy: 大 đại – đại học, 文 văn – Văn Miếu, 王 vương – Hùng Vương, 元 nguyên – Nguyên Đán. Phần mở đầu có thêm sáu chữ để viết thử; thành tựu và độ khó là những thành ngữ Hán Việt như Lô hỏa thuần thanh, Nhập mộc tam phân."],
+                ["Luyện chữ", "Không cần đánh nhau: trang đầu có chế độ luyện chữ với 89 chữ xếp theo số nét, viết từng nét vào ô chữ mễ."]
+        ],
+        "facts": [
+                "Chơi đơn, ngoại tuyến",
+                "Bàn phím: phím 1–0 là mười nét bút",
+                "Ngôn ngữ: tiếng Trung phồn thể, giản thể, tiếng Anh, tiếng Nhật, tiếng Việt",
+                "Bốn độ khó: Truyện, Nhập môn, Thông thấu, Lô hỏa thuần thanh",
+                "Hãy đón chờ"
+        ],
+        "contact_h": "Liên hệ",
+        "contact": "Lực Thấu Chỉ Bối là trò chơi thứ hai trong loạt «Tả ý» (寫意) của SteJoy và vẫn đang được làm. Hãy viết thư cho chúng tôi:",
+        "series": "Phần 1 của loạt: InkWild 墨畫蒼生 (trang tiếng Anh)",
+        "video_off": "Trình duyệt của bạn không phát được video này.",
+        "bio": [
+                "Giáo viên toán và nhà nghiên cứu, dùng trò chơi tương tác để khám phá chữ viết và văn chương.",
+                "Lực Thấu Chỉ Bối biến thứ tự nét thành chiêu thức và các chiều không gian thành màn chơi: từ điểm thành đường, từ đường thành mặt, từ mặt thành khối."
+        ]
+    },
 }
 
 
+
+# 只有《力透紙背》這一頁有越南文（2026-11-10）：全站的四語之外多一個 vi；首頁與《墨畫蒼生》沒有越南文，越南文頁連到英文頁（home）
+EXTRA = {'vi': {'dir': 'vi/', 'up': '../', 'name': 'Tiếng Việt', 'short': 'VI', 'home': 'en/'}}
+HOME_VI = {   # 首頁那一份共用字（build-site.py 的 TEXT 沒有越南文）
+    'studio': 'SteJoy',
+    'author': ('Tác giả', 'SteJoy', 'Liên hệ', 'Trang cá nhân'),
+    'copy': '© 2026 SteJoy. Phông chữ: LXGW WenKai, Noto Serif (SIL Open Font License 1.1).',
+    'banner': {'zh-Hant': '這一頁也有繁體中文', 'zh-Hans': '有简体中文页面', 'en': 'This page is also in English', 'ja': '日本語のページもあります'},
+}
+BANNER_VI = 'Trang này cũng có bản tiếng Việt'
+def langs(LANGS):
+    return dict(LANGS, **EXTRA)
 
 def esc(s):
     return html.escape(s, quote=True)
@@ -416,6 +495,7 @@ def stroke_svg(code, cls=''):
 def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
     """HOME：首頁那一份的 studio、author、copy 等共用字（從 build-site.py 的 TEXT 傳進來）。"""
     L, T = LANGS[code], TEXT[code]
+    home = L.get('home', L['dir'])   # 首頁與《墨畫蒼生》在哪一種語言（越南文頁連英文頁）
     up = '../' + L['up']
     a = up + 'assets/'
     here = L['dir'] + SLUG
@@ -433,15 +513,16 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
         <p>{esc(t)}</p>
         <video muted loop playsinline preload="none" poster="{a}media/litou/scenes/{DIM_CLIPS[i]}.jpg" data-src="{a}media/litou/scenes/{DIM_CLIPS[i]}.mp4" data-webm="{a}media/litou/scenes/{DIM_CLIPS[i]}.webm" aria-label="{esc(n)}"></video>
       </li>''' for i, (k, n, t) in enumerate(T['dims']))
-    sname = {'zh-Hant': 'zh', 'zh-Hans': 'hans', 'en': 'en', 'ja': 'ja'}[code]
-    short = {'en': 'short', 'ja': 'shortJa'}.get(code, sname)   # 鍵上的短名
-    trait = {'zh-Hant': 'trait', 'zh-Hans': 'traitHans', 'en': 'traitEn', 'ja': 'traitJa'}[code]
+    sname = {'zh-Hant': 'zh', 'zh-Hans': 'hans', 'en': 'en', 'ja': 'ja', 'vi': 'vi'}[code]
+    short = {'en': 'short', 'ja': 'shortJa', 'vi': 'shortVi'}.get(code, sname)   # 鍵上的短名
+    trait = {'zh-Hant': 'trait', 'zh-Hans': 'traitHans', 'en': 'traitEn', 'ja': 'traitJa', 'vi': 'traitVi'}[code]
     keys = ''.join(f'<button class="lt-key" type="button" data-code="{s["c"]}"><b>{s["key"]}</b>{stroke_svg(s["c"])}<span>{esc(s[short])}</span></button>' for s in DATA['strokes'])
-    strokes = ''.join(f'<li><span class="lt-kc"><b>{s["key"]}</b>{stroke_svg(s["c"])}</span><div><b>{esc(s[sname])}</b>{" <small>" + esc(s["zh"]) + "</small>" if code in ("en", "ja") else ""}<p>{esc(s[trait])}</p></div></li>' for s in DATA['strokes'])
+    strokes = ''.join(f'<li><span class="lt-kc"><b>{s["key"]}</b>{stroke_svg(s["c"])}</span><div><b>{esc(s[sname])}</b>{" <small>" + esc(s["zh"]) + "</small>" if code in ("en", "ja", "vi") else ""}<p>{esc(s[trait])}</p></div></li>' for s in DATA['strokes'])
     feats = ''.join(f'<article class="lt-feat"><h3>{esc(h)}</h3><p>{esc(p)}</p></article>' for h, p in T['features'])
     facts = ''.join(f'<li>{esc(x)}</li>' for x in T['facts'])
     strings = json.dumps({k: T[k] for k in ('write_cands', 'write_none', 'write_got', 'write_count', 'write_idle')} | {'lang': code}, ensure_ascii=False)
-    banner = json.dumps({c: [t, up + LANGS[c]['dir'] + SLUG] for c, t in HOME['banner'].items()}, ensure_ascii=False)
+    offers = dict(HOME['banner'], **({} if code == 'vi' else {'vi': BANNER_VI}))   # 這一頁有越南文：別的語言頁也提一句
+    banner = json.dumps({c: [t, up + LANGS[c]['dir'] + SLUG] for c, t in offers.items()}, ensure_ascii=False)
     mark_data = json.dumps({'w': 760, 'h': 514, 'turns': [0.2285, 0.5021], 'ribbon': a + 'litou/mark-ribbon.png', 'ren': a + 'litou/mark-ren.png', 'time': a + 'litou/mark-time.png'})
     return f'''<!doctype html>
 <html lang="{code}">
@@ -477,7 +558,7 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
 <body class="lang-{code} litou" data-banner='{esc(banner)}'>
 {FXDEFS}
 <header class="top">
-  <a class="studio" href="{up}{L['dir']}"><img src="{a}img/icon.svg" alt="" width="34" height="34"><span>{esc(HOME['studio'])}</span></a>
+  <a class="studio" href="{up}{home}"><img src="{a}img/icon.svg" alt="" width="34" height="34"><span>{esc(HOME['studio'])}</span></a>
   <nav class="sections" aria-label="sections">{nav}</nav>
   <nav class="langs" aria-label="language">{langnav}</nav>
 </header>
@@ -487,8 +568,8 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
 <section class="lt-hero">
   <div class="lt-hero-text">
     <p class="lt-kicker">{esc(T['kicker'])}</p>
-    <div class="lt-logo-row"><h1 class="lt-logo" aria-label="{esc(''.join(title_chars))} Through the Page">{''.join(f'<span aria-hidden="true">{c}</span>' for c in title_chars)}</h1>{XIEYI_SEAL}</div>
-    <p class="lt-entitle" aria-hidden="true">Through the Page</p>
+    <div class="lt-logo-row"><h1 class="lt-logo" aria-label="{esc(''.join(title_chars))} {esc(T.get('entitle', 'Through the Page'))}">{''.join(f'<span aria-hidden="true">{c}</span>' for c in title_chars)}</h1>{XIEYI_SEAL}</div>
+    <p class="lt-entitle" aria-hidden="true">{esc(T.get('entitle', 'Through the Page'))}</p>
     <p class="lt-tagline">{esc(T['tagline'])}</p>
     <p class="lt-motto">{esc(T['motto'])}</p>
     <div class="lt-cta"><span class="lt-seal">{esc(T['soon'])}</span><a class="lt-btn" href="#trailer">{esc(T['watch'])}</a><a class="lt-btn ghost" href="#write">{esc(T['trywrite'])}</a></div>
@@ -559,7 +640,7 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
 <section id="contact" class="lt-sec lt-contact">
   {h2('contact', T['contact_h'])}
   <p>{esc(T['contact'])} <a href="mailto:{MAIL}">{MAIL}</a></p>
-  <p class="lt-series"><a href="{up}{L['dir']}mohuacangsheng/">{esc(T['series'])} →</a></p>
+  <p class="lt-series"><a href="{up}{home}mohuacangsheng/">{esc(T['series'])} →</a></p>
 </section>
 </main>
 
@@ -576,10 +657,11 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
 '''
 
 def build(LANGS, TEXTS, SITE, AUTHOR, AUTHOR_URL, MAIL):
-    """寫出四語各一頁；回傳要放進 sitemap 的網址（相對於網站根目錄）。"""
+    """寫出五語各一頁（全站四語＋越南文）；回傳要放進 sitemap 的網址（相對於網站根目錄）。"""
+    LANGS = langs(LANGS)
     for code, L in LANGS.items():
         out = ROOT / L['dir'] / SLUG / 'index.html'
         out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, TEXTS[code]), encoding='utf-8')
+        out.write_text(page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, TEXTS.get(code, HOME_VI)), encoding='utf-8')
         print(out.relative_to(ROOT), out.stat().st_size)
     return [L['dir'] + SLUG for L in LANGS.values()]

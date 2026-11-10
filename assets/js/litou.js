@@ -181,9 +181,10 @@
     const CH = D.chars, ALL = Object.keys(CH), done = new Set();
     let buf = '', timer = 0, demo = true, demoT = 0, missing = false;
     const icon = (c) => '<svg viewBox="0 0 240 240" aria-hidden="true"><path d="' + byCode[c].icon + '"/></svg>';
-    const sname = (c) => lang === 'en' ? byCode[c].en : lang === 'ja' ? byCode[c].ja : lang === 'zh-Hans' ? byCode[c].hans : byCode[c].zh;
+    const sname = (c) => lang === 'en' ? byCode[c].en : lang === 'ja' ? byCode[c].ja : lang === 'vi' ? byCode[c].vi : lang === 'zh-Hans' ? byCode[c].hans : byCode[c].zh;
     // 成字時寫讀音：中文頁拼音、英文頁拼音與字義、日文頁音讀・訓讀與字義（照遊戲的寫法「ダイ・おお-きい／大きい」，字義就是字本身時不重寫）
-    const readOf = (ch) => { const m = CH[ch].ja; if (lang === 'ja' && m) return m[1] && m[1] !== ch ? m[0] + '／' + m[1] : m[0]; return CH[ch].py + (lang === 'en' ? ' · ' + CH[ch].en : ''); };
+    const readOf = (ch) => { const m = CH[ch].ja, v = CH[ch].vi; if (lang === 'ja' && m) return m[1] && m[1] !== ch ? m[0] + '／' + m[1] : m[0]; if (lang === 'vi' && v) return v[0] + ' – ' + v[1] + (v[2] ? ' · ' + v[2] : '');   // 越南文：漢越音 – 意思 · 常用詞（đại – to, lớn · đại học）
+      return CH[ch].py + (lang === 'en' ? ' · ' + CH[ch].en : ''); };
     const order = (a, b) => CH[a].seq.length - CH[b].seq.length || ALL.indexOf(a) - ALL.indexOf(b);
     function show(state, ch, fresh) {
       grid.classList.remove('got', 'miss'); big.classList.remove('got', 'miss');
@@ -193,7 +194,7 @@
       const more = ALL.filter(c => CH[c].seq.startsWith(buf) && CH[c].seq !== buf).sort(order).slice(0, 8);
       cands.innerHTML = buf && more.length ? T.write_cands + '：' + more.map(c => '<b>' + c + '</b>').join(' ') : '';
       if (state === 'got') { big.textContent = ch; big.classList.add('got'); grid.classList.add('got'); read.textContent = readOf(ch) + ' — ' + T.write_got; void big.offsetWidth; }
-      else if (buf) { big.textContent = ''; read.textContent = buf.split('').map(sname).join(lang === 'en' ? ', ' : lang === 'ja' ? '・' : '、'); }
+      else if (buf) { big.textContent = ''; read.textContent = buf.split('').map(sname).join(lang === 'en' || lang === 'vi' ? ', ' : lang === 'ja' ? '・' : '、'); }
       else { big.textContent = ''; read.textContent = T.write_idle; }
       const nx = lead && state !== 'got' ? CH[lead].seq[buf.length] : null;
       keys.forEach(k => k.classList.toggle('next', k.dataset.code === nx));
