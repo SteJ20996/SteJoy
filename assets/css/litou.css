@@ -37,6 +37,10 @@ body.lang-zh-Hans .lt-logo { font-family: var(--zh); }   /* 標題五個字（�
 .lt-logo .splat { position: absolute; left: -38%; top: -38%; width: 176%; height: 176%; z-index: -1; pointer-events: none; overflow: visible; rotate: 4deg; }
 .lt-logo .splat > * { transform-box: fill-box; transform-origin: center; animation: lt-splat .2s calc(.38s + var(--i, 0) * .02s) cubic-bezier(.2, .8, .3, 1.3) both; }
 .lt-entitle { margin: 4px 0 0 6px; font: italic 26px/1.2 var(--en); letter-spacing: .22em; color: var(--ink-2); animation: lt-rise .7s 1.1s ease-out both; }
+/* 「寫意」朱印（2026-11-10，照《墨畫蒼生》字標裡的印）：蓋在標題右下，高約標題字的一半；標題落定、濺完墨之後才蓋下去 */
+.lt-logo-row { position: relative; width: fit-content; font-size: clamp(64px, 10.4vw, 152px); }
+.lt-xieyi { position: absolute; z-index: 1; left: calc(100% + .07em); bottom: 20px; height: .44em; width: auto; aspect-ratio: 38 / 56; overflow: visible; animation: lt-stamp .24s 1.05s cubic-bezier(.2, .9, .3, 1.25) both; }
+@keyframes lt-stamp { from { opacity: 0; transform: scale(1.6) rotate(-8deg); } 60% { opacity: 1; } to { opacity: 1; transform: none; } }
 .lt-tagline { margin: 22px 0 0 4px; font-size: 22px; letter-spacing: .3em; animation: lt-rise .7s 1.3s ease-out both; }
 .lt-motto { margin: 4px 0 0 4px; font-size: 17px; letter-spacing: .3em; color: var(--ink-2); animation: lt-rise .7s 1.45s ease-out both; }
 body.lang-en .lt-tagline, body.lang-en .lt-motto { letter-spacing: .03em; }
@@ -183,7 +187,7 @@ body.lang-en .lt-feat h3, body.lang-en .lt-sub { letter-spacing: 0; }
   .lt-sec { padding-top: 80px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .lt-logo, .lt-logo > span, .lt-logo > span::before, .lt-logo > span::after, .lt-logo .sweep, .lt-logo .splat > *, .lt-kicker, .lt-entitle, .lt-tagline, .lt-motto, .lt-cta, .lt-seal, .lt-mark .ren.land, .lt-grid path, .lt-grid, .lt-big { animation: none !important; }
+  .lt-logo, .lt-logo > span, .lt-logo > span::before, .lt-logo > span::after, .lt-logo .sweep, .lt-logo .splat > *, .lt-xieyi, .lt-kicker, .lt-entitle, .lt-tagline, .lt-motto, .lt-cta, .lt-seal, .lt-mark .ren.land, .lt-grid path, .lt-grid, .lt-big { animation: none !important; }
   .lt-mark .ren.land { opacity: 1; }
   .lt-reveal .h2s, .lt-reveal h2 span { transition: none; clip-path: none; opacity: 1; transform: none; }
 }
