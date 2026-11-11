@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 
-const GAME = path.resolve(process.argv[2] || '../Qidofun_Xieyi_LiTouZhiBei');
+const GAME = path.resolve(process.argv[2] || '../litouzhibei-game');   // 遊戲庫的資料夾：照本機的放法給第一個參數
 const ctx = { console, Math, JSON, Map, Set, Array, Object, String, Number };
 ctx.window = ctx; ctx.document = { addEventListener() {}, documentElement: { classList: { toggle() {}, add() {}, remove() {} } } };
 ctx.EN = { tr: (a) => a, on: false, ja: false };

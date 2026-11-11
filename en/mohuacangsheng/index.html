@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>(function(){if(!/iPhone/.test(navigator.userAgent))return;var m=document.querySelector('meta[name=viewport]'),D='width=device-width, initial-scale=1',vv=window.visualViewport,on=false,chk=false,vok=false,w0=0,r0=0,n=0,t0=Date.now();function set(d){var t=Date.now();if(t-t0>5e3){t0=t;n=0}if(++n>6)return false;on=d;chk=d;m.setAttribute('content',d?'width=900':D);document.documentElement.classList.toggle('duo',d);return true}function fit(){var w=innerWidth,h=innerHeight;w0=w;r0=w/h;if(!on&&w>=600&&w<860&&h>=600)set(true)}fit();addEventListener('resize',function(){if(!on){fit();return}var dw=vv?vv.width*vv.scale:0;if(chk){chk=false;vok=dw>0&&Math.abs(dw-w0)<w0*.15;return}if(vok?Math.abs(dw-w0)<w0*.15:Math.abs(innerWidth/innerHeight-r0)<.12)return;if(set(false))requestAnimationFrame(function(){requestAnimationFrame(fit)})})})();try{var z=+localStorage.getItem('stejoy.zoom');if(z>=.7&&z<=1.2){z=Math.min(z,innerWidth<880?1:Math.min(1.2,Math.floor(innerWidth/88)/10));if(z!==1){document.documentElement.style.zoom=z;document.documentElement.style.setProperty('--z',z)}}}catch(e){}</script>
 <title>InkWild (墨畫蒼生) | SteJoy</title>
-<meta name="description" content="A sheet of paper falls on the sea, and the characters on it come alive. You are one of them: 人, &quot;person&quot;. Gather wood, lay bricks and light lamps against the spirits that pass through walls from the 13th night. Farm by the solar terms, fish, read the stars, then set sail.">
+<meta name="description" content="A sheet of paper falls on the sea, and the characters on it come alive. You are one of them: 人, &quot;person&quot;. Gather wood, lay bricks and light lamps against the spirits that come through walls once the nights draw on. Farm by the solar terms, fish, read the stars, then set sail.">
 <meta name="author" content="Stephen Jia">
 <link rel="canonical" href="https://stejoy.com/en/mohuacangsheng/">
 <link rel="alternate" hreflang="zh-Hant" href="https://stejoy.com/mohuacangsheng/">
@@ -16,7 +16,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SteJoy">
 <meta property="og:title" content="InkWild (墨畫蒼生) | SteJoy">
-<meta property="og:description" content="A sheet of paper falls on the sea, and the characters on it come alive. You are one of them: 人, &quot;person&quot;. Gather wood, lay bricks and light lamps against the spirits that pass through walls from the 13th night. Farm by the solar terms, fish, read the stars, then set sail.">
+<meta property="og:description" content="A sheet of paper falls on the sea, and the characters on it come alive. You are one of them: 人, &quot;person&quot;. Gather wood, lay bricks and light lamps against the spirits that come through walls once the nights draw on. Farm by the solar terms, fish, read the stars, then set sail.">
 <meta property="og:image" content="https://stejoy.com/assets/img/og.jpg">
 <meta property="og:url" content="https://stejoy.com/en/mohuacangsheng/">
 <meta name="twitter:card" content="summary_large_image">
@@ -64,7 +64,7 @@
 
 <section id="demo" class="scenes">
   <h2>Scenes from the demo</h2>
-  <p class="lead">The demo covers the first 13 nights on the home island. Every clip below is in it.</p>
+  <p class="lead">The demo runs on the home island until the dawn after the first night the spirits walk (night 18, 15, 12 or 9, by difficulty). Every clip below is in it.</p>
   <div class="grid">
       <figure class="clip">
         <video muted loop playsinline preload="none" poster="../../assets/media/scenes/gather.jpg" data-src="../../assets/media/scenes/gather.mp4" data-webm="../../assets/media/scenes/gather.webm" aria-label="Gathering"></video>
@@ -79,8 +79,8 @@
         <figcaption><b>Snow</b>Snow often falls in the first days of spring. Lamps burn outside and in.</figcaption>
       </figure>
       <figure class="clip">
-        <video muted loop playsinline preload="none" poster="../../assets/media/scenes/night.jpg" data-src="../../assets/media/scenes/night.mp4" data-webm="../../assets/media/scenes/night.webm" aria-label="The 13th night"></video>
-        <figcaption><b>The 13th night</b>As dark falls, the bricks your lamps reach begin to glow. Spirits that fear light drift in; lamps on the ground burn them away.</figcaption>
+        <video muted loop playsinline preload="none" poster="../../assets/media/scenes/night.jpg" data-src="../../assets/media/scenes/night.mp4" data-webm="../../assets/media/scenes/night.webm" aria-label="The spirits come"></video>
+        <figcaption><b>The spirits come</b>As dark falls, the bricks your lamps reach begin to glow. Spirits that fear light drift in; lamps on the ground burn them away.</figcaption>
       </figure>
       <figure class="clip">
         <video muted loop playsinline preload="none" poster="../../assets/media/scenes/gaze.jpg" data-src="../../assets/media/scenes/gaze.mp4" data-webm="../../assets/media/scenes/gaze.webm" aria-label="Stargazing"></video>

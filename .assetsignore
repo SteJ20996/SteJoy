@@ -3,3 +3,9 @@
 node_modules
 worker
 wrangler.jsonc
+
+# 2026-11-11：只放網頁；說明、工具與設定檔不公開（原本 README 與 tools/ 都打得開）
+README.md
+tools
+.gitignore
+.assetsignore

@@ -1,5 +1,5 @@
 // 《力透紙背》的預告與網站鏡頭：Playwright 裝假時鐘，一幀一幀推進、一幀一幀截圖，再用 ffmpeg 接成影片（做法同 tools/capture/）。
-// 用法：在遊戲庫（SteJ20996/Qidofun_Xieyi_LiTouZhiBei）的根目錄 `python3 -m http.server 8123`，再
+// 用法：在力透紙背的遊戲庫（私有）的根目錄 `python3 -m http.server 8123`，再
 //   node tools/litou/capture.mjs <輸出資料夾> [鏡頭名,鏡頭名…] [--stills]
 // 片頭片尾是 tools/litou/title.html（用遊戲的字型與標誌）；CSS 動畫不跟假時鐘走，每一幀照時間撥到那一刻。
 import fs from 'node:fs';
