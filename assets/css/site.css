@@ -192,3 +192,13 @@ body.lang-ja .lang-note { max-width: 620px; }   /* 「日本語版はありま�
 .chai .g b, .clip figcaption .chai .g b { display: inline; margin: 0; font-size: inherit; letter-spacing: inherit; font-weight: 400; color: var(--red); }   /* 上面 figcaption b 是標題、display: block；這裡的是等號後面的字，要跟著同一行 */
 .chai small { color: var(--ink-2); font-size: 14px; line-height: 1.5; }
 .chai-note { margin: 6px 0 0; color: var(--dim); font-size: 13px; }
+
+/* 平板（2026-11-11，使用者：iPad 上打開左右有點擠；手機版、電腦版不用改）：寬 761 以上、沒有滑鼠的觸控螢幕（iPad 直拿 768–834、橫拿 1024–1366），
+   兩邊的留白從 16–20 點放到畫面寬的 5.5%（40–72 點）。電腦（有滑鼠，hover: hover）照舊；手機（760 以下）照舊；iPhone Duo 打開時頁面當 900 寬排（html.duo），算手機、照舊 */
+@media (min-width: 761px) and (hover: none) and (pointer: coarse) {
+  html:not(.duo) { --tab-gut: clamp(40px, 5.5vw, 72px); }
+  html:not(.duo) .top { padding-left: max(var(--tab-gut), calc(50% - 560px)); padding-right: max(var(--tab-gut), calc(50% - 560px)); }
+  html:not(.duo) body.mohua .top, html:not(.duo) body.litou .top { padding-left: max(var(--tab-gut), calc(50% - 700px)); padding-right: max(var(--tab-gut), calc(50% - 700px)); }
+  html:not(.duo) main > section, html:not(.duo) body.mohua main > section, html:not(.duo) .lt-sec, html:not(.duo) .lt-hero, html:not(.duo) .lt-dims-in { padding-left: var(--tab-gut); padding-right: var(--tab-gut); }
+  html:not(.duo) footer { padding-left: var(--tab-gut); padding-right: var(--tab-gut); }
+}
