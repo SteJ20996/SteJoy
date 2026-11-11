@@ -1,6 +1,6 @@
 // 《力透紙背》預告與網站的鏡頭。每個函式都在遊戲頁面裡跑（page.evaluate），只能用頁面裡的東西：ZHAN、R、PROLOGUE、LINE、SPACE、U。
 // setup(arg) 擺場面；frame({ f, n, fps }) 每一幀先跑，再推進 1/30 息、截圖。
-// 遊戲庫：SteJ20996/Qidofun_Xieyi_LiTouZhiBei（在它的根目錄 `python3 -m http.server 8123`）。
+// 遊戲庫：力透紙背的遊戲庫（私有；在它的根目錄 `python3 -m http.server 8123`）。
 
 // 每個鏡頭都先跑：只留畫布（介面、提示、面板都藏起來）、靜音、人不會死；掛一個照規則打的機器人（抄自遊戲庫 scripts/autoplay.mjs）
 export const COMMON = () => {
