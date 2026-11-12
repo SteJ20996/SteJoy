@@ -1,5 +1,5 @@
 """stejoy.com 的首頁：長風的「寫意」系列，選一部遊戲（使用者要的：在主頁加一個選不同遊戲的介面，先放兩部）。
-四語：index.html、zh-hans/index.html、en/index.html、ja/index.html（日文 2026-11-06 加）。由 tools/site/build-site.py 一起產生，文字改這個檔案的 TEXT。
+五語：index.html、zh-hans/index.html、en/index.html、ja/index.html（日文 2026-11-06 加）、vi/index.html（越南文 2026-11-12 加）。由 tools/site/build-site.py 一起產生，文字改這個檔案的 TEXT。
 每一部是一張紙：《墨畫蒼生》淺紙、會寫出來的「水」字標、實機片段；《力透紙背》墨黑、照「力」的筆順寫出來的標誌（紙色）、
 實機片段反過來看（紙背）。上面一排「種類」可以篩；← → 換一部、Enter 進入。遊戲多了就多幾張紙、多幾個種類。
 《墨畫蒼生》原本的介紹頁搬到 mohuacangsheng/，《力透紙背》在 litouzhibei/。
@@ -126,6 +126,28 @@ TEXT = {
         'about': ['長風（ちょうふう）は「写意」シリーズを作る小さなスタジオです。名前は李白の「行路難」から取りました。英語名は SteJoy です。'],
         'about2': '「写意」の作品は、どれも漢字を素材にしています。『墨畫蒼生』では、字は崩しては積み直せる一マス一マスの大地。『力透紙背』では、画が技になり、正しく書けた字が一撃になります。',
         'contact_h': 'お問い合わせ', 'contact': 'ご意見・ご感想はメールでどうぞ：',
+    },
+    'vi': {   # 2026-11-12 使用者：整個網站加越南文；遊戲名寫漢越音（Mặc Họa Thương Sinh、Lực Thấu Chỉ Bối），系列名照《力透紙背》越南文頁寫 «Tả ý»
+        'title': 'SteJoy | Loạt «Tả ý»',
+        'desc': 'Loạt «Tả ý» (寫意) của SteJoy: những trò chơi lấy chữ Hán làm chất liệu. InkWild (Mặc Họa Thương Sinh) sắp ra mắt trên Steam; Lực Thấu Chỉ Bối – hãy đón chờ.',
+        'nav': ['Trò chơi', 'Giới thiệu', 'Liên hệ'],
+        'kicker': 'Loạt «Tả ý» (寫意)',
+        'headline': 'Hạ bút, cuộc chơi bắt đầu',   # 落筆成局：局是一盤棋、一場仗，一落筆就開局
+        'deck': 'Đủ loại trò chơi dựng nên từ chữ Hán. Mỗi trang giấy bên dưới là một trò chơi riêng.',
+        'poem': '«Trường phong phá lãng hội hữu thì, trực quải vân phàm tế thương hải.» Rồi sẽ có ngày cưỡi gió lớn rẽ sóng, giương thẳng cánh buồm mây vượt biển xanh.',   # 先漢越音、再譯意（越南讀唐詩的習慣）
+        'cite': 'Lý Bạch, «Hành lộ nan»',
+        'choose': 'Chọn trò chơi', 'hint': '← → để chuyển · Enter để mở',
+        'kinds': {'all': 'Tất cả', 'survival': 'Sinh tồn · Xây dựng', 'battle': 'Thứ tự nét · Chiến đấu'},
+        'games': {
+            'inkwild': {'name': '墨畫蒼生', 'en': 'InkWild', 'genre': 'Sinh tồn · Xây dựng', 'tag': 'Viết gỗ thành thuyền · Viết nước thành vực',
+                        'pitch': 'Một trang giấy rơi xuống biển, và những chữ trên đó sống dậy. Lấy gỗ, xây gạch, thắp đèn, gắng qua hết đêm này đến đêm khác; khi đã đủ can đảm, hãy đóng thuyền vượt biển.', 'status': 'Sắp ra mắt trên Steam', 'go': 'Vào'},
+            'litou': {'name': '力透紙背', 'en': 'Lực Thấu Chỉ Bối', 'genre': 'Thứ tự nét · Chiến đấu', 'tag': 'Từ điểm thành đường · từ đường thành mặt · từ mặt thành khối',
+                      'pitch': 'Phím 1 đến 0 là mười nét bút; viết đúng thứ tự nét, chữ sai trước mặt liền được sửa đúng. Bắt đầu từ một điểm, viết mãi cho tới bên trong siêu lập phương.', 'status': 'Hãy đón chờ', 'go': 'Vào'},
+        },
+        'about_h': 'Về SteJoy',
+        'about': ['SteJoy (長風 Trường Phong – «ngọn gió dài») là một studio nhỏ làm loạt trò chơi «Tả ý». Tên chữ Hán lấy từ bài «Hành lộ nan» của Lý Bạch.'],
+        'about2': 'Mỗi trò chơi trong loạt «Tả ý» đều lấy chữ Hán làm chất liệu. Trong InkWild, chữ là từng ô đất có thể tháo ra rồi xây lại; trong Lực Thấu Chỉ Bối, nét bút là chiêu thức, viết đúng một chữ là tung ra một đòn.',
+        'contact_h': 'Liên hệ', 'contact': 'Có điều gì muốn nói, hãy viết thư cho chúng tôi:',
     },
 }
 

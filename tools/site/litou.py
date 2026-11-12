@@ -1,5 +1,5 @@
 """《力透紙背》（Through the Page）的介紹頁：「寫意」系列第二部，還在做（頁上寫「敬請期待」）。
-五語五頁：litouzhibei/（繁中）、zh-hans/litouzhibei/、en/litouzhibei/、ja/litouzhibei/（日文 2026-11-06 加；筆畫名、性質、音讀訓讀照遊戲的日文版）、vi/litouzhibei/（越南文 2026-11-10 加，只有這一頁有；筆畫名、性質、漢越音照遊戲 v0.12 的越南文版）。由 tools/site/build-site.py 一起產生，文字改這個檔案的 TEXT。
+五語五頁：litouzhibei/（繁中）、zh-hans/litouzhibei/、en/litouzhibei/、ja/litouzhibei/（日文 2026-11-06 加；筆畫名、性質、音讀訓讀照遊戲的日文版）、vi/litouzhibei/（越南文 2026-11-10 加，先只有這一頁；2026-11-12 全站都有越南文；筆畫名、性質、漢越音照遊戲 v0.12 的越南文版）。由 tools/site/build-site.py 一起產生，文字改這個檔案的 TEXT。
 風格刻意跟首頁《墨畫蒼生》不同：墨重、斜、快；紅印「敬請期待」；一卷五章用一個會展開的超正方體（點→線→面→體→四維）；
 可以直接按 1–0 寫字（跟遊戲同一套筆順與字形）。遊戲的資料（筆形、字形、標誌）由 tools/litou/data.mjs 從遊戲庫抄出來，
 預告與場景由 tools/litou/ 錄、剪（見 README）。
@@ -402,7 +402,7 @@ TEXT = {
                 "『力透紙背』は、筆順を技に、次元をステージにした作品です。点から線へ、線から面へ、面から立体へ。"
         ]
     },
-    'vi': {   # 2026-11-10 使用者：網頁版力透紙背也加一個越南文版（遊戲 v0.12 有越南文版）。只有這一頁有越南文；首頁、墨畫蒼生連到英文頁
+    'vi': {   # 2026-11-10 使用者：網頁版力透紙背也加一個越南文版（遊戲 v0.12 有越南文版）。2026-11-12 起全站都有越南文，首頁、墨畫蒼生連到越南文頁
         "title": "Lực Thấu Chỉ Bối 力透紙背 | SteJoy",
         "desc": "Trò chơi chiến đấu bằng chữ Hán, lấy thứ tự nét làm chiêu thức. Bạn là chữ 人 (nhân – người) cuối cùng còn lại trên trang giấy: phím 1 đến 0 là mười nét bút, viết đúng thứ tự nét thì chữ sai trước mặt được sửa đúng. Từ điểm thành đường, từ đường thành mặt, từ mặt thành khối, rồi đi vào bên trong siêu lập phương.",
         "nav": ["Trailer", "Câu chuyện", "Một quyển", "Viết thử", "Đặc điểm", "Liên hệ"],
@@ -462,7 +462,7 @@ TEXT = {
         ],
         "contact_h": "Liên hệ",
         "contact": "Lực Thấu Chỉ Bối là trò chơi thứ hai trong loạt «Tả ý» (寫意) của SteJoy và vẫn đang được làm. Hãy viết thư cho chúng tôi:",
-        "series": "Phần 1 của loạt: InkWild 墨畫蒼生 (trang tiếng Anh)",
+        "series": "Phần 1 của loạt «Tả ý»: InkWild – Mặc Họa Thương Sinh (墨畫蒼生)",
         "video_off": "Trình duyệt của bạn không phát được video này.",
         "bio": [
                 "Giáo viên toán và nhà nghiên cứu, dùng trò chơi tương tác để khám phá chữ viết và văn chương.",
@@ -473,17 +473,7 @@ TEXT = {
 
 
 
-# 只有《力透紙背》這一頁有越南文（2026-11-10）：全站的四語之外多一個 vi；首頁與《墨畫蒼生》沒有越南文，越南文頁連到英文頁（home）
-EXTRA = {'vi': {'dir': 'vi/', 'up': '../', 'name': 'Tiếng Việt', 'short': 'VI', 'home': 'en/'}}
-HOME_VI = {   # 首頁那一份共用字（build-site.py 的 TEXT 沒有越南文）
-    'studio': 'SteJoy',
-    'author': ('Tác giả', 'SteJoy', 'Liên hệ', 'Trang cá nhân'),
-    'copy': '© 2026 SteJoy. Phông chữ: LXGW WenKai, Noto Serif (SIL Open Font License 1.1).',
-    'banner': {'zh-Hant': '這一頁也有繁體中文', 'zh-Hans': '有简体中文页面', 'en': 'This page is also in English', 'ja': '日本語のページもあります'},
-}
-BANNER_VI = 'Trang này cũng có bản tiếng Việt'
-def langs(LANGS):
-    return dict(LANGS, **EXTRA)
+# 2026-11-10 越南文先只有這一頁（當時另加 EXTRA、HOME_VI，越南文頁連到英文的首頁）；2026-11-12 全站加了越南文，vi 併進 build-site.py 的 LANGS 與 TEXT
 
 def esc(s):
     return html.escape(s, quote=True)
@@ -495,7 +485,7 @@ def stroke_svg(code, cls=''):
 def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
     """HOME：首頁那一份的 studio、author、copy 等共用字（從 build-site.py 的 TEXT 傳進來）。"""
     L, T = LANGS[code], TEXT[code]
-    home = L.get('home', L['dir'])   # 首頁與《墨畫蒼生》在哪一種語言（越南文頁連英文頁）
+    home = L['dir']   # 首頁與《墨畫蒼生》照同一種語言
     up = '../' + L['up']
     a = up + 'assets/'
     here = L['dir'] + SLUG
@@ -521,8 +511,7 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
     feats = ''.join(f'<article class="lt-feat"><h3>{esc(h)}</h3><p>{esc(p)}</p></article>' for h, p in T['features'])
     facts = ''.join(f'<li>{esc(x)}</li>' for x in T['facts'])
     strings = json.dumps({k: T[k] for k in ('write_cands', 'write_none', 'write_got', 'write_count', 'write_idle')} | {'lang': code}, ensure_ascii=False)
-    offers = dict(HOME['banner'], **({} if code == 'vi' else {'vi': BANNER_VI}))   # 這一頁有越南文：別的語言頁也提一句
-    banner = json.dumps({c: [t, up + LANGS[c]['dir'] + SLUG] for c, t in offers.items()}, ensure_ascii=False)
+    banner = json.dumps({c: [t, up + LANGS[c]['dir'] + SLUG] for c, t in HOME['banner'].items()}, ensure_ascii=False)
     mark_data = json.dumps({'w': 760, 'h': 514, 'turns': [0.2285, 0.5021], 'ribbon': a + 'litou/mark-ribbon.png', 'ren': a + 'litou/mark-ren.png', 'time': a + 'litou/mark-time.png'})
     return f'''<!doctype html>
 <html lang="{code}">
@@ -657,11 +646,10 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
 '''
 
 def build(LANGS, TEXTS, SITE, AUTHOR, AUTHOR_URL, MAIL):
-    """寫出五語各一頁（全站四語＋越南文）；回傳要放進 sitemap 的網址（相對於網站根目錄）。"""
-    LANGS = langs(LANGS)
+    """寫出五語各一頁；回傳要放進 sitemap 的網址（相對於網站根目錄）。"""
     for code, L in LANGS.items():
         out = ROOT / L['dir'] / SLUG / 'index.html'
         out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, TEXTS.get(code, HOME_VI)), encoding='utf-8')
+        out.write_text(page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, TEXTS[code]), encoding='utf-8')
         print(out.relative_to(ROOT), out.stat().st_size)
     return [L['dir'] + SLUG for L in LANGS.values()]

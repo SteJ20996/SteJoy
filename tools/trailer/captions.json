@@ -1,13 +1,13 @@
 {
-  "gather":  { "zh-Hant": "一張紙落在海上，紙上的字活了。", "zh-Hans": "一张纸落在海上，纸上的字活了。", "en": "A sheet of paper falls on the sea, and the characters on it come alive.", "ja": "一枚の紙が海に落ち、紙の上の字が生きはじめた。" },
-  "build":   { "zh-Hant": "取木、砌磚，寫下一個家。", "zh-Hans": "取木、砌砖，写下一个家。", "en": "Gather wood. Lay bricks. Write yourself a home.", "ja": "木を取り、煉瓦を積み、家を書き上げる。" },
-  "night":   { "zh-Hant": "幾夜過後，魄夜行。點一盞燈，撐過這一夜。", "zh-Hans": "几夜过后，魄夜行。点一盏灯，撑过这一夜。", "en": "A few nights in, the spirits walk. Light a lamp and hold out until dawn.", "ja": "幾夜か過ぎると、魄が夜をさまよう。灯をともして、この夜を越えよう。" },
-  "snow":    { "zh-Hant": "照著節氣過日子：雪、", "zh-Hans": "照着节气过日子：雪、", "en": "Live by the solar terms: snow,", "ja": "節気とともに暮らす。雪、" },
-  "thunder": { "zh-Hant": "雷、風、雨。", "zh-Hans": "雷、风、雨。", "en": "thunder, wind and rain.", "ja": "雷、風、雨。" },
-  "crops":   { "zh-Hant": "種五穀，字一筆一筆長出來。", "zh-Hans": "种五谷，字一笔一笔长出来。", "en": "Sow the five grains and watch them grow, stroke by stroke.", "ja": "五穀を蒔けば、字が一画ずつ育っていく。" },
-  "zi":      { "zh-Hant": "把偏旁擺對，字就走出字典。", "zh-Hans": "把偏旁摆对，字就走出字典。", "en": "Put the parts in place, and a character steps out of the dictionary.", "ja": "字の部品を正しく置けば、字が字典から歩み出る。" },
-  "gaze":    { "zh-Hant": "夜裡抬頭，認星官。", "zh-Hans": "夜里抬头，认星官。", "en": "At night, look up and learn the stars.", "ja": "夜には空を見上げ、星官を覚える。" },
-  "sail":    { "zh-Hant": "膽氣夠了，就造船渡海。", "zh-Hans": "胆气够了，就造船渡海。", "en": "When your courage is enough, build a boat and cross the sea.", "ja": "胆力が十分についたら、舟を造って海を渡る。" },
-  "gong":    { "zh-Hant": "去找撞歪天地的共工。", "zh-Hans": "去找撞歪天地的共工。", "en": "Find Gonggong, who tilted the world.", "ja": "天地を傾けた共工を探しに行く。" },
-  "end":     { "zh-Hant": "即將登上 Steam", "zh-Hans": "即将登陆 Steam", "en": "Coming to Steam", "ja": "近日 Steam で配信" }
+  "gather":  { "zh-Hant": "一張紙落在海上，紙上的字活了。", "zh-Hans": "一张纸落在海上，纸上的字活了。", "en": "A sheet of paper falls on the sea, and the characters on it come alive.", "ja": "一枚の紙が海に落ち、紙の上の字が生きはじめた。", "vi": "Một trang giấy rơi xuống biển, và những chữ trên đó sống dậy." },
+  "build":   { "zh-Hant": "取木、砌磚，寫下一個家。", "zh-Hans": "取木、砌砖，写下一个家。", "en": "Gather wood. Lay bricks. Write yourself a home.", "ja": "木を取り、煉瓦を積み、家を書き上げる。", "vi": "Lấy gỗ, xây gạch, viết nên một mái nhà." },
+  "night":   { "zh-Hant": "幾夜過後，魄夜行。點一盞燈，撐過這一夜。", "zh-Hans": "几夜过后，魄夜行。点一盏灯，撑过这一夜。", "en": "A few nights in, the spirits walk. Light a lamp and hold out until dawn.", "ja": "幾夜か過ぎると、魄が夜をさまよう。灯をともして、この夜を越えよう。", "vi": "Vài đêm trôi qua, phách bắt đầu đi đêm. Thắp một ngọn đèn, gắng qua đêm nay." },
+  "snow":    { "zh-Hant": "照著節氣過日子：雪、", "zh-Hans": "照着节气过日子：雪、", "en": "Live by the solar terms: snow,", "ja": "節気とともに暮らす。雪、", "vi": "Sống theo tiết khí: tuyết," },
+  "thunder": { "zh-Hant": "雷、風、雨。", "zh-Hans": "雷、风、雨。", "en": "thunder, wind and rain.", "ja": "雷、風、雨。", "vi": "sấm, gió, mưa." },
+  "crops":   { "zh-Hant": "種五穀，字一筆一筆長出來。", "zh-Hans": "种五谷，字一笔一笔长出来。", "en": "Sow the five grains and watch them grow, stroke by stroke.", "ja": "五穀を蒔けば、字が一画ずつ育っていく。", "vi": "Gieo ngũ cốc, chữ mọc lên từng nét một." },
+  "zi":      { "zh-Hant": "把偏旁擺對，字就走出字典。", "zh-Hans": "把偏旁摆对，字就走出字典。", "en": "Put the parts in place, and a character steps out of the dictionary.", "ja": "字の部品を正しく置けば、字が字典から歩み出る。", "vi": "Đặt các bộ phận vào đúng chỗ, chữ liền bước ra khỏi tự điển." },
+  "gaze":    { "zh-Hant": "夜裡抬頭，認星官。", "zh-Hans": "夜里抬头，认星官。", "en": "At night, look up and learn the stars.", "ja": "夜には空を見上げ、星官を覚える。", "vi": "Đêm xuống, ngẩng đầu nhận mặt các vì sao." },
+  "sail":    { "zh-Hant": "膽氣夠了，就造船渡海。", "zh-Hans": "胆气够了，就造船渡海。", "en": "When your courage is enough, build a boat and cross the sea.", "ja": "胆力が十分についたら、舟を造って海を渡る。", "vi": "Khi đã đủ can đảm, hãy đóng thuyền vượt biển." },
+  "gong":    { "zh-Hant": "去找撞歪天地的共工。", "zh-Hans": "去找撞歪天地的共工。", "en": "Find Gonggong, who tilted the world.", "ja": "天地を傾けた共工を探しに行く。", "vi": "Đi tìm Cộng Công, kẻ đã húc lệch trời đất." },
+  "end":     { "zh-Hant": "即將登上 Steam", "zh-Hans": "即将登陆 Steam", "en": "Coming to Steam", "ja": "近日 Steam で配信", "vi": "Sắp ra mắt trên Steam" }
 }
