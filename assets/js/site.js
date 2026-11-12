@@ -24,14 +24,32 @@
   } else clips.forEach(load);
   clips.forEach((v) => v.addEventListener('click', () => { load(v); if (v.paused) v.play().catch(() => {}); else v.pause(); }));
 
+  // 頂欄放不下一行（越南文、日文的章節名長；iPad 直拿、頁面放大時）：收起章節連結，只留工作室名與語言，跟手機版一樣（2026-11-12）。
+  // 先拿掉 tight 量一次「全放」要多寬，比頂欄寬就收；字型載好、換大小（site.js 縮放後會發 resize）都重量
+  (() => {
+    const top = document.querySelector('header.top'), sec = top && top.querySelector('.sections');
+    if (!sec) return;
+    const fit = () => {
+      top.classList.remove('tight');
+      if (getComputedStyle(sec).display === 'none') return;   // 手機版本來就收著
+      // 照子元素的寬加上間距，跟扣掉左右留白的寬比（擠進右邊留白時 scrollWidth 量不出來）
+      const cs = getComputedStyle(top), kids = [...top.children].filter((e) => getComputedStyle(e).display !== 'none');
+      const need = kids.reduce((n, e) => n + e.getBoundingClientRect().width, 0) + (parseFloat(cs.columnGap) || 0) * (kids.length - 1);
+      const room = top.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      top.classList.toggle('tight', need > room + 0.5);
+    };
+    fit(); addEventListener('resize', fit);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  })();
+
   // 頁面大小：左下角「− 100% ＋」（使用者要的：有人看到大圖會不舒服）。整頁用根元素的 CSS zoom，倍率另寫進 --z
   // 給要撐滿畫面高度的地方換算；記在這台瀏覽器（stejoy.zoom），<head> 裡那一行在畫面出來以前先套上。
   // 放大只放到內容還有 880 寬（電腦版的版面），窄過 880 就最多 100%（vw 寫的寬度放大了會超出畫面）；跟 tools/site/head.py 同一條。
   // 按鈕自己反縮放，永遠一樣大
   (() => {
     const Z = [0.7, 0.8, 0.9, 1, 1.1, 1.2], KEY = 'stejoy.zoom', root = document.documentElement;
-    const cl = document.body.classList, lang = cl.contains('lang-en') ? 'en' : cl.contains('lang-ja') ? 'ja' : cl.contains('lang-zh-Hans') ? 'hans' : 'hant';
-    const T = { hant: ['頁面大小', '縮小', '放大', '回到 100%'], hans: ['页面大小', '缩小', '放大', '回到 100%'], en: ['Page size', 'Smaller', 'Larger', 'Back to 100%'], ja: ['ページの大きさ', '縮小', '拡大', '100% に戻す'] }[lang];
+    const cl = document.body.classList, lang = cl.contains('lang-en') ? 'en' : cl.contains('lang-ja') ? 'ja' : cl.contains('lang-vi') ? 'vi' : cl.contains('lang-zh-Hans') ? 'hans' : 'hant';
+    const T = { hant: ['頁面大小', '縮小', '放大', '回到 100%'], hans: ['页面大小', '缩小', '放大', '回到 100%'], en: ['Page size', 'Smaller', 'Larger', 'Back to 100%'], ja: ['ページの大きさ', '縮小', '拡大', '100% に戻す'], vi: ['Cỡ trang', 'Thu nhỏ', 'Phóng to', 'Trở về 100%'] }[lang];
     let want = 1; try { want = +localStorage.getItem(KEY) || 1; } catch (e) {}
     if (!Z.includes(want)) want = 1;
     const cap = () => innerWidth < 880 ? 1 : Math.min(Z[Z.length - 1], Math.floor(innerWidth / 88) / 10);
@@ -47,7 +65,7 @@
       if (z === shownZ && cap() === shownCap) return;
       shownZ = z; shownCap = cap();
       root.style.zoom = z === 1 ? '' : z; root.style.setProperty('--z', z); box.style.zoom = z === 1 ? '' : 1 / z;
-      val.textContent = Math.round(z * 100) + '%'; val.setAttribute('aria-label', T[0] + ' ' + val.textContent + ({ en: ', ', ja: '、' }[lang] || '，') + T[3]);
+      val.textContent = Math.round(z * 100) + '%'; val.setAttribute('aria-label', T[0] + ' ' + val.textContent + ({ en: ', ', vi: ', ', ja: '、' }[lang] || '，') + T[3]);
       minus.disabled = z <= Z[0]; plus.disabled = z >= cap();
       if (z !== cur) {
         cur = z;
@@ -113,7 +131,7 @@
   } catch (e) {}
 
   // 語言提示：選過語言的照選的；沒選過的照瀏覽器語言（簡中、繁中、日文、越南文，其餘當英文）。這一頁不是那種語言，就在下面提一句
-  // （越南文只有《力透紙背》那一頁有；別的頁沒有越南文，就改提英文）
+  // （2026-11-12 起每一頁都有越南文；萬一哪一頁沒有，就改提英文）
   // （不自動跳轉；關掉了就不再提）
   try {
     const box = document.getElementById('lang-banner'), offers = JSON.parse(document.body.dataset.banner || '{}');

@@ -1,16 +1,26 @@
 # SteJoy
 
-stejoy.com 的網站：工作室**長風**的首頁（「寫意」系列，選一部遊戲）、《墨畫蒼生》（InkWild）與《力透紙背》（Through the Page）的介紹頁，繁體中文、简体中文、English、日本語四種語言（日文 2026-11-06 加，使用者要的：整個網頁增加日文版）。
+stejoy.com 的網站：工作室**長風**的首頁（「寫意」系列，選一部遊戲）、《墨畫蒼生》（InkWild）與《力透紙背》（Through the Page）的介紹頁，繁體中文、简体中文、English、日本語、Tiếng Việt 五種語言（日文 2026-11-06 加，使用者要的：整個網頁增加日文版；越南文 2026-11-10 先加在《力透紙背》那一頁，2026-11-12 使用者要整站與《墨畫蒼生》也加）。
 
-工作室的中文名是**長風**（李白〈行路難〉「長風破浪會有時，直掛雲帆濟滄海」；使用者定）：繁中頁寫「長風」（霞鶩文楷）、簡中頁寫「长风」（思源宋體），英文頁照舊寫 SteJoy；日文頁也寫「長風」（Klee One；「長風について」說英語名是 SteJoy）。「寫意」是遊戲系列的名字，不是工作室的。
+工作室的中文名是**長風**（李白〈行路難〉「長風破浪會有時，直掛雲帆濟滄海」；使用者定）：繁中頁寫「長風」（霞鶩文楷）、簡中頁寫「长风」（思源宋體），英文頁照舊寫 SteJoy；日文頁也寫「長風」（Klee One；「長風について」說英語名是 SteJoy）；越南文頁寫 SteJoy（「Về SteJoy」說漢字名長風、漢越音 Trường Phong）。「寫意」是遊戲系列的名字，不是工作室的。
 
 | 網址 | 檔案 | 產生它的 |
 |---|---|---|
-| `/`、`/zh-hans/`、`/en/`、`/ja/` | `index.html`、`zh-hans/index.html`、`en/index.html`、`ja/index.html` | 首頁：選一部（`tools/site/home.py`） |
-| `/mohuacangsheng/`（四語同上加前綴） | `mohuacangsheng/index.html` 等 | 《墨畫蒼生》（`tools/site/build-site.py`） |
-| `/litouzhibei/`（四語同上加前綴） | `litouzhibei/index.html` 等 | 《力透紙背》，敬請期待（`tools/site/litou.py`） |
+| `/`、`/zh-hans/`、`/en/`、`/ja/`、`/vi/` | `index.html`、`zh-hans/index.html`、`en/index.html`、`ja/index.html`、`vi/index.html` | 首頁：選一部（`tools/site/home.py`） |
+| `/mohuacangsheng/`（五語同上加前綴） | `mohuacangsheng/index.html` 等 | 《墨畫蒼生》（`tools/site/build-site.py`） |
+| `/litouzhibei/`（五語同上加前綴） | `litouzhibei/index.html` 等 | 《力透紙背》，敬請期待（`tools/site/litou.py`） |
 
 《墨畫蒼生》的介紹頁原本就是首頁 `/`，有了選遊戲的首頁之後搬到 `/mohuacangsheng/`（拼音，跟 `/litouzhibei/` 一樣）。純靜態頁，沒有建置步驟也能直接放上任何靜態主機。全部頁面由 `python3 tools/site/build-site.py` 一起產生，**改文字請改那幾個 `.py` 再重新產生**，不要直接改 HTML。
+
+## 越南文（2026-11-12）
+
+使用者：《力透紙背》那一頁先有了越南文，整個 stejoy.com 與《墨畫蒼生》也要加，認真仔細地翻。`LANGS` 多一個 `vi`（`vi/`、`vi/mohuacangsheng/`、`vi/litouzhibei/`），首頁 `home.py`、《墨畫蒼生》`build-site.py` 各多一份 `TEXT['vi']`，其他四語的頁多一顆「VI」、hreflang、sitemap 與「Trang này cũng có bản tiếng Việt」那條提示。
+- 用詞：專名寫漢越音——遊戲名 Mặc Họa Thương Sinh（字標底下多一行讀法，`TEXT['vi']['reading']`、`.hero .reading`）、Lực Thấu Chỉ Bối，系列 «Tả ý»（越南畫論本來就叫 tranh tả ý），工作室 SteJoy（長風 Trường Phong），Cộng Công、núi Bất Chu、Tu Xà、Phong Hy、Đại Phong、Thanh Long／Bạch Hổ／Chu Tước／Huyền Vũ，難度 Tiêu Dao、Sơ Lý、Nhân Gian、Tông Sư（附原字）；魄＝phách（hồn phách 的 phách，在「Đêm phách đến」那段解釋，跟日文頁一樣），膽氣＝can đảm，節氣＝tiết khí、七十二候＝bảy mươi hai hậu，字典＝tự điển（字 tự），偏旁＝bộ，《說文解字》＝Thuyết văn giải tự。說《島》是鳥在山上那一句，越南文直接點出 đảo 就是 島 的漢越音。
+- 李白那兩句先寫漢越音再譯意（越南讀唐詩的習慣）；遊戲沒有越南文版，《墨畫蒼生》頁開頭跟英文、日文頁一樣先說一句（`lang_note`）。
+- 預告字幕 `assets/media/trailer.vi.vtt`（`tools/trailer/captions.json` 的 `vi`，`node tools/trailer/build.mjs - - <輸出> --captions` 只重寫字幕；原本四種重產後一字不差）。
+- 樣式：越南文是拉丁字母，字距照英文頁收、不用斜體（聲調符號斜了難認），`site.css`、`home.css` 的 `body.lang-vi`；頁面大小的鈕有越南文（`site.js`）。
+- 頂欄放不下一行時收起章節連結（`site.js` 量、`.top.tight`）：越南文、日文的章節名長，iPad 直拿時「Câu chuyện」「日本語」被拆成兩行、頂欄變兩三行高；英文、日文的《力透紙背》頁在 iPad mini 上原本也會。
+- 譯文沒有越南母語者校過。
 
 ## 首頁：選一部
 
@@ -18,12 +28,12 @@ stejoy.com 的網站：工作室**長風**的首頁（「寫意」系列，選�
 
 - 每一部是一張紙：《墨畫蒼生》淺紙、字標與實機片段（取木）；《力透紙背》墨黑、照「力」的筆順寫出來的標誌（`MARK_DATA.ink` 給紙色）、實機片段反相來看（莫比烏斯環那段，像從紙背看）。滑過或聚焦的那張展開、片段才開始播；手機上直排。
 - 上面一排「種類」（全部／生存 · 建造／筆順 · 戰鬥）可以篩，數字是每類幾部；← → 換一部、Enter 進入。
-- 加一部遊戲：在 `tools/site/home.py` 的 `GAMES` 加一行（`id`、`slug`、`kind`、片段），`KINDS` 與四語 `TEXT` 補上它的種類與文案，`assets/css/home.css` 給它一張紙的樣子。
+- 加一部遊戲：在 `tools/site/home.py` 的 `GAMES` 加一行（`id`、`slug`、`kind`、片段），`KINDS` 與五語 `TEXT` 補上它的種類與文案，`assets/css/home.css` 給它一張紙的樣子。
 - 樣式與互動：`assets/css/home.css`、`assets/js/home.js`。
 
 ## 檔案
 
-- `assets/css/site.css`、`assets/js/site.js`：樣式；試玩場景捲到才載入；右上角選語言是在同一個分頁換頁，選過的記在這台瀏覽器（`stejoy.lang`），整個網站照它；換過去停在原本讀到的那一段（四種語言的頁面同一個模子，段落一一對得上；`sessionStorage` 的 `stejoy.lang.at`）。底下那條「這一頁也有……」只在這一頁不是選過的語言時才提（沒選過照瀏覽器語言：繁中、簡中、日文，其餘當英文；不自動跳轉、關掉了就不再提）——2026-11-07 使用者：右上角選了語言，又跳出一條提示叫你換回瀏覽器的語言，像開了另一個分頁。
+- `assets/css/site.css`、`assets/js/site.js`：樣式；試玩場景捲到才載入；右上角選語言是在同一個分頁換頁，選過的記在這台瀏覽器（`stejoy.lang`），整個網站照它；換過去停在原本讀到的那一段（五種語言的頁面同一個模子，段落一一對得上；`sessionStorage` 的 `stejoy.lang.at`）。底下那條「這一頁也有……」只在這一頁不是選過的語言時才提（沒選過照瀏覽器語言：繁中、簡中、日文、越南文，其餘當英文；不自動跳轉、關掉了就不再提）——2026-11-07 使用者：右上角選了語言，又跳出一條提示叫你換回瀏覽器的語言，像開了另一個分頁。
 - 每一頁左下角有「− 100% ＋」調整頁面大小（使用者要的：有人看到大圖會不舒服）：整頁用根元素的 CSS `zoom`，70%–120%，放大只放到內容還有 880 寬（窄螢幕最多 100%），記在這台瀏覽器的 `localStorage`（`stejoy.zoom`），點百分比回 100%。平常是半透明的（使用者在 Duo 上看嫌它擋畫面），滑鼠移上去、用鍵盤移到、或點過的 2.5 秒內才清楚。倍率另寫進 `--z`：`vh`、`vw` 不跟著 `zoom` 變，要撐滿畫面高度的地方寫成 `calc(100vh / var(--z, 1) …)`。
 - 試玩場景的短片捲遠了就卸下（拿掉 `src` 再 `load()`，上下各多六成屏以外），捲回來再載：使用者在 Duo 上看英文版力透紙背頁，Safari 顯示「Webpage Crashed」重複發生，是記憶體不夠被關掉。以前捲完整頁，五支短片加預告六支一直掛著；超正方體的畫布每次 `resize`（iPhone 捲動時網址列一收一放就發一次）都整塊重配。現在同時掛著的最多三、四支（含只載了資訊的預告），畫布尺寸沒變就不重配、像素最多約 240 萬，一卷那一段不在畫面上時也不畫。手上沒有實機，這是照可能的原因修的，量的是 Chromium 模擬 Duo 橫拿與手機。
 - **iPad 等平板**（2026-11-11，使用者：iPad 上左右有點擠；手機版、電腦版不用改）：寬 761 以上、沒有滑鼠的觸控螢幕（`(hover: none) and (pointer: coarse)`），頂欄、每一段、頁尾兩邊留畫面寬的 5.5%（40–72 點，原本 16–20 點）；有滑鼠的電腦、760 以下的手機、iPhone Duo 打開（`html.duo`）都照舊。規則在 `assets/css/site.css` 最後。
@@ -62,7 +72,7 @@ stejoy.com 的網站：工作室**長風**的首頁（「寫意」系列，選�
 
 標題「力透紙背」四個字整字砸下來，各自踩在標誌的拍子上（2026-11-10，遊戲 v0.11.8；使用者：字是一整個一個個砸到介面上的，節奏同 logo 裡「力」的三筆畫還有最後一個「人」字，最後再來橫著的一筆）：`assets/litou/mark.js` 多一個 `MARK.hits()`（跟遊戲的 `src/mark.js` 一樣：上面那一小段、右邊大弧連底下一鉤、撇各自寫完，「人」著地），`assets/js/litou.js` 把「人」改成撇寫完後隔一拍才落、四個字的砸下動畫照這四個時刻著地（`--d`），橫掃那一筆、整行一震、蓋印排在四個字落定以後（`--fin`）。預告片頭（`tools/litou/title.html`）把標誌的三筆與「人」排到片頭四聲撥弦上（0.3 + k × 1.5 拍），四個字跟著同四聲砸下來。砸下的力道跟遊戲 v0.11.9 一樣加重：從 2.4 倍加速落下、壓扁 0.84 再彈，每個字著地標題那一列震一下（`lt-jolt`／`jolt`，`--h1`…`--h4`）。標題右下蓋一方「寫意」朱印（2026-11-10，使用者：要像《墨畫蒼生》一樣標上寫意）：跟《墨畫蒼生》字標裡那方印同一份（朱底、霞鶩文楷粗體轉外框，`tools/site/litou.py` 的 `XIEYI_SEAL`、`.lt-xieyi`），遊戲 v0.11.6 的起始頁與預告片頭片尾（`tools/litou/title.html` 的 `.xieyi`）同一個位置；四種語言都是這方繁體的印（是標誌，不轉簡體，墨畫蒼生也是）。預告只重錄了片頭片尾兩個鏡頭（遊戲 v0.11.6），其餘十三個沿用、配樂與字幕不變。風格刻意跟《墨畫蒼生》不同：紙色照遊戲（黃一點）、墨重、斜、快；紅印「敬請期待」；按鈕與預告框是硬邊的紅影；一卷五章放在墨黑的底上，左邊一個會跟著捲動展開的超正方體（一個點 → 線 → 正方形 → 正方體 → 四維；讀到第幾章就是幾維，兩章交界經過讀的地方才長出下一個方向——寬螢幕是畫面正中，手機是黏在頂上的超正方體底下那一塊的正中；十六個頂點的字固定、不重複，哪一章分出來的頂點就寫那一章的字：人、十、大口、天水火木、永玉石古本生正立）。這一頁在寬螢幕上比首頁寬 25%（版面 1350、開頭 1550、一卷 1500；手機一樣；《墨畫蒼生》頁跟它一樣寬），超正方體的畫布往左伸進頁邊，透視照最早那版（近處的頂點放得大），照每個展開程度轉得到的最遠處定比例，不會被框切掉；三維只在 xz 平面上轉，四維才加上 xw、yw。換維不會狂轉（以前轉角是「開頁秒數 × 展開幾成」，頁面開越久換維轉越多圈）：轉角一幀一幀累加，那一維展開九成才開始轉，捲回去時照捲動退回原位，一秒最多長 0.7 維、轉角一秒最多退 0.8 弧度；「試寫」可以直接按 1–0（或點鍵）照筆順寫字，用的是遊戲同一套筆順與米字格字形（2026-11-10 起照教育部標準字體重量，遊戲 v0.12.1；使用者指著試寫的「五」說「盡量使用規範字形」；「力」也改用遊戲的，`data.mjs` 自己那一份只留給舊版遊戲庫）；只收十筆寫得出的八十九個字——遊戲 v0.11 在深造、爐火純青的三維、四維多的三筆與十三個字，介紹頁只說「還有三筆在等你」、試寫不放（使用者定，留懸念；`tools/litou/data.mjs` 照 `R.STROKE_ORDER` 篩，從新版遊戲庫重產也一樣）。《墨畫蒼生》頁「聯絡」底下多一行連過來。
 
-- **越南文頁 `vi/litouzhibei/`**（2026-11-10，使用者：網頁版力透紙背也加一個越南文版；遊戲 v0.12 有越南文版）：只有這一頁有越南文，全站的四語之外多一個 `vi`（`litou.py` 的 `EXTRA`／`langs()`、首頁那一份共用字 `HOME_VI`）；首頁與《墨畫蒼生》沒有越南文，越南文頁頂上的「SteJoy」與「系列第一部」連到英文頁（`home`）。其他四語的這一頁也多一顆「VI」、hreflang 與 sitemap 多越南文；瀏覽器是越南文的人開其他語言的這一頁會提一句「Trang này cũng có bản tiếng Việt」，開首頁、《墨畫蒼生》改提英文（`site.js`）。標題底下寫漢越讀法 Lực Thấu Chỉ Bối；試寫的筆畫名、鍵上短名、性質與讀音照遊戲的越南文版（`vi`、`shortVi`、`traitVi`、`chars[字].vi` = [漢越音, 意思, 常用漢越詞]，成字時寫「đại – to, lớn · đại học」）；字用霞鶩文楷（`--vi`，有越南文字集）；預告字幕 `trailer.vi.vtt`（`tools/litou/captions.json` 的 `vi`；`node tools/trailer/build.mjs - - <輸出> --captions` 只重寫字幕，原本四種重產後一字不差）。其他四語「四種語言」改成五種。譯文沒有越南母語者校過。
+- **越南文頁 `vi/litouzhibei/`**（2026-11-10，使用者：網頁版力透紙背也加一個越南文版；遊戲 v0.12 有越南文版）：當時只有這一頁有越南文（另加 `EXTRA`、`HOME_VI`，越南文頁連到英文的首頁）；2026-11-12 全站加了越南文以後 `vi` 併進 `build-site.py` 的 `LANGS`，頂上的「SteJoy」與「系列第一部」連到越南文的首頁與《墨畫蒼生》頁。瀏覽器是越南文的人開其他語言的頁會提一句「Trang này cũng có bản tiếng Việt」（`site.js`）。標題底下寫漢越讀法 Lực Thấu Chỉ Bối；試寫的筆畫名、鍵上短名、性質與讀音照遊戲的越南文版（`vi`、`shortVi`、`traitVi`、`chars[字].vi` = [漢越音, 意思, 常用漢越詞]，成字時寫「đại – to, lớn · đại học」）；字用霞鶩文楷（`--vi`，有越南文字集）；預告字幕 `trailer.vi.vtt`（`tools/litou/captions.json` 的 `vi`；`node tools/trailer/build.mjs - - <輸出> --captions` 只重寫字幕，原本四種重產後一字不差）。其他四語「四種語言」改成五種。譯文沒有越南母語者校過。
 - 文字：`tools/site/litou.py` 的 `TEXT`（五語；遊戲本身有日文版，日文頁的副標、標語、章名、難度、筆畫名照遊戲的 `data-ja` 與 `src/rules.js`）；`python3 tools/site/build-site.py` 會連首頁、《墨畫蒼生》一起產生、一起寫進 sitemap。
 - 樣式與互動：`assets/css/litou.css`、`assets/js/litou.js`（標題的墨、標誌、超正方體、試寫）。標題五個字的粗體是 `assets/fonts/lxgw-wenkai-tc-700-litou.woff2`（霞鶩文楷 TC 700，只取力透紙纸背；SIL OFL 1.1，同資料夾的授權全文）。
 - 遊戲的資料：`assets/litou/data.js`（十筆的圖示與性質、八十九個字的筆順、讀音字義與米字格字形、標題身後那一筆）由 `node tools/litou/data.mjs <遊戲庫>` 產生（遊戲庫要在 `claude/xieyi-zhan` 分支：`main` 還是 v0.8.3、只有五十七個字）；日文頁用的筆畫名、性質（`ja`、`shortJa`、`traitJa`）與音讀訓讀（`chars[字].ja`，遊戲的 `R.MEAN_JA`；「力」的音讀訓讀 `data.mjs` 另補得完整一些）也從這裡來；簡體用遊戲的繁轉簡表。標誌 `assets/litou/mark.js` 與 `mark-ribbon.png`、`mark-ren.png`、`mark-time.png` 抄自遊戲庫的 `src/mark.js` 與 `src/mark-data.js`（照「力」的筆順寫出來：橫折鉤、撇）。

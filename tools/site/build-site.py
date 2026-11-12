@@ -1,4 +1,4 @@
-"""stejoy.com 的四語靜態頁：一份範本、四份文字，產出 index.html（繁中）、zh-hans/、en/、ja/（日文，2026-11-06 加）底下的各頁。
+"""stejoy.com 的五語靜態頁：一份範本、五份文字，產出 index.html（繁中）、zh-hans/、en/、ja/（日文，2026-11-06 加）、vi/（越南文，2026-11-12 全站加）底下的各頁。
 用法（在庫的根目錄）：python3 tools/site/build-site.py
 字標與寫字動畫從遊戲正式庫抄來（tools/site/logo.html，見 README）；文字改這個檔案的 TEXT。
 """
@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import litou   # 《力透紙背》的介紹頁（tools/site/litou.py）
 from head import HEAD_JS   # iPhone Duo 用電腦版排、頁面大小（tools/site/head.py）
 import home    # 首頁：長風的「寫意」系列，選一部遊戲（tools/site/home.py）
-INK = 'mohuacangsheng/'   # 《墨畫蒼生》的介紹頁搬到這裡（首頁改成選遊戲；四語各一份：mohuacangsheng/、zh-hans/、en/、ja/ 底下的 mohuacangsheng/）
+INK = 'mohuacangsheng/'   # 《墨畫蒼生》的介紹頁搬到這裡（首頁改成選遊戲；五語各一份：mohuacangsheng/、zh-hans/、en/、ja/、vi/ 底下的 mohuacangsheng/）
 
 ROOT = Path(__file__).resolve().parents[2]
 SITE = 'https://stejoy.com/'
@@ -23,6 +23,7 @@ LANGS = {
     'zh-Hans': {'dir': 'zh-hans/', 'up': '../', 'name': '简体中文', 'short': '简'},
     'en': {'dir': 'en/', 'up': '../', 'name': 'English', 'short': 'EN'},
     'ja': {'dir': 'ja/', 'up': '../', 'name': '日本語', 'short': '日本語'},   # 2026-11-06 使用者：整個網頁增加日文版
+    'vi': {'dir': 'vi/', 'up': '../', 'name': 'Tiếng Việt', 'short': 'VI'},   # 2026-11-12 使用者：stejoy.com 整站與《墨畫蒼生》加越南文（原本只有《力透紙背》那一頁有）
 }
 
 SCENES = ['gather', 'build', 'snow', 'night', 'gaze', 'zi']   # 造字（遊戲 v0.9.69，2026-11-09 加）排最後、佔整排，底下一排拆字
@@ -205,7 +206,76 @@ TEXT = {
         'bio': ('数学を教え、研究をしながら、インタラクティブなゲームで文字と文学を探っています。', '『墨畫蒼生』は、『山海経』の山と海、そして二十四節気を、漢字で組み上げた一つの島に描いた作品です。'),
         'copy': '© 2026 長風。フォント：Klee One、霞鶩文楷（いずれも SIL Open Font License 1.1）。',
     },
+    'vi': {
+        # 2026-11-12 使用者：stejoy.com 整站與《墨畫蒼生》都加越南文（《力透紙背》那一頁 2026-11-10 先有）。
+        # 用詞：魄＝phách（「hồn phách」的那個 phách，在「魄來的夜」那段解釋，跟日文頁一樣）、膽氣＝can đảm、節氣＝tiết khí、字典＝tự điển（字 tự）、
+        # 寫意＝«Tả ý»（越南畫論本來就叫 tranh tả ý，照《力透紙背》越南文頁）；專名寫漢越音：Cộng Công、núi Bất Chu、Tu Xà、Phong Hy、Đại Phong、
+        # Thanh Long／Bạch Hổ／Chu Tước／Huyền Vũ；難度寫漢越音並附原字：Tiêu Dao、Sơ Lý、Nhân Gian、Tông Sư
+        'studio': 'SteJoy',
+        'title': 'InkWild · Mặc Họa Thương Sinh 墨畫蒼生 | SteJoy',
+        'reading': 'Mặc Họa Thương Sinh',   # 字標底下寫漢越讀法（跟《力透紙背》越南文頁的 Lực Thấu Chỉ Bối 同一個做法）
+        'desc': 'Một trang giấy rơi xuống biển, và những chữ trên đó sống dậy. Bạn là một trong số ấy: chữ 人 (nhân – người). Lấy gỗ, xây gạch, thắp đèn, gắng qua những đêm phách (魄) xuyên tường mà đến; trồng ngũ cốc theo tiết khí, câu cá, ngắm sao. Khi đã đủ can đảm, hãy đóng thuyền vượt biển, đi tìm Cộng Công – kẻ đã húc lệch trời đất.',
+        'nav': ['Trailer', 'Câu chuyện', 'Chơi thử', 'Đặc điểm', 'Liên hệ'],
+        'kicker': 'Giữa những hàng chữ · Hòn đảo trên một trang giấy',
+        'tagline': 'Viết gỗ thành thuyền · Viết nước thành vực',
+        'soon': 'Sắp ra mắt trên Steam', 'wish': 'Thêm vào danh sách ước muốn trên Steam', 'watch': 'Xem trailer',
+        'trailer_h': 'Trailer', 'trailer_note': 'Hình ảnh thật trong trò chơi. Nhạc nền là bản tổng hợp tạm thời.',
+        'lang_note': 'InkWild hiện chỉ có giao diện tiếng Trung phồn thể và giản thể; chưa có bản tiếng Việt.',   # 遊戲沒有越南文版（跟英文、日文頁一樣先說清楚）
+        'story_h': 'Câu chuyện',
+        'story': [
+            'Trong chữ Hán, 島 (đảo) là con chim 鳥 (điểu) đậu trên núi 山 (sơn). Một trang giấy rơi xuống biển, và những chữ viết trên đó sống dậy. Bạn là một trong số ấy: chữ 人 (nhân – người), tay không tấc sắt. Mỗi ô trên trang giấy là một chữ: 木 (mộc) là cây, 山 (sơn) là núi, 水 (thủy) là nước, 虎 (hổ) chính là hổ. Chữ bạn lấy đi thành vật liệu; chữ bạn viết vào thành ngôi nhà của bạn. Trên đảo có một ngôi làng bỏ hoang, tấm bia ở đó khắc: «Trong làng không có người. Người đều ở trong tự điển.»',
+            'Trang giấy đang nghiêng lệch. Sách Hoài Nam Tử kể rằng Cộng Công «nổi giận húc vào núi Bất Chu», cột trời gãy, giềng đất đứt; góc giấy cong vểnh lên, thả ra rắn khổng lồ Tu Xà, lợn rừng khổng lồ Phong Hy và Đại Phong. Thanh Long, Bạch Hổ, Chu Tước, Huyền Vũ là bốn cái chặn giấy đè giữ bốn góc. Gắng qua một đêm, rồi thêm một đêm nữa; khi đã đủ can đảm, hãy đóng một con thuyền mà rời đi.',
+        ],
+        'scenes_h': 'Cảnh trong bản chơi thử',
+        'scenes_intro': 'Bản chơi thử diễn ra trên đảo chính, kéo dài đến hết đêm đầu tiên phách xuất hiện (tùy độ khó: Tiêu Dao đêm thứ 18, Sơ Lý đêm thứ 15, Nhân Gian đêm thứ 12, Tông Sư đêm thứ 9). Mọi cảnh dưới đây đều có trong bản chơi thử.',
+        'chai': (['người tựa cây: hưu – nghỉ ngơi', 'trăng bên cửa sổ: minh – sáng', 'con dưới mái nhà: tự – chữ'], 'Theo cách giải thích của Thuyết văn giải tự, bộ tự điển soạn vào khoảng năm 100; 囧 (quýnh) là cửa sổ.'),
+        'scenes': {
+            'gather': ('Lấy gỗ', 'Mỗi ô trong rừng đều là một chữ; lấy xuống là thành vật liệu.'),
+            'build': ('Dựng nhà', 'Xếp từng viên gạch một, rồi đặt giường, bếp lò, tủ và đèn.'),
+            'snow': ('Tuyết', 'Những ngày đầu xuân thường có tuyết; đèn thắp cả ngoài trời lẫn trong nhà.'),
+            'night': ('Đêm phách đến', 'Trời vừa tối, những viên gạch được đèn chiếu tới dần ánh lên thứ ánh sáng mờ. Người xưa nói khi người chết, hồn bay về trời, còn phách ở lại dưới đất. Phách sợ ánh sáng, trôi tới từ bóng tối, xuyên qua cả tường gạch; nhưng ngọn đèn đặt dưới đất có thể thiêu tan chúng.'),
+            'gaze': ('Ngắm sao', 'Đêm trời quang, ngẩng đầu nhận mặt các chòm sao theo lối Trung Hoa lẫn các chòm sao phương Tây; Tuế Tinh (sao Mộc), Huỳnh Hoặc (sao Hỏa) và Thái Bạch (sao Kim) chậm rãi dời bước giữa các vì sao.'),
+            'zi': ('Tạo chữ', 'Người 人 tựa vào cây 木 thành chữ 休 (hưu – nghỉ ngơi); trăng 月 rọi qua cửa sổ thành chữ 明 (minh – sáng). Vớt bộ 子 (tử – con) lên từ giếng làng, đặt vào trong nhà: 子 ở dưới mái 宀, và người dân chữ đầu tiên, chữ 字 (tự – chữ), bước ra khỏi tự điển.'),
+        },
+        'feat_h': 'Bản đầy đủ',
+        'feat_intro': 'Sau bản chơi thử, trang giấy vẫn còn rộng lắm.',
+        'features': {
+            'thunder': ('Sống theo tiết khí', 'Một năm ba trăm sáu mươi ngày, xoay vần theo hai mươi bốn tiết khí và bảy mươi hai hậu. Mưa, tuyết, mưa giông, gió lớn, mưa đá; sa mạc và núi lửa chỉ có sấm khô.'),
+            'crops': ('Ngũ cốc mọc lên từng nét', 'Trồng lúa, kê nếp, kê, lúa mì và đậu; giữ ruộng khỏi chim sẻ, chuột và châu chấu. Dùng nồi và chõ nấu ngũ cốc thành món ăn; ăn phối hợp đúng cách thì hiệu quả càng tăng.'),
+            'sail': ('Đóng thuyền vượt biển', 'Khi đã đủ can đảm, hãy đóng thuyền buồm Cô Phàm hay thuyền lớn Phương Chu mà ra khơi. Trên trang giấy có lục địa, quần đảo, sa mạc, núi lửa, đồng tuyết; dưới biển có 蜃 (thận), loài thủy quái phun ra ảo ảnh, đang rình rập.'),
+            'gong': ('Lên núi Bất Chu', 'Hạ gục Tu Xà, Phong Hy và Đại Phong, thỉnh kinh từ Huyền Vũ phương Bắc, rồi lên núi Bất Chu tìm Cộng Công – kẻ đã húc lệch trời đất.'),
+        },
+        'facts': ['Chơi đơn, ngoại tuyến', 'Bàn phím và chuột', 'Ngôn ngữ: tiếng Trung phồn thể (mặc định) và giản thể', 'Bốn độ khó: Tiêu Dao (逍遙), Sơ Lý (初履), Nhân Gian (人間), Tông Sư (宗師)'],
+        'contact_h': 'Liên hệ',
+        'contact': 'InkWild (Mặc Họa Thương Sinh) là trò chơi đầu tiên trong loạt «Tả ý» (寫意) của SteJoy. Có điều gì muốn nói, hãy viết thư cho chúng tôi:',
+        'next': ('Phần 2 của loạt «Tả ý»: Lực Thấu Chỉ Bối (力透紙背)', 'Hãy đón chờ'),
+        'banner': {'zh-Hant': '這一頁也有繁體中文', 'zh-Hans': '有简体中文页面', 'en': 'This page is also in English', 'ja': '日本語のページもあります'},
+        'video_off': 'Trình duyệt của bạn không phát được video này.',
+        'author': ('Tác giả', 'SteJoy', 'Liên hệ', 'Trang cá nhân'),
+        'bio': ('Giáo viên toán và nhà nghiên cứu, dùng trò chơi tương tác để khám phá chữ viết và văn chương.', 'InkWild đưa núi non, biển cả của Sơn Hải Kinh cùng hai mươi bốn tiết khí vào một hòn đảo dựng nên từ chữ Hán.'),
+        'copy': '© 2026 SteJoy. Phông chữ: LXGW WenKai, Noto Serif (SIL Open Font License 1.1).',
+    },
 }
+BANNER_VI = 'Trang này cũng có bản tiếng Việt'   # 別的語言頁對越南文瀏覽器提的那一句
+for _c, _t in TEXT.items():
+    if _c != 'vi':
+        _t['banner']['vi'] = BANNER_VI
+
+# 越南文的專名是好幾個音節，中間的空白換成不斷行的空白，免得「Tu / Xà」「Huyền / Vũ」被拆到兩行（首頁、兩部遊戲的越南文頁都套）
+VI_NAMES = ['Mặc Họa Thương Sinh', 'Lực Thấu Chỉ Bối', 'Cộng Công', 'Bất Chu', 'Tu Xà', 'Phong Hy', 'Đại Phong', 'Thanh Long', 'Bạch Hổ', 'Chu Tước',
+            'Huyền Vũ', 'Hoài Nam Tử', 'Sơn Hải Kinh', 'Thuyết văn giải tự', 'Tiêu Dao', 'Sơ Lý', 'Nhân Gian', 'Tông Sư', 'Tuế Tinh', 'Huỳnh Hoặc',
+            'Thái Bạch', 'Cô Phàm', 'Phương Chu', 'Lý Bạch', 'Hành lộ nan', 'Trường Phong', 'Vương Hy Chi', 'Vệ phu nhân', 'Bút trận đồ', 'Tả ý',
+            'Lô hỏa thuần thanh', 'Nhập mộc tam phân', 'Thông thấu', 'Nhập môn', 'Cửu cửu quy nhất', 'Tiên thiên bát quái', 'Văn Miếu', 'Hùng Vương', 'Nguyên Đán']
+def vi_nbsp(x):
+    if isinstance(x, str):
+        for n in VI_NAMES:
+            x = x.replace(n, n.replace(' ', '\u00a0'))
+        return x
+    if isinstance(x, (list, tuple)):
+        return type(x)(vi_nbsp(y) for y in x)
+    if isinstance(x, dict):
+        return {k: vi_nbsp(v) for k, v in x.items()}
+    return x
 
 
 
@@ -236,6 +306,7 @@ def page(code):
     facts = ''.join(f'<li>{esc(x)}</li>' for x in T['facts'])
     story = ''.join(f'<p>{esc(p)}</p>' for p in T['story'])
     lang_note = f'<p class="lang-note">{esc(T["lang_note"])}</p>' if T.get('lang_note') else ''
+    reading = f'\n  <p class="reading">{esc(T["reading"])}</p>' if T.get('reading') else ''   # 字標底下的漢越讀法（越南文頁）
     banner = json.dumps({c: [t, up + LANGS[c]['dir'] + INK] for c, t in T['banner'].items()}, ensure_ascii=False)
     return f'''<!doctype html>
 <html lang="{code}">
@@ -274,7 +345,7 @@ def page(code):
 <main>
 <section class="hero">
   <p class="kicker">{esc(T['kicker'])}</p>
-  <h1><span class="sr-only">{esc('墨畫蒼生 InkWild')}</span>{LOGO}</h1>
+  <h1><span class="sr-only">{esc('墨畫蒼生 InkWild')}</span>{LOGO}</h1>{reading}
   <p class="tagline">{' · '.join(f'<span>{esc(x)}</span>' for x in T['tagline'].split(' · '))}</p>
   <div class="cta">{cta}<a class="btn" href="#trailer">{esc(T['watch'])}</a></div>
   {lang_note}
@@ -331,18 +402,20 @@ def page(code):
 </html>
 '''
 
+TEXT['vi'] = vi_nbsp(TEXT['vi']); home.TEXT['vi'] = vi_nbsp(home.TEXT['vi']); litou.TEXT['vi'] = vi_nbsp(litou.TEXT['vi'])
+
 for code, L in LANGS.items():
     out = ROOT / L['dir'] / INK / 'index.html'   # 《墨畫蒼生》
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(page(code), encoding='utf-8')
     print(out.relative_to(ROOT), out.stat().st_size)
 
-home.build(LANGS, TEXT, SITE, AUTHOR, AUTHOR_URL, MAIL, LOGO)   # 首頁：選一部遊戲（index.html、zh-hans/index.html、en/index.html）
+home.build(LANGS, TEXT, SITE, AUTHOR, AUTHOR_URL, MAIL, LOGO)   # 首頁：選一部遊戲（index.html 與 zh-hans/、en/、ja/、vi/ 的 index.html）
 
-litou.build(LANGS, TEXT, SITE, AUTHOR, AUTHOR_URL, MAIL)   # 《力透紙背》：litouzhibei/、zh-hans/litouzhibei/、en/litouzhibei/、ja/litouzhibei/、vi/litouzhibei/（越南文只有這一頁）
+litou.build(LANGS, TEXT, SITE, AUTHOR, AUTHOR_URL, MAIL)   # 《力透紙背》：litouzhibei/ 與 zh-hans/、en/、ja/、vi/ 的 litouzhibei/
 
-# sitemap：首頁、《墨畫蒼生》、《力透紙背》各四語，各組互相標成同一頁的不同語言
-groups = [('', LANGS), (INK, LANGS), (litou.SLUG, litou.langs(LANGS))]   # 《力透紙背》多一個越南文（2026-11-10）
+# sitemap：首頁、《墨畫蒼生》、《力透紙背》各五語，各組互相標成同一頁的不同語言
+groups = [('', LANGS), (INK, LANGS), (litou.SLUG, LANGS)]
 (ROOT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + ''.join(
     f'  <url><loc>{SITE}{L["dir"]}{g}</loc>' + ''.join(f'<xhtml:link rel="alternate" hreflang="{c}" href="{SITE}{LL[c]["dir"]}{g}"/>' for c in LL) + '</url>\n' for g, LL in groups for L in LL.values()) + '</urlset>\n', encoding='utf-8')
 (ROOT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {SITE}sitemap.xml\n', encoding='utf-8')

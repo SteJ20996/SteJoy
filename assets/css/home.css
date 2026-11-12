@@ -130,3 +130,14 @@ body.lang-ja .hm-tag { letter-spacing: .08em; }
 body.lang-ja .hm-status { letter-spacing: .04em; }
 body.lang-ja .hm-quote p { letter-spacing: .04em; font-size: 22px; }
 @media (max-width: 860px) { body.lang-ja .hm-deck { letter-spacing: .02em; } }
+
+/* 越南文頁（2026-11-12）：字距照英文頁；不用斜體（聲調符號斜了難認） */
+body.lang-vi .hm-kicker { letter-spacing: .08em; }
+body.lang-vi .hm-title { letter-spacing: 0; font-size: clamp(30px, 4.4vw, 50px); }
+body.lang-vi .hm-deck { letter-spacing: 0; font-size: 19px; max-width: 40em; }
+body.lang-vi .hm-kind { font-family: var(--vi); }
+body.lang-vi .hm-genre { letter-spacing: .06em; text-transform: none; }
+body.lang-vi .hm-tag { letter-spacing: 0; }
+body.lang-vi .hm-quote p { letter-spacing: 0; font-size: 20px; }
+@media (max-width: 860px) { body.lang-vi .hm-deck { font-size: 17px; } }
+body.lang-vi .hm-en { font-style: normal; font-family: var(--vi); letter-spacing: .1em; }   /* 《力透紙背》那張紙寫漢越讀法 Lực Thấu Chỉ Bối，照越南文頁的 .lt-entitle 不斜 */

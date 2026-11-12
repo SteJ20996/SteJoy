@@ -2,7 +2,7 @@
 :root { --paper: #f4eee2; --paper-2: #ebe4d4; --ink: #1c1a17; --ink-2: #4a4238; --dim: #7d725f; --red: #b4392a; --line: rgba(28, 26, 23, .16);
   --zh: "LXGW WenKai TC", "Noto Serif TC", "Songti TC", serif; --sc: "Noto Serif SC", "Songti SC", serif; --en: Georgia, "Times New Roman", "LXGW WenKai TC", serif;
   --ja: "Klee One", "LXGW WenKai TC", "Hiragino Mincho ProN", "Yu Mincho", serif;   /* 日文頁：Klee One（霞鶩文楷的原型，字形照日本的寫法） */
-  --vi: "LXGW WenKai TC", "Noto Serif", Georgia, serif; }   /* 越南文頁（只有《力透紙背》，2026-11-10）：霞鶩文楷有越南文的字集（聲調符號），跟遊戲的越南文版同一套字 */
+  --vi: "LXGW WenKai TC", "Noto Serif", Georgia, serif; }   /* 越南文頁（《力透紙背》2026-11-10，全站 2026-11-12）：霞鶩文楷有越南文的字集（聲調符號），跟《力透紙背》遊戲的越南文版同一套字 */
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; color: var(--ink); background: var(--paper); font: 18px/1.85 var(--zh); -webkit-font-smoothing: antialiased; }
@@ -23,6 +23,10 @@ body.lang-zh-Hans .studio { font: 400 22px/1 var(--sc); letter-spacing: .16em; }
 body.lang-ja .studio { font: 400 23px/1 var(--ja); letter-spacing: .16em; }   /* 日文頁也寫「長風」 */
 .sections { display: flex; gap: 20px; margin-left: auto; }
 .sections a, .langs a { color: var(--ink-2); text-decoration: none; font-size: 15px; }
+.sections a, .langs a { white-space: nowrap; }   /* 2026-11-12：一個連結不拆兩行（越南文「Câu chuyện」、「日本語」在 iPad 上被拆過） */
+.top > .studio, .top > .langs { flex: none; }   /* 工作室名與語言不縮：擠了就收章節連結，不把「長風」擠成兩行 */
+.top.tight .sections { display: none; }   /* 放不下一行就收起章節連結，跟手機一樣（assets/js/site.js 量） */
+.top.tight .langs { margin-left: auto; }
 .sections a:hover, .langs a:hover { color: var(--red); }
 .langs { display: flex; gap: 2px; border: 1px solid var(--line); border-radius: 6px; padding: 2px; }
 .langs a { padding: 2px 9px; border-radius: 4px; font-family: var(--zh); }
@@ -182,6 +186,18 @@ body.lang-ja .clip figcaption b, body.lang-ja .feat h3 { letter-spacing: .04em; 
 body.lang-ja .next-game span { letter-spacing: .06em; }
 body.lang-ja :is(h1, h2, h3, .tagline, .kicker, .lead, .lang-note, .hm-title, .hm-tag, .lt-tagline, .lt-motto, .lt-loop) { word-break: auto-phrase; }
 body.lang-ja .lang-note { max-width: 620px; }   /* 「日本語版はありません」一行放得下，不斷在「あ／りません」 */
+
+/* 越南文頁（2026-11-12 全站加）：拉丁字母，字距照英文頁收；不用斜體（聲調符號斜了難認）；段首不空格；字標底下一行漢越讀法 */
+body.lang-vi h2 { letter-spacing: .02em; }
+body.lang-vi .kicker { letter-spacing: .1em; }
+body.lang-vi .tagline { letter-spacing: .04em; }
+body.lang-vi .story p { text-indent: 0; }
+body.lang-vi .clip figcaption b, body.lang-vi .feat h3 { letter-spacing: 0; }
+body.lang-vi .next-game span { letter-spacing: .04em; }
+body.lang-vi footer .author-name span { font-family: var(--vi); letter-spacing: .02em; }
+body.lang-vi .lang-note { max-width: 620px; }
+.hero .reading { margin: 4px 0 0; font-size: 21px; letter-spacing: .16em; color: var(--ink-2); }
+@media (max-width: 760px) { body.lang-vi .tagline { letter-spacing: .02em; } .hero .reading { font-size: 18px; letter-spacing: .1em; } }
 
 /* 造字（2026-11-09，遊戲 v0.9.69）：試玩場景最後一張佔整排，底下一排拆字（照《說文》） */
 .clip.wide { grid-column: 1 / -1; }
