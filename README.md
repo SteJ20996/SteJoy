@@ -20,7 +20,7 @@ stejoy.com 的網站：工作室**長風**的首頁（「寫意」系列，選�
 - 預告字幕 `assets/media/trailer.vi.vtt`（`tools/trailer/captions.json` 的 `vi`，`node tools/trailer/build.mjs - - <輸出> --captions` 只重寫字幕；原本四種重產後一字不差）。
 - 樣式：越南文是拉丁字母，字距照英文頁收、不用斜體（聲調符號斜了難認），`site.css`、`home.css` 的 `body.lang-vi`；頁面大小的鈕有越南文（`site.js`）。
 - 頂欄放不下一行時收起章節連結（`site.js` 量、`.top.tight`）：越南文、日文的章節名長，iPad 直拿時「Câu chuyện」「日本語」被拆成兩行、頂欄變兩三行高；英文、日文的《力透紙背》頁在 iPad mini 上原本也會。
-- 譯文沒有越南母語者校過。
+- 自我校對（2026-11-13，使用者：越南的朋友看過《力透紙背》越南文版說沒問題，這一版先仔細自校再給他們看）：本島不寫「đảo chính」（越南文也是「政變」），改 hòn đảo khởi đầu；試玩寫到「bình minh sau đêm đầu tiên phách xuất hiện」；撐過一律 cầm cự；書名加 «»；「·」後小寫（照《力透紙背》越南文頁）；遊戲沒有越南文版寫「không có」不寫「chưa có」（免得像預告）；地上的燈寫 đèn đặt trên mặt đất（dưới đất 會讀成地底下）；雷雨照越南氣象用語寫 mưa dông；字型涵蓋、Unicode 正規化（NFC）、標點都用程式查過。
 
 ## 首頁：選一部
 

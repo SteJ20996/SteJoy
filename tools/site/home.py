@@ -134,18 +134,18 @@ TEXT = {
         'kicker': 'Loạt «Tả ý» (寫意)',
         'headline': 'Hạ bút, cuộc chơi bắt đầu',   # 落筆成局：局是一盤棋、一場仗，一落筆就開局
         'deck': 'Đủ loại trò chơi dựng nên từ chữ Hán. Mỗi trang giấy bên dưới là một trò chơi riêng.',
-        'poem': '«Trường phong phá lãng hội hữu thì, trực quải vân phàm tế thương hải.» Rồi sẽ có ngày cưỡi gió lớn rẽ sóng, giương thẳng cánh buồm mây vượt biển xanh.',   # 先漢越音、再譯意（越南讀唐詩的習慣）
+        'poem': '«Trường phong phá lãng hội hữu thì, Trực quải vân phàm tế thương hải.» Rồi sẽ có ngày cưỡi gió dài rẽ sóng, giương thẳng cánh buồm mây vượt biển xanh.',   # 先漢越音、再譯意（越南讀唐詩的習慣）
         'cite': 'Lý Bạch, «Hành lộ nan»',
         'choose': 'Chọn trò chơi', 'hint': '← → để chuyển · Enter để mở',
         'kinds': {'all': 'Tất cả', 'survival': 'Sinh tồn · Xây dựng', 'battle': 'Thứ tự nét · Chiến đấu'},
         'games': {
-            'inkwild': {'name': '墨畫蒼生', 'en': 'InkWild', 'genre': 'Sinh tồn · Xây dựng', 'tag': 'Viết gỗ thành thuyền · Viết nước thành vực',
-                        'pitch': 'Một trang giấy rơi xuống biển, và những chữ trên đó sống dậy. Lấy gỗ, xây gạch, thắp đèn, gắng qua hết đêm này đến đêm khác; khi đã đủ can đảm, hãy đóng thuyền vượt biển.', 'status': 'Sắp ra mắt trên Steam', 'go': 'Vào'},
+            'inkwild': {'name': '墨畫蒼生', 'en': 'InkWild', 'genre': 'Sinh tồn · Xây dựng', 'tag': 'Viết gỗ thành thuyền · viết nước thành vực',
+                        'pitch': 'Một trang giấy rơi xuống biển, và những chữ trên đó sống dậy. Lấy gỗ, xây gạch, thắp đèn, cầm cự hết đêm này qua đêm khác; khi đã đủ can đảm, hãy đóng thuyền vượt biển.', 'status': 'Sắp ra mắt trên Steam', 'go': 'Vào'},
             'litou': {'name': '力透紙背', 'en': 'Lực Thấu Chỉ Bối', 'genre': 'Thứ tự nét · Chiến đấu', 'tag': 'Từ điểm thành đường · từ đường thành mặt · từ mặt thành khối',
-                      'pitch': 'Phím 1 đến 0 là mười nét bút; viết đúng thứ tự nét, chữ sai trước mặt liền được sửa đúng. Bắt đầu từ một điểm, viết mãi cho tới bên trong siêu lập phương.', 'status': 'Hãy đón chờ', 'go': 'Vào'},
+                      'pitch': 'Phím 1 đến 0 là mười nét bút; viết đúng thứ tự nét, chữ sai trước mặt liền được sửa đúng. Bắt đầu từ một điểm, viết một mạch vào tận bên trong siêu lập phương.', 'status': 'Hãy đón chờ', 'go': 'Vào'},
         },
         'about_h': 'Về SteJoy',
-        'about': ['SteJoy (長風 Trường Phong – «ngọn gió dài») là một studio nhỏ làm loạt trò chơi «Tả ý». Tên chữ Hán lấy từ bài «Hành lộ nan» của Lý Bạch.'],
+        'about': ['SteJoy (長風 Trường Phong – «ngọn gió dài») là một studio nhỏ làm loạt trò chơi «Tả ý». Tên chữ Hán của studio lấy từ bài thơ «Hành lộ nan» của Lý Bạch.'],
         'about2': 'Mỗi trò chơi trong loạt «Tả ý» đều lấy chữ Hán làm chất liệu. Trong InkWild, chữ là từng ô đất có thể tháo ra rồi xây lại; trong Lực Thấu Chỉ Bối, nét bút là chiêu thức, viết đúng một chữ là tung ra một đòn.',
         'contact_h': 'Liên hệ', 'contact': 'Có điều gì muốn nói, hãy viết thư cho chúng tôi:',
     },
