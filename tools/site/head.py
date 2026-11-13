@@ -13,7 +13,13 @@
    (d) 結果跟現在一樣就不寫 viewport；五秒內最多改六次（摺、開、轉向都只改一次；判斷萬一來回，一秒幾十次也會被擋住；
        擋下的那次等下一個 resize 再補）。
 2. 頁面大小（左下角的「− 100% ＋」，assets/js/site.js）：在畫面出來以前先套上次選的大小，免得先大後小閃一下。
-   放大只放到內容還有 880 寬（電腦版的版面）；窄過 880 就最多 100%（vw 寫的寬度放大了會超出畫面）。跟 site.js 的 cap() 同一條。
+   2026-11-13 使用者（在 MacBook 的 Safari 上看）：100% 太寬，把原本的 80% 當新的 100%、預設就是它，電腦、iPad、Windows 上可調 80%–120%。
+   所以分兩種：
+   - 大螢幕（電腦、平板：不是 iPhone、螢幕短邊 600 點以上、畫面寬過 760 用電腦版排）：實際縮放 = 0.8 × 選的大小，
+     選 80%–120%（實際 0.64–0.96），記在 stejoy.zoom2；都小於 1，不會超出畫面，不用限。
+   - 其他（手機、iPhone Duo、平板分割畫面窄到手機版）：照舊，實際縮放就是選的大小 70%–120%，記在 stejoy.zoom；
+     放大只放到內容還有 880 寬（電腦版的版面），窄過 880 就最多 100%（vw 寫的寬度放大了會超出畫面）。
+   跟 site.js 的 mode()／cap() 同一條。
 """
 
 DUO_JS = (
@@ -31,9 +37,12 @@ DUO_JS = (
 )
 
 ZOOM_JS = (
-    "try{var z=+localStorage.getItem('stejoy.zoom');if(z>=.7&&z<=1.2){"
-    "z=Math.min(z,innerWidth<880?1:Math.min(1.2,Math.floor(innerWidth/88)/10));"
-    "if(z!==1){document.documentElement.style.zoom=z;document.documentElement.style.setProperty('--z',z)}}}catch(e){}"
+    "try{var big=!/iPhone/.test(navigator.userAgent)&&Math.min(screen.width,screen.height)>=600&&innerWidth>760,z=1;"
+    "try{z=+localStorage.getItem(big?'stejoy.zoom2':'stejoy.zoom')}catch(e){}"
+    "if(big){if(!(z>=.8&&z<=1.2))z=1;z*=.8}"
+    "else{if(!(z>=.7&&z<=1.2))z=1;z=Math.min(z,innerWidth<880?1:Math.min(1.2,Math.floor(innerWidth/88)/10))}"
+    "z=Math.round(z*1000)/1000;"
+    "if(z!==1){document.documentElement.style.zoom=z;document.documentElement.style.setProperty('--z',z)}}catch(e){}"
 )
 
 HEAD_JS = '<script>' + DUO_JS + ZOOM_JS + '</script>'

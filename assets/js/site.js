@@ -34,7 +34,9 @@
       if (getComputedStyle(sec).display === 'none') return;   // 手機版本來就收著
       // 照子元素的寬加上間距，跟扣掉左右留白的寬比（擠進右邊留白時 scrollWidth 量不出來）
       const cs = getComputedStyle(top), kids = [...top.children].filter((e) => getComputedStyle(e).display !== 'none');
-      const need = kids.reduce((n, e) => n + e.getBoundingClientRect().width, 0) + (parseFloat(cs.columnGap) || 0) * (kids.length - 1);
+      // getBoundingClientRect 在頁面縮放（根元素的 zoom）下各家瀏覽器給的單位不一樣：用頂欄自己的比例換回 CSS 點，跟 clientWidth、留白同一種單位
+      const k = (top.getBoundingClientRect().width / top.offsetWidth) || 1;
+      const need = kids.reduce((n, e) => n + e.getBoundingClientRect().width, 0) / k + (parseFloat(cs.columnGap) || 0) * (kids.length - 1);
       const room = top.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
       top.classList.toggle('tight', need > room + 0.5);
     };
@@ -42,45 +44,55 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
   })();
 
-  // 頁面大小：左下角「− 100% ＋」（使用者要的：有人看到大圖會不舒服）。整頁用根元素的 CSS zoom，倍率另寫進 --z
-  // 給要撐滿畫面高度的地方換算；記在這台瀏覽器（stejoy.zoom），<head> 裡那一行在畫面出來以前先套上。
-  // 放大只放到內容還有 880 寬（電腦版的版面），窄過 880 就最多 100%（vw 寫的寬度放大了會超出畫面）；跟 tools/site/head.py 同一條。
-  // 按鈕自己反縮放，永遠一樣大
+  // 頁面大小：左下角「− 100% ＋」（使用者要的：有人看到大圖會不舒服）。整頁用根元素的 CSS zoom，實際倍率另寫進 --z
+  // 給要撐滿畫面高度的地方換算；記在這台瀏覽器，<head> 裡那一行（tools/site/head.py）在畫面出來以前先套上。按鈕自己反縮放，永遠一樣大。
+  // 2026-11-13 使用者：100% 太寬，原本的 80% 當新的 100%、預設就是它；電腦、iPad、Windows 上可調 80%–120%。所以分兩種（mode()）：
+  //   大螢幕（不是 iPhone、螢幕短邊 600 點以上、畫面寬過 760 用電腦版排）：實際 = 0.8 × 選的，選 80%–120%，記在 stejoy.zoom2；
+  //   其他（手機、iPhone Duo、平板分割畫面窄到手機版）：照舊，實際 = 選的 70%–120%，記在 stejoy.zoom，放大只放到內容還有 880 寬
+  //   （窄過 880 就最多 100%；vw 寫的寬度放大了會超出畫面）。畫面寬窄變了（拉視窗、分割畫面）就換過去，各記各的
   (() => {
-    const Z = [0.7, 0.8, 0.9, 1, 1.1, 1.2], KEY = 'stejoy.zoom', root = document.documentElement;
+    const root = document.documentElement, IPHONE = /iPhone/.test(navigator.userAgent);
+    const bigScreen = !IPHONE && Math.min(screen.width, screen.height) >= 600;
+    const MODES = {
+      big: { base: 0.8, Z: [0.8, 0.9, 1, 1.1, 1.2], key: 'stejoy.zoom2', cap: () => 1.2 },
+      small: { base: 1, Z: [0.7, 0.8, 0.9, 1, 1.1, 1.2], key: 'stejoy.zoom', cap: () => innerWidth < 880 ? 1 : Math.min(1.2, Math.floor(innerWidth / 88) / 10) },
+    };
+    const mode = () => MODES[bigScreen && innerWidth > 760 ? 'big' : 'small'];
     const cl = document.body.classList, lang = cl.contains('lang-en') ? 'en' : cl.contains('lang-ja') ? 'ja' : cl.contains('lang-vi') ? 'vi' : cl.contains('lang-zh-Hans') ? 'hans' : 'hant';
     const T = { hant: ['頁面大小', '縮小', '放大', '回到 100%'], hans: ['页面大小', '缩小', '放大', '回到 100%'], en: ['Page size', 'Smaller', 'Larger', 'Back to 100%'], ja: ['ページの大きさ', '縮小', '拡大', '100% に戻す'], vi: ['Cỡ trang', 'Thu nhỏ', 'Phóng to', 'Trở về 100%'] }[lang];
-    let want = 1; try { want = +localStorage.getItem(KEY) || 1; } catch (e) {}
-    if (!Z.includes(want)) want = 1;
-    const cap = () => innerWidth < 880 ? 1 : Math.min(Z[Z.length - 1], Math.floor(innerWidth / 88) / 10);
+    let M = null, want = 1;
+    const load = () => { M = mode(); want = 1; try { want = +localStorage.getItem(M.key) || 1; } catch (e) {} if (!M.Z.includes(want)) want = 1; };
+    const actual = (z) => Math.round(M.base * z * 1000) / 1000;
     const box = document.createElement('div'); box.className = 'zoom'; box.setAttribute('role', 'group'); box.setAttribute('aria-label', T[0]);
     const btn = (txt, label) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = txt; b.title = label; b.setAttribute('aria-label', label); return b; };
     const minus = btn('−', T[1]), val = btn('100%', T[3]), plus = btn('+', T[2]); val.className = 'zv';
     box.append(minus, val, plus); document.body.appendChild(box);
-    let cur = 1;
-    let shownZ = null, shownCap = null;
+    let cur = parseFloat(root.style.zoom) || 1;   // 實際倍率（<head> 那一行可能已經套上了）
+    let shown = null;
     const apply = (keep) => {
-      const z = Math.min(want, cap()), y = keep && document.documentElement.scrollHeight > innerHeight ? scrollY / (document.documentElement.scrollHeight - innerHeight) : null;
+      if (mode() !== M) load();
+      const z = Math.min(want, M.cap()), a = actual(z), y = keep && document.documentElement.scrollHeight > innerHeight ? scrollY / (document.documentElement.scrollHeight - innerHeight) : null;
       // 值沒變就什麼都不寫：iPhone 的 Safari 捲動時網址列一收一放就連發 resize，每次都重寫整頁的 zoom 與 --z 會一直重算樣式
-      if (z === shownZ && cap() === shownCap) return;
-      shownZ = z; shownCap = cap();
-      root.style.zoom = z === 1 ? '' : z; root.style.setProperty('--z', z); box.style.zoom = z === 1 ? '' : 1 / z;
+      const key = a + '|' + z + '|' + M.cap();
+      if (key === shown) return;
+      shown = key;
+      root.style.zoom = a === 1 ? '' : a; root.style.setProperty('--z', a); box.style.zoom = a === 1 ? '' : 1 / a;
       val.textContent = Math.round(z * 100) + '%'; val.setAttribute('aria-label', T[0] + ' ' + val.textContent + ({ en: ', ', vi: ', ', ja: '、' }[lang] || '，') + T[3]);
-      minus.disabled = z <= Z[0]; plus.disabled = z >= cap();
-      if (z !== cur) {
-        cur = z;
+      minus.disabled = z <= M.Z[0]; plus.disabled = z >= M.cap();
+      if (a !== cur) {
+        cur = a;
         if (y !== null) scrollTo(0, y * (document.documentElement.scrollHeight - innerHeight));   // 停在原來讀到的地方
-        dispatchEvent(new Event('resize')); dispatchEvent(new Event('scroll'));   // 讓量尺寸的（超正方體的畫布、捲到哪一章）重算
+        dispatchEvent(new Event('resize')); dispatchEvent(new Event('scroll'));   // 讓量尺寸的（超正方體的畫布、捲到哪一章、頂欄放不放得下）重算
       }
     };
-    const step = (d) => { const i = Z.indexOf(Math.min(want, cap())); want = Z[Math.max(0, Math.min(Z.length - 1, i + d))]; if (want > cap()) want = cap(); try { localStorage.setItem(KEY, String(want)); } catch (e) {} apply(true); };
+    const step = (d) => { const i = M.Z.indexOf(Math.min(want, M.cap())); want = M.Z[Math.max(0, Math.min(M.Z.length - 1, i + d))]; if (want > M.cap()) want = M.cap(); try { localStorage.setItem(M.key, String(want)); } catch (e) {} apply(true); };
     // 平常是淡的（site.css）；點了以後清楚幾秒，再淡回去
     let lit = 0; const wake = () => { box.classList.add('on'); clearTimeout(lit); lit = setTimeout(() => box.classList.remove('on'), 2500); };
     box.addEventListener('pointerdown', wake);
     minus.addEventListener('click', () => step(-1)); plus.addEventListener('click', () => step(1));
-    val.addEventListener('click', () => { want = 1; try { localStorage.removeItem(KEY); } catch (e) {} apply(true); });
+    val.addEventListener('click', () => { want = 1; try { localStorage.removeItem(M.key); } catch (e) {} apply(true); });
     addEventListener('resize', (e) => { if (e.isTrusted) apply(false); });
-    cur = parseFloat(root.style.zoom) || 1; apply(false);
+    load(); apply(false);
   })();
 
   // 語言：右上角（或下面那條提示）選了哪一種，就記在這台瀏覽器（stejoy.lang），整個網站照它，之後不再跳提示叫你換回去。
