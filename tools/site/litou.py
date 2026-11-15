@@ -558,6 +558,7 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
   <div class="lt-hero-text">
     <p class="lt-kicker">{esc(T['kicker'])}</p>
     <div class="lt-logo-row"><h1 class="lt-logo" aria-label="{esc(''.join(title_chars))} {esc(T.get('entitle', 'Through the Page'))}">{''.join(f'<span aria-hidden="true">{c}</span>' for c in title_chars)}</h1>{XIEYI_SEAL}</div>
+    <script>(function(r){{if(!r||!window.matchMedia||matchMedia('(prefers-reduced-motion: reduce)').matches)return;r.classList.add('hold');setTimeout(function(){{r.classList.remove('hold')}},2500)}})(document.currentScript.previousElementSibling)</script>
     <p class="lt-entitle" aria-hidden="true">{esc(T.get('entitle', 'Through the Page'))}</p>
     <p class="lt-tagline">{esc(T['tagline'])}</p>
     <p class="lt-motto">{esc(T['motto'])}</p>

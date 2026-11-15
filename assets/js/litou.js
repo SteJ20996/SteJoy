@@ -31,7 +31,17 @@
 
   // ---------- 標誌：這個環是一個「力」，橫折鉤、撇，照筆順寫出來 ----------
   const mark = document.querySelector('.lt-mark');
-  if (mark && window.MARK) { MARK.mount(mark); MARK.play(); }
+  if (mark && window.MARK) {
+    // 遊戲 v0.12.3：標題等標誌真的起筆才開始砸。頁面裡緊跟著標題那一小段程式先讓它停在第一格（.lt-logo-row.hold，兩息半後自己放），
+    // 標誌一起筆（MARK.onstart(t0)）就放開，並把標題裡每個動畫（連 ::before／::after）的起點設成 t0，兩邊同一個時鐘
+    const row = document.querySelector('.lt-logo-row');
+    MARK.onstart = (t0) => {
+      if (!row || !row.classList.contains('hold')) return;   // 已經自己放開了（標誌兩息半還沒動）：照原本的走，不重來一遍
+      row.classList.remove('hold');
+      if (typeof t0 === 'number' && row.getAnimations) for (const a of row.getAnimations({ subtree: true })) { try { a.startTime = t0; } catch (e) { /* 舊瀏覽器：照 CSS 自己起跑 */ } }
+    };
+    MARK.mount(mark); MARK.play();
+  }
 
   // ---------- 節標題：捲到才寫出那一筆 ----------
   const secs = [...document.querySelectorAll('.lt-sec, .lt-dims')];
