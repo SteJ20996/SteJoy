@@ -131,6 +131,18 @@ export const EXTRA = ({ seed2, bossbar, fx: fxIn, tile }) => {
     faceTo(e) { p.fx = Math.sign(e.x - p.x); p.fy = Math.sign(e.y - p.y); },
     E() { g.action = null; p.atkT = 0; p.sta = 100; g.pressGather(true); window.__events.hits.push([curF + 1, 0.3]); },   // 出手也記一筆（配樂照這個打）   // 按一下 E（冷卻歸零，錄影要準時出手）
     step(dx, dy) { p.moveT = 0; return g.tryStep(dx, dy); },
+    near1(e) { return U.cheb(e.x, e.y, p.x, p.y) <= 1; },
+    toward(e) {   // 往牠走一步（斜的走不了就橫的或直的；不踩到牠身上）
+      const dx = Math.sign(e.x - p.x), dy = Math.sign(e.y - p.y);
+      for (const [a, b] of [[dx, dy], [dx, 0], [0, dy]]) if ((a || b) && !(p.x + a === e.x && p.y + b === e.y) && this.step(a, b)) return true;
+      return false;
+    },
+    away(x, y, pref) {   // 往遠離 (x, y) 的方向走一步（正好站在上面就照 pref）
+      const dx = Math.sign(p.x - x) || (pref ? pref[0] : -1), dy = Math.sign(p.y - y) || (pref ? pref[1] : 0);
+      for (const [a, b] of [[dx, dy], [dx, 0], [0, dy], [-dy, dx], [dy, -dx]]) if ((a || b) && this.step(a, b)) return true;
+      return false;
+    },
+    boat(dx, dy) { p.moveT = 0; return g.shipStep(dx, dy, dx ? 'h' : 'v'); },   // 開船一格
     clear(cx, cy, r, ch) { for (let y = cy - r; y <= cy + r; y++) for (let x = cx - r; x <= cx + r; x++) w.set(x, y, ch || '草'); },   // 清出一塊地（ch 預設草）
     near(x, y, type, r) { return g.nearestTile(x, y, (a, b) => g.ents.canStand(type || '人', a, b, true) && !g.ents.at(a, b), r || 20) || [x, y]; },
     only() { g.ents.list = g.ents.list.filter(e => e.tame || e.type === '魚'); },   // 清掉旁邊的獸
@@ -176,7 +188,11 @@ export const SHOTS = [
       for (const [dx, dy, ty] of [[5, -1, '狼'], [-5, 1, '狼'], [1, 5, '豬'], [-3, -5, '狼'], [5, 3, '豹'], [-5, -2, '虎']]) { const e = g.ents.add(ty, p.x + dx, p.y + dy, { hp: 40 }); e.angry = true; e.provoked = 30; }
       f.face(1, 0);
     },
-    frame({ f }) { window.__f.noGhosts(); if (f === 50) { window.__slow(20, 0.35); window.__f.E(); } },
+    frame({ f }) {
+      const F = window.__f; F.noGhosts();
+      if (f === 12) F.step(-1, 0); if (f === 20) F.step(-1, 1); if (f === 30) F.step(1, 0); if (f === 38) F.step(1, -1);   // 獸從暗處圍上來，左右挪步、站回正中
+      if (f === 50) { window.__slow(20, 0.35); F.E(); }
+    },
   },
   {   // 虎撲：虎貼上來先縮一下發紅（預警），人往旁邊一閃、撲空，回身一刀斃了牠
     name: 'tiger', sec: 3.2, seed: 7, tile: 92, rand: 3, fx: { zoom: [1, 1.08], sweep: 0.2, motes: 0.5 },
@@ -188,8 +204,13 @@ export const SHOTS = [
     },
     frame({ f }) {
       const F = window.__f, t = window.__t;
-      if (t && t.warnT > 0 && !window.__dodged) { window.__dodged = f; F.step(0, 1); window.__slow(16, 0.4); }   // 一發紅就往下一閃（慢動作）
-      if (window.__dodged && (f === window.__dodged + 10 || f === window.__dodged + 25) && t.hp > 0) { F.faceTo(t); F.E(); if (t.hp <= 0) window.__hit(0.5); }   // 回身一刀；斃了牠那一下推鏡、閃光
+      if (!window.__dodged && (f === 6 || f === 12)) F.step(1, f === 6 ? -1 : 0);   // 先迎上去
+      if (t && t.warnT > 0 && !window.__dodged) { window.__dodged = f; F.step(-1, 1); window.__slow(16, 0.4); }   // 一發紅就往左下一閃（慢動作）
+      const d0 = window.__dodged; if (d0 && t.hp > 0) {
+        if ((f === d0 + 6 || f === d0 + 18) && !F.near1(t)) F.toward(t);   // 撲空了，欺身上去
+        if ((f === d0 + 11 || f === d0 + 24) && F.near1(t)) { F.faceTo(t); F.E(); if (t.hp <= 0) { window.__hit(0.5); window.__kill = f; } }   // 一刀；斃了牠那一下推鏡、閃光
+      }
+      if (window.__kill && (f === window.__kill + 10 || f === window.__kill + 16)) F.step(1, 0);   // 收刀往前走兩步
     },
   },
   {   // 戈：野豬一頭頭排著衝上來，戈往前突刺三格
@@ -203,6 +224,8 @@ export const SHOTS = [
     frame({ f }) {
       const F = window.__f, g = XIEYI.game, p = g.player;
       if (f % 16 === 8) { const o = g.geTarget() || g.ents.at(p.x + 1, p.y); if (o) { F.face(1, 0); if (!window.__geSlow) { window.__geSlow = 1; window.__slow(10, 0.4); } F.E(); if (o.hp <= 0) window.__hit(0.42); } }
+      if (f % 16 === 14 && f < 70) F.step(-1, 0);   // 刺一下退一步，讓下一頭再落進戈的三格裡
+      if (f === 76) F.step(-1, -1); if (f === 82) F.step(0, -1);   // 最後斜著撤開
     },
   },
   {   // 蜃：海上，蜃浮上來撞船、吐海霧；燭龍焚溟一揮，熔痕落在水上冒白汽
@@ -215,6 +238,7 @@ export const SHOTS = [
     },
     frame({ f }) {
       const F = window.__f, e = window.__e;
+      if (f === 10 || f === 17) F.boat(-1, 0); if (f === 26 || f === 34) F.boat(0, -1); if (f === 92) F.boat(1, 0);   // 掉頭、轉舵閃開蜃
       if ((f === 70 || f === 110) && e && e.hp > 0) { F.faceTo(e); if (f === 70) window.__slow(14, 0.4); F.E(); }
     },
   },
@@ -228,10 +252,14 @@ export const SHOTS = [
     },
     frame({ f }) {
       const F = window.__f, e = window.__e, g = XIEYI.game, p = g.player;
+      if (f === 8) F.step(-1, 0); if (f === 15) F.step(1, 0);   // 前後試探
       if (f === 26 || f === 40) { F.faceTo(e); F.E(); }   // 打在盾上
-      if (f === 52) F.step(0, -1);
-      if (f === 60) F.step(1, 0);
-      if (f === 72 || f === 88 || f === 104) { e.moveT = 0.6; F.faceTo(e); F.E(); }   // 身側
+      if (f >= 44) e.moveT = 99;   // 錄影時讓牠站定，人繞著牠走
+      if (f === 46) { const ux = Math.sign(e.x - p.x), uy = Math.sign(e.y - p.y); window.__arc = [[-uy || 0, ux || 0], [ux, uy], [ux, uy], [uy || 0, -ux || 0]]; }   // 繞弧：側一步、往前兩步、再拐進牠背後
+      if (window.__arc && f >= 48 && f <= 66 && (f - 48) % 6 === 0) { const st = window.__arc[(f - 48) / 6]; if (st) F.step(st[0], st[1]); }
+      if (f === 74 || f === 88) { F.faceTo(e); F.E(); }   // 背後
+      if (f === 96) { const ux = Math.sign(e.x - p.x), uy = Math.sign(e.y - p.y); F.step(-uy || 1, ux || 0); }
+      if (f === 104) { F.faceTo(e); F.E(); }
     },
   },
   {   // 蠱雕：在天上盤旋，青冥落羽一箭，絲纏住牠（繳）落到地上，近身補兩刀
@@ -245,8 +273,10 @@ export const SHOTS = [
     frame({ f }) {
       const F = window.__f, e = window.__e, g = XIEYI.game, p = g.player;
       if (f === 18) { F.faceTo(e); g.action = null; p.atkT = 0; const t = g.skyTarget(); if (t) { window.__slow(12, 0.4); g.bowShot(t); window.__hit(0.55, [170, 230, 255]); } if (e.hp > 0) e.hp = Math.min(e.hp, 40); }   // 射下來以後一刀斃得了
-      if (f === 34) { F.hold('鎢鋼刀'); if (U.cheb(e.x, e.y, p.x, p.y) > 1) F.step(Math.sign(e.x - p.x), 0); }
-      if (f >= 44 && f <= 80 && f % 12 === 8 && e.hp > 0 && U.cheb(e.x, e.y, p.x, p.y) <= 1) { F.faceTo(e); F.E(); if (e.hp <= 0) window.__hit(0.48); }
+      if (f === 2) F.step(-1, 0); if (f === 8) F.step(-1, 1);   // 先退開兩步，拉出射界
+      if (f === 24) F.hold('鎢鋼刀');
+      if (f >= 26 && f % 5 === 1 && e.hp > 0 && !F.near1(e)) F.toward(e);   // 繳下來了，衝上去
+      if (f >= 36 && f % 6 === 0 && e.hp > 0 && F.near1(e)) { F.faceTo(e); F.E(); if (e.hp <= 0) window.__hit(0.48); }
       if (e.hp <= 0) g.ents.list = g.ents.list.filter(o => o.type !== '雕');   // 斃了以後別再飛來一隻
     },
   },
@@ -260,8 +290,9 @@ export const SHOTS = [
     },
     frame({ f }) {
       const F = window.__f, e = window.__e, p = XIEYI.game.player; F.noGhosts();
-      if (f === 44) F.step(-1, 1);   // 跳出訛火圈
-      if ((f === 80 || f === 98) && e.hp > 0 && U.cheb(e.x, e.y, p.x, p.y) <= 1) { F.faceTo(e); F.E(); }
+      if (f === 20) F.step(-1, 0); if (f === 26) F.step(-1, 1); if (f === 32) F.step(0, 1); if (f === 40) F.step(1, 1);   // 訛火圈一冒，之字跳開
+      if (f >= 52 && f % 6 === 4 && e.hp > 0 && !F.near1(e)) F.toward(e);   // 再欺身上去
+      if (f >= 58 && f % 10 === 8 && e.hp > 0 && F.near1(e)) { F.faceTo(e); F.E(); }
     },
   },
   {   // 封豨：桑林裡蓄力、直衝過來，人閃開；牠拱地，震一圈圈往外傳；九閽鳴雷還一記
@@ -277,6 +308,9 @@ export const SHOTS = [
       if (e && (e.state === 'charge' || e.state === 'wind')) window.__speed(2);   // 蓄力、直衝：速度線
       if (e && e.state === 'charge' && !window.__dodged) { window.__dodged = f; F.step(0, -1); window.__slow(20, 0.45); }
       if (window.__dodged && f === window.__dodged + 5) F.step(0, -1);
+      if (window.__dodged && (f === window.__dodged + 12 || f === window.__dodged + 18)) F.step(-1, 0);   // 閃開以後往旁邊跑兩步
+      if (window.__dodged && (f === window.__dodged + 50 || f === window.__dodged + 58)) F.away(e.x + 1, e.y + 1, [0, 1]);   // 震圈之後再拉開
+      if (f === 140 && e && U.cheb(e.x + 0.5, e.y + 0.5, p.x, p.y) > 3) F.toward({ x: e.x, y: e.y });
       if (window.__dodged && f === window.__dodged + 30) { e.quakeCD = 0; e.chargeCD = 99; e.moveT = 0; }
       if (f === 150) { F.faceTo(e); window.__slow(14, 0.4); F.E(); }
     },
@@ -293,6 +327,7 @@ export const SHOTS = [
     },
     frame({ f }) {
       const F = window.__f, e = window.__e;
+      if (f === 3 || f === 10) F.boat(0, -1); if (f === 17) F.boat(-1, 0);   // 先轉舵想甩開牠
       if (e && e.state === 'coil' && (f % 18 === 0)) { F.faceTo(e); F.E(); }
       if (f === 120) F.hold('燭龍焚溟');
       if (f === 130) { F.faceTo(e); window.__slow(14, 0.4); F.E(); }
@@ -310,8 +345,12 @@ export const SHOTS = [
       f.face(-1, 0); window.__e = e;
     },
     frame({ f }) {
-      const F = window.__f, e = window.__e;
+      const F = window.__f, e = window.__e, p = XIEYI.game.player;
       if (f === 6) { e.galeCD = 0; e.moveT = 0; }
+      if (e && e.gale && !window.__galeDodge) window.__galeDodge = f;   // 狂風的路一畫出來就側步閃開
+      if (window.__galeDodge && (f === window.__galeDodge + 4 || f === window.__galeDodge + 9)) F.step(0, -1);
+      if (e && e.state === 'dive' && U.cheb(e.x, e.y, p.x, p.y) <= 3 && !window.__diveDodge) { window.__diveDodge = f; F.step(1, 1); }   // 俯衝下來，往旁一閃
+      if (window.__diveDodge && f === window.__diveDodge + 6) F.step(1, 0);
       if (f === 70) { e.galeCD = 99; e.diveCD = 0; e.moveT = 0; }
       if (e && e.state === 'dive') window.__speed(2);   // 俯衝下來：速度線
       if (f === 140) { F.faceTo(e); window.__f.E(); window.__hit(0.55, [170, 230, 255]); }
@@ -327,6 +366,10 @@ export const SHOTS = [
     },
     frame({ f }) {
       const F = window.__f, e = window.__e;
+      const p = XIEYI.game.player;
+      if (f === 18) F.step(0, -1); if (f === 26) F.step(-1, -1); if (f === 36) F.step(-1, 0);   // 人遊走，牠在地裡追，淖拖成一道彎
+      if (e && e.dig && !window.__digDodge) window.__digDodge = f;   // 腳下一冒泡，跳開
+      if (window.__digDodge && (f === window.__digDodge + 3 || f === window.__digDodge + 8)) F.away(e.dig ? e.dig.x : e.x, e.dig ? e.dig.y : e.y, [-1, 1]);
       if (f === 100) { F.faceTo(e); window.__slow(14, 0.4); F.E(); }
     },
   },
@@ -340,7 +383,10 @@ export const SHOTS = [
     },
     frame({ f }) {
       const F = window.__f, e = window.__e;
-      if (f === 58) F.step(-1, 0);
+      const p = XIEYI.game.player;
+      if (e && e.meteor && !window.__metDodge) { window.__metDodge = f; const cs = e.meteor.cells; window.__metC = [cs.reduce((a, c) => a + c[0], 0) / cs.length, cs.reduce((a, c) => a + c[1], 0) / cs.length]; }   // 三顆隕石的圈一畫出來
+      if (window.__metDodge && [4, 9, 14].includes(f - window.__metDodge)) F.away(window.__metC[0], window.__metC[1], [-1, -1]);   // 連跳三步出圈
+      if (f === 74 || f === 81) F.toward(e);   // 隕石落完，回身逼近
       if (f === 96) { F.faceTo(e); window.__slow(14, 0.4); F.E(); }
     },
   },
@@ -354,7 +400,9 @@ export const SHOTS = [
     },
     frame({ f }) {
       const F = window.__f, e = window.__e, g = XIEYI.game, p = g.player;
-      if (f === 60) F.step(-1, 1);
+      if (e && e.press && !window.__pressDodge) window.__pressDodge = f;   // 腳下一圈「壓」，跑出去
+      if (window.__pressDodge && [3, 8, 13].includes(f - window.__pressDodge)) F.away(e.press ? e.press.x : p.x + 1, e.press ? e.press.y : p.y, [-1, 1]);
+      if (f === 64) F.step(1, 0);
       if (f === 80 || f === 112) { F.faceTo(e); g.action = null; p.atkT = 0; const t = g.skyTarget(); if (t) { g.bowShot(t); window.__hit(0.6, [170, 230, 255]); if (f === 80) window.__slow(12, 0.4); } }
     },
   },
