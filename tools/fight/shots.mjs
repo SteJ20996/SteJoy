@@ -22,7 +22,7 @@ export const EXTRA = ({ seed2, bossbar, fx: fxIn, tile }) => {
   // ---- 光影（2026-11-16 使用者：短片裡加一些特效，比如更宏觀的光影；好多 Steam 遊戲這麼安排）----
   // 只在錄影時疊在畫面上，遊戲本身不動：雲影（乘）、斜照的光束與閃光（濾色）、四角壓暗（乘）、照時段調色（柔光）；
   // 推鏡照 fx.zoom 慢慢放大格子；重擊（遊戲自己的畫面震動突然變大）時閃一下白。
-  const FX = Object.assign({ grade: 'day', shadows: 0.2, rays: 0.13, vig: 0.42, zoom: null, flash: 0.55 }, fxIn || {});
+  const FX = Object.assign({ grade: 'day', shadows: 0.2, rays: 0.13, vig: 0.42, zoom: null, flash: 0.6, flashC: [255, 246, 228] }, fxIn || {});
   const cine = document.getElementById('cine'); cine.textContent = cine.textContent.replace(/body > \*:not\(#world\)/g, 'body > *:not(.cinefx):not(#world)') + ' #hud{z-index:50!important}';
   const W = innerWidth, H = innerHeight;
   const layer = (blend, z) => { const c = document.createElement('canvas'); c.className = 'cinefx'; c.width = W; c.height = H; Object.assign(c.style, { position: 'fixed', left: '0', top: '0', width: W + 'px', height: H + 'px', pointerEvents: 'none', mixBlendMode: blend, zIndex: String(z) }); document.body.appendChild(c); return c.getContext('2d'); };
@@ -33,11 +33,22 @@ export const EXTRA = ({ seed2, bossbar, fx: fxIn, tile }) => {
   window.__slow = (frames, r) => { slowN = frames; slowR = r; };   // 接下來幾幀遊戲走慢一些（重擊前後的慢動作）
   window.__events = { hits: [] };
   window.__flash = (a, c) => { flashA = Math.max(flashA, a); if (c) flashC = c; };
+  // ---- 第二層（2026-11-16 使用者：稍微浮誇一點，再加上一些外部光影因素，增加一點戲劇性）----
+  // 雲縫裡的陽光一道掃過（sweep）、光束裡的浮塵（motes）、暴風雲與天邊的電光（storm，配遊戲自己的雨）、火堆揚起的火星（embers）；
+  // 重擊：鏡頭猛地一推（punch）、衝擊波一圈圈散開（rings，紅青兩色錯開一點）、閃光照神兵上色（flashC）；衝撞、俯衝時的速度線（__speed）。
+  const rnd2 = (k) => { const x = Math.sin(k * 12.9898 + seed2 * 78.233) * 43758.5453; return x - Math.floor(x); };
+  const motes = Array.from({ length: 80 }, (_, k) => ({ x: rnd2(k), y: rnd2(k + 100), r: 1.2 + 2.6 * rnd2(k + 200), v: 0.2 + 0.8 * rnd2(k + 300), ph: rnd2(k + 400) * 6.28 }));
+  const embers = Array.from({ length: 110 }, (_, k) => ({ x: rnd2(k + 500), y: rnd2(k + 600), r: 1.4 + 3.2 * rnd2(k + 700), v: 0.5 + 1.7 * rnd2(k + 800), ph: rnd2(k + 900) * 6.28 }));
+  let punchA = 0, rings = [], speedN = 0, stormA = 0, bolt = null, nextBolt = FX.storm ? (FX.stormAt || 0.7) : 1e9;
+  window.__speed = (n) => { speedN = Math.max(speedN, n); };
+  window.__hit = (a, c) => { window.__flash(a, c); punchA = Math.max(punchA, a); rings.push({ k: 0, a }); window.__events.hits.push([curF + 1, a >= 0.58 ? 0.7 : 0.45]); };   // 自己喊的重擊（刀斃了虎、射下蠱雕……）
+  if (FX.storm && FX.rain !== false) { w.wx = 'rain'; w.rainUntil = w.time + XIEYI.DAY; }   // 暴風雨：雨絲照遊戲自己的畫法
   window.__post = (f, n) => {
     const t = f / 30, u = n > 1 ? f / (n - 1) : 0, ease = u * u * (3 - 2 * u);
-    if (FX.zoom) { g.renderer.tile = tile * (FX.zoom[0] + (FX.zoom[1] - FX.zoom[0]) * ease); }
+    const zk = FX.zoom ? FX.zoom[0] + (FX.zoom[1] - FX.zoom[0]) * ease : 1;
+    g.renderer.tile = tile * zk * (1 + 0.13 * punchA); punchA *= 0.8;   // 推鏡＋重擊時猛地一推再慢慢退回
     curF = f; const sh = g.renderer.shake || 0;
-    if (sh >= 0.58 && sh > lastShake + 0.3) { window.__flash(Math.min(0.7, FX.flash * sh / 0.8)); window.__events.hits.push([f, +sh.toFixed(2)]); }   // 只有重擊（神兵、魔王的大招）閃白；獸咬人那點震動不算
+    if (sh >= 0.58 && sh > lastShake + 0.3) { window.__flash(Math.min(0.8, FX.flash * sh / 0.7), FX.flashC); punchA = 1; rings.push({ k: 0, a: 1 }); window.__events.hits.push([f, +sh.toFixed(2)]); }   // 只有重擊（神兵、魔王的大招）閃光、推鏡、衝擊波；獸咬人那點震動不算
     lastShake = sh;
     mul.clearRect(0, 0, W, H); scr.clearRect(0, 0, W, H); soft.clearRect(0, 0, W, H);
     if (FX.shadows) for (let k = 0; k < 5; k++) {   // 雲影：五團大而淡的影子，斜斜地飄過地面
@@ -46,6 +57,15 @@ export const EXTRA = ({ seed2, bossbar, fx: fxIn, tile }) => {
       mul.fillStyle = gr; mul.fillRect(0, 0, W, H);
     }
     const gel = GEL[FX.grade]; if (gel) { mul.fillStyle = `rgb(${gel.join(',')})`; mul.fillRect(0, 0, W, H); }
+    if (FX.storm) {   // 暴風雲：整片壓暗壓冷，上緣更暗（雲底）
+      const sc = FX.stormC || [60, 62, 80]; mul.fillStyle = FX.stormC ? 'rgb(232,214,210)' : 'rgb(214,214,226)'; mul.fillRect(0, 0, W, H);
+      const gr = mul.createLinearGradient(0, 0, 0, H * 0.6); gr.addColorStop(0, `rgba(${sc.join(',')},0.6)`); gr.addColorStop(1, `rgba(${sc.join(',')},0)`); mul.fillStyle = gr; mul.fillRect(0, 0, W, H);   // 雲底的顏色（共工是暗赤）
+    }
+    if (speedN > 0) {   // 速度線：從畫面中間往外的墨線
+      mul.save(); mul.translate(W / 2, H / 2); mul.strokeStyle = 'rgba(30,24,18,0.42)'; mul.lineCap = 'round';
+      for (let k = 0; k < 46; k++) { const a = k / 46 * 6.283 + rnd2(k + f) * 0.12, r0 = H * (0.36 + 0.2 * rnd2(k + 31 + f)), r1 = r0 + H * (0.25 + 0.35 * rnd2(k + 77 + f)); mul.lineWidth = 2 + 6 * rnd2(k + 13); mul.beginPath(); mul.moveTo(Math.cos(a) * r0, Math.sin(a) * r0); mul.lineTo(Math.cos(a) * r1, Math.sin(a) * r1); mul.stroke(); }
+      mul.restore(); speedN--;
+    }
     if (FX.vig) { const gr = mul.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.42, W / 2, H / 2, Math.hypot(W, H) * 0.6); gr.addColorStop(0, 'rgba(40,30,20,0)'); gr.addColorStop(1, `rgba(40,30,20,${FX.vig})`); mul.fillStyle = gr; mul.fillRect(0, 0, W, H); }
     if (FX.rays) {   // 光束：從左上方畫面外斜照下來，寬窄、明暗慢慢起伏
       scr.save(); scr.translate(-0.12 * W, -0.35 * H); scr.rotate(0.62);
@@ -58,6 +78,40 @@ export const EXTRA = ({ seed2, bossbar, fx: fxIn, tile }) => {
         scr.globalCompositeOperation = 'destination-out'; fade.addColorStop(0, 'rgba(0,0,0,0)'); fade.addColorStop(1, 'rgba(0,0,0,0.9)'); scr.fillStyle = fade; scr.fillRect(0, off - wd, 2.4 * W, wd * 2);
       }
       scr.restore(); scr.globalCompositeOperation = 'source-over';
+    }
+    if (FX.sweep !== undefined) {   // 雲縫裡的陽光：一道寬光由左上往右下掃過整個畫面
+      const st = t - FX.sweep, dur = 2.6; if (st > 0 && st < dur) {
+        const u2 = st / dur, a = Math.sin(u2 * Math.PI) * 0.34, cx = (-0.3 + 1.6 * u2) * W;
+        scr.save(); scr.translate(cx, H / 2); scr.rotate(0.5); const gr = scr.createLinearGradient(-0.22 * W, 0, 0.22 * W, 0);
+        gr.addColorStop(0, 'rgba(255,238,200,0)'); gr.addColorStop(0.5, `rgba(255,238,200,${a})`); gr.addColorStop(1, 'rgba(255,238,200,0)'); scr.fillStyle = gr; scr.fillRect(-0.22 * W, -H * 1.2, 0.44 * W, H * 2.4); scr.restore();
+      }
+    }
+    if (FX.motes) {   // 光束裡的浮塵：慢慢往右上飄、一明一滅
+      scr.globalCompositeOperation = 'lighter';
+      for (const m of motes) { const x = ((m.x + t * 0.012 * m.v) % 1) * W, y = ((m.y - t * 0.02 * m.v + 2) % 1) * H, a = FX.motes * (0.5 + 0.5 * Math.sin(t * 1.6 + m.ph)); const gr = scr.createRadialGradient(x, y, 0, x, y, m.r * 3); gr.addColorStop(0, `rgba(255,240,205,${a})`); gr.addColorStop(1, 'rgba(255,240,205,0)'); scr.fillStyle = gr; scr.fillRect(x - m.r * 3, y - m.r * 3, m.r * 6, m.r * 6); }
+      scr.globalCompositeOperation = 'source-over';
+    }
+    if (FX.embers) {   // 火星：從下面揚起來，左右飄、一閃一閃；底下一片暖光
+      const gl = scr.createRadialGradient(W / 2, H * 1.1, 0, W / 2, H * 1.1, H * 0.9); gl.addColorStop(0, `rgba(255,120,40,${0.22 * FX.embers})`); gl.addColorStop(1, 'rgba(255,120,40,0)'); scr.fillStyle = gl; scr.fillRect(0, 0, W, H);
+      scr.globalCompositeOperation = 'lighter';
+      for (const m of embers) { const yy = (m.y - t * 0.09 * m.v + 3) % 1, x = (m.x + 0.03 * Math.sin(t * 2 + m.ph)) * W, y = yy * H, a = FX.embers * (0.4 + 0.6 * Math.abs(Math.sin(t * 5 + m.ph))) * (0.3 + 0.7 * yy); const gr = scr.createRadialGradient(x, y, 0, x, y, m.r * 2.6); gr.addColorStop(0, `rgba(255,190,90,${a})`); gr.addColorStop(0.4, `rgba(255,110,40,${a * 0.6})`); gr.addColorStop(1, 'rgba(255,90,30,0)'); scr.fillStyle = gr; scr.fillRect(x - m.r * 3, y - m.r * 3, m.r * 6, m.r * 6); }
+      scr.globalCompositeOperation = 'source-over';
+    }
+    if (FX.storm) {   // 天邊的電光：一陣陣亮（閃兩下），雲縫裡劈下一道細的
+      if (t >= nextBolt) { stormA = 1; bolt = { x: (0.15 + 0.7 * rnd2(f * 3)) * W, sd: f, n: 0 }; nextBolt = t + 1.3 + 1.4 * rnd2(f + 9); }
+      if (bolt && bolt.n === 4) stormA = Math.max(stormA, 0.8);
+      if (stormA > 0.02) {
+        scr.fillStyle = `rgba(214,224,255,${0.42 * stormA})`; scr.fillRect(0, 0, W, H);
+        if (bolt && bolt.n < 8) { scr.save(); scr.strokeStyle = `rgba(245,248,255,${stormA})`; scr.shadowColor = 'rgba(190,210,255,0.9)'; scr.shadowBlur = 18; scr.lineWidth = 3;
+          let x = bolt.x, y = 0; scr.beginPath(); scr.moveTo(x, y); for (let k = 0; k < 9; k++) { x += (rnd2(bolt.sd + k) - 0.5) * 90; y += H * 0.045; scr.lineTo(x, y); } scr.stroke(); scr.restore(); }
+        stormA *= bolt && bolt.n < 3 ? 0.55 : 0.75; if (bolt) bolt.n++;
+      }
+    }
+    if (rings.length) {   // 衝擊波：從人那裡一圈圈散開，紅青兩色錯開一點（像鏡頭的色散）
+      for (const r of rings) { const u3 = r.k / 20, rad = H * (0.08 + 0.7 * u3), a = (1 - u3) * 0.55 * r.a;
+        for (const [dx, col] of [[-5, '255,90,70'], [5, '90,220,255'], [0, '255,250,235']]) { scr.strokeStyle = `rgba(${col},${a * (dx ? 0.6 : 1)})`; scr.lineWidth = 10 * (1 - u3) + 2; scr.beginPath(); scr.arc(W / 2 + dx, H / 2, rad, 0, 6.283); scr.stroke(); }
+        r.k++; }
+      rings = rings.filter(r => r.k <= 20);
     }
     if (flashA > 0.01) {   // 閃光：整片亮一下，人四周更亮
       scr.fillStyle = `rgba(${flashC.join(',')},${flashA * 0.35})`; scr.fillRect(0, 0, W, H);
@@ -115,7 +169,7 @@ export const EXTRA = ({ seed2, bossbar, fx: fxIn, tile }) => {
 
 export const SHOTS = [
   {   // 開場、夜：九閽鳴雷——獸群從暗處圍上來，一鎚落地，雷紋擴散、閃電劈到每一頭身上
-    name: 'hammer', sec: 3.6, seed: 7, tile: 84, rand: 5, fx: { grade: 'night', shadows: 0, rays: 0, vig: 0.55, zoom: [1, 1.12], flash: 0.8 },
+    name: 'hammer', sec: 3.6, seed: 7, tile: 84, rand: 5, fx: { grade: 'night', shadows: 0, rays: 0, vig: 0.55, zoom: [1, 1.12], flash: 0.8, storm: true, rain: false, stormAt: 0.35, flashC: [255, 232, 170] },
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game, p = g.player; c.at(31, 0.8);
       f.clear(p.x, p.y, 5); f.arm(['九閽鳴雷', '鎢鋼刀'], '九閽鳴雷'); f.only();
@@ -125,7 +179,7 @@ export const SHOTS = [
     frame({ f }) { window.__f.noGhosts(); if (f === 50) { window.__slow(20, 0.35); window.__f.E(); } },
   },
   {   // 虎撲：虎貼上來先縮一下發紅（預警），人往旁邊一閃、撲空，回身一刀斃了牠
-    name: 'tiger', sec: 3.2, seed: 7, tile: 92, rand: 3, fx: { zoom: [1, 1.08] },
+    name: 'tiger', sec: 3.2, seed: 7, tile: 92, rand: 3, fx: { zoom: [1, 1.08], sweep: 0.2, motes: 0.5 },
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game, p = g.player; c.at(30, 0.4);
       f.clear(p.x, p.y, 4); f.arm(['鎢鋼刀', '鎢鋼劍'], '鎢鋼刀'); f.only();
@@ -135,11 +189,11 @@ export const SHOTS = [
     frame({ f }) {
       const F = window.__f, t = window.__t;
       if (t && t.warnT > 0 && !window.__dodged) { window.__dodged = f; F.step(0, 1); window.__slow(16, 0.4); }   // 一發紅就往下一閃（慢動作）
-      if (window.__dodged && (f === window.__dodged + 10 || f === window.__dodged + 25) && t.hp > 0) { F.faceTo(t); F.E(); }   // 回身兩刀
+      if (window.__dodged && (f === window.__dodged + 10 || f === window.__dodged + 25) && t.hp > 0) { F.faceTo(t); F.E(); if (t.hp <= 0) window.__hit(0.5); }   // 回身一刀；斃了牠那一下推鏡、閃光
     },
   },
   {   // 戈：野豬一頭頭排著衝上來，戈往前突刺三格
-    name: 'ge', sec: 3.4, seed: 7, tile: 92, rand: 4, fx: { zoom: [1.04, 1] },
+    name: 'ge', sec: 3.4, seed: 7, tile: 92, rand: 4, fx: { zoom: [1.04, 1], sweep: 0.6, motes: 0.4 },
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game, p = g.player; c.at(31, 0.45);
       f.clear(p.x, p.y, 4); f.arm(['鎢鋼戈', '鎢鋼刀'], '鎢鋼戈'); f.only();
@@ -148,11 +202,11 @@ export const SHOTS = [
     },
     frame({ f }) {
       const F = window.__f, g = XIEYI.game, p = g.player;
-      if (f % 16 === 8) { const o = g.geTarget() || g.ents.at(p.x + 1, p.y); if (o) { F.face(1, 0); if (!window.__geSlow) { window.__geSlow = 1; window.__slow(10, 0.4); } F.E(); } }
+      if (f % 16 === 8) { const o = g.geTarget() || g.ents.at(p.x + 1, p.y); if (o) { F.face(1, 0); if (!window.__geSlow) { window.__geSlow = 1; window.__slow(10, 0.4); } F.E(); if (o.hp <= 0) window.__hit(0.42); } }
     },
   },
   {   // 蜃：海上，蜃浮上來撞船、吐海霧；燭龍焚溟一揮，熔痕落在水上冒白汽
-    name: 'shen', sec: 4.4, seed: 7, tile: 76, rand: 6, fx: { grade: 'sea', shadows: 0.16, rays: 0.1, zoom: [1, 1.08] },
+    name: 'shen', sec: 4.4, seed: 7, tile: 76, rand: 6, fx: { grade: 'sea', shadows: 0.16, rays: 0.1, zoom: [1, 1.08], storm: true, stormAt: 0.5, flashC: [255, 160, 80] },
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game; c.at(41, 0.5);
       const [x, y] = f.coast(150, 20); f.sail(x, y); f.only(); f.face(1, 0);
@@ -165,7 +219,7 @@ export const SHOTS = [
     },
   },
   {   // 鑿齒：正面是盾，打上去只一成；繞到牠身側，一劍穿過去
-    name: 'tooth', sec: 3.8, seed: 7, tile: 92, rand: 7, fx: { zoom: [1, 1.06] },
+    name: 'tooth', sec: 3.8, seed: 7, tile: 92, rand: 7, fx: { zoom: [1, 1.06], sweep: 1.0, motes: 0.4 },
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game, p = g.player; c.at(42, 0.45);
       f.clear(p.x, p.y, 5, '土'); f.arm(['鎢鋼劍', '鎢鋼刀'], '鎢鋼劍'); f.only();
@@ -181,7 +235,7 @@ export const SHOTS = [
     },
   },
   {   // 蠱雕：在天上盤旋，青冥落羽一箭，絲纏住牠（繳）落到地上，近身補兩刀
-    name: 'harpy', sec: 3.4, seed: 7, tile: 84, rand: 8, fx: { rays: 0.16, zoom: [1, 1.06] },
+    name: 'harpy', sec: 3.4, seed: 7, tile: 84, rand: 8, fx: { rays: 0.16, zoom: [1, 1.06], motes: 0.6 },
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game, p = g.player; c.at(43, 0.5);
       f.clear(p.x, p.y, 5); f.arm(['青冥落羽', '鎢鋼刀'], '青冥落羽'); f.only();
@@ -190,14 +244,14 @@ export const SHOTS = [
     },
     frame({ f }) {
       const F = window.__f, e = window.__e, g = XIEYI.game, p = g.player;
-      if (f === 18) { F.faceTo(e); g.action = null; p.atkT = 0; const t = g.skyTarget(); if (t) { window.__slow(12, 0.4); g.bowShot(t); } if (e.hp > 0) e.hp = Math.min(e.hp, 40); }   // 射下來以後一刀斃得了
+      if (f === 18) { F.faceTo(e); g.action = null; p.atkT = 0; const t = g.skyTarget(); if (t) { window.__slow(12, 0.4); g.bowShot(t); window.__hit(0.55, [170, 230, 255]); } if (e.hp > 0) e.hp = Math.min(e.hp, 40); }   // 射下來以後一刀斃得了
       if (f === 34) { F.hold('鎢鋼刀'); if (U.cheb(e.x, e.y, p.x, p.y) > 1) F.step(Math.sign(e.x - p.x), 0); }
-      if (f >= 44 && f <= 80 && f % 12 === 8 && e.hp > 0 && U.cheb(e.x, e.y, p.x, p.y) <= 1) { F.faceTo(e); F.E(); }
+      if (f >= 44 && f <= 80 && f % 12 === 8 && e.hp > 0 && U.cheb(e.x, e.y, p.x, p.y) <= 1) { F.faceTo(e); F.E(); if (e.hp <= 0) window.__hit(0.48); }
       if (e.hp <= 0) g.ents.list = g.ents.list.filter(o => o.type !== '雕');   // 斃了以後別再飛來一隻
     },
   },
   {   // 畢方：一聲鳴，你身邊三處起訛火；一跳兩格，落腳處也燒起來
-    name: 'bifang', sec: 4, seed: 7, tile: 84, rand: 9, fx: { grade: 'dusk', shadows: 0, rays: 0, vig: 0.36, zoom: [1, 1.08] },
+    name: 'bifang', sec: 4, seed: 7, tile: 84, rand: 9, fx: { grade: 'dusk', shadows: 0, rays: 0, vig: 0.36, zoom: [1, 1.08], embers: 0.9 },
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game, p = g.player; const d = c.dusk(44); c.at(44, d + 0.02);
       f.clear(p.x, p.y, 5, '土'); f.arm(['鎢鋼劍', '鎢鋼刀'], '鎢鋼劍'); f.only();
@@ -211,7 +265,7 @@ export const SHOTS = [
     },
   },
   {   // 封豨：桑林裡蓄力、直衝過來，人閃開；牠拱地，震一圈圈往外傳；九閽鳴雷還一記
-    name: 'hog', sec: 5.6, seed: 7, tile: 72, rand: 11, bossbar: true, fx: { shadows: 0.24, zoom: [1, 1.1] },
+    name: 'hog', sec: 5.6, seed: 7, tile: 72, rand: 11, bossbar: true, fx: { shadows: 0.24, zoom: [1, 1.1], sweep: 0.5, motes: 0.5, flashC: [255, 232, 170] },
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game; c.at(33, 0.45);
       f.arm(['九閽鳴雷', '鎢鋼劍'], '九閽鳴雷');
@@ -220,6 +274,7 @@ export const SHOTS = [
     },
     frame({ f }) {
       const F = window.__f, e = window.__e, g = XIEYI.game, p = g.player;
+      if (e && (e.state === 'charge' || e.state === 'wind')) window.__speed(2);   // 蓄力、直衝：速度線
       if (e && e.state === 'charge' && !window.__dodged) { window.__dodged = f; F.step(0, -1); window.__slow(20, 0.45); }
       if (window.__dodged && f === window.__dodged + 5) F.step(0, -1);
       if (window.__dodged && f === window.__dodged + 30) { e.quakeCD = 0; e.chargeCD = 99; e.moveT = 0; }
@@ -227,7 +282,7 @@ export const SHOTS = [
     },
   },
   {   // 修蛇：洞庭湖上，修蛇纏住船，頭露在外面——打頭多吃五成
-    name: 'snake', sec: 5, seed: 7, tile: 84, rand: 12, bossbar: true, fx: { grade: 'sea', shadows: 0.18, rays: 0.1, zoom: [1, 1.08] },
+    name: 'snake', sec: 5, seed: 7, tile: 84, rand: 12, bossbar: true, fx: { grade: 'sea', shadows: 0.18, rays: 0.1, zoom: [1, 1.08], storm: true, stormAt: 0.9, flashC: [255, 160, 80] },
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game; c.at(34, 0.5);
       f.arm(['鎢鋼劍', '燭龍焚溟'], '鎢鋼劍');
@@ -244,7 +299,7 @@ export const SHOTS = [
     },
   },
   {   // 大風：青丘，摧屋拔木——九格長的狂風捲過，樹拔成土、磚吹壞；接著俯衝下來抓人
-    name: 'wind', sec: 5.6, seed: 7, tile: 72, rand: 13, bossbar: true, fx: { shadows: 0.3, rays: 0.08, zoom: [1, 1.06] },
+    name: 'wind', sec: 5.6, seed: 7, tile: 72, rand: 13, bossbar: true, fx: { shadows: 0.3, rays: 0.08, zoom: [1, 1.06], storm: true, stormAt: 0.6, flashC: [170, 230, 255] },
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game, w = g.world; c.at(35, 0.5);
       f.arm(['青冥落羽', '鎢鋼刀'], '青冥落羽');
@@ -258,11 +313,12 @@ export const SHOTS = [
       const F = window.__f, e = window.__e;
       if (f === 6) { e.galeCD = 0; e.moveT = 0; }
       if (f === 70) { e.galeCD = 99; e.diveCD = 0; e.moveT = 0; }
-      if (f === 140) { F.faceTo(e); window.__f.E(); }
+      if (e && e.state === 'dive') window.__speed(2);   // 俯衝下來：速度線
+      if (f === 140) { F.faceTo(e); window.__f.E(); window.__hit(0.55, [170, 230, 255]); }
     },
   },
   {   // 共工・海：在地裡游，身後留下兩格寬的淖；貼到你腳下，鑽出來
-    name: 'gongsea', sec: 4.2, seed: 7, tile: 76, rand: 14, bossbar: true, fx: { grade: 'gong', shadows: 0.2, rays: 0.06, vig: 0.52, zoom: [1, 1.08] },
+    name: 'gongsea', sec: 4.2, seed: 7, tile: 76, rand: 14, bossbar: true, fx: { grade: 'gong', shadows: 0.2, rays: 0.06, vig: 0.52, zoom: [1, 1.08], storm: true, stormC: [96, 34, 30], stormAt: 0.8, embers: 0.35, flashC: [255, 160, 80] },
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game; c.at(60, 0.5);
       g.player.bosses = { '修蛇': { day: 1 }, '封豨': { day: 1 }, '大風': { day: 1 } }; f.arm(['燭龍焚溟', '九閽鳴雷', '青冥落羽'], '燭龍焚溟');
@@ -275,7 +331,7 @@ export const SHOTS = [
     },
   },
   {   // 共工・陸：三格高，天上落三顆隕石「◎」，接著頭觸；九閽鳴雷劈回去
-    name: 'gongland', sec: 4.2, seed: 7, tile: 76, rand: 15, bossbar: true, fx: { grade: 'gong', shadows: 0.2, rays: 0.06, vig: 0.52, zoom: [1, 1.08] },
+    name: 'gongland', sec: 4.2, seed: 7, tile: 76, rand: 15, bossbar: true, fx: { grade: 'gong', shadows: 0.2, rays: 0.06, vig: 0.52, zoom: [1, 1.08], storm: true, stormC: [96, 34, 30], stormAt: 0.5, embers: 0.6, flashC: [255, 232, 170] },
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game; c.at(60, 0.5);
       g.player.bosses = { '修蛇': { day: 1 }, '封豨': { day: 1 }, '大風': { day: 1 } }; f.arm(['九閽鳴雷', '燭龍焚溟', '青冥落羽'], '九閽鳴雷');
@@ -289,7 +345,7 @@ export const SHOTS = [
     },
   },
   {   // 共工・空：浮在天上，星移斗轉、畫面斜了；力壓千鈞落在你腳下；青冥落羽射上去
-    name: 'gongsky', sec: 4.2, seed: 7, tile: 76, rand: 16, bossbar: true, fx: { grade: 'gong', shadows: 0.24, rays: 0.1, vig: 0.52, zoom: [1.08, 1] },
+    name: 'gongsky', sec: 4.2, seed: 7, tile: 76, rand: 16, bossbar: true, fx: { grade: 'gong', shadows: 0.24, rays: 0.1, vig: 0.52, zoom: [1.08, 1], storm: true, stormC: [96, 34, 30], stormAt: 0.4, flashC: [170, 230, 255] },
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game; c.at(60, 0.5);
       g.player.bosses = { '修蛇': { day: 1 }, '封豨': { day: 1 }, '大風': { day: 1 } }; f.arm(['青冥落羽', '九閽鳴雷', '燭龍焚溟'], '青冥落羽');
@@ -299,7 +355,7 @@ export const SHOTS = [
     frame({ f }) {
       const F = window.__f, e = window.__e, g = XIEYI.game, p = g.player;
       if (f === 60) F.step(-1, 1);
-      if (f === 80 || f === 112) { F.faceTo(e); g.action = null; p.atkT = 0; const t = g.skyTarget(); if (t) g.bowShot(t); }
+      if (f === 80 || f === 112) { F.faceTo(e); g.action = null; p.atkT = 0; const t = g.skyTarget(); if (t) { g.bowShot(t); window.__hit(0.6, [170, 230, 255]); if (f === 80) window.__slow(12, 0.4); } }
     },
   },
 ];

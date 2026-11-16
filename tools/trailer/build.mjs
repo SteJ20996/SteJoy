@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const here = path.dirname(new URL(import.meta.url).pathname);
 const [SHOTS, MUSIC, OUT] = process.argv.slice(2);
-const burn = process.argv.includes('--burn'), capsOnly = process.argv.includes('--captions');
+const burn = process.argv.includes('--burn'), capsOnly = process.argv.includes('--captions'), reuse = process.argv.includes('--reuse');   // --reuse：已經剪好的 trailer.mp4 照用，只重燒字幕
 // EDIT、CAPTIONS 環境變數可以換成別的剪接表與字幕（《力透紙背》的在 tools/litou/）
 const edit = JSON.parse(fs.readFileSync(process.env.EDIT || path.join(here, 'edit.json'), 'utf8'));
 const caps = JSON.parse(fs.readFileSync(process.env.CAPTIONS || path.join(here, 'captions.json'), 'utf8'));
@@ -23,7 +23,7 @@ const TOTAL = t;
 
 const clean = path.join(OUT, 'trailer.mp4');
 // 一、畫面：trim 每段、依序 xfade（--captions 時跳過）
-if (!capsOnly) {
+if (!capsOnly && !(reuse && fs.existsSync(clean))) {
 const args = ['-y', '-loglevel', 'error'];
 edit.clips.forEach(c => args.push('-i', path.join(SHOTS, c.shot + '.mp4')));
 args.push('-i', MUSIC);
@@ -62,9 +62,10 @@ if (burn) {
       const text = cues[k].cap[L];
       await page.setContent(`<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="${fonts}">
         <style>html,body{margin:0;width:1920px;height:1080px;background:transparent}
+        .band{position:absolute;left:0;right:0;bottom:0;height:300px;background:linear-gradient(to top,rgba(18,14,10,.6),rgba(18,14,10,.32) 45%,rgba(18,14,10,0))}
         p{position:absolute;left:0;right:0;bottom:92px;margin:0;text-align:center;font:${L === 'en' ? '44px/1.3 Georgia, serif' : L === 'zh-Hans' ? '50px/1.3 "Noto Serif SC", serif' : '52px/1.3 "LXGW WenKai TC", serif'};
           color:#f6efdf;letter-spacing:${L === 'en' ? '.02em' : '.12em'};text-shadow:0 0 2px #1c1a17,0 0 10px rgba(28,26,23,.85),0 2px 18px rgba(28,26,23,.7)}</style></head>
-        <body><p>${text.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</p></body></html>`, { waitUntil: 'networkidle' });
+        <body>${edit.capBand ? '<div class="band"></div>' : ''}<p>${text.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</p></body></html>`, { waitUntil: 'networkidle' });   // capBand（第二支預告）：字幕底下墊一條由下往上淡的暗帶，淺色的紙上也讀得清楚
       await page.evaluate(() => document.fonts.ready);
       const f = path.join(dir, `c${k}.png`); await page.screenshot({ path: f, omitBackground: true }); pngs.push(f);
     }
