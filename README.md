@@ -78,7 +78,7 @@ stejoy.com 的網站：工作室**長風**的首頁（「寫意」系列，選�
 - 假時鐘要停住（`export const PAUSE = true`，`capture.mjs` 裝好就 `pauseAt`）：不停的話它照真實時間走，一幀疊光影要近半秒，遊戲快了快十倍、招式全亂。
 - 錄：`SHOTS=tools/fight/shots.mjs node tools/capture/capture.mjs <鏡頭資料夾>`（對構圖加 `--stills`，`STILL_EVERY=15` 每半息一張）。
 - 配樂：`python3 tools/fight/music.py tools/fight/edit.json music.wav <鏡頭資料夾>`（每分鐘一百二十拍：太鼓、弦樂斷奏、銅管、人聲般的長音、上揚的音牆、重擊；**暫用**）。
-- 剪：`EDIT=tools/fight/edit.json CAPTIONS=tools/fight/captions.json node tools/trailer/build.mjs <鏡頭資料夾> music.wav <輸出資料夾> --burn`（`edit.json` 每段的 `tr` 是接進來的轉場：fadeblack、fadewhite……；`capBand` 字幕底下墊一條暗帶，淺色的紙上也讀得清楚；字幕五種語言；`--reuse` 已經剪好的照用、只重燒字幕）。2026-11-16 第一版：48 秒，1920×1080 H.264 約 7.3 Mbps、AAC 160k，燒字幕的每種約 45 MB。同日第二版（使用者：加一些「人」的左右上下走位展示靈活度；背景樂不要那麼嘈雜、清晰一些，攻擊特效音不變）：每個鏡頭的人都照遊戲畫出的預警閃、退、繞、衝（`__f.toward()`／`away()`、船上 `boat()`），配樂分背景與攻擊特效音兩條；燒字幕的每種約 51 MB。
+- 剪：`EDIT=tools/fight/edit.json CAPTIONS=tools/fight/captions.json node tools/trailer/build.mjs <鏡頭資料夾> music.wav <輸出資料夾> --burn`（`edit.json` 每段的 `tr` 是接進來的轉場：fadeblack、fadewhite……；`capBand` 字幕底下墊一條暗帶，淺色的紙上也讀得清楚；字幕五種語言；`--reuse` 已經剪好的照用、只重燒字幕）。2026-11-16 第一版：48 秒，1920×1080 H.264 約 7.3 Mbps、AAC 160k，燒字幕的每種約 45 MB。同日第二版（使用者：加一些「人」的左右上下走位展示靈活度；背景樂不要那麼嘈雜、清晰一些，攻擊特效音不變）：每個鏡頭的人都照遊戲畫出的預警閃、退、繞、衝（`__f.toward()`／`away()`、船上 `boat()`），配樂分背景與攻擊特效音兩條；燒字幕的每種約 51 MB。第三版（使用者：改回之前的背景樂，只優化上一版）：曲子照第一版（太鼓、斷奏、銅管、人聲長音都在），只做清晰度——背景的鼓雜音、鼓邊、斷奏的鋸齒聲與音牆的雜音收一點、共工那段的顫音改圓滑、少一點破音；攻擊特效音照舊。畫面沒動，只換音軌（`ffmpeg -c:v copy`）。
 
 ## 《力透紙背》
 
