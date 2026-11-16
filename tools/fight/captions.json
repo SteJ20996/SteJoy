@@ -1,0 +1,16 @@
+{
+  "hammer":   { "zh-Hant": "紙上的字活了，有的要你的命。", "zh-Hans": "纸上的字活了，有的要你的命。", "en": "The characters on the page came alive. Some of them want you dead.", "ja": "紙の上の字が生き返った。命を狙う字もいる。", "vi": "Chữ trên trang giấy sống dậy. Có những chữ muốn lấy mạng bạn." },
+  "tiger":    { "zh-Hant": "獸撲之前會先發紅——閃開。", "zh-Hans": "兽扑之前会先发红——闪开。", "en": "Beasts flash red before they pounce. Step aside.", "ja": "獣は飛びかかる前に赤く光る。かわせ。", "vi": "Thú dữ ửng đỏ trước khi vồ. Hãy né đi." },
+  "ge":       { "zh-Hant": "刀橫掃，劍直刺，戈搆三格。", "zh-Hans": "刀横扫，剑直刺，戈够三格。", "en": "Sabers sweep, swords pierce, dagger-axes reach three tiles.", "ja": "刀は薙ぎ、剣は突き、戈は三マス先まで届く。", "vi": "Đao quét ngang, kiếm đâm thẳng, qua với tới ba ô." },
+  "harpy":    { "zh-Hant": "把蠱雕從天上射下來。", "zh-Hans": "把蛊雕从天上射下来。", "en": "Shoot the Gudiao out of the sky.", "ja": "蠱雕を空から射落とせ。", "vi": "Bắn Cổ Điêu rơi khỏi bầu trời." },
+  "tooth":    { "zh-Hant": "鑿齒有盾，繞到牠身側。", "zh-Hans": "凿齿有盾，绕到它身侧。", "en": "Zaochi hides behind a shield. Go round it.", "ja": "鑿歯は盾を構える。横に回り込め。", "vi": "Tạc Xỉ có khiên. Hãy vòng sang bên hông nó." },
+  "bifang":   { "zh-Hant": "畢方落腳處，訛火燒起。", "zh-Hans": "毕方落脚处，讹火烧起。", "en": "Wherever Bifang lands, false fire burns.", "ja": "畢方の降り立つところに、怪火が燃える。", "vi": "Tất Phương đáp xuống đâu, lửa dữ bùng lên đó." },
+  "shen":     { "zh-Hant": "海上，蜃浮上來撞船。", "zh-Hans": "海上，蜃浮上来撞船。", "en": "At sea, the Shen rises to ram your boat.", "ja": "海では、蜃が浮かび上がって舟にぶつかる。", "vi": "Ngoài biển, Thận nổi lên húc thuyền." },
+  "hog":      { "zh-Hant": "三隻大魔王，各據一方。", "zh-Hans": "三只大魔王，各据一方。", "en": "Three great demons, each holding its own ground.", "ja": "三体の大魔王が、それぞれの地を守る。", "vi": "Ba đại ma vương, mỗi kẻ trấn giữ một phương." },
+  "snake":    { "zh-Hant": "修蛇纏住你的船。", "zh-Hans": "修蛇缠住你的船。", "en": "Xiushe coils around your boat.", "ja": "修蛇が舟に巻きつく。", "vi": "Tu Xà quấn chặt thuyền của bạn." },
+  "wind":     { "zh-Hant": "大風摧屋拔木。", "zh-Hans": "大风摧屋拔木。", "en": "Dafeng tears down houses and uproots trees.", "ja": "大風は家を崩し、木を根こそぎ抜く。", "vi": "Đại Phong phá nhà, nhổ cây." },
+  "gongsea":  { "zh-Hant": "最後是撞歪天地的共工：海、", "zh-Hans": "最后是撞歪天地的共工：海、", "en": "Last of all, Gonggong, who tilted the world: sea,", "ja": "最後は天地を傾けた共工。海、", "vi": "Cuối cùng là Cộng Công, kẻ húc lệch trời đất: biển," },
+  "gongland": { "zh-Hant": "陸、", "zh-Hans": "陆、", "en": "land,", "ja": "陸、", "vi": "đất," },
+  "gongsky":  { "zh-Hant": "空。", "zh-Hans": "空。", "en": "and sky.", "ja": "空。", "vi": "và trời." },
+  "end":      { "zh-Hant": "加入 Steam 願望清單", "zh-Hans": "加入 Steam 愿望单", "en": "Wishlist now on Steam", "ja": "Steam でウィッシュリストに追加", "vi": "Thêm vào danh sách mong muốn trên Steam" }
+}

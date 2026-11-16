@@ -31,7 +31,7 @@ let fc = edit.clips.map((c, i) => `[${i}:v]trim=start=${c.from}:duration=${c.dur
 let prev = 'v0';
 for (let i = 1; i < edit.clips.length; i++) {
   const off = (at[i]).toFixed(3), lab = i === edit.clips.length - 1 ? 'vx' : 'x' + i;
-  fc += `;[${prev}][v${i}]xfade=transition=fade:duration=${F}:offset=${off}[${lab}]`; prev = lab;
+  fc += `;[${prev}][v${i}]xfade=transition=${edit.clips[i].tr || 'fade'}:duration=${F}:offset=${off}[${lab}]`; prev = lab;   // tr：這一段怎麼接進來（第二支預告用 fadeblack、fadewhite 等；不給就淡入淡出）
 }
 fc += `;[vx]fade=t=in:st=0:d=0.6,fade=t=out:st=${(TOTAL - 0.8).toFixed(3)}:d=0.8[vout]`;
 execFileSync('ffmpeg', [...args, '-filter_complex', fc, '-map', '[vout]', '-map', `${edit.clips.length}:a`, '-c:v', 'libx264', '-preset', 'slow', '-crf', '20', '-pix_fmt', 'yuv420p', '-profile:v', 'high', '-movflags', '+faststart', '-c:a', 'aac', '-b:a', '160k', '-shortest', clean]);
