@@ -5,6 +5,7 @@
 // 招式都是遊戲自己的：鏡頭只把冷卻歸零、在第幾幀按 E 或走一步，讓該出的招在這幾息裡出來。
 // 每個函式都在遊戲頁面裡跑（page.evaluate），只能用頁面裡的東西：XIEYI、World、G、U、EN。
 export { COMMON } from '../capture/shots.mjs';
+export const PAUSE = true;   // 假時鐘停住、只照幀推（capture.mjs）
 
 export const EXTRA = ({ seed2, bossbar, fx: fxIn, tile }) => {
   const g = XIEYI.game, w = g.world, p = g.player;
@@ -26,8 +27,8 @@ export const EXTRA = ({ seed2, bossbar, fx: fxIn, tile }) => {
   const W = innerWidth, H = innerHeight;
   const layer = (blend, z) => { const c = document.createElement('canvas'); c.className = 'cinefx'; c.width = W; c.height = H; Object.assign(c.style, { position: 'fixed', left: '0', top: '0', width: W + 'px', height: H + 'px', pointerEvents: 'none', mixBlendMode: blend, zIndex: String(z) }); document.body.appendChild(c); return c.getContext('2d'); };
   const mul = layer('multiply', 20), scr = layer('screen', 21), soft = layer('soft-light', 22);
-  const GEL = { day: [255, 243, 224], dusk: [255, 212, 178], night: [168, 184, 228], gong: [255, 206, 190], sea: [226, 238, 248] };   // 調色像打燈加一片色紙（乘）：不會把暗處洗灰
-  const GRADE = { day: [255, 205, 130, 0.12], dusk: [255, 130, 70, 0.14], night: [0, 0, 0, 0], gong: [205, 60, 40, 0.12], sea: [120, 170, 200, 0.08] };   // 柔光只再加一點點
+  const GEL = { day: [255, 243, 224], dusk: [255, 228, 204], night: [168, 184, 228], gong: [246, 226, 216], sea: [226, 238, 248] };   // 調色像打燈加一片色紙（乘）：不會把暗處洗灰
+  const GRADE = { day: [255, 205, 130, 0.12], dusk: [255, 130, 70, 0.08], night: [0, 0, 0, 0], gong: [150, 30, 20, 0.08], sea: [120, 170, 200, 0.08] };   // 柔光只再加一點點
   let flashA = 0, flashC = [255, 246, 228], lastShake = 0, slowN = 0, slowR = 1, curF = 0;
   window.__slow = (frames, r) => { slowN = frames; slowR = r; };   // 接下來幾幀遊戲走慢一些（重擊前後的慢動作）
   window.__events = { hits: [] };
@@ -196,7 +197,7 @@ export const SHOTS = [
     },
   },
   {   // 畢方：一聲鳴，你身邊三處起訛火；一跳兩格，落腳處也燒起來
-    name: 'bifang', sec: 4, seed: 7, tile: 84, rand: 9, fx: { grade: 'dusk', shadows: 0, rays: 0, vig: 0.5, zoom: [1, 1.08] },
+    name: 'bifang', sec: 4, seed: 7, tile: 84, rand: 9, fx: { grade: 'dusk', shadows: 0, rays: 0, vig: 0.36, zoom: [1, 1.08] },
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game, p = g.player; const d = c.dusk(44); c.at(44, d + 0.02);
       f.clear(p.x, p.y, 5, '土'); f.arm(['鎢鋼劍', '鎢鋼刀'], '鎢鋼劍'); f.only();
@@ -226,7 +227,7 @@ export const SHOTS = [
     },
   },
   {   // 修蛇：洞庭湖上，修蛇纏住船，頭露在外面——打頭多吃五成
-    name: 'snake', sec: 5, seed: 7, tile: 72, rand: 12, bossbar: true, fx: { grade: 'sea', shadows: 0.18, rays: 0.1, zoom: [1, 1.08] },
+    name: 'snake', sec: 5, seed: 7, tile: 84, rand: 12, bossbar: true, fx: { grade: 'sea', shadows: 0.18, rays: 0.1, zoom: [1, 1.08] },
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game; c.at(34, 0.5);
       f.arm(['鎢鋼劍', '燭龍焚溟'], '鎢鋼劍');
@@ -243,7 +244,7 @@ export const SHOTS = [
     },
   },
   {   // 大風：青丘，摧屋拔木——九格長的狂風捲過，樹拔成土、磚吹壞；接著俯衝下來抓人
-    name: 'wind', sec: 5.6, seed: 7, tile: 72, rand: 13, bossbar: true, fx: { grade: 'dusk', shadows: 0.3, rays: 0.06, zoom: [1, 1.06] },
+    name: 'wind', sec: 5.6, seed: 7, tile: 72, rand: 13, bossbar: true, fx: { shadows: 0.3, rays: 0.08, zoom: [1, 1.06] },
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game, w = g.world; c.at(35, 0.5);
       f.arm(['青冥落羽', '鎢鋼刀'], '青冥落羽');
@@ -261,7 +262,7 @@ export const SHOTS = [
     },
   },
   {   // 共工・海：在地裡游，身後留下兩格寬的淖；貼到你腳下，鑽出來
-    name: 'gongsea', sec: 4.2, seed: 7, tile: 76, rand: 14, bossbar: true, fx: { grade: 'gong', shadows: 0.2, rays: 0.06, zoom: [1, 1.08] },
+    name: 'gongsea', sec: 4.2, seed: 7, tile: 76, rand: 14, bossbar: true, fx: { grade: 'gong', shadows: 0.2, rays: 0.06, vig: 0.52, zoom: [1, 1.08] },
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game; c.at(60, 0.5);
       g.player.bosses = { '修蛇': { day: 1 }, '封豨': { day: 1 }, '大風': { day: 1 } }; f.arm(['燭龍焚溟', '九閽鳴雷', '青冥落羽'], '燭龍焚溟');
@@ -274,7 +275,7 @@ export const SHOTS = [
     },
   },
   {   // 共工・陸：三格高，天上落三顆隕石「◎」，接著頭觸；九閽鳴雷劈回去
-    name: 'gongland', sec: 4.2, seed: 7, tile: 76, rand: 15, bossbar: true, fx: { grade: 'gong', shadows: 0.2, rays: 0.06, zoom: [1, 1.08] },
+    name: 'gongland', sec: 4.2, seed: 7, tile: 76, rand: 15, bossbar: true, fx: { grade: 'gong', shadows: 0.2, rays: 0.06, vig: 0.52, zoom: [1, 1.08] },
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game; c.at(60, 0.5);
       g.player.bosses = { '修蛇': { day: 1 }, '封豨': { day: 1 }, '大風': { day: 1 } }; f.arm(['九閽鳴雷', '燭龍焚溟', '青冥落羽'], '九閽鳴雷');
@@ -288,7 +289,7 @@ export const SHOTS = [
     },
   },
   {   // 共工・空：浮在天上，星移斗轉、畫面斜了；力壓千鈞落在你腳下；青冥落羽射上去
-    name: 'gongsky', sec: 4.2, seed: 7, tile: 76, rand: 16, bossbar: true, fx: { grade: 'gong', shadows: 0.24, rays: 0.1, zoom: [1.08, 1] },
+    name: 'gongsky', sec: 4.2, seed: 7, tile: 76, rand: 16, bossbar: true, fx: { grade: 'gong', shadows: 0.24, rays: 0.1, vig: 0.52, zoom: [1.08, 1] },
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game; c.at(60, 0.5);
       g.player.bosses = { '修蛇': { day: 1 }, '封豨': { day: 1 }, '大風': { day: 1 } }; f.arm(['青冥落羽', '九閽鳴雷', '燭龍焚溟'], '青冥落羽');

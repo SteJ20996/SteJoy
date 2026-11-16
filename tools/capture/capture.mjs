@@ -28,6 +28,8 @@ for (const shot of SHOTS) {
   page.on('pageerror', e => console.log('  pageerror', shot.name, e.message));
   if (process.env.CAP_LOG) page.on('console', m => console.log('  [' + shot.name + ']', m.text()));
   await page.clock.install({ time: new Date('2026-11-04T10:00:00Z') });
+  // 第二支預告（PAUSE）：裝好假時鐘就停住，只照 runFor 走。不停的話假時鐘照真實時間繼續走，一幀截圖花的時間越久遊戲走得越快（疊了光影以後一幀近半秒，遊戲快了快十倍、招式全亂）
+  if (MOD.PAUSE) await page.clock.pauseAt(new Date('2026-11-04T10:00:00.500Z'));
   const url = shot.page ? 'file://' + path.resolve(path.dirname(new URL(import.meta.url).pathname), shot.page) : BASE + '?autostart=1&seed=' + (shot.seed || 7);
   await page.goto(url, { waitUntil: 'load' });
   if (!shot.page) {
