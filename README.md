@@ -74,9 +74,11 @@ stejoy.com 的網站：工作室**長風**的首頁（「寫意」系列，選�
 
 - 鏡頭 `tools/fight/shots.mjs`（遊戲 v0.9.89 錄）：開場夜裡九閽鳴雷 → 片頭寫水 → 虎撲撲空、戈、蠱雕（青冥落羽繳下來）、鑿齒的盾、畢方的訛火、海上的蜃（燭龍焚溟） → 封豨、修蛇纏舟、大風摧屋拔木 → 共工海、陸、空 → 片尾。招式都是遊戲自己出的，鏡頭只把冷卻歸零、在第幾幀按 E 或走一步；隨機數照鏡頭定下來，每次錄都一樣；命條擺在上面（下面留給字幕），名字寫漢字。
 - 光影只在錄影時疊上去、遊戲本身不動（`EXTRA` 的 `__post()`，每幀畫三層：雲影與四角壓暗用乘、光束與閃光用濾色、照時段調色用柔光）；`fx.zoom` 慢慢推鏡（直接改格子大小，字不糊）；重擊（遊戲的畫面震動突然變大）閃一下白，記在 `<鏡頭>.events.json` 的 `hits` 給配樂對齊；`__slow(幀數, 速度)` 讓重擊前後放慢（`capture.mjs` 照回傳的速度推時鐘）。
+- 第二層（使用者：稍微浮誇一點、再加些外部光影、多一點戲劇性）：雲縫裡的陽光掃過（`fx.sweep`）、光束裡的浮塵（`motes`）、暴風雲與天邊的電光配遊戲自己的雨（`storm`，共工的雲底是暗赤 `stormC`）、火星（`embers`）；重擊時鏡頭猛地一推、衝擊波紅青錯開一圈圈散開、閃光照神兵上色（雷金、火赤、弋青，`flashC`）；封豨蓄力直衝、大風俯衝時的速度線（`__speed`）；刀斃虎、射下蠱雕這種自己喊的重擊用 `__hit()`。
+- 假時鐘要停住（`export const PAUSE = true`，`capture.mjs` 裝好就 `pauseAt`）：不停的話它照真實時間走，一幀疊光影要近半秒，遊戲快了快十倍、招式全亂。
 - 錄：`SHOTS=tools/fight/shots.mjs node tools/capture/capture.mjs <鏡頭資料夾>`（對構圖加 `--stills`，`STILL_EVERY=15` 每半息一張）。
 - 配樂：`python3 tools/fight/music.py tools/fight/edit.json music.wav <鏡頭資料夾>`（每分鐘一百二十拍：太鼓、弦樂斷奏、銅管、人聲般的長音、上揚的音牆、重擊；**暫用**）。
-- 剪：`EDIT=tools/fight/edit.json CAPTIONS=tools/fight/captions.json node tools/trailer/build.mjs <鏡頭資料夾> music.wav <輸出資料夾> --burn`（`edit.json` 每段的 `tr` 是接進來的轉場：fadeblack、fadewhite……；字幕五種語言）。
+- 剪：`EDIT=tools/fight/edit.json CAPTIONS=tools/fight/captions.json node tools/trailer/build.mjs <鏡頭資料夾> music.wav <輸出資料夾> --burn`（`edit.json` 每段的 `tr` 是接進來的轉場：fadeblack、fadewhite……；`capBand` 字幕底下墊一條暗帶，淺色的紙上也讀得清楚；字幕五種語言；`--reuse` 已經剪好的照用、只重燒字幕）。2026-11-16 第一版：48 秒，1920×1080 H.264 約 7.3 Mbps、AAC 160k，燒字幕的每種約 45 MB。
 
 ## 《力透紙背》
 
