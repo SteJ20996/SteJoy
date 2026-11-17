@@ -48,6 +48,17 @@ stejoy.com 的網站：工作室**長風**的首頁（「寫意」系列，選�
 - `tools/`：錄影、剪預告、轉檔、產生頁面的腳本，見下。
 - `wrangler.jsonc`、`worker/index.js`、`.assetsignore`：網站放在 Cloudflare **Workers**（靜態檔，Workers Builds 接這個庫）。Workers 的靜態檔不理 `Range`（問一段也整個檔回 200；workers-sdk #8967），影片就拖不了進度；`run_worker_first` 只讓 `/assets/media/*` 先經過 `worker/index.js`：有 `Range` 就切出那一段回 206（檔案不帶長度時整個讀進來量）、沒有就加 `Accept-Ranges: bytes`，出差錯退回原本的回應。其他網址照舊直接給靜態檔。`.assetsignore` 讓 `.git`、`worker/`、`wrangler.jsonc` 不被當成網頁放出去。**不要放 `functions/` 資料夾**：Wrangler 看到它會當成 Pages 專案、整個部署失敗。
 
+## 英文上線時（2026-11-17 備好，分支 `claude/site-en-launch`，英文介面上線正式服再合進 main）
+
+使用者：對應語言的怪物血條資訊也要改成相應語言；第一支預告錄繁、簡、英三種版本，介紹頁也備好。
+- 第一支預告用遊戲 v0.9.90（測試服）整套重錄五份：繁中、簡中（`CAP_LANG=hans`）、英文（`CAP_LANG=en`）、日文與越南文（英文介面加 `CAP_BAR=ja`／`vi`：共工的命條、方框、命條下面那行（獨力、還剩幾秒）、觀星的方位與星官名換成該語言，日文星官寫漢字、越南文寫漢越音加漢字）。片頭片尾照抄一份。
+- 原本第一支是假時鐘**沒停住**錄的：遊戲照真實時間多走，快慢看當時機器忙不忙（比對下來大約兩三倍）。這次改成停住、每幀走三倍（`CAP_PAUSE=1 CAP_RATE=3`，`capture.mjs`；單一鏡頭可以用 `shot.k` 另定），節奏跟原片接近、也重錄得出來。
+  `CAP_PAUSE=1 CAP_RATE=3 CAP_LANG=… node tools/capture/capture.mjs <資料夾> gather,build,night,snow,thunder,crops,zi,gaze,sail,gong`
+- 配樂各照各的雷與腳步：`python3 tools/trailer/music.py tools/trailer/edit.json music-<語言>.wav <資料夾>`；剪：`VARIANTS='{"hans":{…,"langs":["zh-Hans"]},"en":{…},"ja":{…},"vi":{…}}' EDIT=tools/trailer/edit.json CAPTIONS=tools/trailer/captions.json node tools/trailer/build.mjs <繁中資料夾> <繁中配樂> <輸出> --burn`。
+- 網站的檔：`python3 tools/site/media.py <繁中資料夾> <輸出>`（不帶語言的那份，照舊），再每種語言 `python3 tools/site/media.py <那種語言的資料夾> <輸出> --lang <語言> --clean <輸出>/trailer-clean-<名>.mp4`：
+  寫成 `assets/media/trailer-<語言>.mp4`（只壓 MP4，省庫的大小）、`scenes/<鏡頭>-<語言>.mp4／.webm／.jpg`、`stills/<鏡頭>-<語言>.jpg`；`build-site.py` 的 `lm()` 那種語言有就用。
+- 介紹頁的「支援語言」：五種語言都加上英文（英文頁拿掉「There is no English version」那句；日文、越南文頁照舊說沒有日文、越南文版）。Steam 後台的支援語言也要勾英文（遊戲庫 `docs/STEAM-RELEASE.md`）。
+
 ## 重新產生
 
 全部在這個庫的根目錄跑；錄影要遊戲的正式庫（私有）在旁邊。現在的鏡頭是遊戲 v0.9.57 錄的（2026-11-06；那時正式庫還在 v0.9.53，是從測試庫（私有）打的頁面錄，遊戲本身的程式一樣，只差測試服的設定，鏡頭裡看不出來）。
@@ -80,6 +91,7 @@ stejoy.com 的網站：工作室**長風**的首頁（「寫意」系列，選�
 - 配樂：`python3 tools/fight/music.py tools/fight/edit.json music.wav <鏡頭資料夾>`（每分鐘一百二十拍：太鼓、弦樂斷奏、銅管、人聲般的長音、上揚的音牆、重擊；**暫用**）。
 - 剪：`EDIT=tools/fight/edit.json CAPTIONS=tools/fight/captions.json node tools/trailer/build.mjs <鏡頭資料夾> music.wav <輸出資料夾> --burn`（`edit.json` 每段的 `tr` 是接進來的轉場：fadeblack、fadewhite……；`capBand` 字幕底下墊一條暗帶，淺色的紙上也讀得清楚；字幕五種語言（第六版起六種）；`--reuse` 已經剪好的照用、只重燒字幕）。2026-11-16 第一版：48 秒，1920×1080 H.264 約 7.3 Mbps、AAC 160k，燒字幕的每種約 45 MB。同日第二版（使用者：加一些「人」的左右上下走位展示靈活度；背景樂不要那麼嘈雜、清晰一些，攻擊特效音不變）：每個鏡頭的人都照遊戲畫出的預警閃、退、繞、衝（`__f.toward()`／`away()`、船上 `boat()`），配樂分背景與攻擊特效音兩條；燒字幕的每種約 51 MB。第三版（使用者：改回之前的背景樂，只優化上一版）：曲子照第一版（太鼓、斷奏、銅管、人聲長音都在），只做清晰度——背景的鼓雜音、鼓邊、斷奏的鋸齒聲與音牆的雜音收一點、共工那段的顫音改圓滑、少一點破音；攻擊特效音照舊。畫面沒動，只換音軌（`ffmpeg -c:v copy`）。第四、五版（2026-11-17，使用者：背景裡呼呼的風聲降低、保留音樂和特效音、1800 Hz 以上適當降低一點點；十八秒之後的打鬥走位還少一點）：重擊的低沉長尾收短收小、往上爬的雜音幾乎拿掉、殘響的雜音濾掉高的，最後 1800 Hz 以上再輕壓約 2 dB（共少約 6 dB，以下不動，`HI_CUT`）；蜃、修蛇一路蛇行轉舵，封豨繞著走、閃第二次直衝、追到三格內落雷，大風繞著走、射下來衝上去，共工海陸空都繞著走（`__f.orbit()`、船上走另一格 `deck()`）；燒字幕的每種約 56 MB。
 - 第六版（2026-11-17，使用者：魔王命條的名字改成英文；英文版有「陸」字玩家可能不明白，其他語言也自查；看看要不要加韓文）：英、日、越、韓四種用**英文介面**整段重錄（命條 Fengxi、Xiushe、Dafeng、Gonggong，共工的方框 Sea／Land／Sky——遊戲 v0.9.90 起英文寫英文，地上飄的字也是英文；這些玩家打開遊戲看到的就是英文介面），簡中用**簡體介面**重錄（大风、陆……），繁中照舊。錄：`CAP_LANG=en`（或 `hans`）`SHOTS=tools/fight/shots.mjs node tools/capture/capture.mjs <資料夾>`；片頭片尾是 `title.html`、沒有介面的字，照抄繁中那份。三份各自配樂（`music.py` 照各自錄的重擊對拍），剪的時候 `VARIANTS='{"en":{"shots":"<英文那份>","music":"<它的配樂>","langs":["en","ja","vi","ko"]},"hans":{…,"langs":["zh-Hans"]}}'`：每份剪一支沒字幕的 `trailer-clean-<名>.mp4`，那幾種語言燒在它上面。錄影另把遊戲的「真隨機」（`U.trueRand`，原本用 crypto）也用鏡頭的種子定下來（另一條數列）：不定的話同一個鏡頭重錄，修蛇、大風會岔開，往後重錄就一樣了（繁中那份是定下來以前錄的，不重錄）。加韓文字幕（`captions.json` 的 `ko`；魔物名寫漢字音再括漢字，對得上畫面裡的字；片尾照 Steam 韓文版的「찜 목록」；沒有韓文母語者校過），字幕六種語言。同時修了燒字幕的字型：`setContent` 的頁面是 null 來源，字型檔跨來源要 CORS、本機的 http.server 不給，之前燒的一直是系統備用字（細黑體）；現在字型表與字型檔經 `page.route` 補上 CORS，載不全會報出來，一行放不下就縮字不換行。字型：繁中、日、越霞鶩文楷，簡中思源宋體（遊戲桌面版的字型表 `FONTS_CSS`），英文 Georgia（沒裝的機器用開源同款 Gelasio），韓文 Gowun Batang（括號裡的漢字接霞鶩文楷）；後兩種要另給字型表 `FONTS_EXTRA_CSS`：在一個資料夾裡 `npm i @fontsource/gowun-batang @fontsource/gelasio`，寫一個 `extra.css`（`@import url(node_modules/@fontsource/gowun-batang/700.css); @import url(node_modules/@fontsource/gelasio/400.css);`），用 `python3 -m http.server 8126` 開著，`FONTS_EXTRA_CSS=http://127.0.0.1:8126/extra.css`。試字型不必燒片：`PNG_ONLY=1 ONLY_LANGS=ko … --burn --reuse` 只畫字幕圖。
+- 第七版（2026-11-17，使用者：對應語言的怪物血條資訊也要改成相應語言；韓文版暫停，等這些都解決了再決定）：日、越兩種各錄一份——英文介面（`CAP_LANG=en`）加 `CAP_BAR=ja`／`vi`：命條的名字、共工的方框換成該語言（日：修蛇、大風、海陸空；越：Tu Xà、Đại Phong、Biển／Đất／Trời，跟字幕同一套叫法），畫布上的字（飄字、星名）攔 `fillText` 照 `COMMON` 裡的 `FLOAT_WORDS` 換（第二支只有三個：boat、missed、claw）。這一套寫在 `tools/capture/shots.mjs` 的 `COMMON`，第一、二支共用；錄的時候畫布上帶英文字母的字都記成 `<鏡頭>.floats.json`，補對照表用。韓文那一份（`ko`）的命條與字型照樣寫好、暫不錄不燒。成片：繁中、簡中照第六版；英文用英文那份；日、越各用自己那份與自己的配樂（`VARIANTS` 多 `ja`、`vi`）。
 
 ## 《力透紙背》
 

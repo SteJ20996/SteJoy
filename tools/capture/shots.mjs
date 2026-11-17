@@ -11,26 +11,32 @@ export const COMMON = ({ tile, lang, bar }) => {
   // 日、越（韓暫停）的版本：遊戲沒有這幾種介面，錄英文介面（CAP_LANG=en），再把命條的名字、共工的方框、地上飄的字換成那一種語言（CAP_BAR=ja／vi／ko；叫法跟字幕一樣）。
   // 2026-11-17 使用者：對應語言的怪物血條資訊也要改成相應語言
   const BAR = bar ? ({
-    ja: { name: { Fengxi: '封豨', Xiushe: '修蛇', Dafeng: '大風', Gonggong: '共工' }, mode: { Sea: '海', Land: '陸', Sky: '空' }, box: '18px' },
-    vi: { name: { Fengxi: 'Phong Hy', Xiushe: 'Tu Xà', Dafeng: 'Đại Phong', Gonggong: 'Cộng Công' }, mode: { Sea: 'Biển', Land: 'Đất', Sky: 'Trời' } },
+    ja: { name: { Fengxi: '封豨', Xiushe: '修蛇', Dafeng: '大風', Gonggong: '共工' }, mode: { Sea: '海', Land: '陸', Sky: '空' }, box: '18px', note: [[/ · alone/, ' · 独力'], [/(\d+) seconds? left/, '残り $1 秒']] },
+    vi: { name: { Fengxi: 'Phong Hy', Xiushe: 'Tu Xà', Dafeng: 'Đại Phong', Gonggong: 'Cộng Công' }, mode: { Sea: 'Biển', Land: 'Đất', Sky: 'Trời' }, note: [[/ · alone/, ' · một mình'], [/(\d+) seconds? left/, 'còn $1 giây']] },
     ko: { name: { Fengxi: '봉희', Xiushe: '수사', Dafeng: '대풍', Gonggong: '공공' }, mode: { Sea: '바다', Land: '땅', Sky: '하늘' }, font: '"Gowun Batang", "LXGW WenKai TC", serif' },
   })[bar] : null;
-  // 飄字的對照（英文 → 該語言；長的先換；數字照舊）。照錄英文版時記下的 <鏡頭>.floats.json 補。寫在函式裡：page.evaluate 只帶得走函式本身
+  // 畫布上的字的對照（英文 → 該語言）：sub 字串裡出現就換（長的先換）；exact 整句一樣才換（方位這種短字）；star 是觀星的「英文 · 漢字」標籤，照漢字換。
+  // 照錄英文版時記下的 <鏡頭>.floats.json 補。寫在函式裡：page.evaluate 只帶得走函式本身
+  const DIRS = { ja: { N: '北', NE: '北東', E: '東', SE: '南東', S: '南', SW: '南西', W: '西', NW: '北西' }, vi: { N: 'Bắc', NE: 'Đông Bắc', E: 'Đông', SE: 'Đông Nam', S: 'Nam', SW: 'Tây Nam', W: 'Tây', NW: 'Tây Bắc' } };
+  const HV = { '北斗': 'Bắc Đẩu', '北河': 'Bắc Hà', '南河': 'Nam Hà', '五諸侯': 'Ngũ Chư Hầu', '天潢': 'Thiên Hoàng', '咸池': 'Hàm Trì', '天關': 'Thiên Quan', '王良': 'Vương Lương', '勾陳': 'Câu Trần', '天船': 'Thiên Thuyền', '五車': 'Ngũ Xa', '軒轅': 'Hiên Viên', '大角': 'Đại Giác', '織女': 'Chức Nữ', '河鼓': 'Hà Cổ', '天津': 'Thiên Tân', '北極': 'Bắc Cực', '紫微': 'Tử Vi', '華蓋': 'Hoa Cái', '文昌': 'Văn Xương', '太微': 'Thái Vi', '天市': 'Thiên Thị', '角宿': 'Giác Tú', '亢宿': 'Cang Tú', '氐宿': 'Đê Tú', '房宿': 'Phòng Tú', '心宿': 'Tâm Tú', '尾宿': 'Vĩ Tú', '箕宿': 'Cơ Tú', '斗宿': 'Đẩu Tú', '牛宿': 'Ngưu Tú', '女宿': 'Nữ Tú', '虛宿': 'Hư Tú', '危宿': 'Nguy Tú', '室宿': 'Thất Tú', '壁宿': 'Bích Tú', '奎宿': 'Khuê Tú', '婁宿': 'Lâu Tú', '胃宿': 'Vị Tú', '昴宿': 'Mão Tú', '畢宿': 'Tất Tú', '觜宿': 'Chủy Tú', '參宿': 'Sâm Tú', '井宿': 'Tỉnh Tú', '鬼宿': 'Quỷ Tú', '柳宿': 'Liễu Tú', '星宿': 'Tinh Tú', '張宿': 'Trương Tú', '翼宿': 'Dực Tú', '軫宿': 'Chẩn Tú' };
   const FLOAT_WORDS = {
-    ja: { boat: '舟', missed: '空振り', claw: '爪痕' },        // 第二支：船挨撞、虎撲空、大風的入木三分
-    vi: { boat: 'thuyền', missed: 'vồ hụt', claw: 'vuốt' },
-    ko: {},   // 韓文版暫停（2026-11-17 使用者）
+    ja: { sub: { boat: '舟', missed: '空振り', claw: '爪痕', '+wood': '+木', 'wraith gone': '魄 消滅', courage: '胆力', 'stars · ease': '星 · 愜意', 'breeze · ease': '風 · 愜意' }, exact: DIRS.ja, star: (en, zh) => zh },
+    vi: { sub: { boat: 'thuyền', missed: 'vồ hụt', claw: 'vuốt', '+wood': '+gỗ', 'wraith gone': 'Phách tan', courage: 'can đảm', 'stars · ease': 'sao · thư thái', 'breeze · ease': 'gió nhẹ · thư thái' }, exact: DIRS.vi, star: (en, zh) => HV[zh] ? HV[zh] + ' · ' + zh : zh },
+    ko: { sub: {}, exact: {} },   // 韓文版暫停（2026-11-17 使用者）
   };
-  const FLOAT = bar ? (FLOAT_WORDS[bar] || {}) : {};
+  const FW = bar ? (FLOAT_WORDS[bar] || { sub: {}, exact: {} }) : null;
+  const tl = (t) => { if (!FW) return t; if (FW.exact[t]) return FW.exact[t]; const m = FW.star && t.match(/^(.+) · ([\u3400-\u9fff]+)$/); if (m) return FW.star(m[1], m[2]);
+    for (const k of Object.keys(FW.sub).sort((x, y) => y.length - x.length)) if (t.indexOf(k) >= 0) t = t.split(k).join(FW.sub[k]); return t; };
   // 畫布上的字（地上飄的字、觀星的星名……）：記下帶英文字母的（capture.mjs 寫成 <鏡頭>.floats.json），日越版照對照表換
   window.__floats = [];
-  { const P = CanvasRenderingContext2D.prototype, fill = P.fillText, keys = Object.keys(FLOAT).sort((x, y) => y.length - x.length);
-    P.fillText = function (t, ...a) { if (typeof t === 'string' && /[A-Za-z]/.test(t)) { if (window.__floats.length < 4000 && window.__floats.indexOf(t) < 0) window.__floats.push(t); for (const k of keys) if (t.indexOf(k) >= 0) t = t.split(k).join(FLOAT[k]); } return fill.call(this, t, ...a); }; }
+  { const P = CanvasRenderingContext2D.prototype, fill = P.fillText;
+    P.fillText = function (t, ...a) { if (typeof t === 'string' && /[A-Za-z]/.test(t)) { if (window.__floats.length < 4000 && window.__floats.indexOf(t) < 0) window.__floats.push(t); t = tl(t); } return fill.call(this, t, ...a); }; }
   if (BAR) {
     const fix = () => { const nm = document.getElementById('bossbar-name'), md = document.getElementById('bossbar-mode');
       if (nm && BAR.name[nm.textContent]) nm.textContent = BAR.name[nm.textContent];
       if (md && BAR.mode[md.textContent]) md.textContent = BAR.mode[md.textContent];
       if (md && BAR.box) md.style.fontSize = BAR.box;
+      const nt = document.getElementById('bossbar-note'); if (nt && BAR.note) { let t = nt.textContent; for (const [re, to] of BAR.note) t = t.replace(re, to); if (t !== nt.textContent) nt.textContent = t; }   // 命條下面那行（第一支預告看得到）
       if (BAR.font) for (const el of [nm, md]) if (el) el.style.fontFamily = BAR.font; };
     new MutationObserver(fix).observe(document.getElementById('bossbar'), { subtree: true, childList: true, characterData: true }); fix();   // 遊戲改了命條的字就換回來（截圖前就換好）
     if (BAR.font) { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = 'http://127.0.0.1:8126/extra.css'; document.head.appendChild(l); }   // 韓文字型（8126 要給 CORS，見 README）
