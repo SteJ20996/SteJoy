@@ -143,6 +143,14 @@ export const EXTRA = ({ seed2, bossbar, fx: fxIn, tile }) => {
       return false;
     },
     boat(dx, dy) { p.moveT = 0; return g.shipStep(dx, dy, dx ? 'h' : 'v'); },   // 開船一格
+    orbit(e, r, dir, cx, cy) {   // 繞著牠走：太近就退、太遠就靠，剛好就往側邊走一步（dir 1 順時針、-1 逆時針；cx, cy 給大身子的中心）
+      const ox = cx !== undefined ? cx : e.x, oy = cy !== undefined ? cy : e.y, vx = p.x - ox, vy = p.y - oy, d = Math.max(Math.abs(vx), Math.abs(vy));
+      if (d < r) return this.away(ox, oy);
+      if (d > r + 1) return this.toward({ x: Math.round(ox), y: Math.round(oy) });
+      const sx = Math.sign(vx), sy = Math.sign(vy), a = dir > 0 ? -sy : sy, b = dir > 0 ? sx : -sx;
+      return this.step(a, b) || this.step(a, 0) || this.step(0, b);
+    },
+    deck() { const o = g.shipCells().find(([x, y]) => x !== p.x || y !== p.y); return o ? this.step(o[0] - p.x, o[1] - p.y) : false; },   // 船上走到另一格
     clear(cx, cy, r, ch) { for (let y = cy - r; y <= cy + r; y++) for (let x = cx - r; x <= cx + r; x++) w.set(x, y, ch || '草'); },   // 清出一塊地（ch 預設草）
     near(x, y, type, r) { return g.nearestTile(x, y, (a, b) => g.ents.canStand(type || '人', a, b, true) && !g.ents.at(a, b), r || 20) || [x, y]; },
     only() { g.ents.list = g.ents.list.filter(e => e.tame || e.type === '魚'); },   // 清掉旁邊的獸
@@ -238,7 +246,8 @@ export const SHOTS = [
     },
     frame({ f }) {
       const F = window.__f, e = window.__e;
-      if (f === 10 || f === 17) F.boat(-1, 0); if (f === 26 || f === 34) F.boat(0, -1); if (f === 92) F.boat(1, 0);   // 掉頭、轉舵閃開蜃
+      const zig = { 10: [-1, 0], 17: [-1, 0], 26: [0, -1], 34: [0, -1], 42: [0, 1], 49: [1, 0], 56: [1, 0], 63: [0, 1], 78: [-1, 0], 85: [-1, 0], 92: [0, -1], 99: [0, -1], 118: [1, 0], 124: [1, 0] };   // 一路蛇行轉舵，蜃一貼上來就閃
+      if (zig[f]) F.boat(zig[f][0], zig[f][1]);
       if ((f === 70 || f === 110) && e && e.hp > 0) { F.faceTo(e); if (f === 70) window.__slow(14, 0.4); F.E(); }
     },
   },
@@ -309,10 +318,14 @@ export const SHOTS = [
       if (e && e.state === 'charge' && !window.__dodged) { window.__dodged = f; F.step(0, -1); window.__slow(20, 0.45); }
       if (window.__dodged && f === window.__dodged + 5) F.step(0, -1);
       if (window.__dodged && (f === window.__dodged + 12 || f === window.__dodged + 18)) F.step(-1, 0);   // 閃開以後往旁邊跑兩步
-      if (window.__dodged && (f === window.__dodged + 50 || f === window.__dodged + 58)) F.away(e.x + 1, e.y + 1, [0, 1]);   // 震圈之後再拉開
-      if (f === 140 && e && U.cheb(e.x + 0.5, e.y + 0.5, p.x, p.y) > 3) F.toward({ x: e.x, y: e.y });
-      if (window.__dodged && f === window.__dodged + 30) { e.quakeCD = 0; e.chargeCD = 99; e.moveT = 0; }
-      if (f === 150) { F.faceTo(e); window.__slow(14, 0.4); F.E(); }
+      const d1 = window.__dodged, d2 = window.__dodged2;
+      if (d1 && f > d1 + 20 && !d2 && (f - d1) % 7 === 0 && e.state !== 'charge') F.orbit(e, 4, -1, e.x + 0.5, e.y + 0.5);   // 閃開以後繞著牠走，留在四格外（牠才會再衝）
+      if (d1 && f === d1 + 30) { e.quakeCD = 0; e.chargeCD = 99; e.moveT = 0; }   // 拱地：震一圈
+      if (d1 && f === d1 + 46) { e.chargeCD = 0; e.quakeCD = 99; }   // 再蓄力衝一次
+      if (e && e.state === 'charge' && d1 && !d2 && f > d1 + 46) { window.__dodged2 = f; F.step(0, 1); window.__slow(16, 0.45); }   // 第二次往下閃
+      if (d2 && f === d2 + 5) F.step(0, 1);
+      if (d2 && (f === d2 + 13 || f === d2 + 19) && U.cheb(e.x + 0.5, e.y + 0.5, p.x, p.y) > 2.5) F.toward({ x: e.x, y: e.y });   // 衝過頭了，追上去
+      if (!window.__ham && ((d2 && f === d2 + 25) || f === 156)) { window.__ham = 1; F.faceTo(e); window.__slow(14, 0.4); F.E(); }   // 九閽鳴雷還一記
     },
   },
   {   // 修蛇：洞庭湖上，修蛇纏住船，頭露在外面——打頭多吃五成
@@ -322,12 +335,14 @@ export const SHOTS = [
       f.arm(['鎢鋼劍', '燭龍焚溟'], '鎢鋼劍');
       const z = g.bossZone('修蛇'), [x, y] = f.sea(z.x + 4, z.y + 2, /[湖]/); f.sail(x, y);
       g.startFight('修蛇', 'none');
-      const e = g.bossEnt(); if (e) { const b = f.near(x + 4, y + 1, '修蛇', 6); e.x = e.rx = b[0]; e.y = e.ry = b[1]; Object.assign(e, { diveCD: 99, gapeCD: 99, coilCD: 0.6, under: false, moveT: 0.1 }); }
+      const e = g.bossEnt(); if (e) { const b = f.near(x + 4, y + 1, '修蛇', 6); e.x = e.rx = b[0]; e.y = e.ry = b[1]; Object.assign(e, { diveCD: 99, gapeCD: 99, coilCD: 2.0, under: false, moveT: 0.1 }); }   // 纏舟晚一點，先看船蛇行
       f.face(1, 0); window.__e = e;
     },
     frame({ f }) {
       const F = window.__f, e = window.__e;
-      if (f === 3 || f === 10) F.boat(0, -1); if (f === 17) F.boat(-1, 0);   // 先轉舵想甩開牠
+      const zig = { 3: [0, -1], 10: [0, -1], 17: [-1, 0], 25: [-1, 0], 33: [0, 1], 41: [0, 1], 49: [1, 0], 57: [0, -1] };   // 先蛇行轉舵想甩開牠
+      if (zig[f] && !(e && e.state === 'coil')) F.boat(zig[f][0], zig[f][1]);
+      if (e && e.state === 'coil' && f % 18 === 9) F.deck();   // 纏住了：船動不了，人在船上兩格之間走，找角度打頭
       if (e && e.state === 'coil' && (f % 18 === 0)) { F.faceTo(e); F.E(); }
       if (f === 120) F.hold('燭龍焚溟');
       if (f === 130) { F.faceTo(e); window.__slow(14, 0.4); F.E(); }
@@ -351,6 +366,12 @@ export const SHOTS = [
       if (window.__galeDodge && (f === window.__galeDodge + 4 || f === window.__galeDodge + 9)) F.step(0, -1);
       if (e && e.state === 'dive' && U.cheb(e.x, e.y, p.x, p.y) <= 3 && !window.__diveDodge) { window.__diveDodge = f; F.step(1, 1); }   // 俯衝下來，往旁一閃
       if (window.__diveDodge && f === window.__diveDodge + 6) F.step(1, 0);
+      if (window.__galeDodge && (f === window.__galeDodge + 18 || f === window.__galeDodge + 26)) F.step(-1, 0);   // 狂風過去，走進被拔光的那片地
+      if (f === 52 || f === 60) F.step(0, 1);
+      const dd = window.__diveDodge; if (dd && f > dd + 10 && f < 136 && (f - dd) % 8 === 2) F.orbit(e, 3, 1);   // 閃開俯衝以後繞著牠走
+      if (f === 144) F.hold('鎢鋼刀');
+      if (f >= 146 && f % 5 === 1 && !F.near1(e)) F.toward(e);   // 繳下來了，衝上去
+      if (f >= 152 && f % 8 === 0 && F.near1(e)) { F.faceTo(e); F.E(); }
       if (f === 70) { e.galeCD = 99; e.diveCD = 0; e.moveT = 0; }
       if (e && e.state === 'dive') window.__speed(2);   // 俯衝下來：速度線
       if (f === 140) { F.faceTo(e); window.__f.E(); window.__hit(0.55, [170, 230, 255]); }
@@ -367,7 +388,9 @@ export const SHOTS = [
     frame({ f }) {
       const F = window.__f, e = window.__e;
       const p = XIEYI.game.player;
-      if (f === 18) F.step(0, -1); if (f === 26) F.step(-1, -1); if (f === 36) F.step(-1, 0);   // 人遊走，牠在地裡追，淖拖成一道彎
+      const wv = { 18: [0, -1], 26: [-1, -1], 34: [-1, 0], 41: [0, 1], 48: [-1, 1], 55: [-1, 0], 62: [-1, -1], 69: [0, -1] };   // 人一直遊走，牠在地裡追，淖拖成一道道彎
+      if (wv[f] && !window.__digDodge) F.step(wv[f][0], wv[f][1]);
+      if (f === 108 || f === 116) F.orbit(e, 3, -1);
       if (e && e.dig && !window.__digDodge) window.__digDodge = f;   // 腳下一冒泡，跳開
       if (window.__digDodge && (f === window.__digDodge + 3 || f === window.__digDodge + 8)) F.away(e.dig ? e.dig.x : e.x, e.dig ? e.dig.y : e.y, [-1, 1]);
       if (f === 100) { F.faceTo(e); window.__slow(14, 0.4); F.E(); }
@@ -378,7 +401,7 @@ export const SHOTS = [
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game; c.at(60, 0.5);
       g.player.bosses = { '修蛇': { day: 1 }, '封豨': { day: 1 }, '大風': { day: 1 } }; f.arm(['九閽鳴雷', '燭龍焚溟', '青冥落羽'], '九閽鳴雷');
-      const e = f.fight('共工', 6, 4, 4, 0, Object.assign(g.ents.gongFresh('land'), { modeT: 999, meteorCD: 0.1, buttCD: 2 }));
+      const e = f.fight('共工', 6, 4, 4, 0, Object.assign(g.ents.gongFresh('land'), { modeT: 999, meteorCD: 0.8, buttCD: 2 }));
       f.face(1, 0); window.__e = e;
     },
     frame({ f }) {
@@ -386,8 +409,10 @@ export const SHOTS = [
       const p = XIEYI.game.player;
       if (e && e.meteor && !window.__metDodge) { window.__metDodge = f; const cs = e.meteor.cells; window.__metC = [cs.reduce((a, c) => a + c[0], 0) / cs.length, cs.reduce((a, c) => a + c[1], 0) / cs.length]; }   // 三顆隕石的圈一畫出來
       if (window.__metDodge && [4, 9, 14].includes(f - window.__metDodge)) F.away(window.__metC[0], window.__metC[1], [-1, -1]);   // 連跳三步出圈
-      if (f === 74 || f === 81) F.toward(e);   // 隕石落完，回身逼近
-      if (f === 96) { F.faceTo(e); window.__slow(14, 0.4); F.E(); }
+      if (f === 8 || f === 15) F.orbit(e, 4, 1);   // 先繞著走
+      if (f === 82 || f === 89) F.toward(e);   // 隕石落完，回身逼近
+      if (f === 100) { F.faceTo(e); window.__slow(14, 0.4); F.E(); }
+      if (f === 110 || f === 117) F.orbit(e, 3, -1);   // 雷落下去，再拉開
     },
   },
   {   // 共工・空：浮在天上，星移斗轉、畫面斜了；力壓千鈞落在你腳下；青冥落羽射上去
@@ -402,7 +427,7 @@ export const SHOTS = [
       const F = window.__f, e = window.__e, g = XIEYI.game, p = g.player;
       if (e && e.press && !window.__pressDodge) window.__pressDodge = f;   // 腳下一圈「壓」，跑出去
       if (window.__pressDodge && [3, 8, 13].includes(f - window.__pressDodge)) F.away(e.press ? e.press.x : p.x + 1, e.press ? e.press.y : p.y, [-1, 1]);
-      if (f === 64) F.step(1, 0);
+      if ([46, 54, 62, 70, 90, 98, 120].includes(f)) F.orbit(e, 3, 1);   // 繞著天上的牠走，一邊找射的角度
       if (f === 80 || f === 112) { F.faceTo(e); g.action = null; p.atkT = 0; const t = g.skyTarget(); if (t) { g.bowShot(t); window.__hit(0.6, [170, 230, 255]); if (f === 80) window.__slow(12, 0.4); } }
     },
   },

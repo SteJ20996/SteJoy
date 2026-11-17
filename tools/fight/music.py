@@ -120,14 +120,14 @@ def boom(dur=2.4):   # 重擊：次低頻往下掉＋爆裂＋長尾
     t = tt(dur); f = 30 + 70 * np.exp(-t * 7)
     sub = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 2.2)
     x = rng.standard_normal(len(t)); crack = (x - lowpass(x, 1500)) * np.exp(-t * 28) * 0.5
-    tail = lowpass(rng.standard_normal(len(t)), 300) * np.exp(-t * 1.6) * 0.8
+    tail = lowpass(rng.standard_normal(len(t)), 300) * np.exp(-t * 3.0) * 0.2   # 2026-11-17 使用者：背景裡呼呼的風聲降低——重擊後面那條低沉的雜音長尾就是，留重擊本身（次低頻與爆裂），長尾收短收小
     return (sub * 1.1 + crack + tail * 0.6) * 0.75
 
 def riser(dur):   # 上揚的音牆：雜音的頻帶與一個正弦一起往上爬
     t = tt(dur); u = t / dur
     x = rng.standard_normal(len(t)); lo = lowpass(x, 600) - lowpass(x, 150); hi = lowpass(x, 6000) - lowpass(x, 1200); band = lo * (1 - u ** 1.5) + hi * u ** 1.5   # 頻帶由低往高爬
     f = 110 * 2 ** (u * 2.5); tone = np.sin(2 * np.pi * np.cumsum(f) / SR) * 0.25
-    return (band * 0.3 + tone) * u ** 1.6 * 0.6   # 雜音的頻帶少一點
+    return (band * 0.06 + tone) * u ** 1.6 * 0.6   # 雜音的頻帶幾乎拿掉（往上爬的雜音聽起來像一陣風），留往上爬的音
 
 def drone(f, dur, swell=1.5):
     t = tt(dur); env = np.minimum(1, t / swell) * np.minimum(1, (dur - t) / swell)
@@ -227,7 +227,7 @@ add(bell(deg(0, 1)), e + 0.7, 0, 0.6)
 
 # 殘響、整體音量、收尾淡出
 ir_n = int(2.2 * SR); t = np.arange(ir_n) / SR
-irL = rng.standard_normal(ir_n) * np.exp(-t * 2.6); irR = rng.standard_normal(ir_n) * np.exp(-t * 2.6); irL[0] = irR[0] = 0
+irL = lowpass(lowpass(rng.standard_normal(ir_n), 1800), 1800) * np.exp(-t * 3.4); irR = lowpass(lowpass(rng.standard_normal(ir_n), 1800), 1800) * np.exp(-t * 3.4); irL[0] = irR[0] = 0   # 殘響的雜音也濾掉高的、尾巴短一點（不再拖出一陣呼呼聲）
 def conv(x, ir):
     n = len(x) + len(ir); m = 1 << (n - 1).bit_length()
     return np.fft.irfft(np.fft.rfft(x, m) * np.fft.rfft(ir, m), m)[: len(x)]
@@ -241,6 +241,9 @@ n_end = int(TOTAL * SR); fn = int(1.5 * SR)
 env = np.ones(N); env[n_end - fn:n_end] = np.linspace(1, 0, fn); env[n_end:] = 0
 outL *= env; outR *= env
 peak = max(np.abs(outL).max(), np.abs(outR).max())
+HI_CUT = 0.8   # 2026-11-17 使用者：適當降低一點點高音頻率，1800 Hz 以內——1800 Hz 以上再輕輕壓一點（約 −2 dB；連同拿掉的風聲與殘響的嘶聲，1800 Hz 以上共少約 6 dB），以下不動
+shelf = lambda x: (1 - HI_CUT) * lowpass(lowpass(x, 1800), 1800) + HI_CUT * x
+outL = shelf(outL); outR = shelf(outR)
 DRIVE = 1.9; outL = np.tanh(outL / peak * DRIVE) / np.tanh(DRIVE) * 0.9; outR = np.tanh(outR / peak * DRIVE) / np.tanh(DRIVE) * 0.9   # 壓峰值、整體推響（預告的音量要夠），鼓與銅管更厚
 pcm = (np.stack([outL[:n_end], outR[:n_end]], 1) * 32767).astype('<i2')
 with wave.open(sys.argv[2], 'wb') as w:
