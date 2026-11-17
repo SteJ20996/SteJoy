@@ -65,7 +65,7 @@ TEXT = {
             'sail': ('造船渡海', '膽氣夠了就造孤帆、方舟出海。紙上有大陸、群島、大漠、火山、雪原，海上有蜃。'),
             'gong': ('上不周山', '先斃修蛇、封豨、大風，向北方玄武取經，再上不周山，去找撞歪天地的共工。'),
         },
-        'facts': ['單人、離線', '鍵盤與滑鼠', '介面：繁體中文（預設）、簡體中文、英文', '四種難度：逍遙、初履、人間、宗師'],
+        'facts': ['單人、離線', '鍵盤與滑鼠', '介面：繁體中文（預設）、簡體中文、英文、日文', '四種難度：逍遙、初履、人間、宗師'],
         'contact_h': '聯絡',
         'contact': '《墨畫蒼生》是長風「寫意」系列的第一部。想說什麼，寫信給我們：',
         'next': ('「寫意」系列第二部《力透紙背》', '敬請期待'),   # 首頁「聯絡」底下連到第二部的介紹頁（原本的第二部《人間塵世》暫停開發，使用者改定）
@@ -109,7 +109,7 @@ TEXT = {
             'sail': ('造船渡海', '胆气够了就造孤帆、方舟出海。纸上有大陆、群岛、大漠、火山、雪原，海上有蜃。'),
             'gong': ('上不周山', '先毙修蛇、封豨、大风，向北方玄武取经，再上不周山，去找撞歪天地的共工。'),
         },
-        'facts': ['单人、离线', '键盘与鼠标', '界面：繁体中文（默认）、简体中文、英文', '四种难度：逍遥、初履、人间、宗师'],
+        'facts': ['单人、离线', '键盘与鼠标', '界面：繁体中文（默认）、简体中文、英文、日文', '四种难度：逍遥、初履、人间、宗师'],
         'contact_h': '联系',
         'contact': '《墨画苍生》是长风“写意”系列的第一部。想说什么，写信给我们：',
         'next': ('“写意”系列第二部《力透纸背》', '敬请期待'),
@@ -154,7 +154,7 @@ TEXT = {
             'sail': ('Cross the sea', 'With enough courage, build a sailboat or an ark. The paper holds continents, archipelagos, deserts, volcanoes and snowfields, and the 蜃 haunts the sea.'),
             'gong': ('Climb Mount Buzhou', 'Defeat Xiushe, Fengxi and the Great Wind, take scrolls from the Black Tortoise, then climb Mount Buzhou to find Gonggong.'),
         },
-        'facts': ['Single-player, offline', 'Keyboard and mouse', 'Text: English, Traditional Chinese and Simplified Chinese', 'Four difficulties'],
+        'facts': ['Single-player, offline', 'Keyboard and mouse', 'Text: English, Japanese, Traditional Chinese and Simplified Chinese', 'Four difficulties'],
         'contact_h': 'Contact',
         'contact': 'InkWild is the first game in SteJoy\'s 寫意 (Xieyi) series. Write to us:',
         'next': ('Part 2 of the Xieyi series: Through the Page', 'coming soon'),
@@ -175,7 +175,7 @@ TEXT = {
         'soon': '近日 Steam で配信', 'wish': 'Steam でウィッシュリストに追加', 'watch': '予告編を見る',
         'trailer_h': '予告編', 'trailer_note': 'ゲームの実機映像です。音楽は仮の合成音源です。',
         'trailer2_h': '戦い', 'trailer2_note': '大魔王と共工のゲーム実機映像です。音楽は仮の合成音源です。',
-        'lang_note': '『墨畫蒼生』の表示言語は英語・繁体字中国語・簡体字中国語で、日本語版はありません。',   # 遊戲沒有日文版（先說清楚）；2026-11-17 英文介面上線，加英語
+        'lang_note': '',   # 2026-11-17：日文介面上線（遊戲 v0.9.93–v0.9.98），原本「日本語版はありません」那句拿掉
         'story_h': '物語',
         'story': [
             '鳥が山に棲む、それを島という。一枚の紙が海に落ち、紙の上の字が生きはじめた。あなたはその中の一字、素手の「人」。紙の一マス一マスが、どれも一つの字だ。木は木、山は山、水は水、虎はそのまま虎。取った字は材料になり、書き入れた字はあなたの家になる。島には廃村があり、碑にこうある。「村には誰もいない。人はみな字典の中にいる。」',
@@ -200,7 +200,7 @@ TEXT = {
             'sail': ('舟を造って海を渡る', '胆力が十分についたら孤帆や方舟を造って海へ。紙の上には大陸、群島、砂漠、火山、雪原があり、海には蜃が潜む。'),
             'gong': ('不周山へ', '修蛇・封豨・大風を倒し、北の玄武から経を授かり、不周山に登って、天地を傾けた共工を探しに行く。'),
         },
-        'facts': ['シングルプレイ・オフライン', 'キーボードとマウス', '表示言語：英語・繁体字中国語・簡体字中国語', '難易度は四段階（逍遙・初履・人間・宗師）'],
+        'facts': ['シングルプレイ・オフライン', 'キーボードとマウス', '表示言語：日本語・英語・繁体字中国語・簡体字中国語', '難易度は四段階（逍遙・初履・人間・宗師）'],
         'contact_h': 'お問い合わせ',
         'contact': '『墨畫蒼生』は長風の「写意」シリーズ第一部です。ご意見・ご感想はメールでどうぞ：',
         'next': ('「写意」シリーズ第二部『力透紙背』', '乞うご期待'),   # 「第○部」照《力透紙背》日文版標題畫面的寫法
@@ -225,7 +225,7 @@ TEXT = {
         'soon': 'Sắp ra mắt trên Steam', 'wish': 'Thêm vào danh sách ước muốn trên Steam', 'watch': 'Xem trailer',
         'trailer_h': 'Trailer', 'trailer_note': 'Hình ảnh thật trong trò chơi. Nhạc nền là bản tổng hợp tạm thời.',
         'trailer2_h': 'Chiến đấu', 'trailer2_note': 'Hình ảnh thật trong trò chơi: các đại ma vương và Cộng Công. Nhạc nền là bản tổng hợp tạm thời.',
-        'lang_note': 'InkWild có giao diện tiếng Anh, tiếng Trung phồn thể và giản thể; chưa có bản tiếng Việt.',   # 遊戲沒有越南文版（先說清楚）；2026-11-17 英文介面上線，加英文
+        'lang_note': 'InkWild có giao diện tiếng Anh, tiếng Nhật, tiếng Trung phồn thể và giản thể; chưa có bản tiếng Việt.',   # 遊戲沒有越南文版（先說清楚）；2026-11-17 英文介面上線，加英文；同日日文介面上線，加日文
         'story_h': 'Câu chuyện',
         'story': [
             'Trong chữ Hán, 島 (đảo) là con chim 鳥 (điểu) đậu trên núi 山 (sơn). Một trang giấy rơi xuống biển, và những chữ viết trên đó sống dậy. Bạn là một trong số ấy: chữ 人 (nhân – người), tay không tấc sắt. Mỗi ô trên trang giấy là một chữ: 木 (mộc) là cây, 山 (sơn) là núi, 水 (thủy) là nước, 虎 (hổ) chính là hổ. Chữ bạn lấy xuống thành vật liệu; chữ bạn viết xuống thành ngôi nhà của bạn. Trên đảo có một ngôi làng bỏ hoang, tấm bia ở đó khắc: «Trong làng không có người. Người đều ở trong tự điển.»',
@@ -250,7 +250,7 @@ TEXT = {
             'sail': ('Đóng thuyền vượt biển', 'Khi đã đủ can đảm, hãy đóng thuyền buồm Cô Phàm hay thuyền lớn Phương Chu mà ra khơi. Trên trang giấy có lục địa, quần đảo, sa mạc, núi lửa, đồng tuyết; dưới biển có 蜃 (thận) rình rập – loài thủy quái phun sương dựng nên ảo ảnh.'),
             'gong': ('Lên núi Bất Chu', 'Hạ gục Tu Xà, Phong Hy và Đại Phong, thỉnh kinh từ Huyền Vũ phương Bắc, rồi lên núi Bất Chu tìm Cộng Công – kẻ đã húc lệch trời đất.'),
         },
-        'facts': ['Chơi đơn, ngoại tuyến', 'Bàn phím và chuột', 'Ngôn ngữ: tiếng Anh, tiếng Trung phồn thể và giản thể', 'Bốn độ khó: Tiêu Dao (逍遙), Sơ Lý (初履), Nhân Gian (人間), Tông Sư (宗師)'],
+        'facts': ['Chơi đơn, ngoại tuyến', 'Bàn phím và chuột', 'Ngôn ngữ: tiếng Anh, tiếng Nhật, tiếng Trung phồn thể và giản thể', 'Bốn độ khó: Tiêu Dao (逍遙), Sơ Lý (初履), Nhân Gian (人間), Tông Sư (宗師)'],
         'contact_h': 'Liên hệ',
         'contact': 'InkWild (Mặc Họa Thương Sinh) là trò chơi đầu tiên trong loạt «Tả ý» (寫意) của SteJoy. Có điều gì muốn nói, hãy viết thư cho chúng tôi:',
         'next': ('Phần 2 của loạt «Tả ý»: Lực Thấu Chỉ Bối (力透紙背)', 'Hãy đón chờ'),
