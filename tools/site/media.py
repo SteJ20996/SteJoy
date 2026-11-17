@@ -32,7 +32,7 @@ for s, (a, d, p) in ({} if ONLY_TRAILER else SCENES).items():
     ff('-ss', str(p), '-i', str(src), '-frames:v', '1', '-vf', 'scale=1280:720:flags=lanczos', '-q:v', '4', str(M / 'scenes' / f'{s}{SUF}.jpg'))
 
 # 完整版：一張圖
-STILLS = {'thunder': 0.5, 'crops': 5.6, 'sail': 4.0, 'gong': 5.5}
+STILLS = {'thunder': 0.5, 'crops': 5.6, 'sail': 2.75, 'gong': 5.5}   # 渡海（2026-11-17 重錄）：濤正壓到船頭、遠處一道湧
 _ev = SHOTS / 'thunder.events.json'   # 雷雨那張取第一道雷劈到地上的下一格（落下那一格是整片白光）；錄鏡頭時記下的幀
 if _ev.exists():
     import json
