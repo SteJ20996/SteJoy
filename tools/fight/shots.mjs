@@ -324,8 +324,10 @@ export const SHOTS = [
       if (d1 && f === d1 + 46) { e.chargeCD = 0; e.quakeCD = 99; }   // 再蓄力衝一次
       if (e && e.state === 'charge' && d1 && !d2 && f > d1 + 46) { window.__dodged2 = f; F.step(0, 1); window.__slow(16, 0.45); }   // 第二次往下閃
       if (d2 && f === d2 + 5) F.step(0, 1);
-      if (d2 && (f === d2 + 13 || f === d2 + 19) && U.cheb(e.x + 0.5, e.y + 0.5, p.x, p.y) > 2.5) F.toward({ x: e.x, y: e.y });   // 衝過頭了，追上去
-      if (!window.__ham && ((d2 && f === d2 + 25) || f === 156)) { window.__ham = 1; F.faceTo(e); window.__slow(14, 0.4); F.E(); }   // 九閽鳴雷還一記
+      const rd = e ? g.ents.rectDist(e, p.x, p.y) : 9;
+      if (d2 && !window.__ham && f >= d2 + 9 && (f - d2) % 5 === 4 && rd > 2) F.toward({ x: e.x + (p.x > e.x ? 1 : 0), y: e.y + (p.y > e.y ? 1 : 0) });   // 衝過頭了，追上去（追到兩格內）
+      if (!window.__ham && d2 && f >= d2 + 20 && rd <= 3) { window.__ham = 1; F.faceTo(e); window.__slow(14, 0.4); F.E(); }   // 九閽鳴雷還一記（三格內才打得到）
+      if (!window.__ham && !d2 && f >= 150 && rd <= 3) { window.__ham = 1; F.faceTo(e); window.__slow(14, 0.4); F.E(); }
     },
   },
   {   // 修蛇：洞庭湖上，修蛇纏住船，頭露在外面——打頭多吃五成
