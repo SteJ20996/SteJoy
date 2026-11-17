@@ -7,11 +7,17 @@
 export { COMMON } from '../capture/shots.mjs';
 export const PAUSE = true;   // 假時鐘停住、只照幀推（capture.mjs）
 
-export const EXTRA = ({ seed2, bossbar, fx: fxIn, tile }) => {
+export const EXTRA = ({ seed2, bossbar, fx: fxIn, tile, lang }) => {
   const g = XIEYI.game, w = g.world, p = g.player;
   let s = (seed2 * 2654435761) >>> 0;   // mulberry32：獸的走位、招式的落點每次錄都一樣
   Math.random = () => { s = (s + 0x6D2B79F5) >>> 0; let t = s; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
-  if (window.EN && EN.on) { EN.set(''); if (g.langChanged) g.langChanged(); }   // 命條的名字寫漢字（各語言的字幕另外燒）
+  // 「真隨機」（天氣、雨澆燈、掉東西這類，遊戲用 crypto）也定下來，另一條數列、不動到上面那條：不定的話同一個鏡頭重錄，修蛇、大風會岔開（2026-11-17）
+  { let t = (seed2 * 2246822519 + 3266489917) >>> 0; U.trueRand = () => { t = (t + 0x6D2B79F5) >>> 0; let r = t; r = Math.imul(r ^ (r >>> 15), r | 1); r ^= r + Math.imul(r ^ (r >>> 7), r | 61); return ((r ^ (r >>> 14)) >>> 0) / 4294967296; }; }
+  // 介面的語言（2026-11-17 使用者：英文版命條的名字、共工的海陸空方框都要是英文；其他語言也照各自的）：
+  // 不給 CAP_LANG 是繁體；en 是英文（英、日、越、韓的版本——這些玩家打開遊戲看到的是英文介面）；hans 是簡體（簡中的版本）
+  if (window.EN && EN.lang !== (lang === 'en' ? 'en' : '')) EN.set(lang === 'en' ? 'en' : '');
+  if (window.I18N && !!I18N.hans !== (lang === 'hans')) I18N.set(lang === 'hans' ? 'hans' : 'hant');
+  if (g.langChanged) g.langChanged();
   p.cour = g.levelAt(36); p.ctrl = true;
   g.ents.dashT = 1e9; g.ents.snuffP = 0;
   const DUR = { '鎢鋼刀': 112, '鎢鋼劍': 112, '鎢鋼戈': 112, '鎢鋼斧': 112, '九閽鳴雷': 199, '燭龍焚溟': 199, '青冥落羽': 199, '彈弓': 80 };
@@ -48,7 +54,7 @@ export const EXTRA = ({ seed2, bossbar, fx: fxIn, tile }) => {
     const zk = FX.zoom ? FX.zoom[0] + (FX.zoom[1] - FX.zoom[0]) * ease : 1;
     g.renderer.tile = tile * zk * (1 + 0.13 * punchA); punchA *= 0.8;   // 推鏡＋重擊時猛地一推再慢慢退回
     curF = f; const sh = g.renderer.shake || 0;
-    if (sh >= 0.58 && sh > lastShake + 0.3) { window.__flash(Math.min(0.8, FX.flash * sh / 0.7), FX.flashC); punchA = 1; rings.push({ k: 0, a: 1 }); window.__events.hits.push([f, +sh.toFixed(2)]); }   // 只有重擊（神兵、魔王的大招）閃光、推鏡、衝擊波；獸咬人那點震動不算
+    if (sh >= (FX.hitAt || 0.58) && sh > lastShake + 0.3) { window.__flash(Math.min(0.8, FX.flash * sh / 0.7), FX.flashC); punchA = 1; rings.push({ k: 0, a: 1 }); window.__events.hits.push([f, +sh.toFixed(2)]); }   // 只有重擊（神兵、魔王的大招）閃光、推鏡、衝擊波；獸咬人那點震動不算
     lastShake = sh;
     mul.clearRect(0, 0, W, H); scr.clearRect(0, 0, W, H); soft.clearRect(0, 0, W, H);
     if (FX.shadows) for (let k = 0; k < 5; k++) {   // 雲影：五團大而淡的影子，斜斜地飄過地面
@@ -237,7 +243,7 @@ export const SHOTS = [
     },
   },
   {   // 蜃：海上，蜃浮上來撞船、吐海霧；燭龍焚溟一揮，熔痕落在水上冒白汽
-    name: 'shen', sec: 4.4, seed: 7, tile: 76, rand: 6, fx: { grade: 'sea', shadows: 0.16, rays: 0.1, zoom: [1, 1.08], storm: true, stormAt: 0.5, flashC: [255, 160, 80] },
+    name: 'shen', sec: 4.4, seed: 7, tile: 76, rand: 6, fx: { grade: 'sea', shadows: 0.16, rays: 0.1, zoom: [1, 1.08], storm: true, stormAt: 0.5, flashC: [255, 160, 80], hitAt: 0.5 },   // hitAt（2026-11-17）：蜃撞船那一下的震動剛好在 0.58 上下，英文介面錄的那份差一點點就不閃；這一段門檻放低
     setup() {
       const c = window.__c, f = window.__f, g = XIEYI.game; c.at(41, 0.5);
       const [x, y] = f.coast(150, 20); f.sail(x, y); f.only(); f.face(1, 0);

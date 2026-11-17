@@ -35,7 +35,7 @@ for (const shot of SHOTS) {
   if (!shot.page) {
     for (let i = 0; i < 200; i++) { await page.clock.runFor(100); if (await page.evaluate(() => !!(window.XIEYI && XIEYI.game && XIEYI.game.player))) break; }
     await page.evaluate(COMMON, { tile: shot.tile || 64 });
-    if (EXTRA) await page.evaluate(EXTRA, { seed2: shot.rand || 1, bossbar: !!shot.bossbar, fx: shot.fx || null, tile: shot.tile || 64 });
+    if (EXTRA) await page.evaluate(EXTRA, { seed2: shot.rand || 1, bossbar: !!shot.bossbar, fx: shot.fx || null, tile: shot.tile || 64, lang: process.env.CAP_LANG || '' });   // CAP_LANG=en／hans：介面照英文、簡體錄（第二支預告 2026-11-17）
   }
   if (shot.setup) await page.evaluate(shot.setup, shot.arg || null);
   if (shot.warm) await page.clock.runFor(shot.warm * 1000);
