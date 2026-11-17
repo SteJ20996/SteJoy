@@ -2,10 +2,48 @@
 // setup(arg) 擺場面；frame({ f, n, fps, arg }) 每一幀先跑，再推進 1/30 息、截圖。
 
 // 每個鏡頭都先跑：關掉真隨機的事件、關 HUD、字放大、人不會死
-export const COMMON = ({ tile }) => {
+export const COMMON = ({ tile, lang, bar }) => {
   const g = XIEYI.game, w = g.world, p = g.player;
+  // 介面的語言（2026-11-17，第一、二支預告共用）：CAP_LANG 不給是繁體、en 英文、hans 簡體。一律明寫：遊戲 v0.9.86 起非中文系統預設英文，錄影的瀏覽器是英文
+  if (window.EN && EN.lang !== (lang === 'en' ? 'en' : '')) EN.set(lang === 'en' ? 'en' : '');
+  if (window.I18N && !!I18N.hans !== (lang === 'hans')) I18N.set(lang === 'hans' ? 'hans' : 'hant');
+  if (g.langChanged) g.langChanged();
+  // 日、越（韓暫停）的版本：遊戲沒有這幾種介面，錄英文介面（CAP_LANG=en），再把命條的名字、共工的方框、地上飄的字換成那一種語言（CAP_BAR=ja／vi／ko；叫法跟字幕一樣）。
+  // 2026-11-17 使用者：對應語言的怪物血條資訊也要改成相應語言
+  const BAR = bar ? ({
+    ja: { name: { Fengxi: '封豨', Xiushe: '修蛇', Dafeng: '大風', Gonggong: '共工' }, mode: { Sea: '海', Land: '陸', Sky: '空' }, box: '18px', note: [[/ · alone/, ' · 独力'], [/(\d+) seconds? left/, '残り $1 秒']] },
+    vi: { name: { Fengxi: 'Phong Hy', Xiushe: 'Tu Xà', Dafeng: 'Đại Phong', Gonggong: 'Cộng Công' }, mode: { Sea: 'Biển', Land: 'Đất', Sky: 'Trời' }, note: [[/ · alone/, ' · một mình'], [/(\d+) seconds? left/, 'còn $1 giây']] },
+    ko: { name: { Fengxi: '봉희', Xiushe: '수사', Dafeng: '대풍', Gonggong: '공공' }, mode: { Sea: '바다', Land: '땅', Sky: '하늘' }, font: '"Gowun Batang", "LXGW WenKai TC", serif' },
+  })[bar] : null;
+  // 畫布上的字的對照（英文 → 該語言）：sub 字串裡出現就換（長的先換）；exact 整句一樣才換（方位這種短字）；star 是觀星的「英文 · 漢字」標籤，照漢字換。
+  // 照錄英文版時記下的 <鏡頭>.floats.json 補。寫在函式裡：page.evaluate 只帶得走函式本身
+  const DIRS = { ja: { N: '北', NE: '北東', E: '東', SE: '南東', S: '南', SW: '南西', W: '西', NW: '北西' }, vi: { N: 'Bắc', NE: 'Đông Bắc', E: 'Đông', SE: 'Đông Nam', S: 'Nam', SW: 'Tây Nam', W: 'Tây', NW: 'Tây Bắc' } };
+  const HV = { '北斗': 'Bắc Đẩu', '北河': 'Bắc Hà', '南河': 'Nam Hà', '五諸侯': 'Ngũ Chư Hầu', '天潢': 'Thiên Hoàng', '咸池': 'Hàm Trì', '天關': 'Thiên Quan', '王良': 'Vương Lương', '勾陳': 'Câu Trần', '天船': 'Thiên Thuyền', '五車': 'Ngũ Xa', '軒轅': 'Hiên Viên', '大角': 'Đại Giác', '織女': 'Chức Nữ', '河鼓': 'Hà Cổ', '天津': 'Thiên Tân', '北極': 'Bắc Cực', '紫微': 'Tử Vi', '華蓋': 'Hoa Cái', '文昌': 'Văn Xương', '太微': 'Thái Vi', '天市': 'Thiên Thị', '角宿': 'Giác Tú', '亢宿': 'Cang Tú', '氐宿': 'Đê Tú', '房宿': 'Phòng Tú', '心宿': 'Tâm Tú', '尾宿': 'Vĩ Tú', '箕宿': 'Cơ Tú', '斗宿': 'Đẩu Tú', '牛宿': 'Ngưu Tú', '女宿': 'Nữ Tú', '虛宿': 'Hư Tú', '危宿': 'Nguy Tú', '室宿': 'Thất Tú', '壁宿': 'Bích Tú', '奎宿': 'Khuê Tú', '婁宿': 'Lâu Tú', '胃宿': 'Vị Tú', '昴宿': 'Mão Tú', '畢宿': 'Tất Tú', '觜宿': 'Chủy Tú', '參宿': 'Sâm Tú', '井宿': 'Tỉnh Tú', '鬼宿': 'Quỷ Tú', '柳宿': 'Liễu Tú', '星宿': 'Tinh Tú', '張宿': 'Trương Tú', '翼宿': 'Dực Tú', '軫宿': 'Chẩn Tú' };
+  const FLOAT_WORDS = {
+    ja: { sub: { boat: '舟', missed: '空振り', claw: '爪痕', '+wood': '+木', 'wraith gone': '魄 消滅', courage: '胆力', 'stars · ease': '星 · 愜意', 'breeze · ease': '風 · 愜意' }, exact: DIRS.ja, star: (en, zh) => zh },
+    vi: { sub: { boat: 'thuyền', missed: 'vồ hụt', claw: 'vuốt', '+wood': '+gỗ', 'wraith gone': 'Phách tan', courage: 'can đảm', 'stars · ease': 'sao · thư thái', 'breeze · ease': 'gió nhẹ · thư thái' }, exact: DIRS.vi, star: (en, zh) => HV[zh] ? HV[zh] + ' · ' + zh : zh },
+    ko: { sub: {}, exact: {} },   // 韓文版暫停（2026-11-17 使用者）
+  };
+  const FW = bar ? (FLOAT_WORDS[bar] || { sub: {}, exact: {} }) : null;
+  const tl = (t) => { if (!FW) return t; if (FW.exact[t]) return FW.exact[t]; const m = FW.star && t.match(/^(.+) · ([\u3400-\u9fff]+)$/); if (m) return FW.star(m[1], m[2]);
+    for (const k of Object.keys(FW.sub).sort((x, y) => y.length - x.length)) if (t.indexOf(k) >= 0) t = t.split(k).join(FW.sub[k]); return t; };
+  // 畫布上的字（地上飄的字、觀星的星名……）：記下帶英文字母的（capture.mjs 寫成 <鏡頭>.floats.json），日越版照對照表換
+  window.__floats = [];
+  { const P = CanvasRenderingContext2D.prototype, fill = P.fillText;
+    P.fillText = function (t, ...a) { if (typeof t === 'string' && /[A-Za-z]/.test(t)) { if (window.__floats.length < 4000 && window.__floats.indexOf(t) < 0) window.__floats.push(t); t = tl(t); } return fill.call(this, t, ...a); }; }
+  if (BAR) {
+    const fix = () => { const nm = document.getElementById('bossbar-name'), md = document.getElementById('bossbar-mode');
+      if (nm && BAR.name[nm.textContent]) nm.textContent = BAR.name[nm.textContent];
+      if (md && BAR.mode[md.textContent]) md.textContent = BAR.mode[md.textContent];
+      if (md && BAR.box) md.style.fontSize = BAR.box;
+      const nt = document.getElementById('bossbar-note'); if (nt && BAR.note) { let t = nt.textContent; for (const [re, to] of BAR.note) t = t.replace(re, to); if (t !== nt.textContent) nt.textContent = t; }   // 命條下面那行（第一支預告看得到）
+      if (BAR.font) for (const el of [nm, md]) if (el) el.style.fontFamily = BAR.font; };
+    new MutationObserver(fix).observe(document.getElementById('bossbar'), { subtree: true, childList: true, characterData: true }); fix();   // 遊戲改了命條的字就換回來（截圖前就換好）
+    if (BAR.font) { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = 'http://127.0.0.1:8126/extra.css'; document.head.appendChild(l); }   // 韓文字型（8126 要給 CORS，見 README）
+  }
   g.ents.seaP = 0; g.ents.toothP = 0; g.ents.harpyP = 0; g.ents.birdP = 0; g.ents.snuffP = 0;
   w.fogP = 0; w.fogStep = 1e9; g.warnEnabled = false; g.visitsOn = false; w.hailP = 0;
+  g.swellP = 0; g.billowP = 0; g.waves = [];   // 遊戲 v0.9.91 起海上會自己起湧、濤（真的隨機，各語言錄出來會不一樣、還會推船）；要的鏡頭自己擺
   w.snowP = 0; w.thunderP = 0; w.galeP = 0; w.breezeP = 0; w.galeRuinP = 0; w.galeScareP = 0; g.galePushP = 0;
   w.rainUntil = 0; w.nextRainAt = 1e12;
   p.tut = Object.assign(p.tut || {}, { farm: 1, mouse: 1, pounce: 1, sparrowLocust: 1, roomFit: 1 });
@@ -184,23 +222,23 @@ export const SHOTS = [
     },
     paint() { const g = XIEYI.game; g.renderer.draw(g, 0, g.animT || 0); if (g.gaze) g.gazeTick(0, false); },   // capture.mjs 截圖前叫：照這一幀的視角畫好（dt 0，live false 不判挨打）
   },
-  {   // 八、渡海（完整版）：孤帆沿著海岸往東開，海上浮著蜃
+  {   // 八、渡海（完整版）：孤帆在外海往東開，海上浮著蜃；先一組湧把船推開一格，再一道濤推開兩格（遊戲 v0.9.91：浪頭是彎的、長的，湧一組兩三道；濤兩排厚、兩格寫一個大字，只在離陸地十五格外的深海起；2026-11-17 使用者：宣傳片要有湧與濤、濤要看得出比湧大，浪不是一根直線、也不會這麼短）
     name: 'sail', sec: 6, seed: 7, full: true, warm: 1.5, tile: 56,
     setup() {
       const c = window.__c, g = XIEYI.game, p = g.player, w = g.world; c.at(40, 0.42);
-      const wet = (x, y) => /[淼水]/.test(w.base(x, y));
-      const clear = (x, y, r) => { for (let j = -r; j <= r; j++) for (let i = -r - 2; i <= r + 14; i++) if (!wet(x + i, y + j)) return false; return true; };
-      const landNear = (x, y) => { let n = 0; for (let j = -9; j <= 9; j++) for (let i = 0; i <= 14; i++) if (!wet(x + i, y + j)) n++; return n; };
-      let at = null, best = 0;
-      for (let y = -170; y <= 170 && !at; y += 3) for (let x = 110; x <= 200; x += 3) if (clear(x, y, 2)) { const n = landNear(x, y); if (n > best && n < 120) { best = n; at = [x, y]; } }
-      at = at || [180, 0];
+      const open = (x, y) => { for (let i = -6; i <= 42; i += 6) for (let j = -12; j <= 12; j += 6) if (!w.openSea(x + i, y + j, 16)) return false; return true; };   // 船一路往東開四十來格、上下各被推幾格，整段都要在深海
+      const cand = []; for (let y = -90; y <= 90; y += 6) for (let x = 150; x <= 420; x += 6) cand.push([x, y]); cand.sort((a, b) => Math.hypot(a[0] - 200, a[1]) - Math.hypot(b[0] - 200, b[1]));
+      const at = cand.find(([x, y]) => open(x, y)) || [260, 0];
       c.put(at[0], at[1]); p.sailing = true; p.ship = World.newShip('孤帆'); g.shipNow(); p.fx = 1; p.fy = 0;
       g.ents.add('蜃', at[0] - 2, at[1] + 4, { moveT: 0, atk: 1e9, fogT: 1e9 });   // 蜃在船後面跟著
       window.__sea = at;
+      window.__wave = (kind, cx, cy, dx, dy, opt) => g.addWave(kind, cx, cy, [dx, dy], opt);   // 擺一道浪：長度、幾道、走幾步、形狀的種子都定下來（遊戲起浪時是隨機的，各語言要錄得一樣）
     },
     frame({ f }) {
-      const g = XIEYI.game;
+      const g = XIEYI.game, p = g.player;
       if (f >= 3 && f % 6 === 0) g.shipStep(1, 0, 'h');
+      if (f === 14) window.__wave('湧', p.x + 5, p.y + 4, 0, -1, { len: 18, rows: 3, run: 18, seed: 11 });   // 一組三道湧從南邊來（彎的、長的），頭一道打到船推開一格
+      if (f === 60) window.__wave('濤', p.x + 5, p.y - 7, 0, 1, { len: 28, run: 24, seed: 5 });   // 一道長長的濤從北邊壓下來，推開兩格
     },
   },
   {   // 九、共工（完整版）：不周山
