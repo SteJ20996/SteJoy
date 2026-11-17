@@ -64,7 +64,7 @@ TEXT = {
             'sail': ('造船渡海', '膽氣夠了就造孤帆、方舟出海。紙上有大陸、群島、大漠、火山、雪原，海上有蜃。'),
             'gong': ('上不周山', '先斃修蛇、封豨、大風，向北方玄武取經，再上不周山，去找撞歪天地的共工。'),
         },
-        'facts': ['單人、離線', '鍵盤與滑鼠', '介面：繁體中文（預設）、簡體中文', '四種難度：逍遙、初履、人間、宗師'],
+        'facts': ['單人、離線', '鍵盤與滑鼠', '介面：繁體中文（預設）、簡體中文、英文', '四種難度：逍遙、初履、人間、宗師'],
         'contact_h': '聯絡',
         'contact': '《墨畫蒼生》是長風「寫意」系列的第一部。想說什麼，寫信給我們：',
         'next': ('「寫意」系列第二部《力透紙背》', '敬請期待'),   # 首頁「聯絡」底下連到第二部的介紹頁（原本的第二部《人間塵世》暫停開發，使用者改定）
@@ -107,7 +107,7 @@ TEXT = {
             'sail': ('造船渡海', '胆气够了就造孤帆、方舟出海。纸上有大陆、群岛、大漠、火山、雪原，海上有蜃。'),
             'gong': ('上不周山', '先毙修蛇、封豨、大风，向北方玄武取经，再上不周山，去找撞歪天地的共工。'),
         },
-        'facts': ['单人、离线', '键盘与鼠标', '界面：繁体中文（默认）、简体中文', '四种难度：逍遥、初履、人间、宗师'],
+        'facts': ['单人、离线', '键盘与鼠标', '界面：繁体中文（默认）、简体中文、英文', '四种难度：逍遥、初履、人间、宗师'],
         'contact_h': '联系',
         'contact': '《墨画苍生》是长风“写意”系列的第一部。想说什么，写信给我们：',
         'next': ('“写意”系列第二部《力透纸背》', '敬请期待'),
@@ -126,7 +126,7 @@ TEXT = {
         'tagline': 'Write wood into a boat · write water into the deep',
         'soon': 'Coming to Steam', 'wish': 'Wishlist on Steam', 'watch': 'Watch the trailer',
         'trailer_h': 'Trailer', 'trailer_note': 'In-game footage. The music is a placeholder synthesized track.',
-        'lang_note': 'InkWild is in Traditional and Simplified Chinese only. There is no English version.',
+        'lang_note': '',   # 2026-11-17：英文介面上線（遊戲 v0.9.81 起），原本「只有中文」那句拿掉
         'story_h': 'Story',
         'story': [
             'In Chinese, 島 (island) is written as a bird, 鳥, perched on a mountain, 山. A sheet of paper falls on the sea, and the characters written on it come alive. You are one of them: 人, a person, empty-handed. Every tile on the paper is a character. 木 is a tree, 山 is a mountain, 水 is water, 虎 is a tiger. The characters you take become materials; the characters you set down become your home. On the island stands a ruined village. Its stone reads: "No one lives here. The people are all in the dictionary."',
@@ -151,7 +151,7 @@ TEXT = {
             'sail': ('Cross the sea', 'With enough courage, build a sailboat or an ark. The paper holds continents, archipelagos, deserts, volcanoes and snowfields, and the 蜃 haunts the sea.'),
             'gong': ('Climb Mount Buzhou', 'Defeat Xiushe, Fengxi and the Great Wind, take scrolls from the Black Tortoise, then climb Mount Buzhou to find Gonggong.'),
         },
-        'facts': ['Single-player, offline', 'Keyboard and mouse', 'Text: Traditional Chinese (default) and Simplified Chinese', 'Four difficulties'],
+        'facts': ['Single-player, offline', 'Keyboard and mouse', 'Text: English, Traditional Chinese and Simplified Chinese', 'Four difficulties'],
         'contact_h': 'Contact',
         'contact': 'InkWild is the first game in SteJoy\'s 寫意 (Xieyi) series. Write to us:',
         'next': ('Part 2 of the Xieyi series: Through the Page', 'coming soon'),
@@ -171,7 +171,7 @@ TEXT = {
         'tagline': '木を書けば舟となり · 水を書けば淵となる',
         'soon': '近日 Steam で配信', 'wish': 'Steam でウィッシュリストに追加', 'watch': '予告編を見る',
         'trailer_h': '予告編', 'trailer_note': 'ゲームの実機映像です。音楽は仮の合成音源です。',
-        'lang_note': '『墨畫蒼生』の表示言語は繁体字中国語と簡体字中国語だけで、日本語版はありません。',   # 遊戲沒有日文版（跟英文頁一樣先說清楚）
+        'lang_note': '『墨畫蒼生』の表示言語は英語・繁体字中国語・簡体字中国語で、日本語版はありません。',   # 遊戲沒有日文版（先說清楚）；2026-11-17 英文介面上線，加英語
         'story_h': '物語',
         'story': [
             '鳥が山に棲む、それを島という。一枚の紙が海に落ち、紙の上の字が生きはじめた。あなたはその中の一字、素手の「人」。紙の一マス一マスが、どれも一つの字だ。木は木、山は山、水は水、虎はそのまま虎。取った字は材料になり、書き入れた字はあなたの家になる。島には廃村があり、碑にこうある。「村には誰もいない。人はみな字典の中にいる。」',
@@ -196,7 +196,7 @@ TEXT = {
             'sail': ('舟を造って海を渡る', '胆力が十分についたら孤帆や方舟を造って海へ。紙の上には大陸、群島、砂漠、火山、雪原があり、海には蜃が潜む。'),
             'gong': ('不周山へ', '修蛇・封豨・大風を倒し、北の玄武から経を授かり、不周山に登って、天地を傾けた共工を探しに行く。'),
         },
-        'facts': ['シングルプレイ・オフライン', 'キーボードとマウス', '表示言語：繁体字中国語（既定）・簡体字中国語', '難易度は四段階（逍遙・初履・人間・宗師）'],
+        'facts': ['シングルプレイ・オフライン', 'キーボードとマウス', '表示言語：英語・繁体字中国語・簡体字中国語', '難易度は四段階（逍遙・初履・人間・宗師）'],
         'contact_h': 'お問い合わせ',
         'contact': '『墨畫蒼生』は長風の「写意」シリーズ第一部です。ご意見・ご感想はメールでどうぞ：',
         'next': ('「写意」シリーズ第二部『力透紙背』', '乞うご期待'),   # 「第○部」照《力透紙背》日文版標題畫面的寫法
@@ -220,7 +220,7 @@ TEXT = {
         'tagline': 'Viết gỗ thành thuyền · viết nước thành vực',
         'soon': 'Sắp ra mắt trên Steam', 'wish': 'Thêm vào danh sách ước muốn trên Steam', 'watch': 'Xem trailer',
         'trailer_h': 'Trailer', 'trailer_note': 'Hình ảnh thật trong trò chơi. Nhạc nền là bản tổng hợp tạm thời.',
-        'lang_note': 'InkWild hiện chỉ có giao diện tiếng Trung phồn thể và giản thể, không có bản tiếng Việt.',   # 遊戲沒有越南文版（跟英文、日文頁一樣先說清楚）
+        'lang_note': 'InkWild có giao diện tiếng Anh, tiếng Trung phồn thể và giản thể; chưa có bản tiếng Việt.',   # 遊戲沒有越南文版（先說清楚）；2026-11-17 英文介面上線，加英文
         'story_h': 'Câu chuyện',
         'story': [
             'Trong chữ Hán, 島 (đảo) là con chim 鳥 (điểu) đậu trên núi 山 (sơn). Một trang giấy rơi xuống biển, và những chữ viết trên đó sống dậy. Bạn là một trong số ấy: chữ 人 (nhân – người), tay không tấc sắt. Mỗi ô trên trang giấy là một chữ: 木 (mộc) là cây, 山 (sơn) là núi, 水 (thủy) là nước, 虎 (hổ) chính là hổ. Chữ bạn lấy xuống thành vật liệu; chữ bạn viết xuống thành ngôi nhà của bạn. Trên đảo có một ngôi làng bỏ hoang, tấm bia ở đó khắc: «Trong làng không có người. Người đều ở trong tự điển.»',
@@ -245,7 +245,7 @@ TEXT = {
             'sail': ('Đóng thuyền vượt biển', 'Khi đã đủ can đảm, hãy đóng thuyền buồm Cô Phàm hay thuyền lớn Phương Chu mà ra khơi. Trên trang giấy có lục địa, quần đảo, sa mạc, núi lửa, đồng tuyết; dưới biển có 蜃 (thận) rình rập – loài thủy quái phun sương dựng nên ảo ảnh.'),
             'gong': ('Lên núi Bất Chu', 'Hạ gục Tu Xà, Phong Hy và Đại Phong, thỉnh kinh từ Huyền Vũ phương Bắc, rồi lên núi Bất Chu tìm Cộng Công – kẻ đã húc lệch trời đất.'),
         },
-        'facts': ['Chơi đơn, ngoại tuyến', 'Bàn phím và chuột', 'Ngôn ngữ: tiếng Trung phồn thể (mặc định) và giản thể', 'Bốn độ khó: Tiêu Dao (逍遙), Sơ Lý (初履), Nhân Gian (人間), Tông Sư (宗師)'],
+        'facts': ['Chơi đơn, ngoại tuyến', 'Bàn phím và chuột', 'Ngôn ngữ: tiếng Anh, tiếng Trung phồn thể và giản thể', 'Bốn độ khó: Tiêu Dao (逍遙), Sơ Lý (初履), Nhân Gian (人間), Tông Sư (宗師)'],
         'contact_h': 'Liên hệ',
         'contact': 'InkWild (Mặc Họa Thương Sinh) là trò chơi đầu tiên trong loạt «Tả ý» (寫意) của SteJoy. Có điều gì muốn nói, hãy viết thư cho chúng tôi:',
         'next': ('Phần 2 của loạt «Tả ý»: Lực Thấu Chỉ Bối (力透紙背)', 'Hãy đón chờ'),
@@ -289,17 +289,23 @@ def page(code):
     langnav = ''.join(f'<a href="{up}{LANGS[c]["dir"]}{INK}" lang="{c}"{" aria-current=\"page\"" if c == code else ""}>{LANGS[c]["short"]}</a>' for c in LANGS)
     nav = ''.join(f'<a href="#{h}">{esc(n)}</a>' for h, n in zip(['trailer', 'story', 'demo', 'features', 'contact'], T['nav']))
     cta = f'<a class="btn primary" href="{STEAM_URL}">{esc(T["wish"])}</a>' if STEAM_URL else f'<span class="badge">{esc(T["soon"])}</span>'
+    # 每種語言用自己那份介面錄的影片與圖（2026-11-17：英文介面上線；繁中照舊是不帶語言的那份）：assets/media/<名>-<語言>.<副檔名> 有就用
+    def lm(rel):
+        stem, ext = rel.rsplit('.', 1)
+        return f'{a}media/{stem}-{code}.{ext}' if code != 'zh-Hant' and (ROOT / 'assets/media' / f'{stem}-{code}.{ext}').exists() else f'{a}media/{rel}'
+    tm, tw = lm('trailer.mp4'), lm('trailer.webm')
+    webm = '' if ('-' + code + '.') in tm and ('-' + code + '.') not in tw else f'\n      <source src="{tw}" type="video/webm">'   # 這種語言只壓了 MP4（省庫的大小）就不給別種語言的 WebM
     tracks = ''.join(f'<track kind="subtitles" srclang="{c}" label="{LANGS[c]["name"]}" src="{a}media/trailer.{c}.vtt"{" default" if c == code else ""}>' for c in LANGS)
     gl, cn = T['chai']
     chai = '<div class="chai">' + ''.join(f'<p class="eq"><span class="g" lang="zh-Hant">{p}<i>＋</i>{q}<i>＝</i><b>{r}</b></span><small>{esc(gl[k])}</small></p>' for k, (p, q, r) in enumerate(CHAI)) + f'</div><p class="chai-note">{esc(cn)}</p>'
     scenes = ''.join(f'''
       <figure class="clip{' wide' if s == 'zi' else ''}">
-        <video muted loop playsinline preload="none" poster="{a}media/scenes/{s}.jpg" data-src="{a}media/scenes/{s}.mp4" data-webm="{a}media/scenes/{s}.webm" aria-label="{esc(T['scenes'][s][0])}"></video>
+        <video muted loop playsinline preload="none" poster="{lm(f'scenes/{s}.jpg')}" data-src="{lm(f'scenes/{s}.mp4')}" data-webm="{lm(f'scenes/{s}.webm')}" aria-label="{esc(T['scenes'][s][0])}"></video>
         <figcaption><b>{esc(T['scenes'][s][0])}</b>{esc(T['scenes'][s][1])}{chai if s == 'zi' else ''}</figcaption>
       </figure>''' for s in SCENES)
     feats = ''.join(f'''
       <article class="feat">
-        <img src="{a}media/stills/{s}.jpg" alt="" loading="lazy" width="960" height="540">
+        <img src="{lm(f'stills/{s}.jpg')}" alt="" loading="lazy" width="960" height="540">
         <h3>{esc(T['features'][s][0])}</h3>
         <p>{esc(T['features'][s][1])}</p>
       </article>''' for s in FEATURES)
@@ -354,9 +360,8 @@ def page(code):
 <section id="trailer" class="trailer">
   <h2>{esc(T['trailer_h'])}</h2>
   <div class="frame">
-    <video controls preload="metadata" playsinline poster="{a}media/trailer.jpg">
-      <source src="{a}media/trailer.mp4" type="video/mp4">
-      <source src="{a}media/trailer.webm" type="video/webm">{tracks}
+    <video controls preload="metadata" playsinline poster="{lm('trailer.jpg')}">
+      <source src="{lm('trailer.mp4')}" type="video/mp4">{webm}{tracks}
       {esc(T['video_off'])}
     </video>
   </div>
