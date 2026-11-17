@@ -27,7 +27,7 @@ if '--fight' in sys.argv:
     enc(FO / 'trailer.mp4', M0 / 'trailer2.mp4')
     for code, k in (('zh-Hans', 'hans'), ('en', 'en'), ('ja', 'ja'), ('vi', 'vi')): enc(FO / f'trailer-clean-{k}.mp4', M0 / f'trailer2-{code}.mp4')
     for code in ('zh-Hant', 'zh-Hans', 'en', 'ja', 'vi'): shutil.copy(FO / f'trailer.{code}.vtt', M0 / f'trailer2.{code}.vtt')
-    ff0('-sseof', '-1.5', '-i', str(FO / 'trailer.mp4'), '-frames:v', '1', '-vf', 'scale=1280:720:flags=lanczos', '-q:v', '3', str(M0 / 'trailer2.jpg'))
+    ff0('-ss', '1.5', '-i', str(FO / 'trailer.mp4'), '-frames:v', '1', '-vf', 'scale=1280:720:flags=lanczos', '-q:v', '3', str(M0 / 'trailer2.jpg'))   # 海報：開頭夜裡九閽鳴雷落下那一格（沒有字、各語言通用；片尾字標跟第一支的海報太像）
     for f in sorted(M0.glob('trailer2*')): print(f'{f.relative_to(ROOT0)}  {f.stat().st_size / 1e6:.2f} MB')
     sys.exit(0)
 
