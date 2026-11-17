@@ -40,6 +40,7 @@ TEXT = {
         'tagline': '寫木為舟 · 寫水成淵',
         'soon': '即將登上 Steam', 'wish': '加入 Steam 願望清單', 'watch': '觀看預告',
         'trailer_h': '預告', 'trailer_note': '遊戲實機畫面。配樂是暫用的合成樂。',
+        'trailer2_h': '戰', 'trailer2_note': '大魔王與共工的實機畫面。配樂是暫用的合成樂。',
         'story_h': '故事',
         'story': [
             '鳥棲於山，是為島。一張紙落在海上，紙上的字活了。你是其中的一個「人」，赤手空拳。紙上每一格都是一個字：木是樹，山是山，水是水，虎就是虎。取下來的字是材料，寫下去的字是你的家。島上有一座廢村，碑上寫著：村裡沒有人，人都在字典裡。',
@@ -83,6 +84,7 @@ TEXT = {
         'tagline': '写木为舟 · 写水成渊',
         'soon': '即将登陆 Steam', 'wish': '加入 Steam 愿望单', 'watch': '观看预告',
         'trailer_h': '预告', 'trailer_note': '游戏实机画面。配乐是暂用的合成乐。',
+        'trailer2_h': '战', 'trailer2_note': '大魔王与共工的实机画面。配乐是暂用的合成乐。',
         'story_h': '故事',
         'story': [
             '鸟栖于山，是为岛。一张纸落在海上，纸上的字活了。你是其中的一个“人”，赤手空拳。纸上每一格都是一个字：木是树，山是山，水是水，虎就是虎。取下来的字是材料，写下去的字是你的家。岛上有一座废村，碑上写着：村里没有人，人都在字典里。',
@@ -126,6 +128,7 @@ TEXT = {
         'tagline': 'Write wood into a boat · write water into the deep',
         'soon': 'Coming to Steam', 'wish': 'Wishlist on Steam', 'watch': 'Watch the trailer',
         'trailer_h': 'Trailer', 'trailer_note': 'In-game footage. The music is a placeholder synthesized track.',
+        'trailer2_h': 'Battle', 'trailer2_note': 'In-game footage of the great demons and Gonggong. The music is a placeholder synthesized track.',
         'lang_note': '',   # 2026-11-17：英文介面上線（遊戲 v0.9.81 起），原本「只有中文」那句拿掉
         'story_h': 'Story',
         'story': [
@@ -171,6 +174,7 @@ TEXT = {
         'tagline': '木を書けば舟となり · 水を書けば淵となる',
         'soon': '近日 Steam で配信', 'wish': 'Steam でウィッシュリストに追加', 'watch': '予告編を見る',
         'trailer_h': '予告編', 'trailer_note': 'ゲームの実機映像です。音楽は仮の合成音源です。',
+        'trailer2_h': '戦い', 'trailer2_note': '大魔王と共工のゲーム実機映像です。音楽は仮の合成音源です。',
         'lang_note': '『墨畫蒼生』の表示言語は英語・繁体字中国語・簡体字中国語で、日本語版はありません。',   # 遊戲沒有日文版（先說清楚）；2026-11-17 英文介面上線，加英語
         'story_h': '物語',
         'story': [
@@ -220,6 +224,7 @@ TEXT = {
         'tagline': 'Viết gỗ thành thuyền · viết nước thành vực',
         'soon': 'Sắp ra mắt trên Steam', 'wish': 'Thêm vào danh sách ước muốn trên Steam', 'watch': 'Xem trailer',
         'trailer_h': 'Trailer', 'trailer_note': 'Hình ảnh thật trong trò chơi. Nhạc nền là bản tổng hợp tạm thời.',
+        'trailer2_h': 'Chiến đấu', 'trailer2_note': 'Hình ảnh thật trong trò chơi: các đại ma vương và Cộng Công. Nhạc nền là bản tổng hợp tạm thời.',
         'lang_note': 'InkWild có giao diện tiếng Anh, tiếng Trung phồn thể và giản thể; chưa có bản tiếng Việt.',   # 遊戲沒有越南文版（先說清楚）；2026-11-17 英文介面上線，加英文
         'story_h': 'Câu chuyện',
         'story': [
@@ -296,6 +301,8 @@ def page(code):
     tm, tw = lm('trailer.mp4'), lm('trailer.webm')
     webm = '' if ('-' + code + '.') in tm and ('-' + code + '.') not in tw else f'\n      <source src="{tw}" type="video/webm">'   # 這種語言只壓了 MP4（省庫的大小）就不給別種語言的 WebM
     tracks = ''.join(f'<track kind="subtitles" srclang="{c}" label="{LANGS[c]["name"]}" src="{a}media/trailer.{c}.vtt"{" default" if c == code else ""}>' for c in LANGS)
+    tracks2 = ''.join(f'<track kind="subtitles" srclang="{c}" label="{LANGS[c]["name"]}" src="{a}media/trailer2.{c}.vtt"{" default" if c == code else ""}>' for c in LANGS)   # 第二支（打鬥，2026-11-17 使用者定放上介紹頁）
+    fight = (ROOT / 'assets/media/trailer2.mp4').exists()
     gl, cn = T['chai']
     chai = '<div class="chai">' + ''.join(f'<p class="eq"><span class="g" lang="zh-Hant">{p}<i>＋</i>{q}<i>＝</i><b>{r}</b></span><small>{esc(gl[k])}</small></p>' for k, (p, q, r) in enumerate(CHAI)) + f'</div><p class="chai-note">{esc(cn)}</p>'
     scenes = ''.join(f'''
@@ -365,7 +372,15 @@ def page(code):
       {esc(T['video_off'])}
     </video>
   </div>
-  <p class="note">{esc(T['trailer_note'])}</p>
+  <p class="note">{esc(T['trailer_note'])}</p>{f'''
+  <h3 class="trailer2">{esc(T['trailer2_h'])}</h3>
+  <div class="frame">
+    <video controls preload="metadata" playsinline poster="{lm('trailer2.jpg')}">
+      <source src="{lm('trailer2.mp4')}" type="video/mp4">{tracks2}
+      {esc(T['video_off'])}
+    </video>
+  </div>
+  <p class="note">{esc(T['trailer2_note'])}</p>''' if fight else ''}
 </section>
 
 <section id="story" class="story">

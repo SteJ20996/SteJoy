@@ -10,6 +10,27 @@
 import shutil, subprocess, sys, json
 from pathlib import Path
 
+# 第二支預告（打鬥，2026-11-17 使用者定放上介紹頁）：python3 tools/site/media.py --fight <tools/fight 剪好的輸出資料夾>
+#   壓成 trailer2.mp4（繁中）、trailer2-<語言>.mp4（各語言自己那份介面錄的）、trailer2.jpg（片尾字標）、trailer2.<語言>.vtt；只壓 MP4
+#   Cloudflare Pages 一個檔最多 25 MiB：照 TARGET_MB 算位元率兩趟壓（打鬥畫面動得多，固定 CRF 會超過）
+if '--fight' in sys.argv:
+    FO = Path(sys.argv[sys.argv.index('--fight') + 1]); ROOT0 = Path(__file__).resolve().parents[2]; M0 = ROOT0 / 'assets/media'
+    TARGET_MB = 21.0
+    def ff0(*a): subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', *a], check=True)
+    def dur(f): return float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', str(f)], capture_output=True, text=True, check=True).stdout)
+    def enc(src, out):
+        kbps = int(TARGET_MB * 8e3 / dur(src)) - 128; log = str(M0 / '_pass')
+        for n, dst in ((1, '/dev/null'), (2, str(out))):
+            ff0('-i', str(src), '-c:v', 'libx264', '-preset', 'slow', '-b:v', f'{kbps}k', '-maxrate', f'{int(kbps * 1.6)}k', '-bufsize', f'{kbps * 2}k', '-pass', str(n), '-passlogfile', log,
+                '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', *(('-an', '-f', 'mp4') if n == 1 else ('-c:a', 'aac', '-b:a', '128k')), dst)
+        for f in M0.glob('_pass*'): f.unlink()
+    enc(FO / 'trailer.mp4', M0 / 'trailer2.mp4')
+    for code, k in (('zh-Hans', 'hans'), ('en', 'en'), ('ja', 'ja'), ('vi', 'vi')): enc(FO / f'trailer-clean-{k}.mp4', M0 / f'trailer2-{code}.mp4')
+    for code in ('zh-Hant', 'zh-Hans', 'en', 'ja', 'vi'): shutil.copy(FO / f'trailer.{code}.vtt', M0 / f'trailer2.{code}.vtt')
+    ff0('-sseof', '-1.5', '-i', str(FO / 'trailer.mp4'), '-frames:v', '1', '-vf', 'scale=1280:720:flags=lanczos', '-q:v', '3', str(M0 / 'trailer2.jpg'))
+    for f in sorted(M0.glob('trailer2*')): print(f'{f.relative_to(ROOT0)}  {f.stat().st_size / 1e6:.2f} MB')
+    sys.exit(0)
+
 ROOT = Path(__file__).resolve().parents[2]
 SHOTS, TRAILER = Path(sys.argv[1]), Path(sys.argv[2])
 ONLY_TRAILER = '--trailer' in sys.argv
