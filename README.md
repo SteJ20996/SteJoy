@@ -57,7 +57,7 @@ stejoy.com 的網站：工作室**長風**的首頁（「寫意」系列，選�
 - 配樂各照各的雷與腳步：`python3 tools/trailer/music.py tools/trailer/edit.json music-<語言>.wav <資料夾>`；剪：`VARIANTS='{"hans":{…,"langs":["zh-Hans"]},"en":{…},"ja":{…},"vi":{…}}' EDIT=tools/trailer/edit.json CAPTIONS=tools/trailer/captions.json node tools/trailer/build.mjs <繁中資料夾> <繁中配樂> <輸出> --burn`。
 - 網站的檔：`python3 tools/site/media.py <繁中資料夾> <輸出>`（不帶語言的那份，照舊），再每種語言 `python3 tools/site/media.py <那種語言的資料夾> <輸出> --lang <語言> --clean <輸出>/trailer-clean-<名>.mp4`：
   寫成 `assets/media/trailer-<語言>.mp4`（只壓 MP4，省庫的大小）、`scenes/<鏡頭>-<語言>.mp4／.webm／.jpg`、`stills/<鏡頭>-<語言>.jpg`；`build-site.py` 的 `lm()` 那種語言有就用。
-- **湧與濤**（2026-11-17，使用者：宣傳片裡關於湧和濤的場景要改，遊戲裡濤要看得出比湧大）：遊戲 v0.9.91 海上會起湧（小浪）與濤（大浪，只在離陸地十五格外的深海；兩排厚、兩格寫一個大字），打到船會推開。第一支的「渡海」（`sail`）改到外海：先一道湧從南邊把孤帆推開一格、再一道濤從北邊壓下來推開兩格，浪的長度與走幾步都定下來（`window.__wave`），各語言錄得一樣；`COMMON` 把遊戲自己起浪關掉（`g.swellP`／`g.billowP`），其他海上鏡頭照舊。五種語言各重錄 `sail` 一段（`CAP_PAUSE=1 CAP_RATE=3 … capture.mjs <資料夾> sail`），配樂照舊（渡海那段沒有對拍的雷與腳步），重剪、重壓網站的檔。
+- **湧與濤**（2026-11-17，使用者：宣傳片裡關於湧和濤的場景要改，遊戲裡濤要看得出比湧大）：遊戲 v0.9.91 海上會起湧（小浪）與濤（大浪，只在離陸地十五格外的深海；兩排厚、兩格寫一個大字），打到船會推開。第一支的「渡海」（`sail`）改到外海：先一組三道湧從南邊來、頭一道把孤帆推開一格，再一道長長的濤從北邊壓下來推開兩格；使用者又說浪不是一根直線、也不會這麼短（照現實的海浪），遊戲的浪頭改成彎的、長的，這裡的長度、幾道、走幾步、形狀的種子都定下來（`window.__wave` 帶 `opt` 給 `addWave()`），各語言錄得一樣；`COMMON` 把遊戲自己起浪關掉（`g.swellP`／`g.billowP`），其他海上鏡頭照舊。五種語言各重錄 `sail` 一段（`CAP_PAUSE=1 CAP_RATE=3 … capture.mjs <資料夾> sail`），配樂照舊（渡海那段沒有對拍的雷與腳步），重剪、重壓網站的檔。
 - 介紹頁的「支援語言」：五種語言都加上英文（英文頁拿掉「There is no English version」那句；日文、越南文頁照舊說沒有日文、越南文版）。Steam 後台的支援語言也要勾英文（遊戲庫 `docs/STEAM-RELEASE.md`）。
 
 ## 重新產生
