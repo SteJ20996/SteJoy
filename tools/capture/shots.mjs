@@ -222,7 +222,7 @@ export const SHOTS = [
     },
     paint() { const g = XIEYI.game; g.renderer.draw(g, 0, g.animT || 0); if (g.gaze) g.gazeTick(0, false); },   // capture.mjs 截圖前叫：照這一幀的視角畫好（dt 0，live false 不判挨打）
   },
-  {   // 八、渡海（完整版）：孤帆在外海往東開，海上浮著蜃；先一道湧把船推開一格，再一道濤推開兩格（遊戲 v0.9.91：濤兩排厚、兩格寫一個大字，只在離陸地十五格外的深海起；2026-11-17 使用者：宣傳片要有湧與濤、濤要看得出比湧大）
+  {   // 八、渡海（完整版）：孤帆在外海往東開，海上浮著蜃；先一組湧把船推開一格，再一道濤推開兩格（遊戲 v0.9.91：浪頭是彎的、長的，湧一組兩三道；濤兩排厚、兩格寫一個大字，只在離陸地十五格外的深海起；2026-11-17 使用者：宣傳片要有湧與濤、濤要看得出比湧大，浪不是一根直線、也不會這麼短）
     name: 'sail', sec: 6, seed: 7, full: true, warm: 1.5, tile: 56,
     setup() {
       const c = window.__c, g = XIEYI.game, p = g.player, w = g.world; c.at(40, 0.42);
@@ -232,16 +232,13 @@ export const SHOTS = [
       c.put(at[0], at[1]); p.sailing = true; p.ship = World.newShip('孤帆'); g.shipNow(); p.fx = 1; p.fy = 0;
       g.ents.add('蜃', at[0] - 2, at[1] + 4, { moveT: 0, atk: 1e9, fogT: 1e9 });   // 蜃在船後面跟著
       window.__sea = at;
-      window.__wave = (kind, cx, cy, dx, dy, len, run) => {   // 擺一道浪：長度、走幾步都定下來（遊戲起浪時長度是隨機的，各語言要錄得一樣）
-        const wv = g.addWave(kind, cx, cy, [dx, dy]); if (!wv) return null; const h = len >> 1; wv.cells = [];
-        for (let i = -h; i < len - h; i++) { const x = cx - dy * i, y = cy + dx * i; if (g.waveAlive(kind, x, y)) wv.cells.push([x, y]); }
-        wv.left = run; return wv; };
+      window.__wave = (kind, cx, cy, dx, dy, opt) => g.addWave(kind, cx, cy, [dx, dy], opt);   // 擺一道浪：長度、幾道、走幾步、形狀的種子都定下來（遊戲起浪時是隨機的，各語言要錄得一樣）
     },
     frame({ f }) {
       const g = XIEYI.game, p = g.player;
       if (f >= 3 && f % 6 === 0) g.shipStep(1, 0, 'h');
-      if (f === 14) window.__wave('湧', p.x + 5, p.y + 4, 0, -1, 5, 16);   // 湧從南邊來，打到船推開一格
-      if (f === 60) window.__wave('濤', p.x + 5, p.y - 7, 0, 1, 7, 22);   // 濤從北邊壓下來，推開兩格
+      if (f === 14) window.__wave('湧', p.x + 5, p.y + 4, 0, -1, { len: 18, rows: 3, run: 18, seed: 11 });   // 一組三道湧從南邊來（彎的、長的），頭一道打到船推開一格
+      if (f === 60) window.__wave('濤', p.x + 5, p.y - 7, 0, 1, { len: 28, run: 24, seed: 5 });   // 一道長長的濤從北邊壓下來，推開兩格
     },
   },
   {   // 九、共工（完整版）：不周山
