@@ -7,17 +7,13 @@
 export { COMMON } from '../capture/shots.mjs';
 export const PAUSE = true;   // 假時鐘停住、只照幀推（capture.mjs）
 
-export const EXTRA = ({ seed2, bossbar, fx: fxIn, tile, lang }) => {
+export const EXTRA = ({ seed2, bossbar, fx: fxIn, tile }) => {
   const g = XIEYI.game, w = g.world, p = g.player;
   let s = (seed2 * 2654435761) >>> 0;   // mulberry32：獸的走位、招式的落點每次錄都一樣
   Math.random = () => { s = (s + 0x6D2B79F5) >>> 0; let t = s; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
   // 「真隨機」（天氣、雨澆燈、掉東西這類，遊戲用 crypto）也定下來，另一條數列、不動到上面那條：不定的話同一個鏡頭重錄，修蛇、大風會岔開（2026-11-17）
   { let t = (seed2 * 2246822519 + 3266489917) >>> 0; U.trueRand = () => { t = (t + 0x6D2B79F5) >>> 0; let r = t; r = Math.imul(r ^ (r >>> 15), r | 1); r ^= r + Math.imul(r ^ (r >>> 7), r | 61); return ((r ^ (r >>> 14)) >>> 0) / 4294967296; }; }
-  // 介面的語言（2026-11-17 使用者：英文版命條的名字、共工的海陸空方框都要是英文；其他語言也照各自的）：
-  // 不給 CAP_LANG 是繁體；en 是英文（英、日、越、韓的版本——這些玩家打開遊戲看到的是英文介面）；hans 是簡體（簡中的版本）
-  if (window.EN && EN.lang !== (lang === 'en' ? 'en' : '')) EN.set(lang === 'en' ? 'en' : '');
-  if (window.I18N && !!I18N.hans !== (lang === 'hans')) I18N.set(lang === 'hans' ? 'hans' : 'hant');
-  if (g.langChanged) g.langChanged();
+  // 介面的語言、日越韓版命條與飄字的換法都在 COMMON（tools/capture/shots.mjs）
   p.cour = g.levelAt(36); p.ctrl = true;
   g.ents.dashT = 1e9; g.ents.snuffP = 0;
   const DUR = { '鎢鋼刀': 112, '鎢鋼劍': 112, '鎢鋼戈': 112, '鎢鋼斧': 112, '九閽鳴雷': 199, '燭龍焚溟': 199, '青冥落羽': 199, '彈弓': 80 };

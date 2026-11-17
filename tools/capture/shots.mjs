@@ -2,8 +2,39 @@
 // setup(arg) 擺場面；frame({ f, n, fps, arg }) 每一幀先跑，再推進 1/30 息、截圖。
 
 // 每個鏡頭都先跑：關掉真隨機的事件、關 HUD、字放大、人不會死
-export const COMMON = ({ tile }) => {
+export const COMMON = ({ tile, lang, bar }) => {
   const g = XIEYI.game, w = g.world, p = g.player;
+  // 介面的語言（2026-11-17，第一、二支預告共用）：CAP_LANG 不給是繁體、en 英文、hans 簡體。一律明寫：遊戲 v0.9.86 起非中文系統預設英文，錄影的瀏覽器是英文
+  if (window.EN && EN.lang !== (lang === 'en' ? 'en' : '')) EN.set(lang === 'en' ? 'en' : '');
+  if (window.I18N && !!I18N.hans !== (lang === 'hans')) I18N.set(lang === 'hans' ? 'hans' : 'hant');
+  if (g.langChanged) g.langChanged();
+  // 日、越（韓暫停）的版本：遊戲沒有這幾種介面，錄英文介面（CAP_LANG=en），再把命條的名字、共工的方框、地上飄的字換成那一種語言（CAP_BAR=ja／vi／ko；叫法跟字幕一樣）。
+  // 2026-11-17 使用者：對應語言的怪物血條資訊也要改成相應語言
+  const BAR = bar ? ({
+    ja: { name: { Fengxi: '封豨', Xiushe: '修蛇', Dafeng: '大風', Gonggong: '共工' }, mode: { Sea: '海', Land: '陸', Sky: '空' }, box: '18px' },
+    vi: { name: { Fengxi: 'Phong Hy', Xiushe: 'Tu Xà', Dafeng: 'Đại Phong', Gonggong: 'Cộng Công' }, mode: { Sea: 'Biển', Land: 'Đất', Sky: 'Trời' } },
+    ko: { name: { Fengxi: '봉희', Xiushe: '수사', Dafeng: '대풍', Gonggong: '공공' }, mode: { Sea: '바다', Land: '땅', Sky: '하늘' }, font: '"Gowun Batang", "LXGW WenKai TC", serif' },
+  })[bar] : null;
+  // 飄字的對照（英文 → 該語言；長的先換；數字照舊）。照錄英文版時記下的 <鏡頭>.floats.json 補。寫在函式裡：page.evaluate 只帶得走函式本身
+  const FLOAT_WORDS = {
+    ja: { boat: '舟', missed: '空振り', claw: '爪痕' },        // 第二支：船挨撞、虎撲空、大風的入木三分
+    vi: { boat: 'thuyền', missed: 'vồ hụt', claw: 'vuốt' },
+    ko: {},   // 韓文版暫停（2026-11-17 使用者）
+  };
+  const FLOAT = bar ? (FLOAT_WORDS[bar] || {}) : {};
+  // 畫布上的字（地上飄的字、觀星的星名……）：記下帶英文字母的（capture.mjs 寫成 <鏡頭>.floats.json），日越版照對照表換
+  window.__floats = [];
+  { const P = CanvasRenderingContext2D.prototype, fill = P.fillText, keys = Object.keys(FLOAT).sort((x, y) => y.length - x.length);
+    P.fillText = function (t, ...a) { if (typeof t === 'string' && /[A-Za-z]/.test(t)) { if (window.__floats.length < 4000 && window.__floats.indexOf(t) < 0) window.__floats.push(t); for (const k of keys) if (t.indexOf(k) >= 0) t = t.split(k).join(FLOAT[k]); } return fill.call(this, t, ...a); }; }
+  if (BAR) {
+    const fix = () => { const nm = document.getElementById('bossbar-name'), md = document.getElementById('bossbar-mode');
+      if (nm && BAR.name[nm.textContent]) nm.textContent = BAR.name[nm.textContent];
+      if (md && BAR.mode[md.textContent]) md.textContent = BAR.mode[md.textContent];
+      if (md && BAR.box) md.style.fontSize = BAR.box;
+      if (BAR.font) for (const el of [nm, md]) if (el) el.style.fontFamily = BAR.font; };
+    new MutationObserver(fix).observe(document.getElementById('bossbar'), { subtree: true, childList: true, characterData: true }); fix();   // 遊戲改了命條的字就換回來（截圖前就換好）
+    if (BAR.font) { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = 'http://127.0.0.1:8126/extra.css'; document.head.appendChild(l); }   // 韓文字型（8126 要給 CORS，見 README）
+  }
   g.ents.seaP = 0; g.ents.toothP = 0; g.ents.harpyP = 0; g.ents.birdP = 0; g.ents.snuffP = 0;
   w.fogP = 0; w.fogStep = 1e9; g.warnEnabled = false; g.visitsOn = false; w.hailP = 0;
   w.snowP = 0; w.thunderP = 0; w.galeP = 0; w.breezeP = 0; w.galeRuinP = 0; w.galeScareP = 0; g.galePushP = 0;

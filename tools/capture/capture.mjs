@@ -34,8 +34,8 @@ for (const shot of SHOTS) {
   await page.goto(url, { waitUntil: 'load' });
   if (!shot.page) {
     for (let i = 0; i < 200; i++) { await page.clock.runFor(100); if (await page.evaluate(() => !!(window.XIEYI && XIEYI.game && XIEYI.game.player))) break; }
-    await page.evaluate(COMMON, { tile: shot.tile || 64 });
-    if (EXTRA) await page.evaluate(EXTRA, { seed2: shot.rand || 1, bossbar: !!shot.bossbar, fx: shot.fx || null, tile: shot.tile || 64, lang: process.env.CAP_LANG || '' });   // CAP_LANG=en／hans：介面照英文、簡體錄（第二支預告 2026-11-17）
+    await page.evaluate(COMMON, { tile: shot.tile || 64, lang: process.env.CAP_LANG || '', bar: process.env.CAP_BAR || '' });   // CAP_LANG=en／hans、CAP_BAR=ja／vi／ko（2026-11-17）
+    if (EXTRA) await page.evaluate(EXTRA, { seed2: shot.rand || 1, bossbar: !!shot.bossbar, fx: shot.fx || null, tile: shot.tile || 64 });
   }
   if (shot.setup) await page.evaluate(shot.setup, shot.arg || null);
   if (shot.warm) await page.clock.runFor(shot.warm * 1000);
@@ -61,6 +61,8 @@ for (const shot of SHOTS) {
   if (retried) console.log('  ' + shot.name + ': 重截 ' + retried + ' 回，仍同上一幀 ' + stale + ' 幀');
   const events = await page.evaluate(() => window.__events || null);   // 鏡頭裡記下的事（落雷、腳步落在哪一幀），配樂照這個對齊
   if (events && !stills) fs.writeFileSync(path.join(OUT, shot.name + '.events.json'), JSON.stringify(events));
+  const floats = await page.evaluate(() => window.__floats || null);   // 飄過的字（2026-11-17：找日越版要翻的字）
+  if (floats && floats.length && !stills) fs.writeFileSync(path.join(OUT, shot.name + '.floats.json'), JSON.stringify([...new Set(floats)]));
   await page.close();
   if (!stills) execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', path.join(dir, '%04d.jpg'), '-c:v', 'libx264', '-preset', 'slow', '-crf', '16', '-pix_fmt', 'yuv420p', path.join(OUT, shot.name + '.mp4')]);
   console.log(shot.name, n + ' frames', ((Date.now() - t0) / 1000).toFixed(0) + 's');
