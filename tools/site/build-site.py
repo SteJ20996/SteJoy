@@ -36,8 +36,6 @@ TEXT = {
         'title': '墨畫蒼生 InkWild｜長風',
         'desc': '一張紙落在海上，紙上的字活了。你是其中一個「人」字：取木、砌磚、點燈，撐過入夜後穿磚而來的魄；照節氣種五穀、垂釣、觀星。膽氣夠了就造船渡海，去找撞歪天地的共工。',
         'nav': ['預告', '故事', '試玩場景', '特色', '聯絡'],
-        'kicker': '字裡行間 · 一紙之島',
-        'tagline': '寫木為舟 · 寫水成淵',
         'soon': '即將登上 Steam', 'wish': '加入 Steam 願望清單', 'watch': '觀看預告',
         'trailer_h': '預告', 'trailer_note': '遊戲實機畫面。配樂是暫用的合成樂。',
         'trailer2_h': '戰', 'trailer2_note': '大魔王與共工的實機畫面。配樂是暫用的合成樂。',
@@ -80,8 +78,6 @@ TEXT = {
         'title': '墨画苍生 InkWild｜长风',
         'desc': '一张纸落在海上，纸上的字活了。你是其中一个“人”字：取木、砌砖、点灯，撑过入夜后穿砖而来的魄；照节气种五谷、垂钓、观星。胆气够了就造船渡海，去找撞歪天地的共工。',
         'nav': ['预告', '故事', '试玩场景', '特色', '联系'],
-        'kicker': '字里行间 · 一纸之岛',
-        'tagline': '写木为舟 · 写水成渊',
         'soon': '即将登陆 Steam', 'wish': '加入 Steam 愿望单', 'watch': '观看预告',
         'trailer_h': '预告', 'trailer_note': '游戏实机画面。配乐是暂用的合成乐。',
         'trailer2_h': '战', 'trailer2_note': '大魔王与共工的实机画面。配乐是暂用的合成乐。',
@@ -124,8 +120,6 @@ TEXT = {
         'title': 'InkWild (墨畫蒼生) | SteJoy',
         'desc': 'A sheet of paper falls on the sea, and the characters on it come alive. You are one of them: 人, "person". Gather wood, lay bricks and light lamps against the spirits that come through walls once the nights draw on. Farm by the solar terms, fish, read the stars, then set sail.',
         'nav': ['Trailer', 'Story', 'Demo', 'Features', 'Contact'],
-        'kicker': 'Between the lines · an island on paper',
-        'tagline': 'Write wood into a boat · write water into the deep',
         'soon': 'Coming to Steam', 'wish': 'Wishlist on Steam', 'watch': 'Watch the trailer',
         'trailer_h': 'Trailer', 'trailer_note': 'In-game footage. The music is a placeholder synthesized track.',
         'trailer2_h': 'Battle', 'trailer2_note': 'In-game footage of the great demons and Gonggong. The music is a placeholder synthesized track.',
@@ -170,8 +164,6 @@ TEXT = {
         'title': '墨畫蒼生 InkWild｜長風',
         'desc': '一枚の紙が海に落ち、紙の上の漢字が生きはじめた。あなたはその中の一字「人」。木を取り、煉瓦を積み、灯をともして、夜ごとに煉瓦を抜けてくる魄（はく）をしのぐ。節気に合わせて五穀を育て、釣りをし、星を見る。胆力が十分についたら舟を造って海を渡り、天地を傾けた共工を探しに行く。',
         'nav': ['予告編', '物語', '体験版', '特徴', 'お問い合わせ'],
-        'kicker': '字と字のあいだ · 紙一枚の島',
-        'tagline': '木を書けば舟となり · 水を書けば淵となる',
         'soon': '近日 Steam で配信', 'wish': 'Steam でウィッシュリストに追加', 'watch': '予告編を見る',
         'trailer_h': '予告編', 'trailer_note': 'ゲームの実機映像です。音楽は仮の合成音源です。',
         'trailer2_h': '戦い', 'trailer2_note': '大魔王と共工のゲーム実機映像です。音楽は仮の合成音源です。',
@@ -220,8 +212,6 @@ TEXT = {
         'reading': 'Mặc Họa Thương Sinh',   # 字標底下寫漢越讀法（跟《力透紙背》越南文頁的 Lực Thấu Chỉ Bối 同一個做法）
         'desc': 'Một trang giấy rơi xuống biển, và những chữ trên đó sống dậy. Bạn là một trong số ấy: chữ 人 (nhân – người). Lấy gỗ, xây gạch, thắp đèn, cầm cự trước lũ phách (魄) xuyên tường tìm đến mỗi khi đêm xuống; trồng ngũ cốc theo tiết khí, câu cá, ngắm sao. Khi đã đủ can đảm, hãy đóng thuyền vượt biển, đi tìm Cộng Công – kẻ đã húc lệch trời đất.',
         'nav': ['Trailer', 'Câu chuyện', 'Chơi thử', 'Đặc điểm', 'Liên hệ'],
-        'kicker': 'Giữa những hàng chữ · hòn đảo trên một trang giấy',
-        'tagline': 'Viết gỗ thành thuyền · viết nước thành vực',
         'soon': 'Sắp ra mắt trên Steam', 'wish': 'Thêm vào danh sách ước muốn trên Steam', 'watch': 'Xem trailer',
         'trailer_h': 'Trailer', 'trailer_note': 'Hình ảnh thật trong trò chơi. Nhạc nền là bản tổng hợp tạm thời.',
         'trailer2_h': 'Chiến đấu', 'trailer2_note': 'Hình ảnh thật trong trò chơi: các đại ma vương và Cộng Công. Nhạc nền là bản tổng hợp tạm thời.',
@@ -357,9 +347,7 @@ def page(code):
 
 <main>
 <section class="hero">
-  <p class="kicker">{esc(T['kicker'])}</p>
   <h1><span class="sr-only">{esc('墨畫蒼生 InkWild')}</span>{LOGO}</h1>{reading}
-  <p class="tagline">{' · '.join(f'<span>{esc(x)}</span>' for x in T['tagline'].split(' · '))}</p>
   <div class="cta">{cta}<a class="btn" href="#trailer">{esc(T['watch'])}</a></div>
   {lang_note}
 </section>
