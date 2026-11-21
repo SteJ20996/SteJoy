@@ -54,7 +54,7 @@ TEXT = {
         'choose': '選一部', 'hint': '← → 換一部　Enter 進入',
         'kinds': {'all': '全部', 'survival': '生存 · 建造', 'battle': '筆順 · 戰鬥'},
         'games': {
-            'inkwild': {'name': '墨畫蒼生', 'en': 'InkWild', 'genre': '生存 · 建造', 'tag': '寫木為舟 · 寫水成淵',
+            'inkwild': {'name': '墨畫蒼生', 'en': 'InkWild', 'genre': '生存 · 建造', 'tag': '',
                         'pitch': '一張紙落在海上，紙上的字活了。取木、砌磚、點燈，撐過一夜又一夜；膽氣夠了，就造船渡海。', 'status': '即將登上 Steam', 'go': '進入'},
             'litou': {'name': '力透紙背', 'en': 'Through the Page', 'genre': '筆順 · 戰鬥', 'tag': '由點及線 · 由線及面 · 由面及體',
                       'pitch': '鍵盤 1 到 0 是十種筆畫，照筆順寫對，錯字就正了。從一個點寫起，一路寫進超正方體的裡面。', 'status': '敬請期待', 'go': '進入'},
@@ -75,7 +75,7 @@ TEXT = {
         'choose': '选一部', 'hint': '← → 换一部　Enter 进入',
         'kinds': {'all': '全部', 'survival': '生存 · 建造', 'battle': '笔顺 · 战斗'},
         'games': {
-            'inkwild': {'name': '墨画苍生', 'en': 'InkWild', 'genre': '生存 · 建造', 'tag': '写木为舟 · 写水成渊',
+            'inkwild': {'name': '墨画苍生', 'en': 'InkWild', 'genre': '生存 · 建造', 'tag': '',
                         'pitch': '一张纸落在海上，纸上的字活了。取木、砌砖、点灯，撑过一夜又一夜；胆气够了，就造船渡海。', 'status': '即将登陆 Steam', 'go': '进入'},
             'litou': {'name': '力透纸背', 'en': 'Through the Page', 'genre': '笔顺 · 战斗', 'tag': '由点及线 · 由线及面 · 由面及体',
                       'pitch': '键盘 1 到 0 是十种笔画，照笔顺写对，错字就正了。从一个点写起，一路写进超正方体的里面。', 'status': '敬请期待', 'go': '进入'},
@@ -96,7 +96,7 @@ TEXT = {
         'choose': 'Pick a game', 'hint': '← → to switch · Enter to open',
         'kinds': {'all': 'All', 'survival': 'Survival · Building', 'battle': 'Stroke order · Battle'},
         'games': {
-            'inkwild': {'name': '墨畫蒼生', 'en': 'InkWild', 'genre': 'Survival · Building', 'tag': 'Write wood into a boat · write water into the deep',
+            'inkwild': {'name': '墨畫蒼生', 'en': 'InkWild', 'genre': 'Survival · Building', 'tag': '',
                         'pitch': 'A sheet of paper falls on the sea, and the characters on it come alive. Gather wood, lay bricks, light lamps and last night after night; when your courage is enough, build a boat and cross the sea.', 'status': 'Coming to Steam', 'go': 'Open'},
             'litou': {'name': '力透紙背', 'en': 'Through the Page', 'genre': 'Stroke order · Battle', 'tag': 'From point to line · line to plane · plane to solid',
                       'pitch': 'Keys 1 to 0 are the ten brush strokes; write a character in the right order and the broken one in front of you is set right. Start from a single point and write your way into a tesseract.', 'status': 'Coming soon', 'go': 'Open'},
@@ -117,7 +117,7 @@ TEXT = {
         'choose': 'ゲームを選ぶ', 'hint': '← → で切り替え　Enter で開く',
         'kinds': {'all': 'すべて', 'survival': 'サバイバル · 建築', 'battle': '筆順 · バトル'},
         'games': {
-            'inkwild': {'name': '墨畫蒼生', 'en': 'InkWild', 'genre': 'サバイバル · 建築', 'tag': '木を書けば舟となり · 水を書けば淵となる',
+            'inkwild': {'name': '墨畫蒼生', 'en': 'InkWild', 'genre': 'サバイバル · 建築', 'tag': '',
                         'pitch': '一枚の紙が海に落ち、紙の上の字が生きはじめた。木を取り、煉瓦を積み、灯をともして、幾夜も生き延びる。胆力が十分についたら、舟を造って海を渡る。', 'status': '近日 Steam で配信', 'go': '開く'},
             'litou': {'name': '力透紙背', 'en': 'Through the Page', 'genre': '筆順 · バトル', 'tag': '点から線へ · 線から面へ · 面から立体へ',
                       'pitch': 'キーボードの 1 から 0 が十種の画。筆順どおりに書けば、崩れた字が正される。一つの点から書きはじめ、超立方体の内側まで書き進む。', 'status': '乞うご期待', 'go': '開く'},
@@ -139,7 +139,7 @@ TEXT = {
         'choose': 'Chọn trò chơi', 'hint': '← → để chuyển · Enter để mở',
         'kinds': {'all': 'Tất cả', 'survival': 'Sinh tồn · Xây dựng', 'battle': 'Thứ tự nét · Chiến đấu'},
         'games': {
-            'inkwild': {'name': '墨畫蒼生', 'en': 'InkWild', 'genre': 'Sinh tồn · Xây dựng', 'tag': 'Viết gỗ thành thuyền · viết nước thành vực',
+            'inkwild': {'name': '墨畫蒼生', 'en': 'InkWild', 'genre': 'Sinh tồn · Xây dựng', 'tag': '',
                         'pitch': 'Một trang giấy rơi xuống biển, và những chữ trên đó sống dậy. Lấy gỗ, xây gạch, thắp đèn, cầm cự hết đêm này qua đêm khác; khi đã đủ can đảm, hãy đóng thuyền vượt biển.', 'status': 'Sắp ra mắt trên Steam', 'go': 'Vào'},
             'litou': {'name': '力透紙背', 'en': 'Lực Thấu Chỉ Bối', 'genre': 'Thứ tự nét · Chiến đấu', 'tag': 'Từ điểm thành đường · từ đường thành mặt · từ mặt thành khối',
                       'pitch': 'Phím 1 đến 0 là mười nét bút; viết đúng thứ tự nét, chữ sai trước mặt liền được sửa đúng. Bắt đầu từ một điểm, viết một mạch vào tận bên trong siêu lập phương.', 'status': 'Hãy đón chờ', 'go': 'Vào'},
@@ -179,7 +179,7 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME, LOGO):
       <div class="hm-body">
         <p class="hm-genre">{esc(G['genre'])}</p>
         {name}
-        <p class="hm-tag">{' · '.join(f'<span>{esc(x)}</span>' for x in G['tag'].split(' · '))}</p>
+        {f'<p class="hm-tag">' + ' · '.join(f'<span>{esc(x)}</span>' for x in G['tag'].split(' · ')) + '</p>' if G['tag'] else ''}
         <p class="hm-pitch">{esc(G['pitch'])}</p>
         <p class="hm-meta"><span class="hm-status">{esc(G['status'])}</span><span class="hm-go">{esc(G['go'])} <b aria-hidden="true">→</b></span></p>
       </div>
