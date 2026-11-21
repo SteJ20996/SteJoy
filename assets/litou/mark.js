@@ -6,8 +6,9 @@
 (function () {
   const D = window.MARK_DATA;
   const INK = (D && D.ink) || [28, 26, 23];   // 網站的首頁把帶子畫成紙色（墨黑的底上）：MARK_DATA.ink
-  // 時間（秒）：等標題的「力」落下再起筆
-  const T = { delay: 0.45, s1: 1.0, gap: 0.16, s2: 0.62 };
+  // 時間（秒）。起筆前原本等 0.45 息，是遊戲 v0.8.3 等標題的「力」落下；v0.11.8 起反過來是標題跟著標誌的拍子落，
+  // 那 0.45 息就成了開場一段空白（標題、標誌都還沒動）。遊戲 v0.12.3 只留 0.1 息的停頓，四拍的間隔不動
+  const T = { delay: 0.1, s1: 1.0, gap: 0.16, s2: 0.62 };
   T.end1 = T.delay + T.s1; T.start2 = T.end1 + T.gap; T.end2 = T.start2 + T.s2; T.land = T.end2 + 0.05;
   const W1 = 0.025, W2 = 0.035;   // 筆鋒的濕邊：這一筆全長的幾成
   // 一段一段的緩急：[到第幾成時間, 寫到第幾成, 緩急]（in 越來越快、out 越來越慢、io 先快後慢）
@@ -67,16 +68,20 @@
     ren.classList.toggle('land', sec >= T.land);
   };
   M.stop = function () { if (M.raf) cancelAnimationFrame(M.raf); M.raf = 0; };
+  // 起筆的那一刻叫 M.onstart(t0)（遊戲 v0.12.3）：標誌要等兩張圖解好才起筆，標題的 CSS 動畫卻是頁面一畫出來就跑，
+  // 兩邊差了約 0.1 息、慢的機器上更多，標題的字就踩不到標誌的拍子；所以標題先停在第一格，等這一下把起點對到 t0。
+  // t0 跟 performance.now()、document.timeline 同一個原點。畫不了、少動時也叫（沒有 t0），標題才不會一直停著
+  const begin = (t0) => { if (typeof M.onstart === 'function') M.onstart(typeof t0 === 'number' ? t0 : undefined); };
   M.play = function () {
     M.ready.then(() => {
-      if (!M.mounted) return;
+      if (!M.mounted) return begin();
       M.stop(); ren.classList.remove('land', 'still');
-      if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) { M.at(T.land + 1); ren.classList.add('still'); return; }
+      if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) { M.at(T.land + 1); ren.classList.add('still'); return begin(); }
       void ren.offsetWidth;   // 讓「人」的落下重新播
       const t0 = performance.now();
       const step = (now) => { const s = (now - t0) / 1000; M.at(s); M.raf = s < T.land + 0.1 ? requestAnimationFrame(step) : 0; };
-      M.at(0); M.raf = requestAnimationFrame(step);
-    }, () => {});
+      M.at(0); M.raf = requestAnimationFrame(step); begin(t0);
+    }, () => begin());
   };
   // 給測試：每一筆現在顯出了幾成、顯出的墨的重心在哪
   M.coverage = function () { let v1 = 0, v2 = 0; const d = img.data; for (let k = 0; k < idx.length; k++) { const v = d[idx[k] * 4 + 3]; if (st[k] === 1) v1 += v; else v2 += v; } return { s1: v1 / sum1, s2: v2 / sum2 }; };
