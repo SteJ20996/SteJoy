@@ -113,9 +113,13 @@ body.lang-en .lt-loop { letter-spacing: .06em; font-style: italic; font-family: 
 .lt-grid path.todo { fill: rgba(28, 26, 23, .08); }
 .lt-grid path.next { fill: var(--red); opacity: .55; animation: lt-pulse 1s ease-in-out infinite; }
 .lt-grid path.fresh { animation: lt-ink .28s cubic-bezier(.2, .9, .3, 1.2) both; transform-box: fill-box; transform-origin: center; }
+.lt-grid path.pen { fill: none; stroke: var(--ink); stroke-width: 150; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1 2; animation: lt-pen var(--t, .3s) cubic-bezier(.45, .05, .55, .95) both; transition: stroke .2s; }
+.lt-grid path.land { animation: lt-land 0s var(--t, .3s) both; }
 .lt-grid.got path.ink { fill: var(--red); }
+.lt-grid.got path.pen { stroke: var(--red); }
 .lt-grid.miss { animation: lt-shake .32s; }
 .lt-grid.miss path.ink { animation: lt-scatter .45s ease-in forwards; transform-box: fill-box; transform-origin: center; }
+.lt-write { overflow-x: clip; }   /* 成字的大字從 2.4 倍砸下來，手機上那一瞬間會撐寬整頁 */
 .lt-big { min-height: 1em; font-size: clamp(80px, 11vw, 132px); line-height: 1; }
 .lt-big.got { color: var(--red); animation: lt-slam .32s cubic-bezier(.2, .9, .3, 1.2) both; }
 .lt-big.miss { color: var(--dim); font-size: 40px; letter-spacing: .2em; padding: 30px 0; }
@@ -135,6 +139,8 @@ body.lang-zh-Hant .lt-read, body.lang-zh-Hans .lt-read { font-family: inherit; }
 .lt-key.hit { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ink); }
 .lt-key.next { border-color: var(--red); box-shadow: 3px 3px 0 var(--red), 0 0 0 3px rgba(180, 57, 42, .25); }
 .lt-try { margin: 22px 0 0; color: var(--ink-2); font-size: 16px; }
+.lt-credit { margin: 10px 0 0; color: var(--ink-2); font-size: 13px; opacity: .8; }
+.lt-credit a { color: inherit; }
 
 /* 特色 */
 .lt-sub { margin: 10px 0 4px; font-size: 26px; font-weight: 400; letter-spacing: .12em; }
@@ -171,6 +177,8 @@ body.lang-en .lt-feat h3, body.lang-en .lt-sub { letter-spacing: 0; }
 @keyframes lt-stamp { 0% { opacity: 0; transform: scale(1.8) rotate(8deg); } 60% { opacity: 1; transform: scale(.94); } 100% { opacity: 1; transform: none; } }
 @keyframes lt-ren { 0% { opacity: 0; transform: translateY(-40%) scale(2.2); } 60% { opacity: 1; transform: translateY(2%) scale(.92); } 100% { opacity: 1; transform: none; } }
 @keyframes lt-pulse { 0%, 100% { opacity: .35; } 50% { opacity: .7; } }
+@keyframes lt-pen { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes lt-land { from { opacity: 0; } to { opacity: 1; } }
 @keyframes lt-ink { from { transform: scale(1.25); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes lt-shake { 0%, 100% { transform: none; } 25% { transform: translateX(-8px) rotate(-1deg); } 60% { transform: translateX(6px) rotate(.8deg); } }
 @keyframes lt-scatter { to { opacity: 0; transform: translate(var(--sx, 0), var(--sy, 30px)) rotate(var(--sr, 20deg)) scale(.6); } }

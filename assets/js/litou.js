@@ -179,7 +179,19 @@
     const keys = [...document.querySelectorAll('.lt-key')], byCode = {}, byKey = {};
     D.strokes.forEach(s => { byCode[s.c] = s; byKey[s.key] = s.c; });
     const CH = D.chars, ALL = Object.keys(CH), done = new Set();
-    let buf = '', timer = 0, demo = true, demoT = 0, missing = false;
+    // 字形：AnimCJK 的台灣楷書（assets/litou/glyphs.js，Arphic Public License），每一筆有輪廓 d 與中線 m；沒有的字用 data.js 裡遊戲的字形
+    const GL = window.LITOU_GLYPHS || {};
+    for (const c of ALL) if (GL[c]) { CH[c].d = GL[c].d; CH[c].m = GL[c].m; }
+    let buf = '', timer = 0, gotT = 0, demo = true, demoT = 0, missing = false;
+    // 新寫的那一筆照中線寫出來：粗筆沿中線走、裁在這一筆自己的輪廓裡（Hanzi Writer 的做法），寫完換回整筆的輪廓。
+    // 起筆往回多拉一點，免得筆頭露白；長的筆寫得久一點（0.2–0.45 息，示範兩筆之間是 0.48 息）
+    const pen = (m) => {
+      const P = m.split(' ').map(q => q.split(',').map(Number)); if (P.length < 2) return null;
+      let L = 0; for (let i = 1; i < P.length; i++) L += Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]);
+      const dx = P[1][0] - P[0][0], dy = P[1][1] - P[0][1], n = Math.hypot(dx, dy) || 1;
+      P[0] = [P[0][0] - dx / n * 40, P[0][1] - dy / n * 40];
+      return { d: 'M' + P.map(q => Math.round(q[0]) + ' ' + Math.round(q[1])).join('L'), t: Math.min(0.45, Math.max(0.2, 0.14 + L * 0.0004)) };
+    };
     const icon = (c) => '<svg viewBox="0 0 240 240" aria-hidden="true"><path d="' + byCode[c].icon + '"/></svg>';
     const sname = (c) => lang === 'en' ? byCode[c].en : lang === 'ja' ? byCode[c].ja : lang === 'vi' ? byCode[c].vi : lang === 'zh-Hans' ? byCode[c].hans : byCode[c].zh;
     // 成字時寫讀音：中文頁拼音、英文頁拼音與字義、日文頁音讀・訓讀與字義（照遊戲的寫法「ダイ・おお-きい／大きい」，字義就是字本身時不重寫）
@@ -187,13 +199,23 @@
       return CH[ch].py + (lang === 'en' ? ' · ' + CH[ch].en : ''); };
     const order = (a, b) => CH[a].seq.length - CH[b].seq.length || ALL.indexOf(a) - ALL.indexOf(b);
     function show(state, ch, fresh) {
-      grid.classList.remove('got', 'miss'); big.classList.remove('got', 'miss');
+      clearTimeout(gotT); grid.classList.remove('got', 'miss'); big.classList.remove('got', 'miss');
       const lead = ch || ALL.filter(c => CH[c].seq.startsWith(buf)).sort(order)[0];
-      ink.innerHTML = lead ? CH[lead].d.map((d, i) => '<path class="' + (i < buf.length ? 'ink' + (fresh && i === buf.length - 1 ? ' fresh' : '') : i === buf.length && state !== 'got' ? 'next' : 'todo') + '" d="' + d + '"/>').join('') : '';
+      let wait = 0;
+      ink.innerHTML = lead ? CH[lead].d.map((d, i) => {
+        const cls = i < buf.length ? 'ink' : i === buf.length && state !== 'got' ? 'next' : 'todo', now = cls === 'ink' && fresh && i === buf.length - 1;
+        const p = now && !reduce && CH[lead].m ? pen(CH[lead].m[i]) : null;
+        if (p) { wait = p.t; return '<clipPath id="lt-clip"><path d="' + d + '"/></clipPath><path class="pen" clip-path="url(#lt-clip)" pathLength="1" d="' + p.d + '" style="--t:' + p.t + 's"/><path class="ink land" d="' + d + '" style="--t:' + p.t + 's"/>'; }
+        return '<path class="' + cls + (now ? ' fresh' : '') + '" d="' + d + '"/>';
+      }).join('') : '';
       seqBox.innerHTML = buf.split('').map(icon).join('');
       const more = ALL.filter(c => CH[c].seq.startsWith(buf) && CH[c].seq !== buf).sort(order).slice(0, 8);
       cands.innerHTML = buf && more.length ? T.write_cands + '：' + more.map(c => '<b>' + c + '</b>').join(' ') : '';
-      if (state === 'got') { big.textContent = ch; big.classList.add('got'); grid.classList.add('got'); read.textContent = readOf(ch) + ' — ' + T.write_got; void big.offsetWidth; }
+      if (state === 'got') {
+        // 最後一筆寫完才成字（字變紅、大字落下）
+        const land = () => { big.textContent = ch; big.classList.add('got'); grid.classList.add('got'); read.textContent = readOf(ch) + ' — ' + T.write_got; void big.offsetWidth; };
+        if (wait) { big.textContent = ''; read.textContent = buf.split('').map(sname).join(lang === 'en' || lang === 'vi' ? ', ' : lang === 'ja' ? '・' : '、'); gotT = setTimeout(land, wait * 1000); } else land();
+      }
       else if (buf) { big.textContent = ''; read.textContent = buf.split('').map(sname).join(lang === 'en' || lang === 'vi' ? ', ' : lang === 'ja' ? '・' : '、'); }
       else { big.textContent = ''; read.textContent = T.write_idle; }
       const nx = lead && state !== 'got' ? CH[lead].seq[buf.length] : null;
@@ -204,7 +226,7 @@
       // 寫不成字：筆散掉（每一筆往外飛），再從這一筆重新開始
       const paths = [...ink.querySelectorAll('path')];
       ink.innerHTML = buf.split('').map((c, i) => { const lead = ALL.find(x => CH[x].seq.startsWith(buf.slice(0, i + 1))); return lead ? '<path class="ink" d="' + CH[lead].d[i] + '" style="--sx:' + ((Math.random() - .5) * 160).toFixed(0) + 'px;--sy:' + (40 + Math.random() * 80).toFixed(0) + 'px;--sr:' + ((Math.random() - .5) * 60).toFixed(0) + 'deg"/>' : ''; }).join('');
-      grid.classList.remove('miss', 'got'); void grid.getBoundingClientRect(); grid.classList.add('miss'); missing = true;
+      clearTimeout(gotT); grid.classList.remove('miss', 'got'); void grid.getBoundingClientRect(); grid.classList.add('miss'); missing = true;
       big.textContent = T.write_none; big.classList.add('miss'); read.textContent = ''; cands.innerHTML = '';
       clearTimeout(timer); timer = setTimeout(() => { missing = false; buf = ''; if (code && ALL.some(c => CH[c].seq.startsWith(code))) { buf = code; } show('', null, true); }, 520);
     }
