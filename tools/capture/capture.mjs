@@ -7,7 +7,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
-import { SHOTS, COMMON } from './shots.mjs';
+// SHOTS 環境變數可以換一套鏡頭（第二支預告在 tools/fight/shots.mjs，2026-11-16）；那一套可以另給 EXTRA，在 COMMON 之後跑
+const MOD = await import(process.env.SHOTS ? path.resolve(process.env.SHOTS) : './shots.mjs');
+const { SHOTS, COMMON, EXTRA } = MOD;
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.PLAYWRIGHT || '/opt/node-tools/node_modules/playwright');
 
@@ -26,21 +28,28 @@ for (const shot of SHOTS) {
   page.on('pageerror', e => console.log('  pageerror', shot.name, e.message));
   if (process.env.CAP_LOG) page.on('console', m => console.log('  [' + shot.name + ']', m.text()));
   await page.clock.install({ time: new Date('2026-11-04T10:00:00Z') });
+  // 第二支預告（PAUSE）：裝好假時鐘就停住，只照 runFor 走。不停的話假時鐘照真實時間繼續走，一幀截圖花的時間越久遊戲走得越快（疊了光影以後一幀近半秒，遊戲快了快十倍、招式全亂）
+  // 第一支預告（2026-11-17 重錄）：CAP_PAUSE=1 也停住，CAP_RATE=k 每一幀讓遊戲走 k 倍時間——原本沒停住時，遊戲照真實時間多走，快慢看機器忙不忙；定一個倍數才錄得出一樣的節奏
+  if (MOD.PAUSE || process.env.CAP_PAUSE) await page.clock.pauseAt(new Date('2026-11-04T10:00:00.500Z'));
   const url = shot.page ? 'file://' + path.resolve(path.dirname(new URL(import.meta.url).pathname), shot.page) : BASE + '?autostart=1&seed=' + (shot.seed || 7);
   await page.goto(url, { waitUntil: 'load' });
   if (!shot.page) {
     for (let i = 0; i < 200; i++) { await page.clock.runFor(100); if (await page.evaluate(() => !!(window.XIEYI && XIEYI.game && XIEYI.game.player))) break; }
-    await page.evaluate(COMMON, { tile: shot.tile || 64 });
+    await page.evaluate(COMMON, { tile: shot.tile || 64, lang: process.env.CAP_LANG || '', bar: process.env.CAP_BAR || '' });   // CAP_LANG=en／hans、CAP_BAR=ja／vi／ko（2026-11-17）
+    if (EXTRA) await page.evaluate(EXTRA, { seed2: shot.rand || 1, bossbar: !!shot.bossbar, fx: shot.fx || null, tile: shot.tile || 64 });
   }
   if (shot.setup) await page.evaluate(shot.setup, shot.arg || null);
   if (shot.warm) await page.clock.runFor(shot.warm * 1000);
   const n = Math.round(shot.sec * FPS), dir = path.join(OUT, shot.name);
   fs.rmSync(dir, { recursive: true, force: true }); fs.mkdirSync(dir, { recursive: true });
-  const want = stills ? new Set([0, Math.floor(n / 2), n - 1]) : null;
-  let prev = null, retried = 0, stale = 0;
+  const every = +process.env.STILL_EVERY || 0;   // 對構圖時每隔幾幀截一張（不給就照舊頭中尾三張）
+  const want = stills ? new Set(every ? Array.from({ length: Math.ceil(n / every) }, (_, i) => i * every).concat([n - 1]) : [0, Math.floor(n / 2), n - 1]) : null;
+  let prev = null, retried = 0, stale = 0, rate = 1; const K = shot.k || +process.env.CAP_RATE || 1;   // 鏡頭可以自己定倍數（shot.k）
   for (let f = 0; f < n; f++) {
     if (shot.frame) await page.evaluate(shot.frame, { f, n, fps: FPS, arg: shot.arg || null });
-    await page.clock.runFor(1000 / FPS);
+    const sl = (shot.slow || []).find(([a, b]) => f >= a && f < b);   // 慢動作（第二支預告）：這幾幀遊戲只走 rate 倍
+    await page.clock.runFor(1000 / FPS * (sl ? sl[2] : rate) * K);
+    if (EXTRA) rate = await page.evaluate(({ f, n }) => (window.__post && window.__post(f, n)) || 1, { f, n });   // 疊上光影、閃光，推鏡；回傳下一幀的速度（鏡頭裡 __slow() 臨時放慢）
     if (want && !want.has(f)) continue;
     const opt = { type: stills ? 'png' : 'jpeg', quality: stills ? undefined : 95 };
     if (shot.paint) await page.evaluate(shot.paint);   // 截圖前照這一刻的狀態再畫一次（時間差 0，不推動遊戲）：假時鐘下遊戲那一步有時一次也沒畫，截到的是上一步的畫面
@@ -53,6 +62,8 @@ for (const shot of SHOTS) {
   if (retried) console.log('  ' + shot.name + ': 重截 ' + retried + ' 回，仍同上一幀 ' + stale + ' 幀');
   const events = await page.evaluate(() => window.__events || null);   // 鏡頭裡記下的事（落雷、腳步落在哪一幀），配樂照這個對齊
   if (events && !stills) fs.writeFileSync(path.join(OUT, shot.name + '.events.json'), JSON.stringify(events));
+  const floats = await page.evaluate(() => window.__floats || null);   // 飄過的字（2026-11-17：找日越版要翻的字）
+  if (floats && floats.length && !stills) fs.writeFileSync(path.join(OUT, shot.name + '.floats.json'), JSON.stringify([...new Set(floats)]));
   await page.close();
   if (!stills) execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', path.join(dir, '%04d.jpg'), '-c:v', 'libx264', '-preset', 'slow', '-crf', '16', '-pix_fmt', 'yuv420p', path.join(OUT, shot.name + '.mp4')]);
   console.log(shot.name, n + ' frames', ((Date.now() - t0) / 1000).toFixed(0) + 's');

@@ -1,0 +1,21 @@
+{
+  "fade": 0.3,
+  "capBand": true,
+  "clips": [
+    { "shot": "hammer",   "from": 0.5, "dur": 3.1 },
+    { "shot": "title",    "from": 0.0, "dur": 3.3, "tr": "fadeblack" },
+    { "shot": "tiger",    "from": 0.4, "dur": 2.8, "tr": "fadewhite" },
+    { "shot": "ge",       "from": 0.3, "dur": 2.8 },
+    { "shot": "harpy",    "from": 0.3, "dur": 2.6 },
+    { "shot": "tooth",    "from": 0.6, "dur": 3.0 },
+    { "shot": "bifang",   "from": 0.3, "dur": 3.0 },
+    { "shot": "shen",     "from": 1.0, "dur": 3.2 },
+    { "shot": "hog",      "from": 0.4, "dur": 5.0, "tr": "fadeblack" },
+    { "shot": "snake",    "from": 0.6, "dur": 4.2 },
+    { "shot": "wind",     "from": 0.2, "dur": 5.2 },
+    { "shot": "gongsea",  "from": 1.2, "dur": 3.0, "tr": "fadeblack" },
+    { "shot": "gongland", "from": 0.6, "dur": 3.4, "tr": "fadewhite" },
+    { "shot": "gongsky",  "from": 0.6, "dur": 3.4, "tr": "fadewhite" },
+    { "shot": "end",      "from": 0.0, "dur": 4.4, "tr": "fadeblack" }
+  ]
+}

@@ -81,6 +81,7 @@ TEXT = {
         "write_h": "試寫",
         "write_intro": "按鍵盤 1 到 0（或點下面的鍵）寫一筆。照筆順寫成一個字就成字；寫不成字，筆就散了。",
         "write_try": "試試：9 3 寫「力」，1 3 5 寫「大」，4 9 0 3 5 寫「永」。",
+        "write_font": "米字格的字形：{animcjk} 的台灣楷書字形（衍生自文鼎 AR PL KaitiM，{apl}）",
         "write_cands": "還能寫成",
         "write_none": "不成字",
         "write_got": "成字",
@@ -186,6 +187,7 @@ TEXT = {
         "write_h": "试写",
         "write_intro": "按键盘 1 到 0（或点下面的键）写一笔。照笔顺写成一个字就成字；写不成字，笔就散了。",
         "write_try": "试试：9 3 写“力”，1 3 5 写“大”，4 9 0 3 5 写“永”。",
+        "write_font": "米字格的字形：{animcjk} 的台湾楷书字形（衍生自文鼎 AR PL KaitiM，{apl}）",
         "write_cands": "还能写成",
         "write_none": "不成字",
         "write_got": "成字",
@@ -291,6 +293,7 @@ TEXT = {
         "write_h": "Try it",
         "write_intro": "Press keys 1 to 0 (or tap the keys below) to write a stroke. Strokes in the right order become a character; strokes that make no character scatter.",
         "write_try": "Try 9 3 for 力 (strength), 1 3 5 for 大 (big), 4 9 0 3 5 for 永 (eternal).",
+        "write_font": "Grid glyphs: Taiwan kaishu forms from {animcjk} (derived from Arphic’s AR PL KaitiM; {apl})",
         "write_cands": "Could still become",
         "write_none": "No character",
         "write_got": "Written",
@@ -369,6 +372,7 @@ TEXT = {
         "write_h": "試し書き",
         "write_intro": "キーボードの 1 から 0（または下のキー）で一画ずつ書く。筆順どおりに書けば字になり、字にならなければ画は散ってしまう。",
         "write_try": "試してみよう：9 3 で「力」、1 3 5 で「大」、4 9 0 3 5 で「永」。",
+        "write_font": "マス目の字形：{animcjk} の台湾の楷書字形（文鼎 AR PL KaitiM に由来、{apl}）",
         "write_cands": "ほかに書ける字",
         "write_none": "字にならない",
         "write_got": "書けた",
@@ -436,6 +440,7 @@ TEXT = {
         "write_h": "Viết thử",
         "write_intro": "Nhấn phím 1 đến 0 (hoặc chạm các phím bên dưới) để viết từng nét. Đúng thứ tự thì thành chữ; không thành chữ thì nét tan đi. Chữ nào cũng có âm Hán Việt và nghĩa.",
         "write_try": "Thử 9 3 thành 力 (lực – sức), 1 3 5 thành 大 (đại – lớn), 4 9 0 3 5 thành 永 (vĩnh – mãi mãi).",
+        "write_font": "Mẫu chữ trong ô: chữ khải chuẩn Đài Loan của {animcjk} (dựa trên phông AR PL KaitiM của Arphic; {apl})",
         "write_cands": "Còn có thể thành",
         "write_none": "Không thành chữ",
         "write_got": "Đã viết",
@@ -540,6 +545,7 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
 <link rel="stylesheet" href="{a}css/litou.css">
 <script defer src="{a}js/site.js"></script>
 <script defer src="{a}litou/data.js"></script>
+<script defer src="{a}litou/glyphs.js"></script>
 <script>window.MARK_DATA = {mark_data};</script>
 <script defer src="{a}litou/mark.js"></script>
 <script defer src="{a}js/litou.js"></script>
@@ -614,6 +620,7 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
   </div>
   <div class="lt-keys" id="lt-keys">{keys}</div>
   <p class="lt-try">{esc(T['write_try'])}</p>
+  <p class="lt-credit">{esc(T['write_font']).replace('{animcjk}', '<a href="https://github.com/parsimonhi/animCJK" rel="noopener">AnimCJK</a>').replace('{apl}', f'<a href="{a}litou/ARPHICPL.TXT">Arphic Public License</a>')}</p>
 </section>
 
 <section id="features" class="lt-sec lt-features">
