@@ -114,7 +114,7 @@ body.lang-en .lt-loop { letter-spacing: .06em; font-style: italic; font-family: 
 .lt-grid path.ink { fill: var(--ink); transition: fill .2s, opacity .2s; }
 .lt-grid path.todo { fill: rgba(28, 26, 23, .08); }
 .lt-grid path.next { fill: var(--red); opacity: .55; animation: lt-pulse 1s ease-in-out infinite; }
-.lt-grid path.fresh { animation: lt-ink .28s cubic-bezier(.2, .9, .3, 1.2) both; transform-box: fill-box; transform-origin: center; }
+.lt-grid path.fresh { animation: lt-ink .39s cubic-bezier(.2, .9, .3, 1.2) both; transform-box: fill-box; transform-origin: center; }
 .lt-grid path.pen { fill: none; stroke: var(--ink); stroke-width: 150; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1 2; animation: lt-pen var(--t, .3s) cubic-bezier(.45, .05, .55, .95) both; transition: stroke .2s; }
 .lt-grid path.land { animation: lt-land 0s var(--t, .3s) both; }
 .lt-grid.got path.ink { fill: var(--red); }

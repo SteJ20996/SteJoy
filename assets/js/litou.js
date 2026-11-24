@@ -194,13 +194,15 @@
     for (const c of ALL) if (GL[c]) { CH[c].d = GL[c].d; CH[c].m = GL[c].m; }
     let buf = '', timer = 0, gotT = 0, demo = true, demoT = 0, missing = false;
     // 新寫的那一筆照中線寫出來：粗筆沿中線走、裁在這一筆自己的輪廓裡（Hanzi Writer 的做法），寫完換回整筆的輪廓。
-    // 起筆往回多拉一點，免得筆頭露白；長的筆寫得久一點（0.2–0.45 息，示範兩筆之間是 0.48 息）
+    // 起筆往回多拉一點，免得筆頭露白；長的筆寫得久一點。2026-11-24 使用者：「試寫的字請放慢速度，放慢 30%–50%」——取中間，
+    // 一筆的動畫與自己示範的節奏都 ×1.4（SLOW）：一筆 0.28–0.63 秒，示範兩筆之間 0.67 秒（要比最長的一筆久）、成字後停 2.4 秒
+    const SLOW = 1.4;
     const pen = (m) => {
       const P = m.split(' ').map(q => q.split(',').map(Number)); if (P.length < 2) return null;
       let L = 0; for (let i = 1; i < P.length; i++) L += Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]);
       const dx = P[1][0] - P[0][0], dy = P[1][1] - P[0][1], n = Math.hypot(dx, dy) || 1;
       P[0] = [P[0][0] - dx / n * 40, P[0][1] - dy / n * 40];
-      return { d: 'M' + P.map(q => Math.round(q[0]) + ' ' + Math.round(q[1])).join('L'), t: Math.min(0.45, Math.max(0.2, 0.14 + L * 0.0004)) };
+      return { d: 'M' + P.map(q => Math.round(q[0]) + ' ' + Math.round(q[1])).join('L'), t: SLOW * Math.min(0.45, Math.max(0.2, 0.14 + L * 0.0004)) };
     };
     const icon = (c) => '<svg viewBox="0 0 240 240" aria-hidden="true"><path d="' + byCode[c].icon + '"/></svg>';
     const sname = (c) => lang === 'en' ? byCode[c].en : lang === 'ja' ? byCode[c].ja : lang === 'vi' ? byCode[c].vi : lang === 'zh-Hans' ? byCode[c].hans : byCode[c].zh;
@@ -276,7 +278,7 @@
           const ch = DEMO[di % DEMO.length], seq = CH[ch].seq;
           if (buf.length < seq.length && seq.startsWith(buf)) stroke(seq[buf.length], false);
           else { reset(); di++; }
-          demoT = setTimeout(tick, buf.length === seq.length && seq.startsWith(buf) && buf ? 1700 : 480);
+          demoT = setTimeout(tick, buf.length === seq.length && seq.startsWith(buf) && buf ? 1700 * SLOW : 480 * SLOW);
         } else demoT = setTimeout(tick, 600);
       };
       demoT = setTimeout(tick, 900);
