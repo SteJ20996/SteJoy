@@ -21,8 +21,8 @@ stejoy.com 的網站：工作室**長風**的首頁（「寫意」系列，選�
 - 頁面由 `tools/site/play.mjs` 產生，**不改遊戲的一個字**：遊戲庫打好的試玩（`python3 scripts/build-single.py --demo` 的 `dist/xieyi-demo.html`：已剪掉後面的內容、掃過黑名單、試玩冒煙測試全過）外面包一層 doctype、`<meta charset>`、viewport 與底樣式。產生器先查它是剪好的試玩（試玩服、沒有測試格、沒有 `<script data-src>`、沒有「共工」這類名字），不是就停下。
 - 字型照網站的規矩不連 Google Fonts：用 `assets/fonts/` 的 Fontsource 5.3.1 分片，跟網站共用霞鶩文楷 TC 400、思源宋體 SC 400，另抄進思源宋體 TC 400／700 與 SC 700（317 片，9.0 MB；授權 `noto-serif-tc-LICENSE.txt`），寫一份 `mohuacangsheng/play/fonts.css`。頁面的 `<link data-local-fonts>` 讓遊戲換簡體時也不去網路載。
 - 在一般網頁上，遊戲自己會退回：匯出存檔是瀏覽器下載（claude.ai 上才經 `downloads` 能力）；吐槽沒有留言框，只剩複製、存成檔案、寄信。存檔在 stejoy.com 這個網域的 `localStorage`，跟 claude.ai 上的試玩預覽、完整版各是各的，要帶過去得匯出再匯入。
-- 現在放的是遊戲 v0.9.135（第一章）。換新版本：
-  1. 遊戲庫（第一章那條線）：`NODE_PATH=$(npm root -g) python3 scripts/build-single.py --demo`，再跑 `NODE_PATH=$(npm root -g) node scripts/smoke-demo.mjs` 與 `--raw`，都要全過。
+- 現在放的是遊戲 v0.9.135（第一章）：2026-11-24 遊戲上線正式庫以後，用正式庫 `ch1` 打的那一份重產過，跟測試庫打的一位元組不差。換新版本（遊戲上線以後才換，用正式庫 `ch1` 打的；試玩是第一章的東西）：
+  1. 遊戲正式庫的 `ch1`：`NODE_PATH=$(npm root -g) python3 scripts/build-single.py --demo`，再跑 `NODE_PATH=$(npm root -g) node scripts/smoke-demo.mjs` 與 `--raw`，都要全過。
   2. 字型套件（版本照遊戲庫 `desktop/package.json`）：`npm install --no-save --prefix <暫存> @fontsource/lxgw-wenkai-tc@5.3.1 @fontsource/noto-serif-tc@5.3.1 @fontsource/noto-serif-sc@5.3.1`。
   3. 這裡：`node tools/site/play.mjs <遊戲庫>/dist/xieyi-demo.html <暫存>/node_modules`。
 - 檢查（2026-11-24）：從五種語言的介紹頁點進去，語言對、起始頁出來、開一局在試玩的紙上（第六版、600×600）、存檔寫進這台瀏覽器、字型全從 `assets/fonts/` 載、沒有一個 Google Fonts 的請求、匯出會下載、零報錯；遊戲裡選過的語言蓋過 `?lang=`；iPhone 13 橫拿的起始頁不橫捲。
