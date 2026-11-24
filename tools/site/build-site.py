@@ -37,6 +37,7 @@ TEXT = {
         'desc': '一張紙落在海上，紙上的字活了。你是其中一個「人」字：取木、砌磚、點燈，撐過入夜後穿磚而來的魄；照節氣種五穀、垂釣、觀星。膽氣夠了就造船渡海，去找撞歪天地的共工。',
         'nav': ['預告', '故事', '試玩場景', '特色', '聯絡'],
         'soon': '即將登上 Steam', 'wish': '加入 Steam 願望清單', 'watch': '觀看預告',
+        'play': '線上試玩', 'play_note': '在瀏覽器裡直接玩，不用安裝。存檔留在這台瀏覽器裡。',   # 2026-11-24 使用者：把試玩版放到 stejoy 裡，玩家點擊就能體驗網頁版試玩（tools/site/play.mjs）
         'trailer_h': '預告', 'trailer_note': '遊戲實機畫面。配樂是暫用的合成樂。',
         'trailer2_h': '戰', 'trailer2_note': '大魔王與共工的實機畫面。配樂是暫用的合成樂。',
         'story_h': '故事',
@@ -45,7 +46,7 @@ TEXT = {
             '這張紙在歪。共工「怒而觸不周之山」，天柱折，地維絕；紙角翹起來，跑出了修蛇、封豨、大風。青龍、白虎、朱雀、玄武，是壓住四角的鎮紙。撐過一夜，再撐過一夜；膽氣夠了，就造一艘船離開。',
         ],
         'scenes_h': '試玩裡的場景',
-        'scenes_intro': '試玩版在本島上，玩到魄來的頭一夜過完（看難度：逍遙第十八、初履第十五、人間第十二、宗師第九夜），下面這幾段都在試玩裡。',
+        'scenes_intro': '試玩版在本島與一座近島上，玩到魄來的頭一夜過完（看難度：逍遙第十八、初履第十五、人間第十二、宗師第九夜），下面這幾段都在試玩裡。',
         'chai': (['从人依木', '从月从囧', '从子在宀下'], '《說文解字》的說法；囧是窗。'),
         'scenes': {
             'gather': ('取木', '林子裡的每一格都是字，取下來就是材料。'),
@@ -79,6 +80,7 @@ TEXT = {
         'desc': '一张纸落在海上，纸上的字活了。你是其中一个“人”字：取木、砌砖、点灯，撑过入夜后穿砖而来的魄；照节气种五谷、垂钓、观星。胆气够了就造船渡海，去找撞歪天地的共工。',
         'nav': ['预告', '故事', '试玩场景', '特色', '联系'],
         'soon': '即将登陆 Steam', 'wish': '加入 Steam 愿望单', 'watch': '观看预告',
+        'play': '在线试玩', 'play_note': '在浏览器里直接玩，不用安装。存档留在这台浏览器里。',
         'trailer_h': '预告', 'trailer_note': '游戏实机画面。配乐是暂用的合成乐。',
         'trailer2_h': '战', 'trailer2_note': '大魔王与共工的实机画面。配乐是暂用的合成乐。',
         'story_h': '故事',
@@ -87,7 +89,7 @@ TEXT = {
             '这张纸在歪。共工“怒而触不周之山”，天柱折，地维绝；纸角翘起来，跑出了修蛇、封豨、大风。青龙、白虎、朱雀、玄武，是压住四角的镇纸。撑过一夜，再撑过一夜；胆气够了，就造一艘船离开。',
         ],
         'scenes_h': '试玩里的场景',
-        'scenes_intro': '试玩版在本岛上，玩到魄来的头一夜过完（看难度：逍遥第十八、初履第十五、人间第十二、宗师第九夜），下面这几段都在试玩里。',
+        'scenes_intro': '试玩版在本岛与一座近岛上，玩到魄来的头一夜过完（看难度：逍遥第十八、初履第十五、人间第十二、宗师第九夜），下面这几段都在试玩里。',
         'chai': (['从人依木', '从月从囧', '从子在宀下'], '《说文解字》的说法；囧是窗。'),
         'scenes': {
             'gather': ('取木', '林子里的每一格都是字，取下来就是材料。'),
@@ -121,6 +123,7 @@ TEXT = {
         'desc': 'A sheet of paper falls on the sea, and the characters on it come alive. You are one of them: 人, "person". Gather wood, lay bricks and light lamps against the spirits that come through walls once the nights draw on. Farm by the solar terms, fish, read the stars, then set sail.',
         'nav': ['Trailer', 'Story', 'Demo', 'Features', 'Contact'],
         'soon': 'Coming to Steam', 'wish': 'Wishlist on Steam', 'watch': 'Watch the trailer',
+        'play': 'Play the demo', 'play_note': 'Plays right in your browser, nothing to install. Your save stays in this browser.',
         'trailer_h': 'Trailer', 'trailer_note': 'In-game footage. The music is a placeholder synthesized track.',
         'trailer2_h': 'Battle', 'trailer2_note': 'In-game footage of the great demons and Gonggong. The music is a placeholder synthesized track.',
         'lang_note': '',   # 2026-11-17：英文介面上線（遊戲 v0.9.81 起），原本「只有中文」那句拿掉
@@ -130,7 +133,7 @@ TEXT = {
             'The paper is tilting. Gonggong, in his fury, rammed Mount Buzhou, as the Huainanzi tells it, and the pillar of heaven broke. The corners curled up and let loose the giant serpent Xiushe, the great boar Fengxi and the Great Wind. The Azure Dragon, White Tiger, Vermilion Bird and Black Tortoise are the paperweights holding the four corners. Survive one night, then the next; when your courage is enough, build a boat and leave.',
         ],
         'scenes_h': 'Scenes from the demo',
-        'scenes_intro': 'The demo runs on the home island until the dawn after the first night the spirits walk (night 18, 15, 12 or 9, by difficulty). Every clip below is in it.',
+        'scenes_intro': 'The demo runs on the home island and one nearby isle until the dawn after the first night the spirits walk (night 18, 15, 12 or 9, by difficulty). Every clip below is in it.',
         'chai': (['person by a tree: rest', 'moon and window: bright', 'child under a roof: character'], 'As the Shuowen Jiezi, a dictionary from about 100 CE, explains them; 囧 is a window.'),
         'scenes': {
             'gather': ('Gathering', 'Every tile in the woods is a character. Take it, and it becomes material.'),
@@ -165,6 +168,7 @@ TEXT = {
         'desc': '一枚の紙が海に落ち、紙の上の漢字が生きはじめた。あなたはその中の一字「人」。木を取り、煉瓦を積み、灯をともして、夜ごとに煉瓦を抜けてくる魄（はく）をしのぐ。節気に合わせて五穀を育て、釣りをし、星を見る。胆力が十分についたら舟を造って海を渡り、天地を傾けた共工を探しに行く。',
         'nav': ['予告編', '物語', '体験版', '特徴', 'お問い合わせ'],
         'soon': '近日 Steam で配信', 'wish': 'Steam でウィッシュリストに追加', 'watch': '予告編を見る',
+        'play': '体験版を遊ぶ', 'play_note': 'ブラウザでそのまま遊べます。インストールは要りません。セーブはこのブラウザに残ります。',
         'trailer_h': '予告編', 'trailer_note': 'ゲームの実機映像です。音楽は仮の合成音源です。',
         'trailer2_h': '戦い', 'trailer2_note': '大魔王と共工のゲーム実機映像です。音楽は仮の合成音源です。',
         'lang_note': '',   # 2026-11-17：日文介面上線（遊戲 v0.9.93–v0.9.98），原本「日本語版はありません」那句拿掉
@@ -174,7 +178,7 @@ TEXT = {
             'この紙は傾いている。共工が「怒りて不周の山に触れ」、天柱は折れ、地維は絶えた。紙の角はめくれ上がり、修蛇、封豨、大風が放たれた。青龍・白虎・朱雀・玄武は、四隅を押さえる文鎮だ。一夜をしのぎ、また一夜をしのぐ。胆力が十分についたら、舟を一艘造ってこの島を離れる。',
         ],
         'scenes_h': '体験版の場面',
-        'scenes_intro': '体験版は本島で、魄が初めて現れる夜が明けるまで（難易度により第十八・十五・十二・九夜）。下の場面は、どれも体験版で遊べます。',
+        'scenes_intro': '体験版は本島と近くの島ひとつで、魄が初めて現れる夜が明けるまで（難易度により第十八・十五・十二・九夜）。下の場面は、どれも体験版で遊べます。',
         'chai': (['人が木に依る', '月と窓（囧）', '子が屋根（宀）の下に'], '『説文解字』の説明による。囧は窓のこと。'),
         'scenes': {
             'gather': ('木を取る', '林の一マス一マスが字。取れば材料になる。'),
@@ -213,6 +217,7 @@ TEXT = {
         'desc': 'Một trang giấy rơi xuống biển, và những chữ trên đó sống dậy. Bạn là một trong số ấy: chữ 人 (nhân – người). Lấy gỗ, xây gạch, thắp đèn, cầm cự trước lũ phách (魄) xuyên tường tìm đến mỗi khi đêm xuống; trồng ngũ cốc theo tiết khí, câu cá, ngắm sao. Khi đã đủ can đảm, hãy đóng thuyền vượt biển, đi tìm Cộng Công – kẻ đã húc lệch trời đất.',
         'nav': ['Trailer', 'Câu chuyện', 'Chơi thử', 'Đặc điểm', 'Liên hệ'],
         'soon': 'Sắp ra mắt trên Steam', 'wish': 'Thêm vào danh sách ước muốn trên Steam', 'watch': 'Xem trailer',
+        'play': 'Chơi thử', 'play_note': 'Chơi ngay trên trình duyệt, không cần cài đặt. Trò chơi không có tiếng Việt nên bản chơi thử mở bằng tiếng Anh. Bản lưu nằm trong trình duyệt này.',
         'trailer_h': 'Trailer', 'trailer_note': 'Hình ảnh thật trong trò chơi. Nhạc nền là bản tổng hợp tạm thời.',
         'trailer2_h': 'Chiến đấu', 'trailer2_note': 'Hình ảnh thật trong trò chơi: các đại ma vương và Cộng Công. Nhạc nền là bản tổng hợp tạm thời.',
         'lang_note': 'InkWild có giao diện tiếng Anh, tiếng Nhật, tiếng Trung phồn thể và giản thể; chưa có bản tiếng Việt.',   # 遊戲沒有越南文版（先說清楚）；2026-11-17 英文介面上線，加英文；同日日文介面上線，加日文
@@ -222,7 +227,7 @@ TEXT = {
             'Trang giấy đang nghiêng lệch. Sách «Hoài Nam Tử» kể rằng Cộng Công «nổi giận húc vào núi Bất Chu», cột trời gãy, giềng đất đứt; góc giấy cong vểnh lên, thả ra con rắn khổng lồ Tu Xà, con lợn rừng khổng lồ Phong Hy và Đại Phong – ngọn gió lớn. Thanh Long, Bạch Hổ, Chu Tước, Huyền Vũ là bốn cái chặn giấy đè giữ bốn góc. Cầm cự qua một đêm, rồi thêm một đêm nữa; khi đã đủ can đảm, hãy đóng một con thuyền mà rời đi.',
         ],
         'scenes_h': 'Cảnh trong bản chơi thử',
-        'scenes_intro': 'Bản chơi thử diễn ra trên hòn đảo khởi đầu, kéo dài đến bình minh sau đêm đầu tiên phách xuất hiện (tùy độ khó: Tiêu Dao đêm thứ 18, Sơ Lý đêm thứ 15, Nhân Gian đêm thứ 12, Tông Sư đêm thứ 9). Mọi cảnh dưới đây đều có trong bản chơi thử.',
+        'scenes_intro': 'Bản chơi thử diễn ra trên hòn đảo khởi đầu và một hòn đảo gần đó, kéo dài đến bình minh sau đêm đầu tiên phách xuất hiện (tùy độ khó: Tiêu Dao đêm thứ 18, Sơ Lý đêm thứ 15, Nhân Gian đêm thứ 12, Tông Sư đêm thứ 9). Mọi cảnh dưới đây đều có trong bản chơi thử.',
         'chai': (['người tựa cây: hưu – nghỉ ngơi', 'trăng bên cửa sổ: minh – sáng', 'con dưới mái nhà: tự – chữ'], 'Theo cách giải thích của «Thuyết văn giải tự», bộ tự điển soạn vào khoảng năm 100; 囧 (quýnh) là cửa sổ.'),
         'scenes': {
             'gather': ('Lấy gỗ', 'Mỗi ô trong rừng đều là một chữ; lấy xuống là thành vật liệu.'),
@@ -284,6 +289,8 @@ def page(code):
     langnav = ''.join(f'<a href="{up}{LANGS[c]["dir"]}{INK}" lang="{c}"{" aria-current=\"page\"" if c == code else ""}>{LANGS[c]["short"]}</a>' for c in LANGS)
     nav = ''.join(f'<a href="#{h}">{esc(n)}</a>' for h, n in zip(['trailer', 'story', 'demo', 'features', 'contact'], T['nav']))
     cta = f'<a class="btn primary" href="{STEAM_URL}">{esc(T["wish"])}</a>' if STEAM_URL else f'<span class="badge">{esc(T["soon"])}</span>'
+    play = f'{up}mohuacangsheng/play/?lang={code}'   # 網頁版試玩（tools/site/play.mjs 產生）；?lang= 讓第一次開就是這一頁的語言
+    play_btn = f'<a class="btn{"" if STEAM_URL else " primary"}" href="{play}">{esc(T["play"])}</a>'
     # 每種語言用自己那份介面錄的影片與圖（2026-11-17：英文介面上線；繁中照舊是不帶語言的那份）：assets/media/<名>-<語言>.<副檔名> 有就用
     def lm(rel):
         stem, ext = rel.rsplit('.', 1)
@@ -348,7 +355,7 @@ def page(code):
 <main>
 <section class="hero">
   <h1><span class="sr-only">{esc('墨畫蒼生 InkWild')}</span>{LOGO}</h1>{reading}
-  <div class="cta">{cta}<a class="btn" href="#trailer">{esc(T['watch'])}</a></div>
+  <div class="cta">{cta}{play_btn}<a class="btn" href="#trailer">{esc(T['watch'])}</a></div>
   {lang_note}
 </section>
 
@@ -379,6 +386,7 @@ def page(code):
 <section id="demo" class="scenes">
   <h2>{esc(T['scenes_h'])}</h2>
   <p class="lead">{esc(T['scenes_intro'])}</p>
+  <p class="play"><a class="btn primary" href="{play}">{esc(T['play'])}</a><span>{esc(T['play_note'])}</span></p>
   <div class="grid">{scenes}
   </div>
 </section>

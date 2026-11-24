@@ -220,3 +220,7 @@ body.lang-vi .lang-note { max-width: 620px; }
   html:not(.duo) main > section, html:not(.duo) body.mohua main > section, html:not(.duo) .lt-sec, html:not(.duo) .lt-hero, html:not(.duo) .lt-dims-in { padding-left: var(--tab-gut); padding-right: var(--tab-gut); }
   html:not(.duo) footer { padding-left: var(--tab-gut); padding-right: var(--tab-gut); }
 }
+
+/* 網頁版試玩（2026-11-24，使用者：把試玩版放到 stejoy 裡，玩家點擊就能體驗網頁版試玩）：「試玩裡的場景」開頭一顆按鈕、旁邊一句說明 */
+.scenes .play { display: flex; justify-content: center; align-items: center; gap: 10px 16px; flex-wrap: wrap; max-width: 760px; margin: 0 auto 28px; text-align: center; }
+.scenes .play span { color: var(--ink-2); font-size: 15px; }
