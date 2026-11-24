@@ -115,8 +115,9 @@ body.lang-en .lt-loop { letter-spacing: .06em; font-style: italic; font-family: 
 .lt-grid path.todo { fill: rgba(28, 26, 23, .08); }
 .lt-grid path.next { fill: var(--red); opacity: .55; animation: lt-pulse 1s ease-in-out infinite; }
 .lt-grid path.fresh { animation: lt-ink .39s cubic-bezier(.2, .9, .3, 1.2) both; transform-box: fill-box; transform-origin: center; }
-.lt-grid path.pen { fill: none; stroke: var(--ink); stroke-width: 150; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1 2; animation: lt-pen var(--t, .3s) cubic-bezier(.45, .05, .55, .95) both; transition: stroke .2s; }
-.lt-grid path.land { animation: lt-land 0s var(--t, .3s) both; }
+.lt-grid path.pen { fill: none; stroke: var(--ink); stroke-width: 150; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1 2; animation: lt-pen var(--t, .3s) cubic-bezier(.45, .05, .55, .95) var(--m, 0s) both; transition: stroke .2s; }
+.lt-grid path.land { animation: lt-land 0s calc(var(--m, 0s) + var(--t, .3s)) both; }
+.lt-grid.morph path.next, .lt-grid.morph path.todo { visibility: hidden; }   /* 已寫的筆還在挪：新字的其餘筆等挪完才出來，免得新舊兩個位置疊在一起 */
 .lt-grid.got path.ink { fill: var(--red); }
 .lt-grid.got path.pen { stroke: var(--red); }
 .lt-grid.miss { animation: lt-shake .32s; }

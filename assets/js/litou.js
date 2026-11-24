@@ -192,7 +192,7 @@
     // 字形：AnimCJK 的台灣楷書（assets/litou/glyphs.js，Arphic Public License），每一筆有輪廓 d 與中線 m；沒有的字用 data.js 裡遊戲的字形
     const GL = window.LITOU_GLYPHS || {};
     for (const c of ALL) if (GL[c]) { CH[c].d = GL[c].d; CH[c].m = GL[c].m; }
-    let buf = '', timer = 0, gotT = 0, demo = true, demoT = 0, missing = false;
+    let buf = '', timer = 0, gotT = 0, demo = true, demoT = 0, missing = false, busy = 0;   // busy：這一筆（連挪筆）要畫多久，示範照它等
     // 新寫的那一筆照中線寫出來：粗筆沿中線走、裁在這一筆自己的輪廓裡（Hanzi Writer 的做法），寫完換回整筆的輪廓。
     // 起筆往回多拉一點，免得筆頭露白；長的筆寫得久一點。2026-11-24 使用者：「試寫的字請放慢速度，放慢 30%–50%」——取中間，
     // 一筆的動畫與自己示範的節奏都 ×1.4（SLOW）：一筆 0.28–0.63 秒，示範兩筆之間 0.67 秒（要比最長的一筆久）、成字後停 2.4 秒
@@ -204,6 +204,49 @@
       P[0] = [P[0][0] - dx / n * 40, P[0][1] - dy / n * 40];
       return { d: 'M' + P.map(q => Math.round(q[0]) + ' ' + Math.round(q[1])).join('L'), t: SLOW * Math.min(0.45, Math.max(0.2, 0.14 + L * 0.0004)) };
     };
+    // 猜的字換了，已寫的筆先挪過去（2026-11-24，使用者：「第一個筆畫往往不清楚接下來會接什麼筆畫，在第二個筆畫定下來後，第一個筆畫做一個動畫，
+    // 轉移到正確的位置和筆畫形狀，然後再開始第二個筆畫的書寫動畫」）。不只第二筆：「中」寫到第二筆猜的是「口」、第四筆才是「中」，
+    // 「木」是一 → 十 → 木，所以每換一次字，已寫的每一筆都從舊字的那一筆變成新字的那一筆（MORPH 秒），變完才寫新的這一筆。
+    // 變形：兩個輪廓各沿周長取 NP 點（M／L／Q／C／Z 自己攤平，不靠瀏覽器量），挑起點與方向讓兩圈最對得上，再逐點內插
+    const NP = 120, MORPH = 0.38;
+    function ring(d) {
+      const t = d.match(/[MLQCZ]|-?\d+(?:\.\d+)?/g) || [], P = []; let i = 0, cmd = '', x = 0, y = 0, sx = 0, sy = 0;
+      const n = () => +t[i++];
+      while (i < t.length) {
+        if (/[MLQCZ]/.test(t[i])) cmd = t[i++];
+        if (cmd === 'M') { x = sx = n(); y = sy = n(); P.push([x, y]); cmd = 'L'; }
+        else if (cmd === 'L') { x = n(); y = n(); P.push([x, y]); }
+        else if (cmd === 'Q') { const a = n(), b = n(), ex = n(), ey = n(); for (let k = 1; k <= 8; k++) { const u = k / 8, v = 1 - u; P.push([v * v * x + 2 * v * u * a + u * u * ex, v * v * y + 2 * v * u * b + u * u * ey]); } x = ex; y = ey; }
+        else if (cmd === 'C') { const a = n(), b = n(), c = n(), e = n(), ex = n(), ey = n(); for (let k = 1; k <= 10; k++) { const u = k / 10, v = 1 - u; P.push([v * v * v * x + 3 * v * v * u * a + 3 * v * u * u * c + u * u * u * ex, v * v * v * y + 3 * v * v * u * b + 3 * v * u * u * e + u * u * u * ey]); } x = ex; y = ey; }
+        else { x = sx; y = sy; if (i < t.length && !/[MLQCZ]/.test(t[i])) i++; }   // Z（或讀不懂的）：回到起點
+      }
+      P.push(P[0]);
+      const L = [0]; for (let k = 1; k < P.length; k++) L.push(L[k - 1] + Math.hypot(P[k][0] - P[k - 1][0], P[k][1] - P[k - 1][1]));
+      const out = [], tot = L[L.length - 1] || 1; let j = 1;
+      for (let k = 0; k < NP; k++) { const want = tot * k / NP; while (j < L.length - 1 && L[j] < want) j++; const f = (want - L[j - 1]) / ((L[j] - L[j - 1]) || 1); out.push([P[j - 1][0] + (P[j][0] - P[j - 1][0]) * f, P[j - 1][1] + (P[j][1] - P[j - 1][1]) * f]); }
+      return out;
+    }
+    function match(A, B) {   // 把 B 轉到跟 A 最對得上的起點（與方向）：先各自扣掉重心，比形狀不比位置
+      const cen = (Q) => Q.reduce((s, q) => [s[0] + q[0] / NP, s[1] + q[1] / NP], [0, 0]), ca = cen(A), cb = cen(B);
+      let best = Infinity, out = B;
+      for (const C of [B, B.slice().reverse()]) for (let k = 0; k < NP; k++) {
+        let e = 0; for (let m = 0; m < NP && e < best; m += 3) { const q = C[(m + k) % NP]; e += (A[m][0] - ca[0] - q[0] + cb[0]) ** 2 + (A[m][1] - ca[1] - q[1] + cb[1]) ** 2; }
+        if (e < best) { best = e; out = C.slice(k).concat(C.slice(0, k)); }
+      }
+      return out;
+    }
+    let morphTok = 0, last = { lead: null, buf: '' };
+    function morph(list) {   // list：[path 元素, 舊輪廓, 新輪廓]
+      const tok = ++morphTok, R = list.map(([el, a, b]) => { const A = ring(a); return [el, A, match(A, ring(b)), b]; }), t0 = performance.now();
+      grid.classList.add('morph');
+      const step = (now) => {
+        if (tok !== morphTok) return;
+        const u = Math.min(1, (now - t0) / (MORPH * 1000)), e = u < .5 ? 4 * u * u * u : 1 - (-2 * u + 2) ** 3 / 2;
+        for (const [el, A, B, fin] of R) el.setAttribute('d', u >= 1 ? fin : 'M' + A.map((q, k) => Math.round(q[0] + (B[k][0] - q[0]) * e) + ' ' + Math.round(q[1] + (B[k][1] - q[1]) * e)).join('L') + 'Z');
+        if (u < 1) requestAnimationFrame(step); else grid.classList.remove('morph');
+      };
+      requestAnimationFrame(step);
+    }
     const icon = (c) => '<svg viewBox="0 0 240 240" aria-hidden="true"><path d="' + byCode[c].icon + '"/></svg>';
     const sname = (c) => lang === 'en' ? byCode[c].en : lang === 'ja' ? byCode[c].ja : lang === 'vi' ? byCode[c].vi : lang === 'zh-Hans' ? byCode[c].hans : byCode[c].zh;
     // 成字時寫讀音：中文頁拼音、英文頁拼音與字義、日文頁音讀・訓讀與字義（照遊戲的寫法「ダイ・おお-きい／大きい」，字義就是字本身時不重寫）
@@ -211,15 +254,23 @@
       return CH[ch].py + (lang === 'en' ? ' · ' + CH[ch].en : ''); };
     const order = (a, b) => CH[a].seq.length - CH[b].seq.length || ALL.indexOf(a) - ALL.indexOf(b);
     function show(state, ch, fresh) {
-      clearTimeout(gotT); grid.classList.remove('got', 'miss'); big.classList.remove('got', 'miss');
+      clearTimeout(gotT); morphTok++; grid.classList.remove('got', 'miss', 'morph'); big.classList.remove('got', 'miss');
       const lead = ch || ALL.filter(c => CH[c].seq.startsWith(buf)).sort(order)[0];
+      // 接著上一筆寫、猜的字換了：已寫的筆哪幾筆要挪（舊字那一筆跟新字那一筆不一樣的）
+      const prev = last, moves = new Set();
+      if (fresh && !reduce && lead && prev.lead && prev.lead !== lead && prev.buf === buf.slice(0, -1)) for (let i = 0; i < buf.length - 1; i++) if (CH[prev.lead].d[i] && CH[prev.lead].d[i] !== CH[lead].d[i]) moves.add(i);
+      last = { lead, buf };
+      const m = moves.size ? MORPH : 0;
+      grid.style.setProperty('--m', m + 's');   // 新的這一筆等挪完才開始寫（litou.css 的 .pen、.land 照它延後）
       let wait = 0;
       ink.innerHTML = lead ? CH[lead].d.map((d, i) => {
         const cls = i < buf.length ? 'ink' : i === buf.length && state !== 'got' ? 'next' : 'todo', now = cls === 'ink' && fresh && i === buf.length - 1;
         const p = now && !reduce && CH[lead].m ? pen(CH[lead].m[i]) : null;
-        if (p) { wait = p.t; return '<clipPath id="lt-clip"><path d="' + d + '"/></clipPath><path class="pen" clip-path="url(#lt-clip)" pathLength="1" d="' + p.d + '" style="--t:' + p.t + 's"/><path class="ink land" d="' + d + '" style="--t:' + p.t + 's"/>'; }
-        return '<path class="' + cls + (now ? ' fresh' : '') + '" d="' + d + '"/>';
+        if (p) { wait = m + p.t; return '<clipPath id="lt-clip"><path d="' + d + '"/></clipPath><path class="pen" clip-path="url(#lt-clip)" pathLength="1" d="' + p.d + '" style="--t:' + p.t + 's"/><path class="ink land" d="' + d + '" style="--t:' + p.t + 's"/>'; }
+        return '<path class="' + cls + (now ? ' fresh' : '') + '"' + (moves.has(i) ? ' data-mv="' + i + '" d="' + CH[prev.lead].d[i] + '"' : ' d="' + d + '"') + '/>';
       }).join('') : '';
+      if (moves.size) morph([...ink.querySelectorAll('path[data-mv]')].map(el => [el, CH[prev.lead].d[+el.dataset.mv], CH[lead].d[+el.dataset.mv]]));
+      busy = wait;
       seqBox.innerHTML = buf.split('').map(icon).join('');
       const more = ALL.filter(c => CH[c].seq.startsWith(buf) && CH[c].seq !== buf).sort(order).slice(0, 8);
       cands.innerHTML = buf && more.length ? T.write_cands + '：' + more.map(c => '<b>' + c + '</b>').join(' ') : '';
@@ -238,7 +289,7 @@
       // 寫不成字：筆散掉（每一筆往外飛），再從這一筆重新開始
       const paths = [...ink.querySelectorAll('path')];
       ink.innerHTML = buf.split('').map((c, i) => { const lead = ALL.find(x => CH[x].seq.startsWith(buf.slice(0, i + 1))); return lead ? '<path class="ink" d="' + CH[lead].d[i] + '" style="--sx:' + ((Math.random() - .5) * 160).toFixed(0) + 'px;--sy:' + (40 + Math.random() * 80).toFixed(0) + 'px;--sr:' + ((Math.random() - .5) * 60).toFixed(0) + 'deg"/>' : ''; }).join('');
-      clearTimeout(gotT); grid.classList.remove('miss', 'got'); void grid.getBoundingClientRect(); grid.classList.add('miss'); missing = true;
+      clearTimeout(gotT); morphTok++; last = { lead: null, buf: '' }; grid.classList.remove('miss', 'got', 'morph'); void grid.getBoundingClientRect(); grid.classList.add('miss'); missing = true;
       big.textContent = T.write_none; big.classList.add('miss'); read.textContent = ''; cands.innerHTML = '';
       clearTimeout(timer); timer = setTimeout(() => { missing = false; buf = ''; if (code && ALL.some(c => CH[c].seq.startsWith(code))) { buf = code; } show('', null, true); }, 520);
     }
@@ -278,7 +329,7 @@
           const ch = DEMO[di % DEMO.length], seq = CH[ch].seq;
           if (buf.length < seq.length && seq.startsWith(buf)) stroke(seq[buf.length], false);
           else { reset(); di++; }
-          demoT = setTimeout(tick, buf.length === seq.length && seq.startsWith(buf) && buf ? 1700 * SLOW : 480 * SLOW);
+          demoT = setTimeout(tick, buf.length === seq.length && seq.startsWith(buf) && buf ? 1700 * SLOW : Math.max(480 * SLOW, busy * 1000 + 160));
         } else demoT = setTimeout(tick, 600);
       };
       demoT = setTimeout(tick, 900);
