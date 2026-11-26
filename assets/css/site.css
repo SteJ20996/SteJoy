@@ -34,10 +34,10 @@ body.lang-ja .studio { font: 400 23px/1 var(--ja); letter-spacing: .16em; }   /*
 
 main > section { max-width: 1080px; margin: 0 auto; padding: 72px 16px 24px; }
 /* 《墨畫蒼生》介紹頁的寬度照《力透紙背》（使用者定）：版面 1350、開頭 1550、兩邊留 20，頂欄與頁尾跟著寬；說明文字的行寬照舊 */
-body.mohua .top { padding-left: max(16px, calc(50% - 700px)); padding-right: max(16px, calc(50% - 700px)); }   /* 用 %、svh 除以 --z：左下角把頁面縮放了也對 */
-body.mohua main > section { max-width: 1350px; padding-left: 20px; padding-right: 20px; }
+body.mohua .top, body.home .top { padding-left: max(16px, calc(50% - 700px)); padding-right: max(16px, calc(50% - 700px)); }   /* 用 %、svh 除以 --z：左下角把頁面縮放了也對 */
+body.mohua main > section, body.home main > section { max-width: 1350px; padding-left: 20px; padding-right: 20px; }   /* 首頁跟《墨畫蒼生》一樣寬（2026-11-26 使用者：「總介面太窄了，要做得和墨畫蒼生一樣寬」） */
 body.mohua .hero { max-width: 1550px; }
-body.mohua footer { max-width: 1350px; }
+body.mohua footer, body.home footer { max-width: 1350px; }
 h2 { display: flex; align-items: center; gap: 12px; margin: 0 0 22px; font-size: 30px; font-weight: 400; letter-spacing: .12em; }
 h2::before { content: ""; width: 14px; height: 14px; background: var(--red); border-radius: 2px; flex: none; }
 body.lang-en h2 { letter-spacing: .02em; }
@@ -219,8 +219,8 @@ body.lang-vi .lang-note { max-width: 620px; }
 @media (min-width: 761px) and (hover: none) and (pointer: coarse) {
   html:not(.duo) { --tab-gut: clamp(40px, 5.5vw, 72px); }
   html:not(.duo) .top { padding-left: max(var(--tab-gut), calc(50% - 560px)); padding-right: max(var(--tab-gut), calc(50% - 560px)); }
-  html:not(.duo) body.mohua .top, html:not(.duo) body.litou .top { padding-left: max(var(--tab-gut), calc(50% - 700px)); padding-right: max(var(--tab-gut), calc(50% - 700px)); }
-  html:not(.duo) main > section, html:not(.duo) body.mohua main > section, html:not(.duo) .lt-sec, html:not(.duo) .lt-hero, html:not(.duo) .lt-dims-in { padding-left: var(--tab-gut); padding-right: var(--tab-gut); }
+  html:not(.duo) body.mohua .top, html:not(.duo) body.litou .top, html:not(.duo) body.home .top { padding-left: max(var(--tab-gut), calc(50% - 700px)); padding-right: max(var(--tab-gut), calc(50% - 700px)); }
+  html:not(.duo) main > section, html:not(.duo) body.mohua main > section, html:not(.duo) body.home main > section, html:not(.duo) .lt-sec, html:not(.duo) .lt-hero, html:not(.duo) .lt-dims-in { padding-left: var(--tab-gut); padding-right: var(--tab-gut); }
   html:not(.duo) footer { padding-left: var(--tab-gut); padding-right: var(--tab-gut); }
 }
 
