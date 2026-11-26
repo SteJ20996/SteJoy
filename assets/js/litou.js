@@ -287,8 +287,9 @@
     }
     function miss(code) {
       // 寫不成字：筆散掉（每一筆往外飛），再從這一筆重新開始
-      const paths = [...ink.querySelectorAll('path')];
-      ink.innerHTML = buf.split('').map((c, i) => { const lead = ALL.find(x => CH[x].seq.startsWith(buf.slice(0, i + 1))); return lead ? '<path class="ink" d="' + CH[lead].d[i] + '" style="--sx:' + ((Math.random() - .5) * 160).toFixed(0) + 'px;--sy:' + (40 + Math.random() * 80).toFixed(0) + 'px;--sr:' + ((Math.random() - .5) * 60).toFixed(0) + 'deg"/>' : ''; }).join('');
+      // 掉的是畫面上那幾筆：照剛才顯示的字（last.lead）的筆形，不要每一筆各自找一個字（原本那樣，「十」的橫會先跳回「一」的橫再掉）
+      const shown = last.lead && CH[last.lead].seq.startsWith(buf.slice(0, -1)) ? last.lead : null;
+      ink.innerHTML = buf.split('').map((c, i) => { const lead = shown && i < buf.length - 1 ? shown : ALL.find(x => CH[x].seq.startsWith(buf.slice(0, i + 1))); return lead ? '<path class="ink" d="' + CH[lead].d[i] + '" style="--sx:' + ((Math.random() - .5) * 160).toFixed(0) + 'px;--sy:' + (40 + Math.random() * 80).toFixed(0) + 'px;--sr:' + ((Math.random() - .5) * 60).toFixed(0) + 'deg"/>' : ''; }).join('');
       clearTimeout(gotT); morphTok++; last = { lead: null, buf: '' }; grid.classList.remove('miss', 'got', 'morph'); void grid.getBoundingClientRect(); grid.classList.add('miss'); missing = true;
       big.textContent = T.write_none; big.classList.add('miss'); read.textContent = ''; cands.innerHTML = '';
       clearTimeout(timer); timer = setTimeout(() => { missing = false; buf = ''; if (code && ALL.some(c => CH[c].seq.startsWith(code))) { buf = code; } show('', null, true); }, 520);
