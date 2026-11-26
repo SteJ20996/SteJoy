@@ -269,6 +269,7 @@ ART_TEXT = {
         'nav_art': '畫', 'art_h': '畫',
         'art_intro': '長風畫的山與海：紙上的字，畫回它們原本的樣子。這些是插畫；遊戲畫面請看上面的預告與試玩場景。',
         'art_ui': {'close': '關閉', 'prev': '上一張', 'next': '下一張', 'open': '放大'},
+        'art_tag': '插畫',   # 完整版「上不周山」那一格右上角的小籤：這一張是插畫，不是遊戲畫面（2026-11-26，使用者：「改成插畫」）
         'art': {
             'night': ('夜漁', '提一盞燈，到棧邊撒網。'),
             'fengxi': ('封豨', '在桑林裡等著的大豕。'),
@@ -284,6 +285,7 @@ ART_TEXT = {
         'nav_art': '画', 'art_h': '画',
         'art_intro': '长风画的山与海：纸上的字，画回它们原本的样子。这些是插画；游戏画面请看上面的预告与试玩场景。',
         'art_ui': {'close': '关闭', 'prev': '上一张', 'next': '下一张', 'open': '放大'},
+        'art_tag': '插画',   # 完整版「上不周山」那一格右上角的小籤：這一張是插畫，不是遊戲畫面（2026-11-26，使用者：「改成插畫」）
         'art': {
             'night': ('夜渔', '提一盏灯，到栈边撒网。'),
             'fengxi': ('封豨', '在桑林里等着的大豕。'),
@@ -299,6 +301,7 @@ ART_TEXT = {
         'nav_art': 'Art', 'art_h': 'Art',
         'art_intro': 'The mountains and seas of InkWild, painted by SteJoy: the characters on the paper, drawn back into the things they name. These are illustrations; for the game itself, see the trailers and demo scenes above.',
         'art_ui': {'close': 'Close', 'prev': 'Previous', 'next': 'Next', 'open': 'Enlarge'},
+        'art_tag': 'Illustration',   # 完整版「上不周山」那一格右上角的小籤：這一張是插畫，不是遊戲畫面（2026-11-26，使用者：「改成插畫」）
         'art': {
             'night': ('Night fishing', 'Carrying a lamp down to the jetty to cast a net.'),
             'fengxi': ('Fengxi', 'The great boar, waiting in the Mulberry Forest.'),
@@ -314,6 +317,7 @@ ART_TEXT = {
         'nav_art': '絵', 'art_h': '絵',
         'art_intro': '長風が描いた山と海。紙の上の字を、もとの姿に描き戻した。これは挿絵です。ゲーム画面は、上の予告編と体験版の場面をご覧ください。',
         'art_ui': {'close': '閉じる', 'prev': '前へ', 'next': '次へ', 'open': '拡大'},
+        'art_tag': '挿絵',   # 完整版「上不周山」那一格右上角的小籤：這一張是插畫，不是遊戲畫面（2026-11-26，使用者：「改成插畫」）
         'art': {
             'night': ('夜の漁', '灯りを提げて桟橋へ、網を打ちに。'),
             'fengxi': ('封豨', '桑林で待ち構える大きな猪。'),
@@ -329,6 +333,7 @@ ART_TEXT = {
         'nav_art': 'Tranh', 'art_h': 'Tranh',
         'art_intro': 'Núi non và biển cả do SteJoy vẽ: những chữ trên trang giấy được vẽ trở lại thành chính vật mà chúng gọi tên. Đây là tranh minh họa; hình ảnh trò chơi thật xin xem các đoạn giới thiệu và những cảnh chơi thử ở trên.',
         'art_ui': {'close': 'Đóng', 'prev': 'Trước', 'next': 'Sau', 'open': 'Phóng to'},
+        'art_tag': 'Tranh minh họa',   # 完整版「上不周山」那一格右上角的小籤：這一張是插畫，不是遊戲畫面（2026-11-26，使用者：「改成插畫」）
         'art': {
             'night': ('Đánh cá đêm', 'Xách một ngọn đèn ra bến, quăng lưới.'),
             'fengxi': ('Phong Hy', 'Con lợn rừng khổng lồ chờ sẵn trong rừng dâu.'),
@@ -399,7 +404,7 @@ def page(code):
     def feat_pic(s):
         if s in FEATURE_ART:
             m = f'{a}media/art/{FEATURE_ART[s]}'
-            return f'<video muted loop playsinline preload="none" poster="{m}.jpg" data-src="{m}.mp4" data-webm="{m}.webm" aria-hidden="true" width="960" height="540"></video>'
+            return f'<div class="feat-pic"><video muted loop playsinline preload="none" poster="{m}.jpg" data-src="{m}.mp4" data-webm="{m}.webm" aria-hidden="true" width="960" height="540"></video><span class="feat-tag">{esc(T["art_tag"])}</span></div>'
         return f'<img src="{lm(f"stills/{s}.jpg")}" alt="" loading="lazy" width="960" height="540">'
     feats = ''.join(f'''
       <article class="feat">
