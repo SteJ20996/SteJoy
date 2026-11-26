@@ -118,7 +118,7 @@ body.lang-en .clip figcaption b { letter-spacing: 0; }
 
 /* 完整版 */
 .feats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px 24px; }
-.feat img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 5px; border: 1px solid var(--line); }
+.feat img, .feat video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 5px; border: 1px solid var(--line); }
 .feat h3 { margin: 14px 0 4px; font-size: 22px; font-weight: 400; letter-spacing: .08em; }
 body.lang-en .feat h3 { letter-spacing: 0; }
 .feat p { margin: 0; color: var(--ink-2); font-size: 16px; line-height: 1.7; }

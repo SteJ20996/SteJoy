@@ -29,6 +29,9 @@ LANGS = {
 SCENES = ['gather', 'build', 'snow', 'night', 'gaze', 'zi']   # 造字（遊戲 v0.9.69，2026-11-09 加）排最後、佔整排，底下一排拆字
 CHAI = [('人', '木', '休'), ('月', '囧', '明'), ('子', '宀', '字')]   # 拆字：照《說文》（休「从人依木」、明「从月从囧」囧是窗、字「从子在宀下」）
 FEATURES = ['thunder', 'crops', 'sail', 'gong']
+# 完整版那一格改用「畫」的插畫（2026-11-26，使用者：「網頁上共工那張改成這張吧」，交的是「畫」裡那張共工動圖）：「上不周山」原本是遊戲截圖 stills/gong*.jpg，
+# 改放 assets/media/art/gong 的循環短片（同一份檔，捲到才載）；插畫上只有 InkWild 與「長風」小印，五種語言共用
+FEATURE_ART = {'gong': 'gong'}
 
 TEXT = {
     'zh-Hant': {
@@ -393,9 +396,14 @@ def page(code):
         <video muted loop playsinline preload="none" poster="{lm(f'scenes/{s}.jpg')}" data-src="{lm(f'scenes/{s}.mp4')}" data-webm="{lm(f'scenes/{s}.webm')}" aria-label="{esc(T['scenes'][s][0])}"></video>
         <figcaption><b>{esc(T['scenes'][s][0])}</b>{esc(T['scenes'][s][1])}{chai if s == 'zi' else ''}</figcaption>
       </figure>''' for s in SCENES)
+    def feat_pic(s):
+        if s in FEATURE_ART:
+            m = f'{a}media/art/{FEATURE_ART[s]}'
+            return f'<video muted loop playsinline preload="none" poster="{m}.jpg" data-src="{m}.mp4" data-webm="{m}.webm" aria-hidden="true" width="960" height="540"></video>'
+        return f'<img src="{lm(f"stills/{s}.jpg")}" alt="" loading="lazy" width="960" height="540">'
     feats = ''.join(f'''
       <article class="feat">
-        <img src="{lm(f'stills/{s}.jpg')}" alt="" loading="lazy" width="960" height="540">
+        {feat_pic(s)}
         <h3>{esc(T['features'][s][0])}</h3>
         <p>{esc(T['features'][s][1])}</p>
       </article>''' for s in FEATURES)
