@@ -34,7 +34,7 @@ body.lang-en .hm-kind { font-family: var(--en); }
 .hm-kind:focus-visible, .hm-card:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
 .hm-hint { margin: 0 0 0 auto; color: var(--dim); font-size: 13px; }
 
-.hm-row { display: flex; gap: 18px; height: clamp(480px, 70vh, 640px); }
+.hm-row { display: flex; gap: 18px; height: clamp(600px, 87.5vh, 800px); }   /* 頁面跟《墨畫蒼生》一樣寬以後，卡片照寬的比例（1350／1080）一起加高（2026-11-26 使用者） */
 .hm-card { position: relative; flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; border-radius: 6px; text-decoration: none; color: var(--ink); transition: flex-grow .55s cubic-bezier(.2, .8, .2, 1), transform .3s, box-shadow .3s; }
 .hm-row.has-active .hm-card { flex-grow: .78; }
 .hm-row.has-active .hm-card.active { flex-grow: 1.45; }
