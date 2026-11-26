@@ -22,7 +22,40 @@
     const far = new IntersectionObserver((list) => { for (const e of list) if (!e.isIntersecting) unload(e.target); }, { rootMargin: '60% 0px' });   // 上下各多六成屏以外
     clips.forEach((v) => { io.observe(v); far.observe(v); });
   } else clips.forEach(load);
-  clips.forEach((v) => v.addEventListener('click', () => { load(v); if (v.paused) v.play().catch(() => {}); else v.pause(); }));
+  clips.forEach((v) => !v.closest('.art') && v.addEventListener('click', () => { load(v); if (v.paused) v.play().catch(() => {}); else v.pause(); }));
+
+  // 畫（2026-11-26）：點一張放大看，整個畫面一張、底下圖說；← → 或兩邊的鈕換一張，Esc、× 或點旁邊關。沒有 <dialog> 的舊瀏覽器照連結開原圖
+  (() => {
+    const sec = document.getElementById('art'), pics = sec ? [...sec.querySelectorAll('.pic')] : [];
+    if (!pics.length || typeof HTMLDialogElement !== 'function') return;
+    let ui = {}; try { ui = JSON.parse(sec.dataset.ui || '{}'); } catch (e) {}
+    const dlg = document.createElement('dialog'); dlg.className = 'lightbox';
+    dlg.innerHTML = '<figure><div class="lb-media"></div><figcaption></figcaption></figure><button type="button" class="lb-prev">‹</button><button type="button" class="lb-next">›</button><button type="button" class="lb-close">×</button>';
+    const [bp, bn, bc] = ['.lb-prev', '.lb-next', '.lb-close'].map((q) => dlg.querySelector(q));
+    bp.setAttribute('aria-label', ui.prev || '‹'); bn.setAttribute('aria-label', ui.next || '›'); bc.setAttribute('aria-label', ui.close || '×');
+    document.body.appendChild(dlg);
+    const media = dlg.querySelector('.lb-media'), cap = dlg.querySelector('figcaption');
+    let at = 0;
+    const show = (i) => {
+      at = (i + pics.length) % pics.length;
+      const a = pics[at], fig = a.closest('figure'), t = fig.querySelector('figcaption');
+      media.textContent = '';
+      if (a.dataset.kind === 'video') {
+        const v = document.createElement('video'); v.muted = true; v.loop = true; v.playsInline = true; v.poster = a.dataset.poster || '';
+        v.src = h264 || !a.dataset.webm ? a.getAttribute('href') : a.dataset.webm;
+        media.appendChild(v); if (!reduce) v.play().catch(() => {}); else v.controls = true;
+      } else {
+        const img = document.createElement('img'); img.src = a.getAttribute('href'); img.alt = t ? t.textContent : ''; media.appendChild(img);
+      }
+      cap.innerHTML = t ? t.innerHTML : '';
+      dlg.setAttribute('aria-label', t ? t.querySelector('b').textContent : '');
+    };
+    pics.forEach((a, i) => a.addEventListener('click', (e) => { e.preventDefault(); show(i); dlg.showModal(); bc.focus(); }));
+    bp.addEventListener('click', () => show(at - 1)); bn.addEventListener('click', () => show(at + 1)); bc.addEventListener('click', () => dlg.close());
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });   // 點到圖外的暗處
+    dlg.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') { e.preventDefault(); show(at - 1); } else if (e.key === 'ArrowRight') { e.preventDefault(); show(at + 1); } });
+    dlg.addEventListener('close', () => { media.textContent = ''; pics[at].focus({ preventScroll: true }); });   // 關了就放掉影片，焦點回到那一張
+  })();
 
   // 頂欄放不下一行（越南文、日文的章節名長；iPad 直拿、頁面放大時）：收起章節連結，只留工作室名與語言，跟手機版一樣（2026-11-12）。
   // 先拿掉 tight 量一次「全放」要多寬，比頂欄寬就收；字型載好、換大小（site.js 縮放後會發 resize）都重量
