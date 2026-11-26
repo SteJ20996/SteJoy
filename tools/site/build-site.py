@@ -29,6 +29,9 @@ LANGS = {
 SCENES = ['gather', 'build', 'snow', 'night', 'gaze', 'zi']   # 造字（遊戲 v0.9.69，2026-11-09 加）排最後、佔整排，底下一排拆字
 CHAI = [('人', '木', '休'), ('月', '囧', '明'), ('子', '宀', '字')]   # 拆字：照《說文》（休「从人依木」、明「从月从囧」囧是窗、字「从子在宀下」）
 FEATURES = ['thunder', 'crops', 'sail', 'gong']
+# 完整版那一格改用「畫」的插畫（2026-11-26，使用者：「網頁上共工那張改成這張吧」，交的是「畫」裡那張共工動圖）：「上不周山」原本是遊戲截圖 stills/gong*.jpg，
+# 改放 assets/media/art/gong 的循環短片（同一份檔，捲到才載）；插畫上只有 InkWild 與「長風」小印，五種語言共用
+FEATURE_ART = {'gong': 'gong'}
 
 TEXT = {
     'zh-Hant': {
@@ -37,6 +40,7 @@ TEXT = {
         'desc': '一張紙落在海上，紙上的字活了。你是其中一個「人」字：取木、砌磚、點燈，撐過入夜後穿磚而來的魄；照節氣種五穀、垂釣、觀星。膽氣夠了就造船渡海，去找撞歪天地的共工。',
         'nav': ['預告', '故事', '試玩場景', '特色', '聯絡'],
         'soon': '即將登上 Steam', 'wish': '加入 Steam 願望清單', 'watch': '觀看預告',
+        'play': '線上試玩', 'play_note': '在瀏覽器裡直接玩，不用安裝。存檔留在這台瀏覽器裡。',   # 2026-11-24 使用者：把試玩版放到 stejoy 裡，玩家點擊就能體驗網頁版試玩（tools/site/play.mjs）
         'trailer_h': '預告', 'trailer_note': '遊戲實機畫面。配樂是暫用的合成樂。',
         'trailer2_h': '戰', 'trailer2_note': '大魔王與共工的實機畫面。配樂是暫用的合成樂。',
         'story_h': '故事',
@@ -45,7 +49,7 @@ TEXT = {
             '這張紙在歪。共工「怒而觸不周之山」，天柱折，地維絕；紙角翹起來，跑出了修蛇、封豨、大風。青龍、白虎、朱雀、玄武，是壓住四角的鎮紙。撐過一夜，再撐過一夜；膽氣夠了，就造一艘船離開。',
         ],
         'scenes_h': '試玩裡的場景',
-        'scenes_intro': '試玩版在本島上，玩到魄來的頭一夜過完（看難度：逍遙第十八、初履第十五、人間第十二、宗師第九夜），下面這幾段都在試玩裡。',
+        'scenes_intro': '試玩版在本島與一座近島上，玩到魄來的頭一夜過完（看難度：逍遙第十八、初履第十五、人間第十二、宗師第九夜），下面這幾段都在試玩裡。',
         'chai': (['从人依木', '从月从囧', '从子在宀下'], '《說文解字》的說法；囧是窗。'),
         'scenes': {
             'gather': ('取木', '林子裡的每一格都是字，取下來就是材料。'),
@@ -63,7 +67,7 @@ TEXT = {
             'sail': ('造船渡海', '膽氣夠了就造孤帆、方舟出海。紙上有大陸、群島、大漠、火山、雪原，海上有蜃。'),
             'gong': ('上不周山', '先斃修蛇、封豨、大風，向北方玄武取經，再上不周山，去找撞歪天地的共工。'),
         },
-        'facts': ['單人、離線', '鍵盤與滑鼠', '介面：繁體中文（預設）、簡體中文、英文、日文', '四種難度：逍遙、初履、人間、宗師'],
+        'facts': ['單人、離線', '鍵盤與滑鼠；也能用手柄', '介面：繁體中文（預設）、簡體中文、英文、日文', '四種難度：逍遙、初履、人間、宗師'],
         'contact_h': '聯絡',
         'contact': '《墨畫蒼生》是長風「寫意」系列的第一部。想說什麼，寫信給我們：',
         'next': ('「寫意」系列第二部《力透紙背》', '敬請期待'),   # 首頁「聯絡」底下連到第二部的介紹頁（原本的第二部《人間塵世》暫停開發，使用者改定）
@@ -79,6 +83,7 @@ TEXT = {
         'desc': '一张纸落在海上，纸上的字活了。你是其中一个“人”字：取木、砌砖、点灯，撑过入夜后穿砖而来的魄；照节气种五谷、垂钓、观星。胆气够了就造船渡海，去找撞歪天地的共工。',
         'nav': ['预告', '故事', '试玩场景', '特色', '联系'],
         'soon': '即将登陆 Steam', 'wish': '加入 Steam 愿望单', 'watch': '观看预告',
+        'play': '在线试玩', 'play_note': '在浏览器里直接玩，不用安装。存档留在这台浏览器里。',
         'trailer_h': '预告', 'trailer_note': '游戏实机画面。配乐是暂用的合成乐。',
         'trailer2_h': '战', 'trailer2_note': '大魔王与共工的实机画面。配乐是暂用的合成乐。',
         'story_h': '故事',
@@ -87,7 +92,7 @@ TEXT = {
             '这张纸在歪。共工“怒而触不周之山”，天柱折，地维绝；纸角翘起来，跑出了修蛇、封豨、大风。青龙、白虎、朱雀、玄武，是压住四角的镇纸。撑过一夜，再撑过一夜；胆气够了，就造一艘船离开。',
         ],
         'scenes_h': '试玩里的场景',
-        'scenes_intro': '试玩版在本岛上，玩到魄来的头一夜过完（看难度：逍遥第十八、初履第十五、人间第十二、宗师第九夜），下面这几段都在试玩里。',
+        'scenes_intro': '试玩版在本岛与一座近岛上，玩到魄来的头一夜过完（看难度：逍遥第十八、初履第十五、人间第十二、宗师第九夜），下面这几段都在试玩里。',
         'chai': (['从人依木', '从月从囧', '从子在宀下'], '《说文解字》的说法；囧是窗。'),
         'scenes': {
             'gather': ('取木', '林子里的每一格都是字，取下来就是材料。'),
@@ -105,7 +110,7 @@ TEXT = {
             'sail': ('造船渡海', '胆气够了就造孤帆、方舟出海。纸上有大陆、群岛、大漠、火山、雪原，海上有蜃。'),
             'gong': ('上不周山', '先毙修蛇、封豨、大风，向北方玄武取经，再上不周山，去找撞歪天地的共工。'),
         },
-        'facts': ['单人、离线', '键盘与鼠标', '界面：繁体中文（默认）、简体中文、英文、日文', '四种难度：逍遥、初履、人间、宗师'],
+        'facts': ['单人、离线', '键盘与鼠标；也能用手柄', '界面：繁体中文（默认）、简体中文、英文、日文', '四种难度：逍遥、初履、人间、宗师'],
         'contact_h': '联系',
         'contact': '《墨画苍生》是长风“写意”系列的第一部。想说什么，写信给我们：',
         'next': ('“写意”系列第二部《力透纸背》', '敬请期待'),
@@ -121,6 +126,7 @@ TEXT = {
         'desc': 'A sheet of paper falls on the sea, and the characters on it come alive. You are one of them: 人, "person". Gather wood, lay bricks and light lamps against the spirits that come through walls once the nights draw on. Farm by the solar terms, fish, read the stars, then set sail.',
         'nav': ['Trailer', 'Story', 'Demo', 'Features', 'Contact'],
         'soon': 'Coming to Steam', 'wish': 'Wishlist on Steam', 'watch': 'Watch the trailer',
+        'play': 'Play the demo', 'play_note': 'Plays right in your browser, nothing to install. Your save stays in this browser.',
         'trailer_h': 'Trailer', 'trailer_note': 'In-game footage. The music is a placeholder synthesized track.',
         'trailer2_h': 'Battle', 'trailer2_note': 'In-game footage of the great demons and Gonggong. The music is a placeholder synthesized track.',
         'lang_note': '',   # 2026-11-17：英文介面上線（遊戲 v0.9.81 起），原本「只有中文」那句拿掉
@@ -130,7 +136,7 @@ TEXT = {
             'The paper is tilting. Gonggong, in his fury, rammed Mount Buzhou, as the Huainanzi tells it, and the pillar of heaven broke. The corners curled up and let loose the giant serpent Xiushe, the great boar Fengxi and the Great Wind. The Azure Dragon, White Tiger, Vermilion Bird and Black Tortoise are the paperweights holding the four corners. Survive one night, then the next; when your courage is enough, build a boat and leave.',
         ],
         'scenes_h': 'Scenes from the demo',
-        'scenes_intro': 'The demo runs on the home island until the dawn after the first night the spirits walk (night 18, 15, 12 or 9, by difficulty). Every clip below is in it.',
+        'scenes_intro': 'The demo runs on the home island and one nearby isle until the dawn after the first night the spirits walk (night 18, 15, 12 or 9, by difficulty). Every clip below is in it.',
         'chai': (['person by a tree: rest', 'moon and window: bright', 'child under a roof: character'], 'As the Shuowen Jiezi, a dictionary from about 100 CE, explains them; 囧 is a window.'),
         'scenes': {
             'gather': ('Gathering', 'Every tile in the woods is a character. Take it, and it becomes material.'),
@@ -148,7 +154,7 @@ TEXT = {
             'sail': ('Cross the sea', 'With enough courage, build a sailboat or an ark. The paper holds continents, archipelagos, deserts, volcanoes and snowfields, and the 蜃 haunts the sea.'),
             'gong': ('Climb Mount Buzhou', 'Defeat Xiushe, Fengxi and the Great Wind, take scrolls from the Black Tortoise, then climb Mount Buzhou to find Gonggong.'),
         },
-        'facts': ['Single-player, offline', 'Keyboard and mouse', 'Text: English, Japanese, Traditional Chinese and Simplified Chinese', 'Four difficulties'],
+        'facts': ['Single-player, offline', 'Keyboard and mouse; gamepads work too', 'Text: English, Japanese, Traditional Chinese and Simplified Chinese', 'Four difficulties'],
         'contact_h': 'Contact',
         'contact': 'InkWild is the first game in SteJoy\'s 寫意 (Xieyi) series. Write to us:',
         'next': ('Part 2 of the Xieyi series: Through the Page', 'coming soon'),
@@ -165,6 +171,7 @@ TEXT = {
         'desc': '一枚の紙が海に落ち、紙の上の漢字が生きはじめた。あなたはその中の一字「人」。木を取り、煉瓦を積み、灯をともして、夜ごとに煉瓦を抜けてくる魄（はく）をしのぐ。節気に合わせて五穀を育て、釣りをし、星を見る。胆力が十分についたら舟を造って海を渡り、天地を傾けた共工を探しに行く。',
         'nav': ['予告編', '物語', '体験版', '特徴', 'お問い合わせ'],
         'soon': '近日 Steam で配信', 'wish': 'Steam でウィッシュリストに追加', 'watch': '予告編を見る',
+        'play': '体験版を遊ぶ', 'play_note': 'ブラウザでそのまま遊べます。インストールは要りません。セーブはこのブラウザに残ります。',
         'trailer_h': '予告編', 'trailer_note': 'ゲームの実機映像です。音楽は仮の合成音源です。',
         'trailer2_h': '戦い', 'trailer2_note': '大魔王と共工のゲーム実機映像です。音楽は仮の合成音源です。',
         'lang_note': '',   # 2026-11-17：日文介面上線（遊戲 v0.9.93–v0.9.98），原本「日本語版はありません」那句拿掉
@@ -174,7 +181,7 @@ TEXT = {
             'この紙は傾いている。共工が「怒りて不周の山に触れ」、天柱は折れ、地維は絶えた。紙の角はめくれ上がり、修蛇、封豨、大風が放たれた。青龍・白虎・朱雀・玄武は、四隅を押さえる文鎮だ。一夜をしのぎ、また一夜をしのぐ。胆力が十分についたら、舟を一艘造ってこの島を離れる。',
         ],
         'scenes_h': '体験版の場面',
-        'scenes_intro': '体験版は本島で、魄が初めて現れる夜が明けるまで（難易度により第十八・十五・十二・九夜）。下の場面は、どれも体験版で遊べます。',
+        'scenes_intro': '体験版は本島と近くの島ひとつで、魄が初めて現れる夜が明けるまで（難易度により第十八・十五・十二・九夜）。下の場面は、どれも体験版で遊べます。',
         'chai': (['人が木に依る', '月と窓（囧）', '子が屋根（宀）の下に'], '『説文解字』の説明による。囧は窓のこと。'),
         'scenes': {
             'gather': ('木を取る', '林の一マス一マスが字。取れば材料になる。'),
@@ -192,7 +199,7 @@ TEXT = {
             'sail': ('舟を造って海を渡る', '胆力が十分についたら孤帆や方舟を造って海へ。紙の上には大陸、群島、砂漠、火山、雪原があり、海には蜃が潜む。'),
             'gong': ('不周山へ', '修蛇・封豨・大風を倒し、北の玄武から経を授かり、不周山に登って、天地を傾けた共工を探しに行く。'),
         },
-        'facts': ['シングルプレイ・オフライン', 'キーボードとマウス', '表示言語：日本語・英語・繁体字中国語・簡体字中国語', '難易度は四段階（逍遙・初履・人間・宗師）'],
+        'facts': ['シングルプレイ・オフライン', 'キーボードとマウス（ゲームパッドも使える）', '表示言語：日本語・英語・繁体字中国語・簡体字中国語', '難易度は四段階（逍遙・初履・人間・宗師）'],
         'contact_h': 'お問い合わせ',
         'contact': '『墨畫蒼生』は長風の「写意」シリーズ第一部です。ご意見・ご感想はメールでどうぞ：',
         'next': ('「写意」シリーズ第二部『力透紙背』', '乞うご期待'),   # 「第○部」照《力透紙背》日文版標題畫面的寫法
@@ -213,6 +220,7 @@ TEXT = {
         'desc': 'Một trang giấy rơi xuống biển, và những chữ trên đó sống dậy. Bạn là một trong số ấy: chữ 人 (nhân – người). Lấy gỗ, xây gạch, thắp đèn, cầm cự trước lũ phách (魄) xuyên tường tìm đến mỗi khi đêm xuống; trồng ngũ cốc theo tiết khí, câu cá, ngắm sao. Khi đã đủ can đảm, hãy đóng thuyền vượt biển, đi tìm Cộng Công – kẻ đã húc lệch trời đất.',
         'nav': ['Trailer', 'Câu chuyện', 'Chơi thử', 'Đặc điểm', 'Liên hệ'],
         'soon': 'Sắp ra mắt trên Steam', 'wish': 'Thêm vào danh sách ước muốn trên Steam', 'watch': 'Xem trailer',
+        'play': 'Chơi thử', 'play_note': 'Chơi ngay trên trình duyệt, không cần cài đặt. Trò chơi không có tiếng Việt nên bản chơi thử mở bằng tiếng Anh. Bản lưu nằm trong trình duyệt này.',
         'trailer_h': 'Trailer', 'trailer_note': 'Hình ảnh thật trong trò chơi. Nhạc nền là bản tổng hợp tạm thời.',
         'trailer2_h': 'Chiến đấu', 'trailer2_note': 'Hình ảnh thật trong trò chơi: các đại ma vương và Cộng Công. Nhạc nền là bản tổng hợp tạm thời.',
         'lang_note': 'InkWild có giao diện tiếng Anh, tiếng Nhật, tiếng Trung phồn thể và giản thể; chưa có bản tiếng Việt.',   # 遊戲沒有越南文版（先說清楚）；2026-11-17 英文介面上線，加英文；同日日文介面上線，加日文
@@ -222,7 +230,7 @@ TEXT = {
             'Trang giấy đang nghiêng lệch. Sách «Hoài Nam Tử» kể rằng Cộng Công «nổi giận húc vào núi Bất Chu», cột trời gãy, giềng đất đứt; góc giấy cong vểnh lên, thả ra con rắn khổng lồ Tu Xà, con lợn rừng khổng lồ Phong Hy và Đại Phong – ngọn gió lớn. Thanh Long, Bạch Hổ, Chu Tước, Huyền Vũ là bốn cái chặn giấy đè giữ bốn góc. Cầm cự qua một đêm, rồi thêm một đêm nữa; khi đã đủ can đảm, hãy đóng một con thuyền mà rời đi.',
         ],
         'scenes_h': 'Cảnh trong bản chơi thử',
-        'scenes_intro': 'Bản chơi thử diễn ra trên hòn đảo khởi đầu, kéo dài đến bình minh sau đêm đầu tiên phách xuất hiện (tùy độ khó: Tiêu Dao đêm thứ 18, Sơ Lý đêm thứ 15, Nhân Gian đêm thứ 12, Tông Sư đêm thứ 9). Mọi cảnh dưới đây đều có trong bản chơi thử.',
+        'scenes_intro': 'Bản chơi thử diễn ra trên hòn đảo khởi đầu và một hòn đảo gần đó, kéo dài đến bình minh sau đêm đầu tiên phách xuất hiện (tùy độ khó: Tiêu Dao đêm thứ 18, Sơ Lý đêm thứ 15, Nhân Gian đêm thứ 12, Tông Sư đêm thứ 9). Mọi cảnh dưới đây đều có trong bản chơi thử.',
         'chai': (['người tựa cây: hưu – nghỉ ngơi', 'trăng bên cửa sổ: minh – sáng', 'con dưới mái nhà: tự – chữ'], 'Theo cách giải thích của «Thuyết văn giải tự», bộ tự điển soạn vào khoảng năm 100; 囧 (quýnh) là cửa sổ.'),
         'scenes': {
             'gather': ('Lấy gỗ', 'Mỗi ô trong rừng đều là một chữ; lấy xuống là thành vật liệu.'),
@@ -240,7 +248,7 @@ TEXT = {
             'sail': ('Đóng thuyền vượt biển', 'Khi đã đủ can đảm, hãy đóng thuyền buồm Cô Phàm hay thuyền lớn Phương Chu mà ra khơi. Trên trang giấy có lục địa, quần đảo, sa mạc, núi lửa, đồng tuyết; dưới biển có 蜃 (thận) rình rập – loài thủy quái phun sương dựng nên ảo ảnh.'),
             'gong': ('Lên núi Bất Chu', 'Hạ gục Tu Xà, Phong Hy và Đại Phong, thỉnh kinh từ Huyền Vũ phương Bắc, rồi lên núi Bất Chu tìm Cộng Công – kẻ đã húc lệch trời đất.'),
         },
-        'facts': ['Chơi đơn, ngoại tuyến', 'Bàn phím và chuột', 'Ngôn ngữ: tiếng Anh, tiếng Nhật, tiếng Trung phồn thể và giản thể', 'Bốn độ khó: Tiêu Dao (逍遙), Sơ Lý (初履), Nhân Gian (人間), Tông Sư (宗師)'],
+        'facts': ['Chơi đơn, ngoại tuyến', 'Bàn phím và chuột; dùng được cả tay cầm', 'Ngôn ngữ: tiếng Anh, tiếng Nhật, tiếng Trung phồn thể và giản thể', 'Bốn độ khó: Tiêu Dao (逍遙), Sơ Lý (初履), Nhân Gian (人間), Tông Sư (宗師)'],
         'contact_h': 'Liên hệ',
         'contact': 'InkWild (Mặc Họa Thương Sinh) là trò chơi đầu tiên trong loạt «Tả ý» (寫意) của SteJoy. Có điều gì muốn nói, hãy viết thư cho chúng tôi:',
         'next': ('Phần 2 của loạt «Tả ý»: Lực Thấu Chỉ Bối (力透紙背)', 'Hãy đón chờ'),
@@ -251,6 +259,96 @@ TEXT = {
         'copy': '© 2026 SteJoy. Phông chữ: LXGW WenKai, Noto Serif (SIL Open Font License 1.1).',
     },
 }
+# 畫（2026-11-26，使用者：「把我之前畫的含有 InkWild 長風的幾張標誌性圖片放到網頁上」）：使用者 2026-11-20 交的八張（六張靜圖、兩張動圖；
+# 每張都有 InkWild 與「長風」小印），放在「試玩場景」與「完整版」之間（原本在故事後面，同一天使用者定換到試玩場景後面：先看實機畫面）。這些是插畫不是遊戲畫面，開頭一句寫明，免得跟實機畫面搞混。
+# 檔案：assets/media/art/<名>.jpg（原寸 1672×941）、<名>-960.jpg（格子裡用）；動圖轉成 <名>.mp4／.webm 循環短片與 <名>.jpg 封面（tools/site/art.sh）
+ART = ['night', 'fengxi', 'wind', 'xiushe', 'tiger', 'dragon', 'sail', 'gong']
+ART_MOVING = {'sail', 'gong'}   # 原本是動圖
+ART_TEXT = {
+    'zh-Hant': {
+        'nav_art': '畫', 'art_h': '畫',
+        'art_intro': '長風畫的山與海：紙上的字，畫回它們原本的樣子。這些是插畫；遊戲畫面請看上面的預告與試玩場景。',
+        'art_ui': {'close': '關閉', 'prev': '上一張', 'next': '下一張', 'open': '放大'},
+        'art_tag': '插畫',   # 完整版「上不周山」那一格右上角的小籤：這一張是插畫，不是遊戲畫面（2026-11-26，使用者：「改成插畫」）
+        'art': {
+            'night': ('夜漁', '提一盞燈，到棧邊撒網。'),
+            'fengxi': ('封豨', '在桑林裡等著的大豕。'),
+            'wind': ('大風', '青丘之澤上，遮住半邊天的大鳥。'),
+            'xiushe': ('修蛇', '洞庭的長蛇，盯著一葉孤帆。'),
+            'tiger': ('白虎', '鎮住紙的西角，伏在崖頂。'),
+            'dragon': ('青龍', '鎮住紙的東角，藏在浪底。'),
+            'sail': ('渡海', '天光落在海上，孤帆往外海去。'),
+            'gong': ('共工', '朱髮的共工，攀上不周山。'),
+        },
+    },
+    'zh-Hans': {
+        'nav_art': '画', 'art_h': '画',
+        'art_intro': '长风画的山与海：纸上的字，画回它们原本的样子。这些是插画；游戏画面请看上面的预告与试玩场景。',
+        'art_ui': {'close': '关闭', 'prev': '上一张', 'next': '下一张', 'open': '放大'},
+        'art_tag': '插画',   # 完整版「上不周山」那一格右上角的小籤：這一張是插畫，不是遊戲畫面（2026-11-26，使用者：「改成插畫」）
+        'art': {
+            'night': ('夜渔', '提一盏灯，到栈边撒网。'),
+            'fengxi': ('封豨', '在桑林里等着的大豕。'),
+            'wind': ('大风', '青丘之泽上，遮住半边天的大鸟。'),
+            'xiushe': ('修蛇', '洞庭的长蛇，盯着一叶孤帆。'),
+            'tiger': ('白虎', '镇住纸的西角，伏在崖顶。'),
+            'dragon': ('青龙', '镇住纸的东角，藏在浪底。'),
+            'sail': ('渡海', '天光落在海上，孤帆往外海去。'),
+            'gong': ('共工', '朱发的共工，攀上不周山。'),
+        },
+    },
+    'en': {
+        'nav_art': 'Art', 'art_h': 'Art',
+        'art_intro': 'The mountains and seas of InkWild, painted by SteJoy: the characters on the paper, drawn back into the things they name. These are illustrations; for the game itself, see the trailers and demo scenes above.',
+        'art_ui': {'close': 'Close', 'prev': 'Previous', 'next': 'Next', 'open': 'Enlarge'},
+        'art_tag': 'Illustration',   # 完整版「上不周山」那一格右上角的小籤：這一張是插畫，不是遊戲畫面（2026-11-26，使用者：「改成插畫」）
+        'art': {
+            'night': ('Night fishing', 'Carrying a lamp down to the jetty to cast a net.'),
+            'fengxi': ('Fengxi', 'The great boar, waiting in the Mulberry Forest.'),
+            'wind': ('The Great Wind', 'A bird that blots out half the sky over the Marsh of Qingqiu.'),
+            'xiushe': ('Xiushe', 'The long serpent of Dongting, watching a lone sail.'),
+            'tiger': ('The White Tiger', 'Holding down the paper’s western corner, crouched on the clifftop.'),
+            'dragon': ('The Azure Dragon', 'Holding down the eastern corner, hidden beneath the waves.'),
+            'sail': ('Crossing the sea', 'Light falls on the water; a lone sail heads for the open sea.'),
+            'gong': ('Gonggong', 'Red-haired Gonggong hauls himself up Mount Buzhou.'),
+        },
+    },
+    'ja': {
+        'nav_art': '絵', 'art_h': '絵',
+        'art_intro': '長風が描いた山と海。紙の上の字を、もとの姿に描き戻した。これは挿絵です。ゲーム画面は、上の予告編と体験版の場面をご覧ください。',
+        'art_ui': {'close': '閉じる', 'prev': '前へ', 'next': '次へ', 'open': '拡大'},
+        'art_tag': '挿絵',   # 完整版「上不周山」那一格右上角的小籤：這一張是插畫，不是遊戲畫面（2026-11-26，使用者：「改成插畫」）
+        'art': {
+            'night': ('夜の漁', '灯りを提げて桟橋へ、網を打ちに。'),
+            'fengxi': ('封豨', '桑林で待ち構える大きな猪。'),
+            'wind': ('大風', '青丘の沢の上、空の半分を覆う大きな鳥。'),
+            'xiushe': ('修蛇', '洞庭の長い蛇が、一艘の孤帆を見つめる。'),
+            'tiger': ('白虎', '紙の西の角を鎮め、崖の上に伏せる。'),
+            'dragon': ('青龍', '紙の東の角を鎮め、波の下に潜む。'),
+            'sail': ('海を渡る', '海に天の光が落ち、孤帆は外海へ向かう。'),
+            'gong': ('共工', '朱い髪の共工が、不周山をよじ登る。'),
+        },
+    },
+    'vi': {
+        'nav_art': 'Tranh', 'art_h': 'Tranh',
+        'art_intro': 'Núi non và biển cả do SteJoy vẽ: những chữ trên trang giấy được vẽ trở lại thành chính vật mà chúng gọi tên. Đây là tranh minh họa; hình ảnh trò chơi thật xin xem các đoạn giới thiệu và những cảnh chơi thử ở trên.',
+        'art_ui': {'close': 'Đóng', 'prev': 'Trước', 'next': 'Sau', 'open': 'Phóng to'},
+        'art_tag': 'Tranh minh họa',   # 完整版「上不周山」那一格右上角的小籤：這一張是插畫，不是遊戲畫面（2026-11-26，使用者：「改成插畫」）
+        'art': {
+            'night': ('Đánh cá đêm', 'Xách một ngọn đèn ra bến, quăng lưới.'),
+            'fengxi': ('Phong Hy', 'Con lợn rừng khổng lồ chờ sẵn trong rừng dâu.'),
+            'wind': ('Đại Phong', 'Con chim lớn che nửa bầu trời trên đầm Thanh Khâu.'),
+            'xiushe': ('Tu Xà', 'Con rắn dài ở hồ Động Đình, dõi theo một cánh buồm lẻ loi.'),
+            'tiger': ('Bạch Hổ', 'Trấn giữ góc tây của trang giấy, nằm phục trên đỉnh vách đá.'),
+            'dragon': ('Thanh Long', 'Trấn giữ góc đông, ẩn mình dưới sóng.'),
+            'sail': ('Vượt biển', 'Ánh trời rọi xuống mặt biển; cánh buồm lẻ loi hướng ra khơi xa.'),
+            'gong': ('Cộng Công', 'Cộng Công tóc đỏ leo lên núi Bất Chu.'),
+        },
+    },
+}
+for _c, _t in ART_TEXT.items():
+    TEXT[_c].update(_t)
+
 BANNER_VI = 'Trang này cũng có bản tiếng Việt'   # 別的語言頁對越南文瀏覽器提的那一句
 for _c, _t in TEXT.items():
     if _c != 'vi':
@@ -260,7 +358,7 @@ for _c, _t in TEXT.items():
 VI_NAMES = ['Mặc Họa Thương Sinh', 'Lực Thấu Chỉ Bối', 'Cộng Công', 'Bất Chu', 'Tu Xà', 'Phong Hy', 'Đại Phong', 'Thanh Long', 'Bạch Hổ', 'Chu Tước',
             'Huyền Vũ', 'Hoài Nam Tử', 'Sơn Hải Kinh', 'Thuyết văn giải tự', 'Tiêu Dao', 'Sơ Lý', 'Nhân Gian', 'Tông Sư', 'Tuế Tinh', 'Huỳnh Hoặc',
             'Thái Bạch', 'Cô Phàm', 'Phương Chu', 'Lý Bạch', 'Hành lộ nan', 'Trường Phong', 'Vương Hy Chi', 'Vệ phu nhân', 'Bút trận đồ', 'Tả ý',
-            'Lô hỏa thuần thanh', 'Nhập mộc tam phân', 'Thông thấu', 'Nhập môn', 'Cửu cửu quy nhất', 'Tiên thiên bát quái', 'Văn Miếu', 'Hùng Vương', 'Nguyên Đán']
+            'Lô hỏa thuần thanh', 'Nhập mộc tam phân', 'Thông thấu', 'Nhập môn', 'Cửu cửu quy nhất', 'Tiên thiên bát quái', 'Văn Miếu', 'Hùng Vương', 'Nguyên Đán', 'Thanh Khâu', 'Động Đình']
 def vi_nbsp(x):
     if isinstance(x, str):
         for n in VI_NAMES:
@@ -282,8 +380,11 @@ def page(code):
     a = up + 'assets/'
     alts = '\n'.join(f'<link rel="alternate" hreflang="{c}" href="{SITE}{LANGS[c]["dir"]}{INK}">' for c in LANGS) + f'\n<link rel="alternate" hreflang="x-default" href="{SITE}{INK}">'
     langnav = ''.join(f'<a href="{up}{LANGS[c]["dir"]}{INK}" lang="{c}"{" aria-current=\"page\"" if c == code else ""}>{LANGS[c]["short"]}</a>' for c in LANGS)
-    nav = ''.join(f'<a href="#{h}">{esc(n)}</a>' for h, n in zip(['trailer', 'story', 'demo', 'features', 'contact'], T['nav']))
+    navs = list(zip(['trailer', 'story', 'demo', 'features', 'contact'], T['nav'])); navs.insert(3, ('art', T['nav_art']))   # 畫（2026-11-26）排在試玩場景後面、完整版前面（使用者 2026-11-26 定：先看實機畫面）
+    nav = ''.join(f'<a href="#{h}">{esc(n)}</a>' for h, n in navs)
     cta = f'<a class="btn primary" href="{STEAM_URL}">{esc(T["wish"])}</a>' if STEAM_URL else f'<span class="badge">{esc(T["soon"])}</span>'
+    play = f'{up}mohuacangsheng/play/?lang={code}'   # 網頁版試玩（tools/site/play.mjs 產生）；?lang= 讓第一次開就是這一頁的語言
+    play_btn = f'<a class="btn{"" if STEAM_URL else " primary"}" href="{play}">{esc(T["play"])}</a>'
     # 每種語言用自己那份介面錄的影片與圖（2026-11-17：英文介面上線；繁中照舊是不帶語言的那份）：assets/media/<名>-<語言>.<副檔名> 有就用
     def lm(rel):
         stem, ext = rel.rsplit('.', 1)
@@ -300,12 +401,34 @@ def page(code):
         <video muted loop playsinline preload="none" poster="{lm(f'scenes/{s}.jpg')}" data-src="{lm(f'scenes/{s}.mp4')}" data-webm="{lm(f'scenes/{s}.webm')}" aria-label="{esc(T['scenes'][s][0])}"></video>
         <figcaption><b>{esc(T['scenes'][s][0])}</b>{esc(T['scenes'][s][1])}{chai if s == 'zi' else ''}</figcaption>
       </figure>''' for s in SCENES)
+    def feat_pic(s):
+        if s in FEATURE_ART:
+            m = f'{a}media/art/{FEATURE_ART[s]}'
+            return f'<div class="feat-pic"><video muted loop playsinline preload="none" poster="{m}.jpg" data-src="{m}.mp4" data-webm="{m}.webm" aria-hidden="true" width="960" height="540"></video><span class="feat-tag">{esc(T["art_tag"])}</span></div>'
+        return f'<img src="{lm(f"stills/{s}.jpg")}" alt="" loading="lazy" width="960" height="540">'
     feats = ''.join(f'''
       <article class="feat">
-        <img src="{lm(f'stills/{s}.jpg')}" alt="" loading="lazy" width="960" height="540">
+        {feat_pic(s)}
         <h3>{esc(T['features'][s][0])}</h3>
         <p>{esc(T['features'][s][1])}</p>
       </article>''' for s in FEATURES)
+    def art_item(k, i):
+        t, d = T['art'][k]
+        m = f'{a}media/art/{k}'
+        if k in ART_MOVING:   # 原本是動圖：循環短片，捲到才載（site.js 的 video[data-src]）
+            pic = f'<video muted loop playsinline preload="none" poster="{m}.jpg" data-src="{m}.mp4" data-webm="{m}.webm" aria-hidden="true"></video>'
+            href, kind = f'{m}.mp4', 'video'
+        else:
+            pic = f'<img src="{m}-960.jpg" srcset="{m}-960.jpg 960w, {m}.jpg 1672w" sizes="(max-width: 760px) 100vw, 660px" alt="" loading="lazy" width="960" height="540">'
+            href, kind = f'{m}.jpg', 'img'
+        extra = f' data-webm="{m}.webm" data-poster="{m}.jpg"' if kind == 'video' else ''
+        return f'''
+      <figure class="art-item">
+        <a class="pic" href="{href}" data-kind="{kind}" data-i="{i}"{extra} aria-label="{esc(T['art_ui']['open'] + ('：' if code in ('zh-Hant', 'zh-Hans', 'ja') else ': ') + t)}">{pic}</a>
+        <figcaption><b>{esc(t)}</b>{esc(d)}</figcaption>
+      </figure>'''
+    art = ''.join(art_item(k, i) for i, k in enumerate(ART))
+    art_ui = esc(json.dumps(T['art_ui'], ensure_ascii=False))
     facts = ''.join(f'<li>{esc(x)}</li>' for x in T['facts'])
     story = ''.join(f'<p>{esc(p)}</p>' for p in T['story'])
     lang_note = f'<p class="lang-note">{esc(T["lang_note"])}</p>' if T.get('lang_note') else ''
@@ -348,7 +471,7 @@ def page(code):
 <main>
 <section class="hero">
   <h1><span class="sr-only">{esc('墨畫蒼生 InkWild')}</span>{LOGO}</h1>{reading}
-  <div class="cta">{cta}<a class="btn" href="#trailer">{esc(T['watch'])}</a></div>
+  <div class="cta">{cta}{play_btn}<a class="btn" href="#trailer">{esc(T['watch'])}</a></div>
   {lang_note}
 </section>
 
@@ -379,7 +502,15 @@ def page(code):
 <section id="demo" class="scenes">
   <h2>{esc(T['scenes_h'])}</h2>
   <p class="lead">{esc(T['scenes_intro'])}</p>
+  <p class="play"><a class="btn primary" href="{play}">{esc(T['play'])}</a><span>{esc(T['play_note'])}</span></p>
   <div class="grid">{scenes}
+  </div>
+</section>
+
+<section id="art" class="art" data-ui='{art_ui}'>
+  <h2>{esc(T['art_h'])}</h2>
+  <p class="lead">{esc(T['art_intro'])}</p>
+  <div class="gallery">{art}
   </div>
 </section>
 

@@ -1,6 +1,6 @@
 """把錄好的鏡頭與剪好的預告壓成網站用的檔：
   assets/media/scenes/<鏡頭>.mp4 與 .jpg（試玩場景，1280×720、無聲、循環）
-  assets/media/stills/<鏡頭>.jpg（完整版的四張圖，960×540）
+  assets/media/stills/<鏡頭>.jpg（完整版的三張圖，960×540；共工那一格用「畫」的插畫）
   assets/media/trailer.mp4、trailer.jpg、trailer.<語言>.vtt（網站上的預告與字幕）
 用法（在庫的根目錄）：python3 tools/site/media.py <鏡頭資料夾> <預告資料夾> [--trailer] [--lang 語言 --clean 沒字幕的預告]
   --trailer 只重壓預告（片頭換了、場景沒動的時候用，試玩場景與四張圖照舊）
@@ -53,7 +53,7 @@ for s, (a, d, p) in ({} if ONLY_TRAILER else SCENES).items():
     ff('-ss', str(p), '-i', str(src), '-frames:v', '1', '-vf', 'scale=1280:720:flags=lanczos', '-q:v', '4', str(M / 'scenes' / f'{s}{SUF}.jpg'))
 
 # 完整版：一張圖
-STILLS = {'thunder': 0.5, 'crops': 5.6, 'sail': 2.75, 'gong': 5.5}   # 渡海（2026-11-17 重錄）：濤正壓到船頭、遠處一道湧
+STILLS = {'thunder': 0.5, 'crops': 5.6, 'sail': 2.75}   # 共工那一格 2026-11-26 起用「畫」的插畫（build-site.py 的 FEATURE_ART），不再截   # 渡海（2026-11-17 重錄）：濤正壓到船頭、遠處一道湧
 _ev = SHOTS / 'thunder.events.json'   # 雷雨那張取第一道雷劈到地上的下一格（落下那一格是整片白光）；錄鏡頭時記下的幀
 if _ev.exists():
     import json

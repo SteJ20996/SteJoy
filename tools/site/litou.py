@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 SLUG = 'litouzhibei/'
+PLAY = SLUG + 'play/'   # 試玩頁（tools/litou/play.py 從遊戲庫的 dist/xieyi-zhan-demo.html 包出來）
 DATA = json.loads((ROOT / 'assets/litou/data.js').read_text(encoding='utf-8').split('window.LITOU = ', 1)[1].rstrip().rstrip(';'))
 # 「寫意」朱印（2026-11-10，使用者：力透紙背的遊戲、網頁、預告都沒標上寫意，要像《墨畫蒼生》一樣）：
 # 跟《墨畫蒼生》字標裡那方印同一份（朱底、霞鶩文楷粗體「寫意」轉外框，38×56），蓋在標題右下；遊戲起始頁、預告片頭片尾同一個位置
@@ -38,6 +39,9 @@ TEXT = {
         "soon": "敬請期待",
         "watch": "觀看預告",
         "trywrite": "試寫一個字",
+        "play": "免費試玩",
+        "play_note": "試玩：序章、第一章與第二章的正面，在瀏覽器裡直接玩。用鍵盤；手機橫拿也行。",
+        "play_more": "寫一個字還不過癮？試玩有序章、第一章和第二章的正面，一路寫到紙背之前 →",
         "trailer_h": "預告",
         "trailer_note": "遊戲實機畫面。還在做，畫面與內容都會再變；配樂是暫用的合成樂。",
         "story_h": "故事",
@@ -116,7 +120,7 @@ TEXT = {
                 "鍵盤：1 到 0 寫十種筆畫",
                 "介面：繁體中文、简体中文、English、日本語、Tiếng Việt",
                 "四種難度：故事、入門、通透、爐火純青",
-                "敬請期待"
+                "免費試玩：序章到第二章的正面；完整版敬請期待"
         ],
         "contact_h": "聯絡",
         "contact": "《力透紙背》是長風「寫意」系列的第二部，還在做。想說什麼，寫信給我們：",
@@ -144,6 +148,9 @@ TEXT = {
         "soon": "敬请期待",
         "watch": "观看预告",
         "trywrite": "试写一个字",
+        "play": "免费试玩",
+        "play_note": "试玩：序章、第一章与第二章的正面，在浏览器里直接玩。用键盘；手机横拿也行。",
+        "play_more": "写一个字还不过瘾？试玩有序章、第一章和第二章的正面，一路写到纸背之前 →",
         "trailer_h": "预告",
         "trailer_note": "游戏实机画面。还在做，画面与内容都会再变；配乐是暂用的合成乐。",
         "story_h": "故事",
@@ -222,7 +229,7 @@ TEXT = {
                 "键盘：1 到 0 写十种笔画",
                 "界面：繁體中文、简体中文、English、日本語、Tiếng Việt",
                 "四种难度：故事、入门、通透、炉火纯青",
-                "敬请期待"
+                "免费试玩：序章到第二章的正面；完整版敬请期待"
         ],
         "contact_h": "联系",
         "contact": "《力透纸背》是长风“写意”系列的第二部，还在做。想说什么，写信给我们：",
@@ -250,6 +257,9 @@ TEXT = {
         "soon": "Coming soon",
         "watch": "Watch the trailer",
         "trywrite": "Write a character",
+        "play": "Play the free demo",
+        "play_note": "Demo: the prologue, chapter 1 and the front of chapter 2, right in your browser. Keyboard, or a phone held sideways.",
+        "play_more": "One character not enough? The demo runs from the prologue through chapter 1 to the front of chapter 2, just before the ink soaks through →",
         "trailer_h": "Trailer",
         "trailer_note": "In-game footage. The game is still in the making, so what you see will change; the music is a temporary synthesized track.",
         "story_h": "Story",
@@ -328,7 +338,7 @@ TEXT = {
                 "Keyboard: keys 1–0 are the ten strokes",
                 "Interface: Traditional Chinese, Simplified Chinese, English, Japanese, Vietnamese",
                 "Four difficulties: Story, Beginner, Advanced, Mastery",
-                "Coming soon"
+                "Free demo: the prologue to the front of chapter 2; full game coming soon"
         ],
         "contact_h": "Contact",
         "contact": "Through the Page is the second game in SteJoy’s 寫意 (Xieyi) series, and still in the making. Write to us:",
@@ -349,6 +359,9 @@ TEXT = {
         "soon": "乞うご期待",
         "watch": "予告編を見る",
         "trywrite": "一字書いてみる",
+        "play": "無料体験版を遊ぶ",
+        "play_note": "体験版：序章、第一章、第二章の表まで。ブラウザでそのまま遊べる。キーボードで、スマホは横向きでも。",
+        "play_more": "一字では物足りない？体験版は序章から第一章、第二章の表まで。墨が紙背に透る手前まで書ける →",
         "trailer_h": "予告編",
         "trailer_note": "ゲームの実機映像です。開発中のため、画面も内容もまだ変わります。音楽は仮の合成音源です。",
         "story_h": "物語",
@@ -395,7 +408,7 @@ TEXT = {
                 "キーボード：1 から 0 で十種の画",
                 "表示言語：繁体字中国語・簡体字中国語・英語・日本語・ベトナム語",
                 "難易度は四段階（物語・入門・上級・達人）",
-                "乞うご期待"
+                "無料体験版：序章から第二章の表まで · 製品版は乞うご期待"
         ],
         "contact_h": "お問い合わせ",
         "contact": "『力透紙背』は長風の「写意」シリーズ第二部で、まだ開発中です。ご意見・ご感想はメールでどうぞ：",
@@ -417,6 +430,9 @@ TEXT = {
         "soon": "Hãy đón chờ",
         "watch": "Xem trailer",
         "trywrite": "Viết thử một chữ",
+        "play": "Chơi thử miễn phí",
+        "play_note": "Bản chơi thử: phần mở đầu, chương 1 và mặt trước chương 2, chơi ngay trên trình duyệt. Dùng bàn phím, hoặc điện thoại xoay ngang.",
+        "play_more": "Một chữ chưa đủ? Bản chơi thử đi từ phần mở đầu qua chương 1 đến mặt trước chương 2, ngay trước khi mực thấm sang mặt sau →",
         "trailer_h": "Trailer",
         "trailer_note": "Hình ảnh thật trong trò chơi. Trò chơi vẫn đang được làm, hình ảnh và nội dung còn thay đổi; nhạc nền là bản tổng hợp tạm thời.",
         "story_h": "Câu chuyện",
@@ -463,7 +479,7 @@ TEXT = {
                 "Bàn phím: phím 1–0 là mười nét bút",
                 "Ngôn ngữ: tiếng Trung phồn thể, giản thể, tiếng Anh, tiếng Nhật, tiếng Việt",
                 "Bốn độ khó: Truyện, Nhập môn, Thông thấu, Lô hỏa thuần thanh",
-                "Hãy đón chờ"
+                "Chơi thử miễn phí: từ phần mở đầu đến mặt trước chương 2; bản đầy đủ sắp ra mắt"
         ],
         "contact_h": "Liên hệ",
         "contact": "Lực Thấu Chỉ Bối là trò chơi thứ hai trong loạt «Tả ý» (寫意) của SteJoy và vẫn đang được làm. Hãy viết thư cho chúng tôi:",
@@ -508,6 +524,8 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
         <p>{esc(t)}</p>
         <video muted loop playsinline preload="none" poster="{a}media/litou/scenes/{DIM_CLIPS[i]}.jpg" data-src="{a}media/litou/scenes/{DIM_CLIPS[i]}.mp4" data-webm="{a}media/litou/scenes/{DIM_CLIPS[i]}.webm" aria-label="{esc(n)}"></video>
       </li>''' for i, (k, n, t) in enumerate(T['dims']))
+    # 試玩（2026-11-24，使用者：「單獨做一個試玩版，放到網頁上去」，遊戲 v0.13.6）：五語共用一頁 litouzhibei/play/，?lang= 照這一頁的語言開（遊戲的 src/demo.js）
+    play = up + PLAY + '?lang=' + {'zh-Hant': 'hant', 'zh-Hans': 'hans', 'en': 'en', 'ja': 'ja', 'vi': 'vi'}[code]
     sname = {'zh-Hant': 'zh', 'zh-Hans': 'hans', 'en': 'en', 'ja': 'ja', 'vi': 'vi'}[code]
     short = {'en': 'short', 'ja': 'shortJa', 'vi': 'shortVi'}.get(code, sname)   # 鍵上的短名
     trait = {'zh-Hant': 'trait', 'zh-Hans': 'traitHans', 'en': 'traitEn', 'ja': 'traitJa', 'vi': 'traitVi'}[code]
@@ -568,7 +586,8 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
     <p class="lt-entitle" aria-hidden="true">{esc(T.get('entitle', 'Through the Page'))}</p>
     <p class="lt-tagline">{esc(T['tagline'])}</p>
     <p class="lt-motto">{esc(T['motto'])}</p>
-    <div class="lt-cta"><span class="lt-seal">{esc(T['soon'])}</span><a class="lt-btn" href="#trailer">{esc(T['watch'])}</a><a class="lt-btn ghost" href="#write">{esc(T['trywrite'])}</a></div>
+    <div class="lt-cta"><span class="lt-seal">{esc(T['soon'])}</span><a class="lt-btn" href="{play}">{esc(T['play'])}</a><a class="lt-btn ghost" href="#trailer">{esc(T['watch'])}</a><a class="lt-btn ghost" href="#write">{esc(T['trywrite'])}</a></div>
+    <p class="lt-play-note">{esc(T['play_note'])}</p>
   </div>
   <div class="lt-mark" aria-hidden="true"></div>
 </section>
@@ -620,6 +639,7 @@ def page(code, LANGS, SITE, AUTHOR, AUTHOR_URL, MAIL, HOME):
   </div>
   <div class="lt-keys" id="lt-keys">{keys}</div>
   <p class="lt-try">{esc(T['write_try'])}</p>
+  <p class="lt-try-more"><a href="{play}">{esc(T['play_more'])}</a></p>
   <p class="lt-credit">{esc(T['write_font']).replace('{animcjk}', '<a href="https://github.com/parsimonhi/animCJK" rel="noopener">AnimCJK</a>').replace('{apl}', f'<a href="{a}litou/ARPHICPL.TXT">Arphic Public License</a>')}</p>
 </section>
 

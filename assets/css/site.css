@@ -34,10 +34,10 @@ body.lang-ja .studio { font: 400 23px/1 var(--ja); letter-spacing: .16em; }   /*
 
 main > section { max-width: 1080px; margin: 0 auto; padding: 72px 16px 24px; }
 /* 《墨畫蒼生》介紹頁的寬度照《力透紙背》（使用者定）：版面 1350、開頭 1550、兩邊留 20，頂欄與頁尾跟著寬；說明文字的行寬照舊 */
-body.mohua .top { padding-left: max(16px, calc(50% - 700px)); padding-right: max(16px, calc(50% - 700px)); }   /* 用 %、svh 除以 --z：左下角把頁面縮放了也對 */
-body.mohua main > section { max-width: 1350px; padding-left: 20px; padding-right: 20px; }
+body.mohua .top, body.home .top { padding-left: max(16px, calc(50% - 700px)); padding-right: max(16px, calc(50% - 700px)); }   /* 用 %、svh 除以 --z：左下角把頁面縮放了也對 */
+body.mohua main > section, body.home main > section { max-width: 1350px; padding-left: 20px; padding-right: 20px; }   /* 首頁跟《墨畫蒼生》一樣寬（2026-11-26 使用者：「總介面太窄了，要做得和墨畫蒼生一樣寬」） */
 body.mohua .hero { max-width: 1550px; }
-body.mohua footer { max-width: 1350px; }
+body.mohua footer, body.home footer { max-width: 1350px; }
 h2 { display: flex; align-items: center; gap: 12px; margin: 0 0 22px; font-size: 30px; font-weight: 400; letter-spacing: .12em; }
 h2::before { content: ""; width: 14px; height: 14px; background: var(--red); border-radius: 2px; flex: none; }
 body.lang-en h2 { letter-spacing: .02em; }
@@ -118,7 +118,10 @@ body.lang-en .clip figcaption b { letter-spacing: 0; }
 
 /* 完整版 */
 .feats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px 24px; }
-.feat img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 5px; border: 1px solid var(--line); }
+.feat img, .feat video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 5px; border: 1px solid var(--line); }
+.feat-pic { position: relative; }   /* 完整版那一格放的是「畫」的插畫：右上角一枚小籤寫明（2026-11-26） */
+.feat-tag { position: absolute; top: 10px; right: 10px; padding: 1px 9px; font-size: 13px; line-height: 1.7; letter-spacing: .12em; color: var(--paper); background: rgba(28, 26, 23, .62); border-radius: 3px; pointer-events: none; }
+body.lang-en .feat-tag, body.lang-vi .feat-tag { letter-spacing: .02em; }
 .feat h3 { margin: 14px 0 4px; font-size: 22px; font-weight: 400; letter-spacing: .08em; }
 body.lang-en .feat h3 { letter-spacing: 0; }
 .feat p { margin: 0; color: var(--ink-2); font-size: 16px; line-height: 1.7; }
@@ -216,7 +219,41 @@ body.lang-vi .lang-note { max-width: 620px; }
 @media (min-width: 761px) and (hover: none) and (pointer: coarse) {
   html:not(.duo) { --tab-gut: clamp(40px, 5.5vw, 72px); }
   html:not(.duo) .top { padding-left: max(var(--tab-gut), calc(50% - 560px)); padding-right: max(var(--tab-gut), calc(50% - 560px)); }
-  html:not(.duo) body.mohua .top, html:not(.duo) body.litou .top { padding-left: max(var(--tab-gut), calc(50% - 700px)); padding-right: max(var(--tab-gut), calc(50% - 700px)); }
-  html:not(.duo) main > section, html:not(.duo) body.mohua main > section, html:not(.duo) .lt-sec, html:not(.duo) .lt-hero, html:not(.duo) .lt-dims-in { padding-left: var(--tab-gut); padding-right: var(--tab-gut); }
+  html:not(.duo) body.mohua .top, html:not(.duo) body.litou .top, html:not(.duo) body.home .top { padding-left: max(var(--tab-gut), calc(50% - 700px)); padding-right: max(var(--tab-gut), calc(50% - 700px)); }
+  html:not(.duo) main > section, html:not(.duo) body.mohua main > section, html:not(.duo) body.home main > section, html:not(.duo) .lt-sec, html:not(.duo) .lt-hero, html:not(.duo) .lt-dims-in { padding-left: var(--tab-gut); padding-right: var(--tab-gut); }
   html:not(.duo) footer { padding-left: var(--tab-gut); padding-right: var(--tab-gut); }
 }
+
+/* 網頁版試玩（2026-11-24，使用者：把試玩版放到 stejoy 裡，玩家點擊就能體驗網頁版試玩）：「試玩裡的場景」開頭一顆按鈕、旁邊一句說明 */
+.scenes .play { display: flex; justify-content: center; align-items: center; gap: 10px 16px; flex-wrap: wrap; max-width: 760px; margin: 0 auto 28px; text-align: center; }
+.scenes .play span { color: var(--ink-2); font-size: 15px; }
+
+/* 畫（2026-11-26，使用者畫的八張，見 README）：兩欄格子，點開放大（site.js 的 lightbox）；原本是動圖的兩張是循環短片 */
+.gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px 24px; }
+.art-item { margin: 0; }
+.art-item .pic { display: block; overflow: hidden; border-radius: 5px; border: 1px solid var(--line); background: var(--paper-2); cursor: zoom-in; }
+.art-item img, .art-item video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; transition: transform .6s ease; }
+.art-item .pic:hover :is(img, video), .art-item .pic:focus-visible :is(img, video) { transform: scale(1.025); }
+.art-item .pic:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+.art-item figcaption { margin-top: 10px; color: var(--ink-2); font-size: 16px; line-height: 1.6; }
+.art-item figcaption b { display: block; color: var(--ink); font-weight: 400; font-size: 21px; letter-spacing: .08em; margin-bottom: 2px; }
+body.lang-en .art-item figcaption b, body.lang-vi .art-item figcaption b { letter-spacing: 0; }
+body.lang-ja .art-item figcaption b { letter-spacing: .04em; }
+@media (prefers-reduced-motion: reduce) { .art-item img, .art-item video { transition: none; } .art-item .pic:hover :is(img, video) { transform: none; } }
+@media (max-width: 760px) { .gallery { grid-template-columns: 1fr; gap: 28px; } }
+
+/* 放大看：整個畫面一張，底下圖說；← → 換一張，Esc 或點旁邊關 */
+.lightbox { padding: 0; border: 0; background: transparent; max-width: none; max-height: none; width: 100%; height: 100%; color: #f6efdf; }
+.lightbox::backdrop { background: rgba(20, 18, 16, .9); }
+.lightbox[open] { display: flex; align-items: center; justify-content: center; }
+.lightbox figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 12px; max-width: min(94vw, 1672px); }
+.lightbox .lb-media :is(img, video) { display: block; max-width: min(94vw, 1672px); max-height: calc(100vh / var(--z, 1) - 140px); width: auto; height: auto; border-radius: 4px; box-shadow: 0 24px 60px -20px rgba(0, 0, 0, .7); }
+.lightbox figcaption { text-align: center; font-size: 16px; line-height: 1.6; color: #d9cfbd; padding: 0 56px; }
+.lightbox figcaption b { display: block; font-weight: 400; font-size: 21px; color: #f6efdf; letter-spacing: .08em; }
+body.lang-en .lightbox figcaption b, body.lang-vi .lightbox figcaption b { letter-spacing: 0; }
+.lightbox button { position: fixed; border: 1px solid rgba(246, 239, 223, .35); background: rgba(20, 18, 16, .55); color: #f6efdf; width: 46px; height: 46px; border-radius: 50%; font: 24px/1 Georgia, serif; cursor: pointer; display: grid; place-items: center; }
+.lightbox button:hover, .lightbox button:focus-visible { background: rgba(180, 57, 42, .85); border-color: transparent; outline: none; }
+.lightbox .lb-close { top: 16px; right: 16px; }
+.lightbox .lb-prev { left: 16px; top: 50%; transform: translateY(-50%); }
+.lightbox .lb-next { right: 16px; top: 50%; transform: translateY(-50%); }
+@media (max-width: 760px) { .lightbox .lb-prev, .lightbox .lb-next { top: auto; bottom: 16px; transform: none; } .lightbox figcaption { padding: 0 8px 64px; } }

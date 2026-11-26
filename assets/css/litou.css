@@ -58,6 +58,10 @@ body.lang-en .lt-seal { letter-spacing: .08em; font-size: 19px; }
 .lt-btn.ghost { background: transparent; color: var(--ink); }
 .lt-btn.ghost:hover { background: var(--ink); color: var(--paper); }
 .lt-btn.small { min-height: 34px; padding: 0 14px; font-size: 15px; box-shadow: 3px 3px 0 var(--red); }
+/* 試玩（2026-11-24，遊戲 v0.13.6）：開頭按鈕底下一行說明；試寫底下一行連過去 */
+.lt-play-note { margin: 14px 0 0 2px; max-width: 42em; color: var(--ink-2); font-size: 15px; animation: lt-rise .7s 1.6s ease-out both; }
+.lt-try-more { margin: 10px 0 0; font-size: 16px; }
+.lt-try-more a { color: var(--red); text-underline-offset: 3px; }
 /* 標誌：這個環是一個「力」，照筆順寫出來；身後一張米字格 */
 .lt-mark { position: relative; width: 100%; max-width: 700px; justify-self: center; aspect-ratio: 760 / 514; }
 .lt-mark::before { content: ""; position: absolute; left: 50%; top: 50%; width: 92%; aspect-ratio: 1; transform: translate(-50%, -50%) rotate(-4deg); border: 1.5px solid rgba(180, 57, 42, .28); z-index: -1;
@@ -202,7 +206,7 @@ body.lang-en .lt-feat h3, body.lang-en .lt-sub { letter-spacing: 0; }
   .lt-sec { padding-top: 80px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .lt-logo, .lt-logo > span, .lt-logo > span::before, .lt-logo > span::after, .lt-logo .sweep, .lt-logo .splat > *, .lt-xieyi, .lt-logo-row, .lt-kicker, .lt-entitle, .lt-tagline, .lt-motto, .lt-cta, .lt-seal, .lt-mark .ren.land, .lt-grid path, .lt-grid, .lt-big { animation: none !important; }
+  .lt-logo, .lt-logo > span, .lt-logo > span::before, .lt-logo > span::after, .lt-logo .sweep, .lt-logo .splat > *, .lt-xieyi, .lt-logo-row, .lt-kicker, .lt-entitle, .lt-tagline, .lt-motto, .lt-cta, .lt-play-note, .lt-seal, .lt-mark .ren.land, .lt-grid path, .lt-grid, .lt-big { animation: none !important; }
   .lt-mark .ren.land { opacity: 1; }
   .lt-reveal .h2s, .lt-reveal h2 span { transition: none; clip-path: none; opacity: 1; transform: none; }
 }

@@ -9,8 +9,31 @@ stejoy.com 的網站：工作室**長風**的首頁（「寫意」系列，選�
 | `/`、`/zh-hans/`、`/en/`、`/ja/`、`/vi/` | `index.html`、`zh-hans/index.html`、`en/index.html`、`ja/index.html`、`vi/index.html` | 首頁：選一部（`tools/site/home.py`） |
 | `/mohuacangsheng/`（五語同上加前綴） | `mohuacangsheng/index.html` 等 | 《墨畫蒼生》（`tools/site/build-site.py`） |
 | `/litouzhibei/`（五語同上加前綴） | `litouzhibei/index.html` 等 | 《力透紙背》，敬請期待（`tools/site/litou.py`） |
+| `/mohuacangsheng/play/` | `mohuacangsheng/play/index.html`、`fonts.css` | 《墨畫蒼生》網頁版試玩（`tools/site/play.mjs`，見下面「網頁版試玩」） |
 
 《墨畫蒼生》的介紹頁原本就是首頁 `/`，有了選遊戲的首頁之後搬到 `/mohuacangsheng/`（拼音，跟 `/litouzhibei/` 一樣）。純靜態頁，沒有建置步驟也能直接放上任何靜態主機。全部頁面由 `python3 tools/site/build-site.py` 一起產生，**改文字請改那幾個 `.py` 再重新產生**，不要直接改 HTML。
+
+## 網頁版試玩（2026-11-24）
+
+使用者：「把試玩版放到 stejoy 裡，玩家點擊就能體驗網頁版試玩」。
+- 網址 `/mohuacangsheng/play/`，只有一頁；五種語言的《墨畫蒼生》頁各有兩個入口：開頭「線上試玩」（還沒有 Steam 商店頁時是主按鈕；有了以後主按鈕讓給願望清單）、「試玩裡的場景」那段開頭一顆按鈕加一句說明（`TEXT` 的 `play`、`play_note`，`.scenes .play`）。
+- 連結帶 `?lang=`：第一次開就是那一頁的語言（越南文沒有，給英文）；玩家在遊戲裡選過語言的照舊（遊戲把選擇存在 `xieyi.lang`）。
+- 頁面由 `tools/site/play.mjs` 產生，**不改遊戲的一個字**：遊戲庫打好的試玩（`python3 scripts/build-single.py --demo` 的 `dist/xieyi-demo.html`：已剪掉後面的內容、掃過黑名單、試玩冒煙測試全過）外面包一層 doctype、`<meta charset>`、viewport 與底樣式。產生器先查它是剪好的試玩（試玩服、沒有測試格、沒有 `<script data-src>`、沒有「共工」這類名字），不是就停下。
+- 字型照網站的規矩不連 Google Fonts：用 `assets/fonts/` 的 Fontsource 5.3.1 分片，跟網站共用霞鶩文楷 TC 400、思源宋體 SC 400，另抄進思源宋體 TC 400／700 與 SC 700（317 片，9.0 MB；授權 `noto-serif-tc-LICENSE.txt`），寫一份 `mohuacangsheng/play/fonts.css`。頁面的 `<link data-local-fonts>` 讓遊戲換簡體時也不去網路載。
+- 在一般網頁上，遊戲自己會退回：匯出存檔是瀏覽器下載（claude.ai 上才經 `downloads` 能力）；吐槽沒有留言框，只剩複製、存成檔案、寄信。存檔在 stejoy.com 這個網域的 `localStorage`，跟 claude.ai 上的試玩預覽、完整版各是各的，要帶過去得匯出再匯入。
+- 現在放的是遊戲 v0.9.135（第一章）：2026-11-24 遊戲上線正式庫以後，用正式庫 `ch1` 打的那一份重產過，跟測試庫打的一位元組不差。換新版本（遊戲上線以後才換，用正式庫 `ch1` 打的；試玩是第一章的東西）：
+  1. 遊戲正式庫的 `ch1`：`NODE_PATH=$(npm root -g) python3 scripts/build-single.py --demo`，再跑 `NODE_PATH=$(npm root -g) node scripts/smoke-demo.mjs` 與 `--raw`，都要全過。
+  2. 字型套件（版本照遊戲庫 `desktop/package.json`）：`npm install --no-save --prefix <暫存> @fontsource/lxgw-wenkai-tc@5.3.1 @fontsource/noto-serif-tc@5.3.1 @fontsource/noto-serif-sc@5.3.1`。
+  3. 這裡：`node tools/site/play.mjs <遊戲庫>/dist/xieyi-demo.html <暫存>/node_modules`。
+- 檢查（2026-11-24）：從五種語言的介紹頁點進去，語言對、起始頁出來、開一局在試玩的紙上（第六版、600×600）、存檔寫進這台瀏覽器、字型全從 `assets/fonts/` 載、沒有一個 Google Fonts 的請求、匯出會下載、零報錯；遊戲裡選過的語言蓋過 `?lang=`；iPhone 13 橫拿的起始頁不橫捲。
+
+## 畫（2026-11-26）
+
+使用者：「把我之前畫的含有 InkWild 長風的幾張標誌性圖片放到網頁上」——2026-11-20 交的八張（六張靜圖 1672×941、兩張動圖 960×540；每張都有 InkWild 字樣與「長風」小印）。
+- 放在《墨畫蒼生》頁「試玩場景」與「完整版」之間，五種語言各一段（原本在故事後面；同一天使用者定換到試玩場景後面：讀完故事先看實機畫面、「線上試玩」那顆鈕往上挪，畫大多是完整版的東西，正好接「完整版」）（`build-site.py` 的 `ART`、`ART_TEXT`；頂欄多一個「畫／画／Art／絵／Tranh」）。兩欄格子、手機一欄；點一張放大看（`site.js` 的 lightbox：`<dialog>`，← → 換、Esc 或點旁邊關，焦點回到那一張；沒有 `<dialog>` 的舊瀏覽器照連結開原圖）。
+- 順序：夜漁、封豨、大風、修蛇、白虎、青龍、渡海（動）、共工（動）。圖說照遊戲與這一頁原本的叫法（修蛇在洞庭、封豨在桑林、大風在青丘之澤；青龍白虎是鎮住紙角的鎮紙）。
+- 開頭一句寫明「這些是插畫；遊戲畫面請看上面的預告與試玩場景」：畫是寫實的水墨，遊戲是紙上的字，免得看了畫以為遊戲長這樣。
+- 檔案在 `assets/media/art/`：靜圖原寸一張（放大看）＋960 寬一張（格子，`srcset`）；動圖轉成 H.264 與 VP9 循環短片（原本兩張 GIF 共 47 MB，轉完約 2.7 MB，Cloudflare 一個檔最多 25 MiB），第一格當封面，跟試玩場景一樣捲到才載、捲遠了卸下。重轉：`sh tools/site/art.sh <原檔資料夾>`（檔名見那支腳本開頭）。
 
 ## 越南文（2026-11-12）
 
@@ -41,7 +64,7 @@ stejoy.com 的網站：工作室**長風**的首頁（「寫意」系列，選�
 - 《墨畫蒼生》頁（`body.mohua`）的寬度照《力透紙背》（使用者定）：版面 1350、開頭 1550、兩邊留 20，頂欄與頁尾跟著寬，字標撐滿開頭（矮的螢幕照高收，按鈕留在第一屏）；故事的行寬照舊 760。手機一樣。
 - `assets/media/trailer.mp4`、`trailer.webm`：預告（1920×1080，61 秒；H.264 約 17 MB、VP9 約 14 MB，瀏覽器挑放得了的那一種），字幕是同資料夾的 `trailer.<語言>.vtt`，每一頁預設開自己語言的那一條。
 - `assets/media/scenes/`：試玩裡的六段場景（取木、砌屋、雪、第十三夜、觀星、造字；造字那張佔整排，底下一排拆字：人＋木＝休、月＋囧＝明、子＋宀＝字，照《說文》），1280×720、無聲、循環，各有 mp4 與 webm。
-- `assets/media/stills/`：完整版的四張圖（雷雨、五穀、渡海、共工）。
+- `assets/media/stills/`：完整版的三張圖（雷雨、五穀、渡海）；第四格「上不周山」2026-11-26 起是「畫」那一節的共工插畫（使用者：「網頁上共工那張改成這張吧」），直接用 `assets/media/art/gong` 的循環短片（`build-site.py` 的 `FEATURE_ART`）。
 - `assets/fonts/`：霞鶩文楷 TC 與思源宋體 SC 的 woff2 分片（瀏覽器只下載用得到的字），SIL OFL 1.1，授權全文在同一資料夾。網站不連 Google Fonts。
 - 日文頁的字型是 **Klee One** 400（Fontworks；霞鶩文楷就是從它改出來的，筆調一樣、漢字照日本的寫法，`--ja`）：Fontsource `@fontsource/klee-one` 5.3.1 的日文與拉丁分片，原檔未改（`klee-one-*.woff2`、`klee-one-LICENSE.txt`，在 `fonts.css` 最後）。日文頁字距比中文收、段首空一字、標題照文節換行（`word-break: auto-phrase`），規則在三個 css 檔最後的「日文頁」那段。
 - 字幕燒進畫面的預告（每種語言各約 45 MB）不放進這個庫：Cloudflare Pages 一個檔最多 25 MiB，庫也會變肥。要的時候照下面第 3 步加 `--burn` 重新出。
@@ -104,6 +127,7 @@ stejoy.com 的網站：工作室**長風**的首頁（「寫意」系列，選�
 - 文字：`tools/site/litou.py` 的 `TEXT`（五語；遊戲本身有日文版，日文頁的副標、標語、章名、難度、筆畫名照遊戲的 `data-ja` 與 `src/rules.js`）；`python3 tools/site/build-site.py` 會連首頁、《墨畫蒼生》一起產生、一起寫進 sitemap。
 - 樣式與互動：`assets/css/litou.css`、`assets/js/litou.js`（標題的墨、標誌、超正方體、試寫）。標題五個字的粗體是 `assets/fonts/lxgw-wenkai-tc-700-litou.woff2`（霞鶩文楷 TC 700，只取力透紙纸背；SIL OFL 1.1，同資料夾的授權全文）。
 - 遊戲的資料：`assets/litou/data.js`（十筆的圖示與性質、八十九個字的筆順、讀音字義與米字格字形、標題身後那一筆）由 `node tools/litou/data.mjs <遊戲庫>` 產生（遊戲庫要在 `claude/xieyi-zhan` 分支：`main` 還是 v0.8.3、只有五十七個字）；日文頁用的筆畫名、性質（`ja`、`shortJa`、`traitJa`）與音讀訓讀（`chars[字].ja`，遊戲的 `R.MEAN_JA`；「力」的音讀訓讀 `data.mjs` 另補得完整一些）也從這裡來；簡體用遊戲的繁轉簡表。標誌 `assets/litou/mark.js` 與 `mark-ribbon.png`、`mark-ren.png`、`mark-time.png` 抄自遊戲庫的 `src/mark.js` 與 `src/mark-data.js`（照「力」的筆順寫出來：橫折鉤、撇）。
+- **試玩頁 `litouzhibei/play/`**（2026-11-24，使用者：「單獨做一個試玩版，放到網頁上去。目前設想的就是到二維第一關結束」；遊戲 v0.13.6）：序章、第一章、第二章的正面，正面寫完是「待續」卡（連回這個語言的介紹頁），不出三選一。五語共用一頁：介紹頁開頭多一顆「免費試玩」（底下一行說試玩到哪裡、鍵盤或手機橫拿），試寫底下多一行連過去，都帶 `?lang=hant／hans／en／ja／vi`，遊戲照它開、再從網址拿掉；「特色」最後一條改成「免費試玩：序章到第二章的正面；完整版敬請期待」（五語）。頁面是遊戲庫 `python3 scripts/build-single.py --demo` 出的 `dist/xieyi-zhan-demo.html`，`python3 tools/litou/play.py <遊戲庫>` 包上網站的 `<head>`（charset、標題、說明、canonical、圖示、og），遊戲一個字不改；遊戲改版就重跑。存檔在 stejoy.com 這個網域的瀏覽器裡（`xieyi.zhan.*`），完整版之後若也放在這個網域就接得上（正面寫完存成「待識字」，完整版讀進來就是三選一）。字型照遊戲從 Google Fonts 載。
 - 試寫的字形（2026-11-21，使用者：「網頁上的試寫，需要優化一下字形，參考網路上優秀字形」）：米字格改用 [AnimCJK](https://github.com/parsimonhi/animCJK) 的台灣楷書字形（`graphicsZhHant.txt`，字形與筆順照教育部標準核過；衍生自文鼎 AR PL KaitiM Big5／GB 與 Make Me a Hanzi，Arphic Public License）。八十九個字都有，筆數與遊戲的筆順一樣（單獨一捺「乀」台灣那一份沒有，從簡體那一份拿，一筆的字兩岸一樣）。`node tools/litou/animcjk.mjs graphicsZhHant.txt graphicsZhHans.txt <遊戲庫>` 從 AnimCJK 的兩個檔抽出要用的字、不改數字，寫成 `tools/litou/animcjk.json`；`data.mjs` 把它換到格子的座標（1024 見方、y 朝上 → 0–1000、y 朝下），每一筆的輪廓與中線另寫成 `assets/litou/glyphs.js`（`window.LITOU_GLYPHS`），檔頭寫明來源、怎麼改、哪天改，授權全文 `assets/litou/ARPHICPL.TXT` 原樣附著；網站自己的程式與 `data.js` 不跟它混在同一個檔（授權第二條：獨立的部分各自發佈就不受它管），換算的方法改了就改 `data.mjs` 的 `GLYPH_DATE`。AnimCJK 沒有的字照舊用遊戲的字形（`data.js` 裡那個字的 `d`）。新寫的那一筆照中線寫出來（Hanzi Writer 的做法：粗筆沿中線走、裁在這一筆自己的輪廓裡，0.28–0.63 秒，長的筆久一點；2026-11-24 使用者要「放慢 30%–50%」，一筆的動畫與自己示範的節奏都 ×1.4，`litou.js` 的 `SLOW`）。寫到一半猜的字換了（一 → 十 → 木、丨 → 口 → 中），已寫的筆先從舊字的那一筆變形挪到新字的那一筆（0.38 秒，`MORPH`；兩個輪廓各沿周長取 120 點、對齊起點與方向後內插，`ring()`／`match()`／`morph()`），挪完才寫新的這一筆（2026-11-24，使用者：第一筆往往不知道接下來會接什麼，第二筆定下來後先把第一筆挪到正確的位置和筆形）；示範照這一筆實際要畫多久等（`busy`）；少動不挪，直接換，最後一筆寫完才成字；「少動」不寫、直接整筆出來。試寫底下一行小字寫字形的出處與授權（五種語言，`litou.py` 的 `write_font`）。順手修了手機上成字那一下大字從 2.4 倍砸下來、把整頁撐寬的一瞬間（`.lt-write { overflow-x: clip }`）。
 - 預告與一卷五章的片段：`assets/media/litou/`（預告 1920×1080、67.5 秒，H.264 約 10.4 MB、VP9 約 5.0 MB；字幕 `trailer.<語言>.vtt`；五段場景 1280×720）。重新做（力透紙背的遊戲庫（私有）在它的根目錄 `python3 -m http.server 8123`）：
   莫比烏斯環那一段（遊戲 v0.8.4 起）：紙條扭成環以後，鏡頭降到「人」站的環面、攤成這一關的紙，再接打「塗」（使用者看了舊片段說環與打鬥的紙面接不上）。v0.8.5 起前面多了紙背拉長成紙條，預告整段從紙背開始（0–7.6 秒）。後面接的「摺成正方體」也改了：環剪開、分六格、撕兩格當頂與底、排成展開圖再摺（使用者要的）。這兩個鏡頭用 `pace(rate)` 錄：轉場每一幀走 rate/30 息，跟瀏覽器幾時給 requestAnimationFrame 無關（`slow(k)` 的快慢會跟著機器忙不忙變，同一個 k 量過 3.7 秒也量過 9 秒）；莫比烏斯環 `pace(1)` 是實際速度，摺正方體 `pace(1.1)`。遊戲 v0.9.2 起環上的人從紙條正中起、接縫在環的正後方，鏡頭降下去時看不到環被剪開（使用者看了說「剛接上的莫比烏斯環怎麼還斷開了」）；摺正方體那段人先浮出紙面、鏡頭推近看它（「人浮出紙面的效果不明顯」），預告裡這段 6.9 秒。第一章的鏡頭打三秒以後把線的進度快轉、一秒內捲成圈（使用者說預告裡線捲起來那段沒出來），下一個鏡頭從圈開始。
