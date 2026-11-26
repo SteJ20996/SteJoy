@@ -257,14 +257,14 @@ TEXT = {
     },
 }
 # 畫（2026-11-26，使用者：「把我之前畫的含有 InkWild 長風的幾張標誌性圖片放到網頁上」）：使用者 2026-11-20 交的八張（六張靜圖、兩張動圖；
-# 每張都有 InkWild 與「長風」小印），放在「故事」與「試玩場景」之間。這些是插畫不是遊戲畫面，開頭一句寫明，免得跟實機畫面搞混。
+# 每張都有 InkWild 與「長風」小印），放在「試玩場景」與「完整版」之間（原本在故事後面，同一天使用者定換到試玩場景後面：先看實機畫面）。這些是插畫不是遊戲畫面，開頭一句寫明，免得跟實機畫面搞混。
 # 檔案：assets/media/art/<名>.jpg（原寸 1672×941）、<名>-960.jpg（格子裡用）；動圖轉成 <名>.mp4／.webm 循環短片與 <名>.jpg 封面（tools/site/art.sh）
 ART = ['night', 'fengxi', 'wind', 'xiushe', 'tiger', 'dragon', 'sail', 'gong']
 ART_MOVING = {'sail', 'gong'}   # 原本是動圖
 ART_TEXT = {
     'zh-Hant': {
         'nav_art': '畫', 'art_h': '畫',
-        'art_intro': '長風畫的山與海：紙上的字，畫回它們原本的樣子。這些是插畫；遊戲畫面請看上面的預告與下面的試玩場景。',
+        'art_intro': '長風畫的山與海：紙上的字，畫回它們原本的樣子。這些是插畫；遊戲畫面請看上面的預告與試玩場景。',
         'art_ui': {'close': '關閉', 'prev': '上一張', 'next': '下一張', 'open': '放大'},
         'art': {
             'night': ('夜漁', '提一盞燈，到棧邊撒網。'),
@@ -279,7 +279,7 @@ ART_TEXT = {
     },
     'zh-Hans': {
         'nav_art': '画', 'art_h': '画',
-        'art_intro': '长风画的山与海：纸上的字，画回它们原本的样子。这些是插画；游戏画面请看上面的预告与下面的试玩场景。',
+        'art_intro': '长风画的山与海：纸上的字，画回它们原本的样子。这些是插画；游戏画面请看上面的预告与试玩场景。',
         'art_ui': {'close': '关闭', 'prev': '上一张', 'next': '下一张', 'open': '放大'},
         'art': {
             'night': ('夜渔', '提一盏灯，到栈边撒网。'),
@@ -294,7 +294,7 @@ ART_TEXT = {
     },
     'en': {
         'nav_art': 'Art', 'art_h': 'Art',
-        'art_intro': 'The mountains and seas of InkWild, painted by SteJoy: the characters on the paper, drawn back into the things they name. These are illustrations; for the game itself, see the trailers above and the demo scenes below.',
+        'art_intro': 'The mountains and seas of InkWild, painted by SteJoy: the characters on the paper, drawn back into the things they name. These are illustrations; for the game itself, see the trailers and demo scenes above.',
         'art_ui': {'close': 'Close', 'prev': 'Previous', 'next': 'Next', 'open': 'Enlarge'},
         'art': {
             'night': ('Night fishing', 'Carrying a lamp down to the jetty to cast a net.'),
@@ -309,7 +309,7 @@ ART_TEXT = {
     },
     'ja': {
         'nav_art': '絵', 'art_h': '絵',
-        'art_intro': '長風が描いた山と海。紙の上の字を、もとの姿に描き戻した。これは挿絵です。ゲーム画面は、上の予告編と下の体験版の場面をご覧ください。',
+        'art_intro': '長風が描いた山と海。紙の上の字を、もとの姿に描き戻した。これは挿絵です。ゲーム画面は、上の予告編と体験版の場面をご覧ください。',
         'art_ui': {'close': '閉じる', 'prev': '前へ', 'next': '次へ', 'open': '拡大'},
         'art': {
             'night': ('夜の漁', '灯りを提げて桟橋へ、網を打ちに。'),
@@ -324,7 +324,7 @@ ART_TEXT = {
     },
     'vi': {
         'nav_art': 'Tranh', 'art_h': 'Tranh',
-        'art_intro': 'Núi non và biển cả do SteJoy vẽ: những chữ trên trang giấy được vẽ trở lại thành chính vật mà chúng gọi tên. Đây là tranh minh họa; hình ảnh trò chơi thật xin xem các đoạn giới thiệu ở trên và những cảnh chơi thử ở dưới.',
+        'art_intro': 'Núi non và biển cả do SteJoy vẽ: những chữ trên trang giấy được vẽ trở lại thành chính vật mà chúng gọi tên. Đây là tranh minh họa; hình ảnh trò chơi thật xin xem các đoạn giới thiệu và những cảnh chơi thử ở trên.',
         'art_ui': {'close': 'Đóng', 'prev': 'Trước', 'next': 'Sau', 'open': 'Phóng to'},
         'art': {
             'night': ('Đánh cá đêm', 'Xách một ngọn đèn ra bến, quăng lưới.'),
@@ -372,7 +372,7 @@ def page(code):
     a = up + 'assets/'
     alts = '\n'.join(f'<link rel="alternate" hreflang="{c}" href="{SITE}{LANGS[c]["dir"]}{INK}">' for c in LANGS) + f'\n<link rel="alternate" hreflang="x-default" href="{SITE}{INK}">'
     langnav = ''.join(f'<a href="{up}{LANGS[c]["dir"]}{INK}" lang="{c}"{" aria-current=\"page\"" if c == code else ""}>{LANGS[c]["short"]}</a>' for c in LANGS)
-    navs = list(zip(['trailer', 'story', 'demo', 'features', 'contact'], T['nav'])); navs.insert(2, ('art', T['nav_art']))   # 畫（2026-11-26）排在故事後面
+    navs = list(zip(['trailer', 'story', 'demo', 'features', 'contact'], T['nav'])); navs.insert(3, ('art', T['nav_art']))   # 畫（2026-11-26）排在試玩場景後面、完整版前面（使用者 2026-11-26 定：先看實機畫面）
     nav = ''.join(f'<a href="#{h}">{esc(n)}</a>' for h, n in navs)
     cta = f'<a class="btn primary" href="{STEAM_URL}">{esc(T["wish"])}</a>' if STEAM_URL else f'<span class="badge">{esc(T["soon"])}</span>'
     play = f'{up}mohuacangsheng/play/?lang={code}'   # 網頁版試玩（tools/site/play.mjs 產生）；?lang= 讓第一次開就是這一頁的語言
@@ -486,18 +486,18 @@ def page(code):
   {story}
 </section>
 
-<section id="art" class="art" data-ui='{art_ui}'>
-  <h2>{esc(T['art_h'])}</h2>
-  <p class="lead">{esc(T['art_intro'])}</p>
-  <div class="gallery">{art}
-  </div>
-</section>
-
 <section id="demo" class="scenes">
   <h2>{esc(T['scenes_h'])}</h2>
   <p class="lead">{esc(T['scenes_intro'])}</p>
   <p class="play"><a class="btn primary" href="{play}">{esc(T['play'])}</a><span>{esc(T['play_note'])}</span></p>
   <div class="grid">{scenes}
+  </div>
+</section>
+
+<section id="art" class="art" data-ui='{art_ui}'>
+  <h2>{esc(T['art_h'])}</h2>
+  <p class="lead">{esc(T['art_intro'])}</p>
+  <div class="gallery">{art}
   </div>
 </section>
 
