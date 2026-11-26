@@ -64,7 +64,7 @@ stejoy.com 的網站：工作室**長風**的首頁（「寫意」系列，選�
 - 《墨畫蒼生》頁（`body.mohua`）的寬度照《力透紙背》（使用者定）：版面 1350、開頭 1550、兩邊留 20，頂欄與頁尾跟著寬，字標撐滿開頭（矮的螢幕照高收，按鈕留在第一屏）；故事的行寬照舊 760。手機一樣。
 - `assets/media/trailer.mp4`、`trailer.webm`：預告（1920×1080，61 秒；H.264 約 17 MB、VP9 約 14 MB，瀏覽器挑放得了的那一種），字幕是同資料夾的 `trailer.<語言>.vtt`，每一頁預設開自己語言的那一條。
 - `assets/media/scenes/`：試玩裡的六段場景（取木、砌屋、雪、第十三夜、觀星、造字；造字那張佔整排，底下一排拆字：人＋木＝休、月＋囧＝明、子＋宀＝字，照《說文》），1280×720、無聲、循環，各有 mp4 與 webm。
-- `assets/media/stills/`：完整版的四張圖（雷雨、五穀、渡海、共工）。
+- `assets/media/stills/`：完整版的三張圖（雷雨、五穀、渡海）；第四格「上不周山」2026-11-26 起是「畫」那一節的共工插畫（使用者：「網頁上共工那張改成這張吧」），直接用 `assets/media/art/gong` 的循環短片（`build-site.py` 的 `FEATURE_ART`）。
 - `assets/fonts/`：霞鶩文楷 TC 與思源宋體 SC 的 woff2 分片（瀏覽器只下載用得到的字），SIL OFL 1.1，授權全文在同一資料夾。網站不連 Google Fonts。
 - 日文頁的字型是 **Klee One** 400（Fontworks；霞鶩文楷就是從它改出來的，筆調一樣、漢字照日本的寫法，`--ja`）：Fontsource `@fontsource/klee-one` 5.3.1 的日文與拉丁分片，原檔未改（`klee-one-*.woff2`、`klee-one-LICENSE.txt`，在 `fonts.css` 最後）。日文頁字距比中文收、段首空一字、標題照文節換行（`word-break: auto-phrase`），規則在三個 css 檔最後的「日文頁」那段。
 - 字幕燒進畫面的預告（每種語言各約 45 MB）不放進這個庫：Cloudflare Pages 一個檔最多 25 MiB，庫也會變肥。要的時候照下面第 3 步加 `--burn` 重新出。
