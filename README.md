@@ -135,6 +135,7 @@ stejoy.com 的網站：工作室**長風**的首頁（「寫意」系列，選�
   2. `python3 tools/litou/music.py tools/litou/edit.json music.wav <鏡頭資料夾>`：numpy 合成的暫用配樂——每一刀一記鼓、遊戲裡每一筆一聲筆刷、撥弦每進一維高一層、升維的轉場底下一道永遠升不完的 Shepard 音。
      不刺耳（使用者說「背景樂有點刺耳」；量過是撥弦，原本每進一維高一個八度、三四維落在 1.8–10 kHz，2–6 kHz 的能量九成四是它）：撥弦從 A2 起、每進一維只高兩個五聲音級（最高約 1 kHz），鼓、鼓邊、筆刷的雜音先濾掉高頻，整首再過一道 8 kHz 的柔和低通；2–6 kHz 比改之前低 14 dB，整首響度照舊（約 −21 LUFS）。撥弦後來放到最高約 1.3 kHz（使用者說 1 kHz 有點低、可以到 1400）；升維底下原本的 Shepard 滑音像急救車，換成一顆一顆往上走的五聲鈴（兩層錯開半圈，還是升不完）與一陣風聲。
   3. `EDIT=tools/litou/edit.json CAPTIONS=tools/litou/captions.json node tools/trailer/build.mjs <鏡頭資料夾> music.wav <預告資料夾>`。
+  4. 聲音再過一道（2026-11-26，使用者：「宣傳片裡的聲音稍微清脆一些，音調高5%」）：`sh tools/litou/brighten.sh <預告資料夾>/trailer.mp4 <預告資料夾>/trailer.webm assets/media/litou`——畫面直接抄，音高 +5%（rubberband，長度不變、鼓點照樣踩在剪接上）、2 kHz 以上 +4 dB、限幅 −1 dBFS；量過重心 330 → 378 Hz、2–6 kHz 的能量 0.9% → 1.7%、響度不變（−19.7 LUFS 上下）。之前嫌撥弦刺耳整首過了低通，這一道只把亮度補回一點。
   4. `python3 tools/litou/media.py <鏡頭資料夾> <預告資料夾>`。
 
 ## 上線
